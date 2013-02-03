@@ -359,8 +359,6 @@ static int recursiveDumpDir(Repository::Transaction *txn, svn_fs_root_t *fs_root
             if (recursiveDumpDir(txn, fs_root, entryName, entryFinalName, dirpool) == EXIT_FAILURE)
                 return EXIT_FAILURE;
         } else if (i.value() == svn_node_file) {
-            printf("+");
-            fflush(stdout);
             if (dumpBlob(txn, fs_root, entryName, entryFinalName, dirpool) == EXIT_FAILURE)
                 return EXIT_FAILURE;
         }
@@ -694,8 +692,6 @@ int SvnRevision::exportInternal(const char *key, const svn_fs_path_change_t *cha
         return EXIT_FAILURE;
     }
 
-    printf(".");
-    fflush(stdout);
 //                qDebug() << "   " << qPrintable(current) << "rev" << revnum << "->"
 //                         << qPrintable(repository) << qPrintable(branch) << qPrintable(path);
 
