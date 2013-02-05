@@ -523,7 +523,7 @@ int SvnRevision::fetchRevProps()
 
     log = svnlog ? svnlog->data : "** empty log message **";
     authorident = svnauthor ? identities.value(svnauthor->data) : QByteArray();
-    epoch = get_epoch(svndate->data);
+    epoch = svndate ? get_epoch(svndate->data) : 0;
     if (authorident.isEmpty()) {
         if (!svnauthor || svn_string_isempty(svnauthor))
             authorident = "nobody <nobody@localhost>";
