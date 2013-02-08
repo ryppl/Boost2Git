@@ -15,33 +15,41 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SVN_H
-#define SVN_H
+#ifndef APR_POOL_HPP
+#define APR_POOL_HPP
 
-#include <QString>
-#include "rules.hpp"
+#include <apr_general.h>
+#include <svn_pools.h>
 
-class Repository;
-class SvnPrivate;
-
-class Svn
+class AprPool
   {
   public:
-    static void initialize();
-
-    Svn(const QString &pathToRepository);
-    ~Svn();
-
-    void setMatchRules(const QList<QList<Rules::Match> > &matchRules);
-    void setRepositories(const QHash<QString, Repository*> &repositories);
-    void setIdentityMap(const QHash<QByteArray, QByteArray> &identityMap);
-    void setIdentityDomain(const QString &identityDomain);
-
-    int youngestRevision();
-    bool exportRevision(int revnum);
-
+    AprPool(apr_pool_t *parent = 0)
+      {
+      pool = svn_pool_create(parent);
+      }
+    ~AprPool()
+      {
+      svn_pool_destroy(pool);
+      }
   private:
-    SvnPrivate * const d;
+    AprPool(AprPool const&);
+    void operator=(AprPool const&);
+  public:
+    void clear()
+      {
+      svn_pool_clear(pool);
+      }
+    operator apr_pool_t*() const
+      {
+      return pool;
+      }
+    apr_pool_t* data() const
+      {
+      return pool;
+      }
+  private:
+    apr_pool_t *pool;
   };
 
-#endif
+#endif /* APR_POOL_HPP */

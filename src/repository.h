@@ -23,74 +23,9 @@
 #include <QVector>
 #include <QFile>
 
-#include "ruleparser.h"
 #include "CommandLineParser.h"
-
-class LoggingQProcess : public QProcess
-{
-    QFile log;
-    bool logging;
-public:
-    LoggingQProcess(const QString filename) : QProcess(), log() {
-        if(CommandLineParser::instance()->contains("debug-rules")) {
-            logging = true;
-            QString name = filename;
-            name.replace('/', '_');
-            name.prepend("gitlog-");
-            log.setFileName(name);
-            log.open(QIODevice::WriteOnly);
-        } else {
-            logging = false;
-        }
-    };
-    ~LoggingQProcess() {
-        if(logging) {
-            log.close();
-        }
-    };
-
-    qint64 write(const char *data) {
-        Q_ASSERT(state() == QProcess::Running);
-        if(logging) {
-            log.write(data);
-        }
-        return QProcess::write(data);
-    }
-    qint64 write(const char *data, qint64 length) {
-        Q_ASSERT(state() == QProcess::Running);
-        if(logging) {
-            log.write(data);
-        }
-        return QProcess::write(data, length);
-    }
-    qint64 write(const QByteArray &data) {
-        Q_ASSERT(state() == QProcess::Running);
-        if(logging) {
-            log.write(data);
-        }
-        return QProcess::write(data);
-    }
-    qint64 writeNoLog(const char *data) {
-        Q_ASSERT(state() == QProcess::Running);
-        return QProcess::write(data);
-    }
-    qint64 writeNoLog(const char *data, qint64 length) {
-        Q_ASSERT(state() == QProcess::Running);
-        return QProcess::write(data, length);
-    }
-    qint64 writeNoLog(const QByteArray &data) {
-        Q_ASSERT(state() == QProcess::Running);
-        return QProcess::write(data);
-    }
-    bool putChar( char c) {
-        Q_ASSERT(state() == QProcess::Running);
-        if(logging) {
-            log.putChar(c);
-        }
-        return QProcess::putChar(c);
-    }
-};
-
+#include "logging_process.hpp"
+#include "rules.hpp"
 
 class Repository
 {
@@ -202,4 +137,5 @@ private:
     friend class ProcessCache;
     Q_DISABLE_COPY(Repository)
 };
+
 #endif

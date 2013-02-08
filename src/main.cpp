@@ -25,8 +25,9 @@
 #include <stdio.h>
 
 #include "CommandLineParser.h"
-#include "ruleparser.h"
+#include "rules_list.hpp"
 #include "repository.h"
+#include "stats.hpp"
 #include "svn.h"
 
 QHash<QByteArray, QByteArray> loadIdentityMapFile(const QString &fileName)

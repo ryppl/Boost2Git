@@ -15,33 +15,5 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SVN_H
-#define SVN_H
-
-#include <QString>
-#include "rules.hpp"
-
-class Repository;
-class SvnPrivate;
-
-class Svn
-  {
-  public:
-    static void initialize();
-
-    Svn(const QString &pathToRepository);
-    ~Svn();
-
-    void setMatchRules(const QList<QList<Rules::Match> > &matchRules);
-    void setRepositories(const QHash<QString, Repository*> &repositories);
-    void setIdentityMap(const QHash<QByteArray, QByteArray> &identityMap);
-    void setIdentityDomain(const QString &identityDomain);
-
-    int youngestRevision();
-    bool exportRevision(int revnum);
-
-  private:
-    SvnPrivate * const d;
-  };
-
-#endif
+#undef SVN_ERR
+#define SVN_ERR(expr) SVN_INT_ERR(expr)

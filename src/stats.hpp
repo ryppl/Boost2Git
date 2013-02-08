@@ -15,33 +15,27 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SVN_H
-#define SVN_H
+#ifndef STATS_HPP
+#define STATS_HPP
 
-#include <QString>
 #include "rules.hpp"
 
-class Repository;
-class SvnPrivate;
-
-class Svn
+class Stats
   {
   public:
-    static void initialize();
-
-    Svn(const QString &pathToRepository);
-    ~Svn();
-
-    void setMatchRules(const QList<QList<Rules::Match> > &matchRules);
-    void setRepositories(const QHash<QString, Repository*> &repositories);
-    void setIdentityMap(const QHash<QByteArray, QByteArray> &identityMap);
-    void setIdentityDomain(const QString &identityDomain);
-
-    int youngestRevision();
-    bool exportRevision(int revnum);
+    static Stats *instance();
+    void printStats() const;
+    void ruleMatched(const Rules::Match &rule, const int rev = -1);
+    void addRule(const Rules::Match &rule);
+    static void init();
+    ~Stats();
 
   private:
-    SvnPrivate * const d;
+    Stats();
+    class Private;
+    Private * const d;
+    static Stats *self;
+    bool use;
   };
 
-#endif
+#endif /* STATS_HPP */

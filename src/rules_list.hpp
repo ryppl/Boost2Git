@@ -15,33 +15,28 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SVN_H
-#define SVN_H
+#ifndef RULES_LIST_HPP
+#define RULES_LIST_HPP
 
 #include <QString>
 #include "rules.hpp"
 
-class Repository;
-class SvnPrivate;
-
-class Svn
+class RulesList
   {
   public:
-    static void initialize();
+    RulesList(const QString &filenames);
+    ~RulesList();
 
-    Svn(const QString &pathToRepository);
-    ~Svn();
-
-    void setMatchRules(const QList<QList<Rules::Match> > &matchRules);
-    void setRepositories(const QHash<QString, Repository*> &repositories);
-    void setIdentityMap(const QHash<QByteArray, QByteArray> &identityMap);
-    void setIdentityDomain(const QString &identityDomain);
-
-    int youngestRevision();
-    bool exportRevision(int revnum);
+    const QList<Rules::Repository> allRepositories() const;
+    const QList<QList<Rules::Match> > allMatchRules() const;
+    const QList<Rules*> rules() const;
+    void load();
 
   private:
-    SvnPrivate * const d;
+    QString m_filenames;
+    QList<Rules*> m_rules;
+    QList<Rules::Repository> m_allrepositories;
+    QList<QList<Rules::Match> > m_allMatchRules;
   };
 
-#endif
+#endif /* RULES_LIST_HPP */
