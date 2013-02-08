@@ -17,7 +17,7 @@
  */
 
 #include "repository.h"
-#include "CommandLineParser.h"
+#include "options.hpp"
 #include <QTextStream>
 #include <QDebug>
 #include <QDir>
@@ -76,7 +76,7 @@ Repository::Repository(const Rules::Repository &rule)
     branches["master"].created = 1;
 
     fastImport.setWorkingDirectory(name);
-    if (!CommandLineParser::instance()->contains("dry-run")) {
+    if (!options.dry_run) {
         if (!QDir(name).exists()) { // repo doesn't exist yet.
             qDebug() << "Creating new repository" << name;
             QDir::current().mkpath(name);
@@ -289,8 +289,7 @@ void Repository::reloadBranches()
                         "progress Branch " + branchRef + " reloaded\n");
     }
 
-    if (reset_notes &&
-	CommandLineParser::instance()->contains("add-metadata-notes")) {
+    if (reset_notes && options.add_metadata_notes) {
       fastImport.write("reset refs/notes/commits\nfrom :" +
 		       QByteArray::number(maxMark + 1) +
 		       "\n");
@@ -426,7 +425,7 @@ Repository::Transaction *Repository::newTransaction(const QString &branch, const
     txn->datetime = 0;
     txn->revnum = revnum;
 
-    if ((++commitCount % CommandLineParser::instance()->optionArgument(QLatin1String("commit-interval"), QLatin1String("10000")).toInt()) == 0) {
+    if ((++commitCount % options.commit_interval) == 0) {
         startFastImport();
         // write everything to disk every 10000 commits
         fastImport.write("checkpoint\n");
@@ -481,7 +480,7 @@ void Repository::finalizeTags()
         QByteArray message = tag.log;
         if (!message.endsWith('\n'))
             message += '\n';
-        if (CommandLineParser::instance()->contains("add-metadata"))
+        if (options.add_metadata)
             message += "\n" + formatMetadataMessage(tag.svnprefix, tag.revnum, tagName.toUtf8());
 
         {
@@ -504,7 +503,7 @@ void Repository::finalizeTags()
 
         // Append note to the tip commit of the supporting ref. There is no
         // easy way to attach a note to the tag itself with fast-import.
-        if (CommandLineParser::instance()->contains("add-metadata-notes")) {
+        if (options.add_metadata_notes) {
             Repository::Transaction *txn = newTransaction(tag.supportingRef, tag.svnprefix, tag.revnum);
             txn->setAuthor(tag.author);
             txn->setDateTime(tag.dt);
@@ -544,7 +543,7 @@ void Repository::startFastImport()
         fastImport.setStandardOutputFile(logFileName(name), QIODevice::Append);
         fastImport.setProcessChannelMode(QProcess::MergedChannels);
 
-        if (!CommandLineParser::instance()->contains("dry-run")) {
+        if (!options.dry_run) {
             fastImport.start("git", QStringList() << "fast-import" << marksOptions);
         } else {
             fastImport.start("/bin/cat", QStringList());
@@ -653,7 +652,7 @@ QIODevice *Repository::Transaction::addFile(const QString &path, int mode, qint6
     modifiedFiles.append(repository->prefix + path.toUtf8());
     modifiedFiles.append("\n");
 
-    if (!CommandLineParser::instance()->contains("dry-run")) {
+    if (!options.dry_run) {
         repository->startFastImport();
         repository->fastImport.writeNoLog("blob\nmark :");
         repository->fastImport.writeNoLog(QByteArray::number(mark));
@@ -714,7 +713,7 @@ void Repository::Transaction::commit()
     QByteArray message = log;
     if (!message.endsWith('\n'))
         message += '\n';
-    if (CommandLineParser::instance()->contains("add-metadata"))
+    if (options.add_metadata)
         message += "\n" + Repository::formatMetadataMessage(svnprefix, revnum);
 
     int parentmark = 0;
@@ -793,7 +792,7 @@ void Repository::Transaction::commit()
            qPrintable(repository->name), branch.data());
 
     // Commit metadata note if requested
-    if (CommandLineParser::instance()->contains("add-metadata-notes"))
+    if (options.add_metadata_notes)
         commitNote(Repository::formatMetadataMessage(svnprefix, revnum), false);
 
     while (repository->fastImport.bytesToWrite())

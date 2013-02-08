@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2007  Thiago Macieira <thiago@kde.org>
+ *  Copyright (C) 2013 Daniel Pfeifer <daniel@pfeifer-mail.de>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,28 +15,20 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RULES_LIST_HPP
-#define RULES_LIST_HPP
+#ifndef OPTIONS_HPP
+#define OPTIONS_HPP
 
-#include <QString>
-#include <string>
-#include <vector>
-#include "rules.hpp"
-
-class RulesList
+struct Options
   {
-  public:
-    RulesList(std::vector<std::string> const& rule_files);
-    ~RulesList();
-
-    const QList<Rules::Repository> allRepositories() const;
-    const QList<QList<Rules::Match> > allMatchRules() const;
-    const QList<Rules*> rules() const;
-
-  private:
-    QList<Rules*> m_rules;
-    QList<Rules::Repository> m_allrepositories;
-    QList<QList<Rules::Match> > m_allMatchRules;
+  bool add_metadata;
+  bool add_metadata_notes;
+  bool dry_run;
+  bool debug_rules;
+  int commit_interval;
+  bool stats;
+  bool svn_branches;
   };
 
-#endif /* RULES_LIST_HPP */
+extern Options options;
+
+#endif /* OPTIONS_HPP */

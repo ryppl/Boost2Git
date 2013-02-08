@@ -144,7 +144,7 @@ int dumpBlob(
     SVN_ERR(svn_fs_file_length(&stream_length, fs_root, pathname, dumppool));
 
     svn_stream_t *in_stream, *out_stream;
-    if (!CommandLineParser::instance()->contains("dry-run")) {
+    if (!options.dry_run) {
         // open the file
         SVN_ERR(svn_fs_file_contents(&in_stream, fs_root, pathname, dumppool));
     }
@@ -154,7 +154,7 @@ int dumpBlob(
     SVN_ERR(svn_fs_node_prop(&propvalue, fs_root, pathname, "svn:special", dumppool));
     if (propvalue) {
         apr_size_t len = strlen("link ");
-        if (!CommandLineParser::instance()->contains("dry-run")) {
+        if (!options.dry_run) {
             QByteArray buf;
             buf.reserve(len);
             SVN_ERR(svn_stream_read(in_stream, buf.data(), &len));
@@ -173,7 +173,7 @@ int dumpBlob(
 
     QIODevice *io = txn->addFile(finalPathName, mode, stream_length);
 
-    if (!CommandLineParser::instance()->contains("dry-run")) {
+    if (!options.dry_run) {
         // open a generic svn_stream_t for the QIODevice
         out_stream = streamForDevice(io, dumppool);
         SVN_ERR(svn_stream_copy(in_stream, out_stream, dumppool));
@@ -543,7 +543,7 @@ int SvnRevision::exportInternal(const char *key, const svn_fs_path_change_t *cha
             if (repo->createBranch(branch, revnum, prevbranch, rev_from) == EXIT_FAILURE)
                 return EXIT_FAILURE;
 
-            if(CommandLineParser::instance()->contains("svn-branches")) {
+            if(options.svn_branches) {
                 Repository::Transaction *txn = transactions.value(repository + branch, 0);
                 if (!txn) {
                     txn = repo->newTransaction(branch, svnprefix, revnum);

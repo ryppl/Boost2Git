@@ -16,28 +16,25 @@
  */
 
 #include "rules_list.hpp"
+#include <boost/foreach.hpp>
 #include <QDebug>
 
-RulesList::RulesList(const QString &filenames) : m_filenames(filenames)
+RulesList::RulesList(std::vector<std::string> const& rule_files)
   {
-  }
-
-RulesList::~RulesList()
-  {
-  }
-
-void RulesList::load()
-  {
-  foreach(const QString filename, m_filenames.split(','))
+  BOOST_FOREACH(std::string const& filename, rule_files)
     {
-    qDebug() << "Loading rules from:" << filename;
-    Rules *rules = new Rules(filename);
+    qDebug() << "Loading rules from:" << filename.c_str();
+    Rules *rules = new Rules(QString::fromStdString(filename));
     m_rules.append(rules);
     rules->load();
     m_allrepositories.append(rules->repositories());
     QList<Rules::Match> matchRules = rules->matchRules();
     m_allMatchRules.append( QList<Rules::Match>(matchRules));
     }
+  }
+
+RulesList::~RulesList()
+  {
   }
 
 const QList<Rules::Repository> RulesList::allRepositories() const

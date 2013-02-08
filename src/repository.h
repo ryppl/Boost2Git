@@ -23,7 +23,6 @@
 #include <QVector>
 #include <QFile>
 
-#include "CommandLineParser.h"
 #include "logging_process.hpp"
 #include "rules.hpp"
 

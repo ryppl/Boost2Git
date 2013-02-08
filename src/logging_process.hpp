@@ -20,14 +20,14 @@
 
 #include <QFile>
 #include <QProcess>
-#include "CommandLineParser.h"
+#include "options.hpp"
 
 class LoggingQProcess: public QProcess
   {
   public:
     LoggingQProcess(const QString filename)
       {
-      if (CommandLineParser::instance()->contains("debug-rules"))
+      if (options.debug_rules)
         {
         logging = true;
         QString name = filename;

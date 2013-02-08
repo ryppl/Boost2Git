@@ -17,7 +17,7 @@
 
 
 #include "stats.hpp"
-#include "CommandLineParser.h"
+#include "options.hpp"
 #include <QDebug>
 
 Stats *Stats::self = 0;
@@ -35,7 +35,7 @@ class Stats::Private
 
 Stats::Stats() : d(new Private())
   {
-  use = CommandLineParser::instance()->contains("stats");
+  use = options.stats;
   }
 
 Stats::~Stats()

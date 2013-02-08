@@ -24,7 +24,7 @@
 #include <QHash>
 
 #include "apr_pool.hpp"
-#include "CommandLineParser.h"
+#include "options.hpp"
 #include "repository.h"
 #include "svn_error.hpp"
 
@@ -38,7 +38,7 @@ class SvnRevision
     SvnRevision(int revision, svn_fs_t *f, apr_pool_t *parent_pool) :
         pool(parent_pool), fs(f), fs_root(0), revnum(revision), propsFetched(false)
       {
-      ruledebug = CommandLineParser::instance()->contains(QLatin1String("debug-rules"));
+      ruledebug = options.debug_rules;
       }
     int open()
       {

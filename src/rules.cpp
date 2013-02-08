@@ -22,7 +22,6 @@
 #include <QFile>
 #include <QDebug>
 
-#include "CommandLineParser.h"
 #include "stats.hpp"
 
 Rules::Rules(const QString &fn) : filename(fn)
