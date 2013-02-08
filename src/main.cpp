@@ -26,6 +26,7 @@
 #include <limits.h>
 #include <stdio.h>
 
+#include "apr_init.hpp"
 #include "rules_list.hpp"
 #include "repository.h"
 #include "svn.h"
@@ -153,6 +154,8 @@ int main(int argc, char **argv)
     return -1;
     }
 
+  AprInit apr_init;
+
   QCoreApplication app(argc, argv);
   // Load the configuration
   RulesList rulesList(rule_files);
@@ -223,8 +226,7 @@ retry:
     min_rev = resume_from;
     }
 
-  Svn::initialize();
-  Svn svn(QString::fromStdString(svn_path));
+  Svn svn(svn_path);
   svn.setMatchRules(rulesList.allMatchRules());
   svn.setRepositories(repositories);
   svn.setIdentityMap(loadIdentityMapFile(QString::fromStdString(authors)));

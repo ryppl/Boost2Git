@@ -18,30 +18,38 @@
 #ifndef SVN_H
 #define SVN_H
 
+#include <QHash>
 #include <QString>
+
+#include <svn_fs.h>
+#include <svn_repos.h>
+
+#include "apr_pool.hpp"
 #include "rules.hpp"
 
 class Repository;
-class SvnPrivate;
 
 class Svn
   {
   public:
-    static void initialize();
-
-    Svn(const QString &pathToRepository);
+    Svn(std::string const& repo_path);
     ~Svn();
 
     void setMatchRules(const QList<QList<Rules::Match> > &matchRules);
     void setRepositories(const QHash<QString, Repository*> &repositories);
     void setIdentityMap(const QHash<QByteArray, QByteArray> &identityMap);
-    void setIdentityDomain(const QString &identityDomain);
 
     int youngestRevision();
     bool exportRevision(int revnum);
 
   private:
-    SvnPrivate * const d;
+    AprPool global_pool;
+    svn_fs_t *fs;
+    svn_revnum_t youngest_rev;
+
+    QList<QList<Rules::Match> > allMatchRules;
+    QHash<QString, Repository*> repositories;
+    QHash<QByteArray, QByteArray> identities;
   };
 
 #endif

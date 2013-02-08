@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2007  Thiago Macieira <thiago@kde.org>
+ *  Copyright (C) 2013 Daniel Pfeifer <daniel@pfeifer-mail.de>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,32 +15,23 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SVN_ERROR_HPP
-#define SVN_ERROR_HPP
+#include <apr_general.h>
 
-#include <exception>
-
-struct SvnError: std::exception
+class AprInit
   {
   public:
-    explicit SvnError(svn_error_t* err) : err(err)
+    AprInit()
       {
+      if (apr_initialize() != APR_SUCCESS)
+        {
+        throw std::runtime_error("You lose at apr_initialize().");
+        }
+      }
+    ~AprInit()
+      {
+      apr_terminate();
       }
   private:
-    char const* what() const throw ()
-      {
-      return err->message ? err->message : "No Message";
-      }
-  private:
-    svn_error_t* err;
+    AprInit(AprInit const&);
+    void operator=(AprInit const&);
   };
-
-inline void check_svn(svn_error_t* err)
-  {
-  if (err)
-    {
-    throw SvnError(err);
-    }
-  }
-
-#endif /* SVN_ERROR_HPP */

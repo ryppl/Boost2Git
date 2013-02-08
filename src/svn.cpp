@@ -30,125 +30,52 @@
 
 #include <QDebug>
 
-class SvnPrivate
+Svn::Svn(std::string const& repo_path) : global_pool(NULL)
   {
-  public:
-    QList<MatchRuleList> allMatchRules;
-    RepositoryHash repositories;
-    IdentityHash identities;
-    QString userdomain;
-
-    SvnPrivate(const QString &pathToRepository);
-    ~SvnPrivate();
-    int youngestRevision();
-    int exportRevision(int revnum);
-
-    int openRepository(const QString &pathToRepository);
-
-  private:
-    AprPool global_pool;
-    svn_fs_t *fs;
-    svn_revnum_t youngest_rev;
-  };
-
-void Svn::initialize()
-  {
-  if (apr_initialize() != APR_SUCCESS)
+  try
     {
-    fprintf(stderr, "You lose at apr_initialize().\n");
-    exit(1);
+    svn_repos_t *repos;
+    check_svn(svn_repos_open(&repos, repo_path.c_str(), global_pool));
+    fs = svn_repos_fs(repos);
+    check_svn(svn_fs_youngest_rev(&youngest_rev, fs, global_pool));
     }
-  // static destructor
-  static struct Destructor
+  catch (...)
     {
-    ~Destructor()
-      {
-      apr_terminate();
-      }
-    } destructor;
-  }
-
-Svn::Svn(const QString &pathToRepository)
-    : d(new SvnPrivate(pathToRepository))
-  {
+    svn_pool_destroy(global_pool);
+    }
   }
 
 Svn::~Svn()
   {
-  delete d;
+  svn_pool_destroy(global_pool);
   }
 
 void Svn::setMatchRules(const QList<MatchRuleList> &allMatchRules)
   {
-  d->allMatchRules = allMatchRules;
+  this->allMatchRules = allMatchRules;
   }
 
 void Svn::setRepositories(const RepositoryHash &repositories)
   {
-  d->repositories = repositories;
+  this->repositories = repositories;
   }
 
 void Svn::setIdentityMap(const IdentityHash &identityMap)
   {
-  d->identities = identityMap;
-  }
-
-void Svn::setIdentityDomain(const QString &identityDomain)
-  {
-  d->userdomain = identityDomain;
+  this->identities = identityMap;
   }
 
 int Svn::youngestRevision()
   {
-  return d->youngestRevision();
-  }
-
-bool Svn::exportRevision(int revnum)
-  {
-  return d->exportRevision(revnum) == EXIT_SUCCESS;
-  }
-
-SvnPrivate::SvnPrivate(const QString &pathToRepository) : global_pool(NULL)
-  {
-  if (openRepository(pathToRepository) != EXIT_SUCCESS)
-    {
-    qCritical() << "Failed to open repository";
-    exit(1);
-    }
-  // get the youngest revision
-  svn_fs_youngest_rev(&youngest_rev, fs, global_pool);
-  }
-
-SvnPrivate::~SvnPrivate()
-  {
-  svn_pool_destroy(global_pool);
-  }
-
-int SvnPrivate::youngestRevision()
-  {
   return youngest_rev;
   }
 
-int SvnPrivate::openRepository(const QString &pathToRepository)
-  {
-  svn_repos_t *repos;
-  QString path = pathToRepository;
-  while (path.endsWith('/')) // no trailing slash allowed
-    {
-    path = path.mid(0, path.length() - 1);
-    }
-  SVN_ERR(svn_repos_open(&repos, QFile::encodeName(path), global_pool));
-  fs = svn_repos_fs(repos);
-  return EXIT_SUCCESS;
-  }
-
-int SvnPrivate::exportRevision(int revnum)
+bool Svn::exportRevision(int revnum)
   {
   SvnRevision rev(revnum, fs, global_pool);
   rev.allMatchRules = allMatchRules;
   rev.repositories = repositories;
   rev.identities = identities;
-  rev.userdomain = userdomain;
 
   // open this revision:
   printf("Exporting revision %d ", revnum);
@@ -156,21 +83,21 @@ int SvnPrivate::exportRevision(int revnum)
 
   if (rev.open() == EXIT_FAILURE)
     {
-    return EXIT_FAILURE;
+    return false;
     }
   if (rev.prepareTransactions() == EXIT_FAILURE)
     {
-    return EXIT_FAILURE;
+    return false;
     }
   if (!rev.needCommit)
     {
     printf(" nothing to do\n");
-    return EXIT_SUCCESS; // no changes?
+    return true; // no changes?
     }
   if (rev.commit() == EXIT_FAILURE)
     {
-    return EXIT_FAILURE;
+    return false;
     }
   printf(" done\n");
-  return EXIT_SUCCESS;
+  return true;
   }

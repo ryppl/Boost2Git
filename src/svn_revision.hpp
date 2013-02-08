@@ -42,7 +42,7 @@ class SvnRevision
       }
     int open()
       {
-      SVN_ERR(svn_fs_revision_root(&fs_root, fs, revnum, pool));
+      check_svn(svn_fs_revision_root(&fs_root, fs, revnum, pool));
       return EXIT_SUCCESS;
       }
     int prepareTransactions();
@@ -84,7 +84,6 @@ class SvnRevision
     QList<MatchRuleList> allMatchRules;
     RepositoryHash repositories;
     IdentityHash identities;
-    QString userdomain;
 
     svn_fs_t *fs;
     svn_fs_root_t *fs_root;

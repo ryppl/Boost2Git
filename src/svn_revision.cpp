@@ -94,7 +94,7 @@ void splitPathName(
 int pathMode(svn_fs_root_t *fs_root, const char *pathname, apr_pool_t *pool)
   {
     svn_string_t *propvalue;
-    SVN_ERR(svn_fs_node_prop(&propvalue, fs_root, pathname, "svn:executable", pool));
+    check_svn(svn_fs_node_prop(&propvalue, fs_root, pathname, "svn:executable", pool));
     int mode = 0100644;
     if (propvalue)
         mode = 0100755;
@@ -138,23 +138,23 @@ int dumpBlob(
 
     svn_filesize_t stream_length;
 
-    SVN_ERR(svn_fs_file_length(&stream_length, fs_root, pathname, dumppool));
+    check_svn(svn_fs_file_length(&stream_length, fs_root, pathname, dumppool));
 
     svn_stream_t *in_stream, *out_stream;
     if (!options.dry_run) {
         // open the file
-        SVN_ERR(svn_fs_file_contents(&in_stream, fs_root, pathname, dumppool));
+        check_svn(svn_fs_file_contents(&in_stream, fs_root, pathname, dumppool));
     }
 
     // maybe it's a symlink?
     svn_string_t *propvalue;
-    SVN_ERR(svn_fs_node_prop(&propvalue, fs_root, pathname, "svn:special", dumppool));
+    check_svn(svn_fs_node_prop(&propvalue, fs_root, pathname, "svn:special", dumppool));
     if (propvalue) {
         apr_size_t len = strlen("link ");
         if (!options.dry_run) {
             QByteArray buf;
             buf.reserve(len);
-            SVN_ERR(svn_stream_read(in_stream, buf.data(), &len));
+            check_svn(svn_stream_read(in_stream, buf.data(), &len));
             if (len == strlen("link ") && strncmp(buf, "link ", len) == 0) {
                 mode = 0120000;
                 stream_length -= len;
@@ -163,7 +163,7 @@ int dumpBlob(
                 qWarning("file %s is svn:special but not a symlink", pathname);
                 // re-open the file as we tried to read "link "
                 svn_stream_close(in_stream);
-                SVN_ERR(svn_fs_file_contents(&in_stream, fs_root, pathname, dumppool));
+                check_svn(svn_fs_file_contents(&in_stream, fs_root, pathname, dumppool));
             }
         }
     }
@@ -173,7 +173,7 @@ int dumpBlob(
     if (!options.dry_run) {
         // open a generic svn_stream_t for the QIODevice
         out_stream = streamForDevice(io, dumppool);
-        SVN_ERR(svn_stream_copy(in_stream, out_stream, dumppool));
+        check_svn(svn_stream_copy(in_stream, out_stream, dumppool));
         svn_stream_close(out_stream);
         svn_stream_close(in_stream);
 
@@ -193,7 +193,7 @@ int recursiveDumpDir(
 {
     // get the dir listing
     apr_hash_t *entries;
-    SVN_ERR(svn_fs_dir_entries(&entries, fs_root, pathname, pool));
+    check_svn(svn_fs_dir_entries(&entries, fs_root, pathname, pool));
     AprPool dirpool(pool);
 
     // While we get a hash, put it in a map for sorted lookup, so we can
@@ -256,7 +256,7 @@ int SvnRevision::prepareTransactions()
 {
     // find out what was changed in this revision:
     apr_hash_t *changes;
-    SVN_ERR(svn_fs_paths_changed(&changes, fs_root, pool));
+    check_svn(svn_fs_paths_changed(&changes, fs_root, pool));
 
     QMap<QByteArray, svn_fs_path_change_t*> map;
     for (apr_hash_index_t *i = apr_hash_first(pool, changes); i; i = apr_hash_next(i)) {
@@ -297,7 +297,7 @@ int SvnRevision::fetchRevProps()
         return EXIT_SUCCESS;
 
     apr_hash_t *revprops;
-    SVN_ERR(svn_fs_revision_proplist(&revprops, fs, revnum, pool));
+    check_svn(svn_fs_revision_proplist(&revprops, fs, revnum, pool));
     svn_string_t *svnauthor = (svn_string_t*)apr_hash_get(revprops, "svn:author", APR_HASH_KEY_STRING);
     svn_string_t *svndate = (svn_string_t*)apr_hash_get(revprops, "svn:date", APR_HASH_KEY_STRING);
     svn_string_t *svnlog = (svn_string_t*)apr_hash_get(revprops, "svn:log", APR_HASH_KEY_STRING);
@@ -310,7 +310,7 @@ int SvnRevision::fetchRevProps()
             authorident = "nobody <nobody@localhost>";
         else
             authorident = svnauthor->data + QByteArray(" <") + svnauthor->data +
-                QByteArray("@") + userdomain.toUtf8() + QByteArray(">");
+                QByteArray("@localhost>");
     }
     propsFetched = true;
     return EXIT_SUCCESS;
@@ -346,11 +346,11 @@ int SvnRevision::exportEntry(const char *key, const svn_fs_path_change_t *change
     // was this copied from somewhere?
     svn_revnum_t rev_from;
     const char *path_from;
-    SVN_ERR(svn_fs_copied_from(&rev_from, &path_from, fs_root, key, revpool));
+    check_svn(svn_fs_copied_from(&rev_from, &path_from, fs_root, key, revpool));
 
     // is this a directory?
     svn_boolean_t is_dir;
-    SVN_ERR(svn_fs_is_dir(&is_dir, fs_root, key, revpool));
+    check_svn(svn_fs_is_dir(&is_dir, fs_root, key, revpool));
     if (is_dir) {
         if (change->change_kind == svn_fs_path_change_modify ||
             change->change_kind == svn_fs_path_change_add) {
@@ -613,11 +613,11 @@ int SvnRevision::recurse(const char *path, const svn_fs_path_change_t *change,
 {
     svn_fs_root_t *fs_root = this->fs_root;
     if (change->change_kind == svn_fs_path_change_delete)
-        SVN_ERR(svn_fs_revision_root(&fs_root, fs, revnum - 1, pool));
+        check_svn(svn_fs_revision_root(&fs_root, fs, revnum - 1, pool));
 
     // get the dir listing
     svn_node_kind_t kind;
-    SVN_ERR(svn_fs_check_path(&kind, fs_root, path, pool));
+    check_svn(svn_fs_check_path(&kind, fs_root, path, pool));
     if(kind == svn_node_none) {
         qWarning() << "WARN: Trying to recurse using a nonexistant path" << path << ", ignoring";
         return EXIT_SUCCESS;
@@ -627,7 +627,7 @@ int SvnRevision::recurse(const char *path, const svn_fs_path_change_t *change,
     }
 
     apr_hash_t *entries;
-    SVN_ERR(svn_fs_dir_entries(&entries, fs_root, path, pool));
+    check_svn(svn_fs_dir_entries(&entries, fs_root, path, pool));
     AprPool dirpool(pool);
 
     // While we get a hash, put it in a map for sorted lookup, so we can
