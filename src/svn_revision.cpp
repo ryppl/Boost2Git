@@ -24,8 +24,6 @@
 #include <svn_repos.h>
 #include <svn_types.h>
 
-#include "stats.hpp"
-
 namespace
 {
 
@@ -49,7 +47,6 @@ MatchRuleList::ConstIterator findMatchRule(
         if (it->action == Rules::Match::Recurse && ruleMask & NoRecurseRule)
             continue;
         if (it->rx.indexIn(current) == 0) {
-            Stats::instance()->ruleMatched(*it, revnum);
             return it;
         }
     }

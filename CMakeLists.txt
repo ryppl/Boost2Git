@@ -34,8 +34,6 @@ add_executable(svn2git
   src/rules_list.hpp
   src/rules.cpp
   src/rules.hpp
-  src/stats.cpp
-  src/stats.hpp
   src/svn_revision.cpp
   src/svn_revision.hpp
   src/svn.cpp

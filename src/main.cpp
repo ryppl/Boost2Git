@@ -28,7 +28,6 @@
 
 #include "rules_list.hpp"
 #include "repository.h"
-#include "stats.hpp"
 #include "svn.h"
 
 QHash<QByteArray, QByteArray> loadIdentityMapFile(const QString &fileName)
@@ -145,7 +144,6 @@ int main(int argc, char **argv)
     options.add_metadata_notes = variables.count("add-metadata-notes");
     options.dry_run = variables.count("dry-run");
     options.debug_rules = variables.count("debug-rules");
-    options.stats = variables.count("stats");
     options.svn_branches = variables.count("svn-branches");
     notify(variables);
     }
@@ -155,7 +153,6 @@ int main(int argc, char **argv)
     return -1;
     }
 
-  Stats::init();
   QCoreApplication app(argc, argv);
   // Load the configuration
   RulesList rulesList(rule_files);
@@ -250,6 +247,5 @@ retry:
     repo->finalizeTags();
     delete repo;
     }
-  Stats::instance()->printStats();
   return errors ? EXIT_FAILURE : EXIT_SUCCESS;
   }

@@ -25,7 +25,6 @@ struct Options
   bool dry_run;
   bool debug_rules;
   int commit_interval;
-  bool stats;
   bool svn_branches;
   };
 

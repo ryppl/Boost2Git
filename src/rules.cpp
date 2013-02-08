@@ -22,8 +22,6 @@
 #include <QFile>
 #include <QDebug>
 
-#include "stats.hpp"
-
 Rules::Rules(const QString &fn) : filename(fn)
   {
   }
@@ -306,7 +304,6 @@ void Rules::load(const QString &filename)
             match.action = Match::Export;
             }
           m_matchRules += match;
-          Stats::instance()->addRule(match);
           state = ReadingNone;
           continue;
           }
