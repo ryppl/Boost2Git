@@ -787,7 +787,7 @@ void Repository::Transaction::commit()
                                  + " branch " + branch + " = :" + QByteArray::number(mark)
                                  + (desc.isEmpty() ? "" : " # merge from") + desc
                                  + "\n\n");
-    printf(" %d modifications from SVN %s to %s/%s",
+    printf("-- %d modifications from SVN %s to %s/%s\n",
            deletedFiles.count() + modifiedFiles.count('\n'), svnprefix.data(),
            qPrintable(repository->name), branch.data());
 

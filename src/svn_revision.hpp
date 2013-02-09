@@ -30,7 +30,6 @@
 
 typedef QList<Rules::Match> MatchRuleList;
 typedef QHash<QString, Repository*> RepositoryHash;
-typedef QHash<QByteArray, QByteArray> IdentityHash;
 
 class Svn;
 
@@ -42,14 +41,14 @@ class SvnRevision
       {
       ruledebug = options.debug_rules;
       }
-    int open()
+    void open()
       {
       check_svn(svn_fs_revision_root(&fs_root, fs, revnum, pool));
-      return EXIT_SUCCESS;
       }
     int prepareTransactions();
-    int fetchRevProps();
-    int commit();
+    void commit();
+  private:
+    void fetchRevProps();
     int exportEntry(
         const char *path,
         const svn_fs_path_change_t *change,
@@ -80,7 +79,7 @@ class SvnRevision
         svn_revnum_t rev_from,
         apr_hash_t *changes,
         apr_pool_t *pool);
-  public:
+  private:
     Svn const& svn;
     AprPool pool;
     QHash<QString, Repository::Transaction*> transactions;

@@ -349,13 +349,3 @@ void Rules::load(const QString &filename)
       }
     }
   }
-
-#ifndef QT_NO_DEBUG_STREAM
-
-QDebug operator<<(QDebug s, const Rules::Match &rule)
-  {
-  s.nospace() << rule.info();
-  return s.space();
-  }
-
-#endif

@@ -106,9 +106,4 @@ class Rules
     QMap<QString,QString> m_variables;
   };
 
-#ifndef QT_NO_DEBUG_STREAM
-class QDebug;
-QDebug operator<<(QDebug, const Rules::Match &);
-#endif
-
 #endif /* RULES_HPP */

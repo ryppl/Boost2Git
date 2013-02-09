@@ -29,7 +29,7 @@
 #include <svn_fs.h>
 #include <svn_repos.h>
 
-#include <QDebug>
+#include <iostream>
 
 Svn::Svn(std::string const& repo_path, Authors const& authors)
     : global_pool(NULL), authors(authors)
@@ -69,29 +69,16 @@ int Svn::youngestRevision()
 
 bool Svn::exportRevision(int revnum)
   {
+  std::cout << "Exporting revision " << revnum << std::endl;
+
   SvnRevision rev(*this, revnum, fs, global_pool);
 
-  // open this revision:
-  printf("Exporting revision %d ", revnum);
-  fflush (stdout);
-
-  if (rev.open() == EXIT_FAILURE)
-    {
-    return false;
-    }
+  rev.open();
   if (rev.prepareTransactions() == EXIT_FAILURE)
     {
     return false;
     }
-  if (!rev.needCommit)
-    {
-    printf(" nothing to do\n");
-    return true; // no changes?
-    }
-  if (rev.commit() == EXIT_FAILURE)
-    {
-    return false;
-    }
-  printf(" done\n");
+  rev.commit();
+
   return true;
   }
