@@ -28,7 +28,7 @@
 
 #include "apr_init.hpp"
 #include "authors.hpp"
-#include "rules_list.hpp"
+#include "rules.hpp"
 #include "repository.h"
 #include "svn.h"
 
@@ -37,18 +37,22 @@ Options options;
 int main(int argc, char **argv)
   {
   std::string authors_file;
+  std::string recurse_file;
+  std::string rules_file;
   std::string svn_path;
-  std::vector<std::string> rule_files;
   int resume_from = 0;
   int max_rev = 0;
   try
     {
     namespace po = boost::program_options;
-    po::options_description allowed_options("Allowed options");
-    allowed_options.add_options()
+    po::options_description program_options("Allowed options");
+    program_options.add_options()
       ("help,h", "produce help message")
       ("version,v", "print version string")
       ("authors", po::value(&authors_file)->value_name("FILENAME"), "map between svn username and email")
+      ("svnrepo", po::value(&svn_path)->value_name("PATH")->required(), "path to svn repository")
+      ("recurse", po::value(&recurse_file)->value_name("FILENAME"), "file with recurse expressions")
+      ("rules", po::value(&rules_file)->value_name("FILENAME")->required(), "file with the conversion rules")
       ("add-metadata", "if passed, each git commit will have svn commit info")
       ("add-metadata-notes", "if passed, each git commit will have notes with svn commit info")
       ("resume-from", po::value(&resume_from)->value_name("REVISION"), "start importing at svn revision number")
@@ -56,32 +60,15 @@ int main(int argc, char **argv)
       ("dry-run", "don't actually write anything")
       ("debug-rules", "print what rule is being used for each file")
       ("commit-interval", po::value(&options.commit_interval)->value_name("NUMBER")->default_value(10000), "if passed the cache will be flushed to git every NUMBER of commits")
-      ("stats", "after a run print some statistics about the rules")
       ("svn-branches", "Use the contents of SVN when creating branches, Note: SVN tags are branches as well")
-      ;
-    po::options_description hidden_options("Hidden options");
-    hidden_options.add_options()
-      ("svn", po::value(&svn_path)->required())
-      ("rule", po::value(&rule_files))
-      ;
-    po::options_description all_options("All options");
-    all_options
-      .add(allowed_options)
-      .add(hidden_options)
-      ;
-    po::positional_options_description positional_options;
-    positional_options
-      .add("svn", 1)
-      .add("rule", -1)
       ;
     po::variables_map variables;
     store(po::command_line_parser(argc, argv)
-      .options(all_options)
-      .positional(positional_options)
+      .options(program_options)
       .run(), variables);
     if (variables.count("help"))
       {
-      std::cout << allowed_options << std::endl;
+      std::cout << program_options << std::endl;
       return 0;
       }
     if (variables.count("version"))
@@ -109,7 +96,7 @@ int main(int argc, char **argv)
 
 
   // Load the configuration
-  RulesList rulesList(rule_files);
+  Rules rules(QString::fromStdString(rules_file));
 
   QHash<QString, Repository*> repositories;
 
@@ -117,7 +104,7 @@ int main(int argc, char **argv)
 
 retry:
   int min_rev = 1;
-  foreach (Rules::Repository rule, rulesList.allRepositories())
+  foreach (Rules::Repository rule, rules.repositories())
     {
     Repository *repo = new Repository(rule);
     if (!repo)
@@ -178,7 +165,7 @@ retry:
     }
 
   Svn svn(svn_path, authors);
-  svn.setMatchRules(rulesList.allMatchRules());
+  svn.setMatchRules(rules.matchRules());
   svn.setRepositories(repositories);
 
   if (max_rev < 1)

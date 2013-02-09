@@ -52,7 +52,7 @@ Svn::~Svn()
   svn_pool_destroy(global_pool);
   }
 
-void Svn::setMatchRules(const QList<MatchRuleList> &allMatchRules)
+void Svn::setMatchRules(const MatchRuleList &allMatchRules)
   {
   this->allMatchRules = allMatchRules;
   }

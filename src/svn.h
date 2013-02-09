@@ -36,7 +36,7 @@ class Svn
     Svn(std::string const& repo_path, Authors const& authors);
     ~Svn();
 
-    void setMatchRules(const QList<QList<Rules::Match> > &matchRules);
+    void setMatchRules(const QList<Rules::Match> &matchRules);
     void setRepositories(const QHash<QString, Repository*> &repositories);
     void setIdentityMap(const QHash<QByteArray, QByteArray> &identityMap);
 
@@ -49,7 +49,7 @@ class Svn
     svn_revnum_t youngest_rev;
 
   public:
-    QList<QList<Rules::Match> > allMatchRules;
+    QList<Rules::Match> allMatchRules;
     QHash<QString, Repository*> repositories;
     Authors const& authors;
   };

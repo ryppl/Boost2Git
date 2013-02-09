@@ -443,37 +443,35 @@ int SvnRevision::exportEntry(
   //MultiRule: loop start
   //Replace all returns with continue,
   bool isHandled = false;
-  foreach ( const MatchRuleList matchRules, svn.allMatchRules )
+  const MatchRuleList matchRules = svn.allMatchRules;
+  // find the first rule that matches this pathname
+  MatchRuleList::ConstIterator match = findMatchRule(matchRules, revnum, current);
+  if (match != matchRules.constEnd())
     {
-    // find the first rule that matches this pathname
-    MatchRuleList::ConstIterator match = findMatchRule(matchRules, revnum, current);
-    if (match != matchRules.constEnd())
+    const Rules::Match &rule = *match;
+    if ( exportDispatch(key, change, path_from, rev_from, changes, current, rule, matchRules, revpool) == EXIT_FAILURE )
       {
-      const Rules::Match &rule = *match;
-      if ( exportDispatch(key, change, path_from, rev_from, changes, current, rule, matchRules, revpool) == EXIT_FAILURE )
-        {
-        return EXIT_FAILURE;
-        }
-      isHandled = true;
+      return EXIT_FAILURE;
       }
-    else if (is_dir && path_from != NULL)
+    isHandled = true;
+    }
+  else if (is_dir && path_from != NULL)
+    {
+    qDebug() << current << "is a copy-with-history, auto-recursing";
+    if ( recurse(key, change, path_from, matchRules, rev_from, changes, revpool) == EXIT_FAILURE )
       {
-      qDebug() << current << "is a copy-with-history, auto-recursing";
-      if ( recurse(key, change, path_from, matchRules, rev_from, changes, revpool) == EXIT_FAILURE )
-        {
-        return EXIT_FAILURE;
-        }
-      isHandled = true;
+      return EXIT_FAILURE;
       }
-    else if (is_dir && change->change_kind == svn_fs_path_change_delete)
+    isHandled = true;
+    }
+  else if (is_dir && change->change_kind == svn_fs_path_change_delete)
+    {
+    qDebug() << current << "deleted, auto-recursing";
+    if ( recurse(key, change, path_from, matchRules, rev_from, changes, revpool) == EXIT_FAILURE )
       {
-      qDebug() << current << "deleted, auto-recursing";
-      if ( recurse(key, change, path_from, matchRules, rev_from, changes, revpool) == EXIT_FAILURE )
-        {
-        return EXIT_FAILURE;
-        }
-      isHandled = true;
+      return EXIT_FAILURE;
       }
+    isHandled = true;
     }
   if (isHandled)
     {
