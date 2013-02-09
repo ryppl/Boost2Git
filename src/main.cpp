@@ -27,71 +27,19 @@
 #include <stdio.h>
 
 #include "apr_init.hpp"
+#include "authors.hpp"
 #include "rules_list.hpp"
 #include "repository.h"
 #include "svn.h"
-
-QHash<QByteArray, QByteArray> loadIdentityMapFile(const QString &fileName)
-  {
-  QHash<QByteArray, QByteArray> result;
-  if (fileName.isEmpty())
-    {
-    return result;
-    }
-  QFile file(fileName);
-  if (!file.open(QIODevice::ReadOnly))
-    {
-    fprintf(
-        stderr,
-        "Could not open file %s: %s",
-        qPrintable(fileName),
-        qPrintable(file.errorString()));
-    return result;
-    }
-  while (!file.atEnd())
-    {
-    QByteArray line = file.readLine();
-    int comment_pos = line.indexOf('#');
-    if (comment_pos != -1)
-      {
-      line.truncate(comment_pos);
-      }
-    line = line.trimmed();
-    int space = line.indexOf(' ');
-    if (space == -1)
-      {
-      continue; // invalid line
-      }
-    // Support git-svn author files, too
-    // - svn2git native:  loginname Joe User <user@example.com>
-    // - git-svn:         loginname = Joe User <user@example.com>
-    int rightspace = line.indexOf(" = ");
-    int leftspace = space;
-    if (rightspace == -1)
-      {
-      rightspace = space;
-      }
-    else
-      {
-      leftspace = rightspace;
-      rightspace += 2;
-      }
-    QByteArray realname = line.mid(rightspace).trimmed();
-    line.truncate(leftspace);
-    result.insert(line, realname);
-    }
-  file.close();
-  return result;
-  }
 
 Options options;
 
 int main(int argc, char **argv)
   {
-  std::string authors;
+  std::string authors_file;
   std::string svn_path;
   std::vector<std::string> rule_files;
-  int resume_from = INT_MAX;
+  int resume_from = 0;
   int max_rev = 0;
   try
     {
@@ -100,7 +48,7 @@ int main(int argc, char **argv)
     allowed_options.add_options()
       ("help,h", "produce help message")
       ("version,v", "print version string")
-      ("authors", po::value(&authors)->value_name("FILENAME"), "map between svn username and email")
+      ("authors", po::value(&authors_file)->value_name("FILENAME"), "map between svn username and email")
       ("add-metadata", "if passed, each git commit will have svn commit info")
       ("add-metadata-notes", "if passed, each git commit will have notes with svn commit info")
       ("resume-from", po::value(&resume_from)->value_name("REVISION"), "start importing at svn revision number")
@@ -155,14 +103,17 @@ int main(int argc, char **argv)
     }
 
   AprInit apr_init;
-
   QCoreApplication app(argc, argv);
+
+  Authors authors(authors_file);
+
+
   // Load the configuration
   RulesList rulesList(rule_files);
 
   QHash<QString, Repository*> repositories;
 
-  int cutoff = resume_from;
+  int cutoff = resume_from ? resume_from : INT_MAX;
 
 retry:
   int min_rev = 1;
@@ -226,10 +177,9 @@ retry:
     min_rev = resume_from;
     }
 
-  Svn svn(svn_path);
+  Svn svn(svn_path, authors);
   svn.setMatchRules(rulesList.allMatchRules());
   svn.setRepositories(repositories);
-  svn.setIdentityMap(loadIdentityMapFile(QString::fromStdString(authors)));
 
   if (max_rev < 1)
     {

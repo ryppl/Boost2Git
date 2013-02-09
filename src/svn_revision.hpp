@@ -32,11 +32,13 @@ typedef QList<Rules::Match> MatchRuleList;
 typedef QHash<QString, Repository*> RepositoryHash;
 typedef QHash<QByteArray, QByteArray> IdentityHash;
 
+class Svn;
+
 class SvnRevision
   {
   public:
-    SvnRevision(int revision, svn_fs_t *f, apr_pool_t *parent_pool) :
-        pool(parent_pool), fs(f), fs_root(0), revnum(revision), propsFetched(false)
+    SvnRevision(Svn const& svn, int revision, svn_fs_t *f, apr_pool_t *parent_pool) :
+        svn(svn), pool(parent_pool), fs(f), fs_root(0), revnum(revision), propsFetched(false)
       {
       ruledebug = options.debug_rules;
       }
@@ -79,20 +81,19 @@ class SvnRevision
         apr_hash_t *changes,
         apr_pool_t *pool);
   public:
+    Svn const& svn;
     AprPool pool;
     QHash<QString, Repository::Transaction*> transactions;
-    QList<MatchRuleList> allMatchRules;
-    RepositoryHash repositories;
-    IdentityHash identities;
 
     svn_fs_t *fs;
     svn_fs_root_t *fs_root;
     int revnum;
 
     // must call fetchRevProps first:
-    QByteArray authorident;
-    QByteArray log;
+    std::string author;
+    std::string log;
     uint epoch;
+
     bool ruledebug;
     bool propsFetched;
     bool needCommit;

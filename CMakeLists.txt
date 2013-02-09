@@ -7,7 +7,7 @@ project(Svn2Git CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${Svn2Git_SOURCE_DIR}/CMake")
 
-find_package(Boost REQUIRED program_options)
+find_package(Boost REQUIRED date_time program_options regex)
 include_directories(${BoostINCLUDE_DIRS})
 
 find_package(APR REQUIRED)
@@ -26,7 +26,10 @@ add_definitions(
   )
 
 add_executable(svn2git
+  src/apr_init.hpp
   src/apr_pool.hpp
+  src/authors.cpp
+  src/authors.hpp
   src/logging_process.hpp
   src/repository.cpp
   src/repository.h

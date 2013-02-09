@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2007  Thiago Macieira <thiago@kde.org>
+ *  Copyright (C) 2013  Daniel Pfeifer <daniel@pfeifer-mail.de>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,9 +16,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define SVN_DEPRECATED
 #include "svn_revision.hpp"
+#include "authors.hpp"
+#include "svn.h"
 
 #include <QDebug>
+#include <boost/date_time/posix_time/time_parsers.hpp>
+#include <boost/date_time/posix_time/posix_time_io.hpp>
 
 #include <svn_fs.h>
 #include <svn_pools.h>
@@ -241,15 +247,6 @@ bool wasDir(svn_fs_t *fs, int revnum, const char *pathname, apr_pool_t *pool)
     return is_dir;
 }
 
-time_t get_epoch(const char* svn_date)
-{
-    struct tm tm;
-    memset(&tm, 0, sizeof tm);
-    QByteArray date(svn_date, strlen(svn_date) - 8);
-    strptime(date, "%Y-%m-%dT%H:%M:%S", &tm);
-    return timegm(&tm);
-}
-
 } // namespace
 
 int SvnRevision::prepareTransactions()
@@ -291,51 +288,73 @@ int SvnRevision::prepareTransactions()
     return EXIT_SUCCESS;
 }
 
-int SvnRevision::fetchRevProps()
-{
-    if( propsFetched )
-        return EXIT_SUCCESS;
-
-    apr_hash_t *revprops;
-    check_svn(svn_fs_revision_proplist(&revprops, fs, revnum, pool));
-    svn_string_t *svnauthor = (svn_string_t*)apr_hash_get(revprops, "svn:author", APR_HASH_KEY_STRING);
-    svn_string_t *svndate = (svn_string_t*)apr_hash_get(revprops, "svn:date", APR_HASH_KEY_STRING);
-    svn_string_t *svnlog = (svn_string_t*)apr_hash_get(revprops, "svn:log", APR_HASH_KEY_STRING);
-
-    log = svnlog ? svnlog->data : "** empty log message **";
-    authorident = svnauthor ? identities.value(svnauthor->data) : QByteArray();
-    epoch = svndate ? get_epoch(svndate->data) : 0;
-    if (authorident.isEmpty()) {
-        if (!svnauthor || svn_string_isempty(svnauthor))
-            authorident = "nobody <nobody@localhost>";
-        else
-            authorident = svnauthor->data + QByteArray(" <") + svnauthor->data +
-                QByteArray("@localhost>");
+static std::string get_string(apr_hash_t *revprops, char const *key)
+  {
+  std::string result;
+  svn_string_t *str = (svn_string_t*) apr_hash_get(revprops, key, APR_HASH_KEY_STRING);
+  if (str && !svn_string_isempty(str))
+    {
+    result.append(str->data, str->len);
     }
-    propsFetched = true;
+  return result;
+  }
+
+int SvnRevision::fetchRevProps()
+  {
+  if (propsFetched)
+    {
     return EXIT_SUCCESS;
-}
+    }
+  apr_hash_t *revprops;
+  check_svn(svn_fs_revision_proplist(&revprops, fs, revnum, pool));
+
+  author = svn.authors[get_string(revprops, "svn:author")];
+  if (author.empty())
+    {
+    author = "nobody <nobody@localhost>";
+    }
+
+  epoch = 0;
+  std::string svndate = get_string(revprops, "svn:date");
+  if (!svndate.empty())
+    {
+    namespace dt = boost::date_time;
+    namespace pt = boost::posix_time;
+    pt::ptime ptime = dt::parse_delimited_time<pt::ptime>(svndate, 'T');
+    static pt::ptime epoch_(boost::gregorian::date(1970, 1, 1));
+    epoch = (ptime - epoch_).total_seconds();
+    }
+
+  log = get_string(revprops, "svn:log");
+  if (log.empty())
+    {
+    log = "** empty log message **";
+    }
+
+  propsFetched = true;
+  return EXIT_SUCCESS;
+  }
 
 int SvnRevision::commit()
-{
-    // now create the commit
-    if (fetchRevProps() != EXIT_SUCCESS)
-        return EXIT_FAILURE;
-    foreach (Repository *repo, repositories.values()) {
-        repo->commit();
+  {
+  if (fetchRevProps() != EXIT_SUCCESS)
+    {
+    return EXIT_FAILURE;
     }
-
-    foreach (Repository::Transaction *txn, transactions) {
-        txn->setAuthor(authorident);
-        txn->setDateTime(epoch);
-        txn->setLog(log);
-
-        txn->commit();
-        delete txn;
+  foreach(Repository *repo, svn.repositories.values())
+    {
+    repo->commit();
     }
-
-    return EXIT_SUCCESS;
-}
+  foreach(Repository::Transaction *txn, transactions)
+    {
+    txn->setAuthor(QByteArray(author.c_str(), author.length()));
+    txn->setDateTime(epoch);
+    txn->setLog(QByteArray(log.c_str(), log.length()));
+    txn->commit();
+    delete txn;
+    }
+  return EXIT_SUCCESS;
+  }
 
 int SvnRevision::exportEntry(const char *key, const svn_fs_path_change_t *change,
                              apr_hash_t *changes)
@@ -385,7 +404,7 @@ int SvnRevision::exportEntry(const char *key, const svn_fs_path_change_t *change
     //MultiRule: loop start
     //Replace all returns with continue,
     bool isHandled = false;
-    foreach ( const MatchRuleList matchRules, allMatchRules ) {
+    foreach ( const MatchRuleList matchRules, svn.allMatchRules ) {
         // find the first rule that matches this pathname
         MatchRuleList::ConstIterator match = findMatchRule(matchRules, revnum, current);
         if (match != matchRules.constEnd()) {
@@ -465,7 +484,7 @@ int SvnRevision::exportInternal(const char *key, const svn_fs_path_change_t *cha
     QString svnprefix, repository, branch, path;
     splitPathName(rule, current, &svnprefix, &repository, &branch, &path);
 
-    Repository *repo = repositories.value(repository, 0);
+    Repository *repo = svn.repositories.value(repository, 0);
     if (!repo) {
         if (change->change_kind != svn_fs_path_change_delete)
             qCritical() << "Rule" << rule
@@ -557,8 +576,13 @@ int SvnRevision::exportInternal(const char *key, const svn_fs_path_change_t *cha
             if (rule.annotate) {
                 // create an annotated tag
                 fetchRevProps();
-                repo->createAnnotatedTag(branch, svnprefix, revnum, authorident,
-                                         epoch, log);
+                repo->createAnnotatedTag(
+                    branch,
+                    svnprefix,
+                    revnum,
+                    QByteArray(author.c_str(), author.length()),
+                    epoch,
+                    QByteArray(log.c_str(), log.length()));
             }
             return EXIT_SUCCESS;
         }

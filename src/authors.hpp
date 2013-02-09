@@ -15,28 +15,18 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef APR_INIT_HPP
-#define APR_INIT_HPP
+#ifndef AUTHORS_HPP
+#define AUTHORS_HPP
 
-#include <apr_general.h>
+#include <boost/unordered_map.hpp>
 
-class AprInit
+class Authors
   {
   public:
-    AprInit()
-      {
-      if (apr_initialize() != APR_SUCCESS)
-        {
-        throw std::runtime_error("You lose at apr_initialize().");
-        }
-      }
-    ~AprInit()
-      {
-      apr_terminate();
-      }
+    explicit Authors(std::string const& filename);
+    std::string const& operator[](std::string const& svnuser) const;
   private:
-    AprInit(AprInit const&);
-    void operator=(AprInit const&);
+    boost::unordered_map<std::string, std::string> map;
   };
 
-#endif /* APR_POOL_HPP */
+#endif /* AUTHORS_HPP */

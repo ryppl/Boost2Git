@@ -21,6 +21,7 @@
  * URL: git://repo.or.cz/fast-import.git http://repo.or.cz/w/fast-export.git
  */
 
+#define SVN_DEPRECATED
 #include "svn.h"
 #include "apr_pool.hpp"
 #include "svn_revision.hpp"
@@ -30,7 +31,8 @@
 
 #include <QDebug>
 
-Svn::Svn(std::string const& repo_path) : global_pool(NULL)
+Svn::Svn(std::string const& repo_path, Authors const& authors)
+    : global_pool(NULL), authors(authors)
   {
   try
     {
@@ -60,11 +62,6 @@ void Svn::setRepositories(const RepositoryHash &repositories)
   this->repositories = repositories;
   }
 
-void Svn::setIdentityMap(const IdentityHash &identityMap)
-  {
-  this->identities = identityMap;
-  }
-
 int Svn::youngestRevision()
   {
   return youngest_rev;
@@ -72,10 +69,7 @@ int Svn::youngestRevision()
 
 bool Svn::exportRevision(int revnum)
   {
-  SvnRevision rev(revnum, fs, global_pool);
-  rev.allMatchRules = allMatchRules;
-  rev.repositories = repositories;
-  rev.identities = identities;
+  SvnRevision rev(*this, revnum, fs, global_pool);
 
   // open this revision:
   printf("Exporting revision %d ", revnum);

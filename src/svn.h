@@ -27,12 +27,13 @@
 #include "apr_pool.hpp"
 #include "rules.hpp"
 
+class Authors;
 class Repository;
 
 class Svn
   {
   public:
-    Svn(std::string const& repo_path);
+    Svn(std::string const& repo_path, Authors const& authors);
     ~Svn();
 
     void setMatchRules(const QList<QList<Rules::Match> > &matchRules);
@@ -47,9 +48,10 @@ class Svn
     svn_fs_t *fs;
     svn_revnum_t youngest_rev;
 
+  public:
     QList<QList<Rules::Match> > allMatchRules;
     QHash<QString, Repository*> repositories;
-    QHash<QByteArray, QByteArray> identities;
+    Authors const& authors;
   };
 
 #endif
