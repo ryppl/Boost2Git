@@ -18,6 +18,7 @@
 
 #include "repository.h"
 #include "options.hpp"
+#include "log.hpp"
 #include <QTextStream>
 #include <QDebug>
 #include <QDir>
@@ -85,7 +86,11 @@ Repository::Repository(const Ruleset::Repository &rule)
     fastImport.setWorkingDirectory(name);
     if (!options.dry_run) {
         if (!QDir(name).exists()) { // repo doesn't exist yet.
-            qDebug() << "Creating new repository" << name;
+            Log::trace()
+              << "Creating new repository"
+              << qPrintable(name)
+              << std::endl
+              ;
             QDir::current().mkpath(name);
             QProcess init;
             init.setWorkingDirectory(name);
@@ -239,7 +244,12 @@ int Repository::setupIncremental(int &cutoff)
     logfile.copy(bkup);
 
     // truncate, so that we ignore the rest of the revisions
-    qDebug() << name << "truncating history to revision" << cutoff;
+    Log::debug()
+      << qPrintable(name)
+      << " truncating history to revision "
+      << cutoff
+      << std::endl
+      ;
     logfile.resize(pos);
     return cutoff;
 }
@@ -356,7 +366,18 @@ int Repository::createBranch(const QString &branch, int revnum,
         branchFromDesc += ", deleted/unknown";
     }
 
-    qDebug() << "Creating branch:" << branch << "from" << branchFrom << "(" << branchRevNum << branchFromDesc << ")";
+    Log::debug()
+      << "Creating branch: "
+      << qPrintable(branch)
+      << " from "
+      << qPrintable(branchFrom)
+      << " ("
+      << qPrintable(branchRevNum)
+      << ' '
+      << qPrintable(branchFromDesc)
+      << ')'
+      << std::endl
+      ;
 
     // Preserve note
     branches[branch].note = branches.value(branchFrom).note;
@@ -436,7 +457,7 @@ Repository::Transaction *Repository::newTransaction(const QString &branch, const
         startFastImport();
         // write everything to disk every 10000 commits
         fastImport.write("checkpoint\n");
-        qDebug() << "checkpoint!, marks file trunkated";
+        Log::debug() << "checkpoint!, marks file trunkated" << std::endl;
     }
     outstandingTransactions++;
     return txn;
@@ -448,36 +469,57 @@ void Repository::forgetTransaction(Transaction *)
         next_file_mark = maxMark;
 }
 
-void Repository::createAnnotatedTag(const QString &ref, const QString &svnprefix,
-                                    int revnum,
-                                    const QByteArray &author, uint dt,
-                                    const QByteArray &log)
-{
-    QString tagName = ref;
-    if (tagName.startsWith("refs/tags/"))
-        tagName.remove(0, 10);
-
-    if (!annotatedTags.contains(tagName))
-        printf("Creating annotated tag %s (%s)\n", qPrintable(tagName), qPrintable(ref));
-    else
-        printf("Re-creating annotated tag %s\n", qPrintable(tagName));
-
-    AnnotatedTag &tag = annotatedTags[tagName];
-    tag.supportingRef = ref;
-    tag.svnprefix = svnprefix.toUtf8();
-    tag.revnum = revnum;
-    tag.author = author;
-    tag.log = log;
-    tag.dt = dt;
-}
+void Repository::createAnnotatedTag(
+    const QString &ref,
+    const QString &svnprefix,
+    int revnum,
+    const QByteArray &author,
+    uint dt,
+    const QByteArray &log)
+  {
+  QString tagName = ref;
+  if (tagName.startsWith("refs/tags/"))
+    {
+    tagName.remove(0, 10);
+    }
+  if (!annotatedTags.contains(tagName))
+    {
+    Log::debug()
+      << "Creating annotated tag "
+      << qPrintable(tagName)
+      << " (" << qPrintable(ref) << ')'
+      << std::endl
+      ;
+    }
+  else
+    {
+    Log::debug()
+      << "Re-creating annotated tag "
+      << qPrintable(tagName)
+      << std::endl
+      ;
+    }
+  AnnotatedTag &tag = annotatedTags[tagName];
+  tag.supportingRef = ref;
+  tag.svnprefix = svnprefix.toUtf8();
+  tag.revnum = revnum;
+  tag.author = author;
+  tag.log = log;
+  tag.dt = dt;
+  }
 
 void Repository::finalizeTags()
-{
-    if (annotatedTags.isEmpty())
-        return;
-
-    printf("Finalising tags for %s...", qPrintable(name));
-    startFastImport();
+  {
+  if (annotatedTags.isEmpty())
+    {
+    return;
+    }
+  std::ostream& output = Log::debug()
+    << "Finalising tags for "
+    << qPrintable(name)
+    << "..."
+    ;
+  startFastImport();
 
     QHash<QString, AnnotatedTag>::ConstIterator it = annotatedTags.constBegin();
     for ( ; it != annotatedTags.constEnd(); ++it) {
@@ -521,14 +563,13 @@ void Repository::finalizeTags()
                 qFatal("Failed to write to process: %s", qPrintable(fastImport.errorString()));
         }
 
-        printf(" %s", qPrintable(tagName));
-        fflush(stdout);
+        output << ' ' << qPrintable(tagName) << std::flush;
     }
 
     while (fastImport.bytesToWrite())
         if (!fastImport.waitForBytesWritten(-1))
             qFatal("Failed to write to process: %s", qPrintable(fastImport.errorString()));
-    printf("\n");
+    output << std::endl;
 }
 
 void Repository::startFastImport()
@@ -627,9 +668,16 @@ void Repository::Transaction::noteCopyFromBranch(const QString &branchFrom, int 
 
         if (!merges.contains(mark)) {
             merges.append(mark);
-            qDebug() << "adding" << branchFrom + "@" + QByteArray::number(branchRevNum) << ":" << mark << "as a merge point";
+            Log::debug()
+              << "adding "
+              << qPrintable(branchFrom + "@" + QByteArray::number(branchRevNum))
+              << " : "
+              << mark
+              << " as a merge point"
+              << std::endl
+              ;
         } else {
-            qDebug() << "merge point already recorded";
+            Log::debug() << "merge point already recorded" << std::endl;
         }
     }
 }
@@ -728,8 +776,15 @@ void Repository::Transaction::commit()
     if (br.created && !br.marks.isEmpty() && br.marks.last()) {
         parentmark = br.marks.last();
     } else {
-        qWarning() << "WARN: Branch" << branch << "in repository" << repository->name << "doesn't exist at revision"
-                   << revnum << "-- did you resume from the wrong revision?";
+        Log::warn()
+          << "Branch "
+          << qPrintable(branch)
+          << " in repository "
+          << qPrintable(repository->name)
+          << " doesn't exist at revision "
+          << revnum << " -- did you resume from the wrong revision?"
+          << std::endl
+          ;
         br.created = revnum;
     }
     br.commits.append(revnum);
@@ -760,7 +815,12 @@ void Repository::Transaction::commit()
     } else {
         foreach (const int merge, merges) {
             if (merge == parentmark) {
-                qDebug() << "Skipping marking" << merge << "as a merge point as it matches the parent";
+                Log::debug()
+                  << "Skipping marking "
+                  << merge
+                  << " as a merge point as it matches the parent"
+                  << std::endl
+                  ;
                 continue;
             }
 
@@ -771,7 +831,7 @@ void Repository::Transaction::commit()
                 //   (3) create another commit on branch to soak up additional parents
                 // we've chosen option (2) for now, since only artificial commits
                 // created by cvs2svn seem to have this issue
-                qWarning() << "WARN: too many merge parents";
+                Log::warn() << "too many merge parents" << std::endl;
                 break;
             }
 
@@ -794,9 +854,16 @@ void Repository::Transaction::commit()
                                  + " branch " + branch + " = :" + QByteArray::number(mark)
                                  + (desc.isEmpty() ? "" : " # merge from") + desc
                                  + "\n\n");
-    printf("-- %d modifications from SVN %s to %s/%s\n",
-           deletedFiles.count() + modifiedFiles.count('\n'), svnprefix.data(),
-           qPrintable(repository->name), branch.data());
+    Log::trace()
+      << deletedFiles.count() + modifiedFiles.count('\n')
+      << " modifications from SVN "
+      << svnprefix.data()
+      << " to "
+      << qPrintable(repository->name)
+      << '/'
+      << branch.data()
+      << std::endl
+      ;
 
     // Commit metadata note if requested
     if (options.add_metadata_notes)

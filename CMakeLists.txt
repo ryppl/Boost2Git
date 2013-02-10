@@ -30,6 +30,8 @@ add_executable(svn2git
   src/apr_pool.hpp
   src/authors.cpp
   src/authors.hpp
+  src/log.cpp
+  src/log.hpp
   src/logging_process.hpp
   src/repository.cpp
   src/repository.h

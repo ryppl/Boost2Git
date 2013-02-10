@@ -48,7 +48,7 @@ std::string const& Authors::operator[](std::string const& svnuser) const
   {
   if (svnuser.empty())
     {
-    return std::string();
+    return svnuser;
     }
   typedef boost::unordered_map<std::string, std::string> map_t;
   map_t::const_iterator it = map.find(svnuser);

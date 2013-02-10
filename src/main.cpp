@@ -32,6 +32,7 @@
 #include "ruleset.hpp"
 #include "repository.h"
 #include "svn.h"
+#include "log.hpp"
 
 Options options;
 
@@ -93,6 +94,8 @@ int main(int argc, char **argv)
   AprInit apr_init;
   QCoreApplication app(argc, argv);
 
+  try {
+
   Authors authors(authors_file);
 
 
@@ -141,7 +144,7 @@ retry:
 
   if (cutoff < resume_from)
     {
-    qCritical()
+    std::cerr
       << "Cannot resume from"
       << resume_from
       << "as there are errors in revision"
@@ -152,7 +155,7 @@ retry:
 
   if (min_rev < resume_from)
     {
-    qDebug()
+    std::cout
       << "skipping revisions"
       << min_rev
       << "to"
@@ -175,6 +178,7 @@ retry:
   bool errors = false;
   for (int i = min_rev; i <= max_rev; ++i)
     {
+    Log::set_revision(i);
     if (!svn.exportRevision(i))
       {
       errors = true;
@@ -187,4 +191,11 @@ retry:
     delete repo;
     }
   return errors ? EXIT_FAILURE : EXIT_SUCCESS;
+    }
+  catch (std::exception const& error)
+    {
+    std::cerr << "\n\n" << error.what() << "\n\n";
+    return -1;
+    }
+  return 0;
   }

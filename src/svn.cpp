@@ -67,8 +67,6 @@ int Svn::youngestRevision()
 
 bool Svn::exportRevision(int revnum)
   {
-  std::cout << "Exporting revision " << revnum << std::endl;
-
   SvnRevision rev(*this, revnum, fs, global_pool);
 
   rev.open();
