@@ -1,0 +1,105 @@
+/*
+ * Copyright (C) 2013 Daniel Pfeifer <daniel@pfeifer-mail.de>
+ *
+ * Distributed under the Boost Software License, Version 1.0.
+ * See accompanying file LICENSE_1_0.txt or copy at
+ *   http://www.boost.org/LICENSE_1_0.txt
+ */
+
+abstract repository common_branches
+{
+  branches
+  {
+    [38328:     ] "/trunk/"       : "master";
+    [38327:38327] "/devel/"       : "master";
+    [     :38326] "/trunk/boost/" : "master";
+
+    // remember: this is the release _preparation_ branch, not git-flow master!
+    [40341:     ] "/branches/release/" : "release";
+
+    [ 7620:     ] "/branches/unlabeled-1.1.1/boost/" : "unlabeled-1.1.1";
+  }
+}
+
+repository accumulators : common_branches
+{
+  content
+  {
+    "boost/accumulators/" : "include/boost/accumulators/";
+    "libs/accumulators/";
+  }
+}
+
+repository algorithm : common_branches
+{
+  content
+  {
+    "boost/algorithm/" : "include/boost/algorithm/";
+    "libs/algorithm/";
+  }
+}
+
+repository any : common_branches
+{
+  content
+  {
+    "boost/any.hpp" : "include/boost/any.hpp";
+    "libs/any/";
+  }
+}
+
+repository atomic : common_branches
+{
+  content
+  {
+    "boost/atomic.hpp" : "include/boost/atomic.hpp";
+    "boost/atomic/" : "include/boost/atomic/";
+    "libs/atomic/";
+  }
+}
+
+repository array : common_branches
+{
+  content
+  {
+    "boost/array.hpp" : "include/boost/array.hpp";
+    "libs/array/";
+  }
+}
+
+
+repository sandbox
+{
+  content
+  {
+    "sandbox/"          : "trunk/";
+    "sandbox-branches/" : "branches";
+    "sandbox-tags/"     : "tags";
+  }
+  branches
+  {
+    [:] "/" : "master";
+  }
+}
+
+// TODO: call the master branch "gh-pages"? Then Github may run the Boost website!
+repository website
+{
+  branches
+  {
+    [:]    "/website/workplace/"        : "workplace";
+    [138:] "/website/public_html/live/" : "master";
+    [138:] "/website/public_html/beta/" : "develop";
+    [:137] "/website/"                  : "develop";
+  }
+}
+
+repository trash
+{
+  branches
+  {
+    [137:139] "/website/"               : "website";
+    [7618:]   "/trunk/CVSROOT/"         : "CVSROOT";
+  }
+}
+
