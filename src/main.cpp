@@ -51,6 +51,9 @@ int main(int argc, char **argv)
     program_options.add_options()
       ("help,h", "produce help message")
       ("version,v", "print version string")
+      ("quiet,q", "be quiet")
+      ("verbose,V", "be verbose")
+      ("extra-verbose,VV", "be even more verbose")
       ("authors", po::value(&authors_file)->value_name("FILENAME"), "map between svn username and email")
       ("svnrepo", po::value(&svn_path)->value_name("PATH")->required(), "path to svn repository")
       ("recurse", po::value(&recurse_file)->value_name("FILENAME"), "file with recurse expressions")
@@ -59,7 +62,6 @@ int main(int argc, char **argv)
       ("add-metadata-notes", "if passed, each git commit will have notes with svn commit info")
       ("resume-from", po::value(&resume_from)->value_name("REVISION"), "start importing at svn revision number")
       ("max-rev", po::value(&max_rev)->value_name("REVISION"), "stop importing at svn revision number")
-      ("dry-run", "don't actually write anything")
       ("debug-rules", "print what rule is being used for each file")
       ("commit-interval", po::value(&options.commit_interval)->value_name("NUMBER")->default_value(10000), "if passed the cache will be flushed to git every NUMBER of commits")
       ("svn-branches", "Use the contents of SVN when creating branches, Note: SVN tags are branches as well")
@@ -77,6 +79,18 @@ int main(int argc, char **argv)
       {
       std::cout << "Svn2Git 0.1" << std::endl;
       return 0;
+      }
+    if (variables.count("quiet"))
+      {
+      Log::set_level(Log::Warning);
+      }
+    if (variables.count("verbose"))
+      {
+      Log::set_level(Log::Debug);
+      }
+    if (variables.count("extra-verbose"))
+      {
+      Log::set_level(Log::Trace);
       }
     options.add_metadata = variables.count("add-metadata");
     options.add_metadata_notes = variables.count("add-metadata-notes");
