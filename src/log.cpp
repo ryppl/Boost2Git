@@ -46,6 +46,12 @@ void set_revision(std::size_t rev)
   revision = rev;
   }
 
+std::ostream& error()
+  {
+  check_revision();
+  return std::cerr << "++ ERROR: ";
+  }
+
 std::ostream& trace()
   {
   if (level < Log::Trace)

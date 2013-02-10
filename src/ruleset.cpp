@@ -49,9 +49,9 @@ struct BranchRule
 
 struct RepoRule
   {
-  // TODO: implement that abstract rules can be inherited!
-  //bool abstract;
+  bool abstract;
   std::string name;
+  std::string parent;
   std::size_t minrev;
   Dictionary content;
   std::vector<BranchRule> branches;
@@ -66,8 +66,9 @@ BOOST_FUSION_ADAPT_STRUCT(BranchRule,
   )
 
 BOOST_FUSION_ADAPT_STRUCT(RepoRule,
-  //(bool, abstract)
+  (bool, abstract)
   (std::string, name)
+  (std::string, parent)
   (std::size_t, minrev)
   (Dictionary, content)
   (std::vector<BranchRule>, branches)
@@ -83,9 +84,9 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
   RepositoryGrammar() : RepositoryGrammar::base_type(repository_)
     {
     repository_
-     %= "repository" // (qi::matches["abstract"] >> "repository")
+     %= (qi::matches["abstract"] >> "repository")
       > string_
-//    > -(':' > string_)
+      > -(':' > string_) // TODO: make sure abstract parent exists and copy branches!
       > '{'
       > (("start_from" > qi::uint_ > ';') | qi::attr(0))
       > -content_
@@ -127,13 +128,38 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
       | qi::lexeme['"' >> +(qi::char_ - '"') >> '"']
       ;
     }
-
   qi::rule<Iterator, RepoRule(), Skipper> repository_;
   qi::rule<Iterator, Dictionary(), Skipper> content_;
   qi::rule<Iterator, std::vector<BranchRule>(), Skipper> branches_, tags_;
   qi::rule<Iterator, BranchRule(), Skipper> branch_;
   qi::rule<Iterator, std::string(), Skipper> string_;
   };
+
+void inherit(RepoRule& repo_rule, std::vector<RepoRule> const& result)
+  {
+  if (repo_rule.parent.empty() || repo_rule.parent == repo_rule.name)
+    {
+    return;
+    }
+  std::string const& name = repo_rule.parent;
+  const auto& parent = std::find_if(result.begin(), result.end(),
+    [&name](RepoRule const& rule) -> bool
+    {
+    return name == rule.name;
+    });
+  if (parent == result.end())
+    {
+    return;
+    }
+  repo_rule.branches.insert(
+      repo_rule.branches.end(),
+      parent->branches.begin(),
+      parent->branches.end());
+  repo_rule.tags.insert(
+      repo_rule.tags.end(),
+      parent->tags.begin(),
+      parent->tags.end());
+  }
 
 Ruleset::Ruleset(std::string const& filename)
   {
@@ -178,8 +204,15 @@ Ruleset::Ruleset(std::string const& filename)
         ;
     throw std::runtime_error(msg.str());
     }
-  BOOST_FOREACH(RepoRule const& repo_rule, result)
+  BOOST_FOREACH(RepoRule& repo_rule, result)
     {
+    inherit(repo_rule, result);
+    if (repo_rule.abstract)
+      {
+      std::cout << "skip abstract: " << repo_rule.name << std::endl;
+      continue;
+      }
+
     Repository repo;
     repo.name = repo_rule.name;
 

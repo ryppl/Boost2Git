@@ -208,7 +208,7 @@ retry:
     }
   catch (std::exception const& error)
     {
-    std::cerr << "\n\n" << error.what() << "\n\n";
+    Log::error() << error.what() << "\n\n";
     return -1;
     }
   return 0;

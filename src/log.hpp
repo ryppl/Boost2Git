@@ -34,6 +34,7 @@ enum Level
 void set_level(Level value);
 void set_revision(std::size_t value);
 
+std::ostream& error();
 std::ostream& trace();
 std::ostream& debug();
 std::ostream& info();
