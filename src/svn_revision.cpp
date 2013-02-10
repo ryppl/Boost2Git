@@ -35,8 +35,6 @@
 namespace
 {
 
-enum RuleType { AnyRule = 0, NoIgnoreRule = 0x01, NoRecurseRule = 0x02 };
-
 MatchRuleList::const_iterator findMatchRule(
     MatchRuleList const& matchRules,
     std::size_t revnum,
@@ -457,7 +455,11 @@ int SvnRevision::exportEntry(
     }
   else if (is_dir && path_from != NULL)
     {
-    qDebug() << current << "is a copy-with-history, auto-recursing";
+    Log::debug()
+      << qPrintable(current)
+      << " is a copy-with-history, auto-recursing"
+      << std::endl
+      ;
     if ( recurse(key, change, path_from, matchRules, rev_from, changes, revpool) == EXIT_FAILURE )
       {
       return EXIT_FAILURE;
@@ -466,7 +468,11 @@ int SvnRevision::exportEntry(
     }
   else if (is_dir && change->change_kind == svn_fs_path_change_delete)
     {
-    qDebug() << current << "deleted, auto-recursing";
+    Log::debug()
+      << qPrintable(current)
+      << " deleted, auto-recursing"
+      << std::endl
+      ;
     if ( recurse(key, change, path_from, matchRules, rev_from, changes, revpool) == EXIT_FAILURE )
       {
       return EXIT_FAILURE;
@@ -479,11 +485,19 @@ int SvnRevision::exportEntry(
     }
   if (wasDir(fs, revnum - 1, key, revpool))
     {
-    qDebug() << current << "was a directory; ignoring";
+    Log::debug()
+      << qPrintable(current)
+      << " was a directory; ignoring"
+      << std::endl
+      ;
     }
   else if (change->change_kind == svn_fs_path_change_delete)
     {
-    qDebug() << current << "is being deleted but I don't know anything about it; ignoring";
+    Log::debug()
+      << qPrintable(current)
+      << " is being deleted but I don't know anything about it; ignoring"
+      << std::endl
+      ;
     }
   else
     {
@@ -570,10 +584,14 @@ int SvnRevision::exportInternal(
 
   if (change->change_kind == svn_fs_path_change_delete && current == svnprefix && path.isEmpty())
     {
-    if (ruledebug)
-      {
-      qDebug() << "repository" << repository << "branch" << branch << "deleted";
-      }
+    Log::trace()
+      << "repository "
+      << qPrintable(repository)
+      << "branch "
+      << qPrintable(branch)
+      << " deleted"
+      << std::endl
+      ;
     return repo->deleteBranch(branch, revnum);
     }
 
@@ -732,43 +750,64 @@ int SvnRevision::exportInternal(
   //
   if (path_from != NULL && prevrepository == repository && prevbranch != branch)
     {
-    if(ruledebug)
-      {
-      qDebug() << "copy from branch" << prevbranch << "to branch" << branch << "@rev" << rev_from;
-      }
+    Log::trace()
+      << "copy from branch "
+      << qPrintable(prevbranch)
+      << " to branch "
+      << qPrintable(branch)
+      << "@rev"
+      << rev_from
+      << std::endl
+      ;
     txn->noteCopyFromBranch (prevbranch, rev_from);
     }
 
   if (change->change_kind == svn_fs_path_change_replace && path_from == NULL)
     {
-    if (ruledebug)
-      {
-      qDebug() << "replaced with empty path (" << branch << path << ")";
-      }
+    Log::trace()
+      << "replaced with empty path ("
+      << qPrintable(branch)
+      << qPrintable(path)
+      << ")"
+      << std::endl
+      ;
     txn->deleteFile(path);
     }
   if (change->change_kind == svn_fs_path_change_delete)
     {
-    if (ruledebug)
-      {
-      qDebug() << "delete (" << branch << path << ")";
-      }
+    Log::trace()
+      << "delete ("
+      << qPrintable(branch)
+      << qPrintable(path)
+      << ")"
+      << std::endl
+      ;
     txn->deleteFile(path);
     }
   else if (!current.endsWith('/'))
     {
-    if (ruledebug)
-      {
-      qDebug() << "add/change file (" << key << "->" << branch << path << ")";
-      }
+    Log::trace()
+      << "add/change file ("
+      << key
+      << "->"
+      << qPrintable(branch)
+      << qPrintable(path)
+      << ")"
+      << std::endl
+      ;
     dumpBlob(txn, fs_root, key, path, pool);
     }
   else
     {
-    if (ruledebug)
-      {
-      qDebug() << "add/change dir (" << key << "->" << branch << path << ")";
-      }
+    Log::trace()
+      << "add/change dir ("
+      << key
+      << "->"
+      << qPrintable(branch)
+      << qPrintable(path)
+      << ")"
+      << std::endl
+      ;
     txn->deleteFile(path);
     recursiveDumpDir(txn, fs_root, key, path, pool);
     }

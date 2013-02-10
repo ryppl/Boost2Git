@@ -39,7 +39,6 @@ class SvnRevision
     SvnRevision(Svn const& svn, int revision, svn_fs_t *f, apr_pool_t *parent_pool) :
         svn(svn), pool(parent_pool), fs(f), fs_root(0), revnum(revision), propsFetched(false)
       {
-      ruledebug = options.debug_rules;
       }
     void open()
       {
@@ -93,7 +92,6 @@ class SvnRevision
     std::string log;
     uint epoch;
 
-    bool ruledebug;
     bool propsFetched;
     bool needCommit;
   };
