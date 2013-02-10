@@ -25,20 +25,21 @@
 #include <svn_repos.h>
 
 #include "apr_pool.hpp"
-#include "rules.hpp"
 
 class Authors;
+class Ruleset;
 class Repository;
 
 class Svn
   {
   public:
-    Svn(std::string const& repo_path, Authors const& authors);
+    Svn(
+        std::string const& repo_path,
+        Authors const& authors,
+        Ruleset const& ruleset);
     ~Svn();
 
-    void setMatchRules(const QList<Rules::Match> &matchRules);
     void setRepositories(const QHash<QString, Repository*> &repositories);
-    void setIdentityMap(const QHash<QByteArray, QByteArray> &identityMap);
 
     int youngestRevision();
     bool exportRevision(int revnum);
@@ -49,9 +50,9 @@ class Svn
     svn_revnum_t youngest_rev;
 
   public:
-    QList<Rules::Match> allMatchRules;
     QHash<QString, Repository*> repositories;
     Authors const& authors;
+    Ruleset const& ruleset;
   };
 
 #endif

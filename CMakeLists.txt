@@ -33,8 +33,8 @@ add_executable(svn2git
   src/logging_process.hpp
   src/repository.cpp
   src/repository.h
-  src/rules.cpp
-  src/rules.hpp
+  src/ruleset.cpp
+  src/ruleset.hpp
   src/svn_revision.cpp
   src/svn_revision.hpp
   src/svn.cpp

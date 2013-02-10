@@ -16,6 +16,7 @@
  */
 
 #include <boost/program_options.hpp>
+#include <boost/foreach.hpp>
 
 #include <QCoreApplication>
 #include <QFile>
@@ -28,7 +29,7 @@
 
 #include "apr_init.hpp"
 #include "authors.hpp"
-#include "rules.hpp"
+#include "ruleset.hpp"
 #include "repository.h"
 #include "svn.h"
 
@@ -96,7 +97,7 @@ int main(int argc, char **argv)
 
 
   // Load the configuration
-  Rules rules(QString::fromStdString(rules_file));
+  Ruleset ruleset(rules_file);
 
   QHash<QString, Repository*> repositories;
 
@@ -104,14 +105,14 @@ int main(int argc, char **argv)
 
 retry:
   int min_rev = 1;
-  foreach (Rules::Repository rule, rules.repositories())
+  BOOST_FOREACH(Ruleset::Repository const& rule, ruleset.repositories())
     {
     Repository *repo = new Repository(rule);
     if (!repo)
       {
       return EXIT_FAILURE;
       }
-    repositories.insert(rule.name, repo);
+    repositories.insert(QString::fromStdString(rule.name), repo);
 
     int repo_next = repo->setupIncremental(cutoff);
     if (cutoff < resume_from && repo_next == cutoff)
@@ -164,8 +165,7 @@ retry:
     min_rev = resume_from;
     }
 
-  Svn svn(svn_path, authors);
-  svn.setMatchRules(rules.matchRules());
+  Svn svn(svn_path, authors, ruleset);
   svn.setRepositories(repositories);
 
   if (max_rev < 1)

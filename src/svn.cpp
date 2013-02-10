@@ -31,8 +31,11 @@
 
 #include <iostream>
 
-Svn::Svn(std::string const& repo_path, Authors const& authors)
-    : global_pool(NULL), authors(authors)
+Svn::Svn(
+    std::string const& repo_path,
+    Authors const& authors,
+    Ruleset const& ruleset)
+    : global_pool(NULL), authors(authors), ruleset(ruleset)
   {
   try
     {
@@ -50,11 +53,6 @@ Svn::Svn(std::string const& repo_path, Authors const& authors)
 Svn::~Svn()
   {
   svn_pool_destroy(global_pool);
-  }
-
-void Svn::setMatchRules(const MatchRuleList &allMatchRules)
-  {
-  this->allMatchRules = allMatchRules;
   }
 
 void Svn::setRepositories(const RepositoryHash &repositories)

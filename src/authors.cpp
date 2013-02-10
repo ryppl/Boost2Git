@@ -46,11 +46,15 @@ Authors::Authors(std::string const& filename)
 
 std::string const& Authors::operator[](std::string const& svnuser) const
   {
+  if (svnuser.empty())
+    {
+    return std::string();
+    }
   typedef boost::unordered_map<std::string, std::string> map_t;
   map_t::const_iterator it = map.find(svnuser);
   if (it == map.end())
     {
-    throw std::runtime_error("no user mapping for " + svnuser);
+    throw std::runtime_error("no user mapping for '" + svnuser + "'");
     }
   return it->second;
   }

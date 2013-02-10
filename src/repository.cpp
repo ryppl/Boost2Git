@@ -23,6 +23,7 @@
 #include <QDir>
 #include <QFile>
 #include <QLinkedList>
+#include <boost/foreach.hpp>
 
 static const int maxSimultaneousProcesses = 100;
 
@@ -61,15 +62,21 @@ static QString marksFileName(QString name)
     return name;
 }
 
-Repository::Repository(const Rules::Repository &rule)
-    : name(rule.name), prefix(rule.forwardTo), fastImport(name), commitCount(0), outstandingTransactions(0),
-      last_commit_mark(0), next_file_mark(maxMark), processHasStarted(false)
-{
-    foreach (Rules::Repository::Branch branchRule, rule.branches) {
-        Branch branch;
-        branch.created = 1;
-
-        branches.insert(branchRule.name, branch);
+Repository::Repository(const Ruleset::Repository &rule)
+    : name(QString::fromStdString(rule.name))
+    , prefix(/*rule.forwardTo*/)
+    , fastImport(name)
+    , commitCount(0)
+    , outstandingTransactions(0)
+    , last_commit_mark(0)
+    , next_file_mark(maxMark)
+    , processHasStarted(false)
+  {
+  BOOST_FOREACH(std::string const& branch_name, rule.branches)
+    {
+    Branch branch;
+    branch.created = 1;
+    branches.insert(QString::fromStdString(branch_name), branch);
     }
 
     // create the default branch
@@ -84,15 +91,15 @@ Repository::Repository(const Rules::Repository &rule)
             init.setWorkingDirectory(name);
             init.start("git", QStringList() << "--bare" << "init");
             init.waitForFinished(-1);
-            // Write description
-            if (!rule.description.isEmpty()) {
-                QFile fDesc(QDir(name).filePath("description"));
-                if (fDesc.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
-                    fDesc.write(rule.description.toUtf8());
-                    fDesc.putChar('\n');
-                    fDesc.close();
-                }
-            }
+//            // Write description
+//            if (!rule.description.isEmpty()) {
+//                QFile fDesc(QDir(name).filePath("description"));
+//                if (fDesc.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+//                    fDesc.write(rule.description.toUtf8());
+//                    fDesc.putChar('\n');
+//                    fDesc.close();
+//                }
+//            }
             {
                 QFile marks(name + "/" + marksFileName(name));
                 marks.open(QIODevice::WriteOnly);

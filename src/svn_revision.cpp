@@ -22,6 +22,7 @@
 #include "svn.h"
 
 #include <QDebug>
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/date_time/posix_time/time_parsers.hpp>
 #include <boost/date_time/posix_time/posix_time_io.hpp>
 
@@ -35,32 +36,24 @@ namespace
 
 enum RuleType { AnyRule = 0, NoIgnoreRule = 0x01, NoRecurseRule = 0x02 };
 
-MatchRuleList::ConstIterator findMatchRule(
-    const MatchRuleList &matchRules,
-    int revnum,
-    const QString &current,
-    int ruleMask = AnyRule)
+MatchRuleList::const_iterator findMatchRule(
+    MatchRuleList const& matchRules,
+    std::size_t revnum,
+    std::string const& current)
   {
-  MatchRuleList::ConstIterator it = matchRules.constBegin(), end = matchRules.constEnd();
+  MatchRuleList::const_iterator it = matchRules.begin();
+  MatchRuleList::const_iterator end = matchRules.end();
   for (; it != end; ++it)
     {
-    if (it->minRevision > revnum)
+    if (it->min > revnum)
       {
       continue;
       }
-    if (it->maxRevision != -1 && it->maxRevision < revnum)
+    if (it->max < revnum)
       {
       continue;
       }
-    if (it->action == Rules::Match::Ignore && ruleMask & NoIgnoreRule)
-      {
-      continue;
-      }
-    if (it->action == Rules::Match::Recurse && ruleMask & NoRecurseRule)
-      {
-      continue;
-      }
-    if (it->rx.indexIn(current) == 0)
+    if (boost::starts_with(current, it->match))
       {
       return it;
       }
@@ -69,42 +62,30 @@ MatchRuleList::ConstIterator findMatchRule(
   }
 
 void splitPathName(
-    const Rules::Match &rule,
+    const Ruleset::Match &rule,
     const QString &pathName,
     QString *svnprefix_p,
     QString *repository_p,
     QString *branch_p,
     QString *path_p)
   {
-  QString svnprefix = pathName;
-  svnprefix.truncate(rule.rx.matchedLength());
   if (svnprefix_p)
     {
-    *svnprefix_p = svnprefix;
+    *svnprefix_p = QString::fromStdString(rule.match);
     }
   if (repository_p)
     {
-    *repository_p = svnprefix;
-    repository_p->replace(rule.rx, rule.repository);
-    foreach(Rules::Match::Substitution subst, rule.repo_substs)
-      {
-      subst.apply(*repository_p);
-      }
+    *repository_p = QString::fromStdString(rule.repository);
     }
   if (branch_p)
     {
-    *branch_p = svnprefix;
-    branch_p->replace(rule.rx, rule.branch);
-    foreach(Rules::Match::Substitution subst, rule.branch_substs)
-      {
-      subst.apply(*branch_p);
-      }
+    *branch_p = QString::fromStdString(rule.branch);
     }
   if (path_p)
     {
-    QString prefix = svnprefix;
-    prefix.replace(rule.rx, rule.prefix);
-    *path_p = prefix + pathName.mid(svnprefix.length());
+    std::string current = pathName.toStdString();
+    std::string path = rule.prefix + current.substr(rule.match.length());
+    *path_p = QString::fromStdString(path);
     }
   }
 
@@ -443,12 +424,12 @@ int SvnRevision::exportEntry(
   //MultiRule: loop start
   //Replace all returns with continue,
   bool isHandled = false;
-  const MatchRuleList matchRules = svn.allMatchRules;
+  MatchRuleList const& matchRules = svn.ruleset.matches();
   // find the first rule that matches this pathname
-  MatchRuleList::ConstIterator match = findMatchRule(matchRules, revnum, current);
-  if (match != matchRules.constEnd())
+  MatchRuleList::const_iterator match = findMatchRule(matchRules, revnum, current.toStdString());
+  if (match != matchRules.end())
     {
-    const Rules::Match &rule = *match;
+    const Ruleset::Match &rule = *match;
     if ( exportDispatch(key, change, path_from, rev_from, changes, current, rule, matchRules, revpool) == EXIT_FAILURE )
       {
       return EXIT_FAILURE;
@@ -499,26 +480,26 @@ int SvnRevision::exportDispatch(
     svn_revnum_t rev_from,
     apr_hash_t *changes,
     const QString &current,
-    const Rules::Match &rule,
+    const Ruleset::Match &rule,
     const MatchRuleList &matchRules,
     apr_pool_t *pool)
   {
-  switch (rule.action)
-    {
-    case Rules::Match::Ignore:
-      return EXIT_SUCCESS;
-
-    case Rules::Match::Recurse:
-      if (ruledebug)
-        {
-        qDebug() << "rev" << revnum << qPrintable(current) << "matched rule:" << rule.info() << "  " << "recursing.";
-        }
-      return recurse(key, change, path_from, matchRules, rev_from, changes, pool);
-
-    case Rules::Match::Export:
+//  switch (rule.action)
+//    {
+//    case Rules::Match::Ignore:
+//      return EXIT_SUCCESS;
+//
+//    case Rules::Match::Recurse:
+//      if (ruledebug)
+//        {
+//        qDebug() << "rev" << revnum << qPrintable(current) << "matched rule:" << rule.info() << "  " << "recursing.";
+//        }
+//      return recurse(key, change, path_from, matchRules, rev_from, changes, pool);
+//
+//    case Rules::Match::Export:
       if(ruledebug)
         {
-        qDebug() << "rev" << revnum << qPrintable(current) << "matched rule:" << rule.info() << "  " << "exporting.";
+        std::cout << "rev" << revnum << qPrintable(current) << "matched rule:" << rule.match << "  " << "exporting.";
         }
       if (exportInternal(key, change, path_from, rev_from, current, rule, matchRules) == EXIT_SUCCESS)
         {
@@ -528,7 +509,7 @@ int SvnRevision::exportDispatch(
         {
         if(ruledebug)
           {
-          qDebug() << "rev" << revnum << qPrintable(current) << "matched rule:" << rule.info() << "  " << "Unable to export non path removal.";
+          std::cout << "rev" << revnum << qPrintable(current) << "matched rule:" << rule.match << "  " << "Unable to export non path removal.";
           }
         return EXIT_FAILURE;
         }
@@ -536,8 +517,8 @@ int SvnRevision::exportDispatch(
       // either of which is reasonably safe for deletion
       qWarning() << "WARN: deleting unknown path" << current << "; auto-recursing";
       return recurse(key, change, path_from, matchRules, rev_from, changes, pool);
-    }
-  return EXIT_FAILURE;
+//    }
+//  return EXIT_FAILURE;
   }
 
 int SvnRevision::exportInternal(
@@ -546,7 +527,7 @@ int SvnRevision::exportInternal(
     const char *path_from,
     svn_revnum_t rev_from,
     const QString &current,
-    const Rules::Match &rule,
+    const Ruleset::Match &rule,
     const MatchRuleList &matchRules)
   {
   needCommit = true;
@@ -558,7 +539,7 @@ int SvnRevision::exportInternal(
     {
     if (change->change_kind != svn_fs_path_change_delete)
       {
-      throw std::runtime_error("Rule " + rule.info().toStdString() + " references unknown repository " + repository.toStdString());
+      throw std::runtime_error("Rule " + rule.match + " references unknown repository " + repository.toStdString());
       }
     return EXIT_FAILURE;
     }
@@ -582,8 +563,8 @@ int SvnRevision::exportInternal(
       {
       previous += '/';
       }
-    MatchRuleList::ConstIterator prevmatch = findMatchRule(matchRules, rev_from, previous, NoIgnoreRule);
-    if (prevmatch != matchRules.constEnd())
+    MatchRuleList::const_iterator prevmatch = findMatchRule(matchRules, rev_from, previous.toStdString());
+    if (prevmatch != matchRules.end())
       {
       splitPathName(*prevmatch, previous, &prevsvnprefix, &prevrepository, &prevbranch, &prevpath);
       }
@@ -674,18 +655,18 @@ int SvnRevision::exportInternal(
         txn->deleteFile(path);
         recursiveDumpDir(txn, fs_root, key, path, pool);
         }
-      if (rule.annotate)
-        {
-        // create an annotated tag
-        fetchRevProps();
-        repo->createAnnotatedTag(
-            branch,
-            svnprefix,
-            revnum,
-            QByteArray(author.c_str(), author.length()),
-            epoch,
-            QByteArray(log.c_str(), log.length()));
-        }
+//      if (rule.annotate)
+//        {
+//        // create an annotated tag
+//        fetchRevProps();
+//        repo->createAnnotatedTag(
+//            branch,
+//            svnprefix,
+//            revnum,
+//            QByteArray(author.c_str(), author.length()),
+//            epoch,
+//            QByteArray(log.c_str(), log.length()));
+//        }
       return EXIT_SUCCESS;
       }
     }
@@ -828,8 +809,8 @@ int SvnRevision::recurse(
       }
 
     // find the first rule that matches this pathname
-    MatchRuleList::ConstIterator match = findMatchRule(matchRules, revnum, current);
-    if (match != matchRules.constEnd())
+    MatchRuleList::const_iterator match = findMatchRule(matchRules, revnum, current.toStdString());
+    if (match != matchRules.end())
       {
       if (exportDispatch(entry, change, entryFrom.isNull() ? 0 : entryFrom.constData(), rev_from, changes, current, *match, matchRules, dirpool) == EXIT_FAILURE)
         {

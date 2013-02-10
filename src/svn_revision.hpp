@@ -28,7 +28,7 @@
 #include "repository.h"
 #include "svn_error.hpp"
 
-typedef QList<Rules::Match> MatchRuleList;
+typedef std::vector<Ruleset::Match> MatchRuleList;
 typedef QHash<QString, Repository*> RepositoryHash;
 
 class Svn;
@@ -60,7 +60,7 @@ class SvnRevision
         svn_revnum_t rev_from,
         apr_hash_t *changes,
         const QString &current,
-        const Rules::Match &rule,
+        const Ruleset::Match &rule,
         const MatchRuleList &matchRules,
         apr_pool_t *pool);
     int exportInternal(
@@ -69,7 +69,7 @@ class SvnRevision
         const char *path_from,
         svn_revnum_t rev_from,
         const QString &current,
-        const Rules::Match &rule,
+        const Ruleset::Match &rule,
         const MatchRuleList &matchRules);
     int recurse(
         const char *path,

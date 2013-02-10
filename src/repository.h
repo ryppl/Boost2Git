@@ -24,7 +24,7 @@
 #include <QFile>
 
 #include "logging_process.hpp"
-#include "rules.hpp"
+#include "ruleset.hpp"
 
 class Repository
 {
@@ -64,7 +64,7 @@ public:
         void commitNote(const QByteArray &noteText, bool append,
                         const QByteArray &commit = QByteArray());
     };
-    Repository(const Rules::Repository &rule);
+    Repository(const Ruleset::Repository &rule);
     int setupIncremental(int &cutoff);
     void restoreLog();
     ~Repository();
