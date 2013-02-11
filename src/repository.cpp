@@ -751,7 +751,7 @@ void Repository::Transaction::noteCopyFromBranch(
     }
   else
     {
-    Log::warn()
+    Log::debug()
       << "repository "
       << qPrintable(repository->name)
       << " branch "

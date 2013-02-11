@@ -45,12 +45,16 @@ static void check_revision()
 
 void set_revision(std::size_t rev)
   {
+  if ((revision % 1000) == 0)
+    {
+    check_revision();
+    }
   revision = rev;
   }
 
 std::ostream& error()
   {
-  if (++num_errors > 1000)
+  if (++num_errors > 100)
     {
     throw std::runtime_error("Too many errors, skipping.");
     }
