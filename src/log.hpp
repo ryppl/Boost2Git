@@ -40,6 +40,8 @@ std::ostream& debug();
 std::ostream& info();
 std::ostream& warn();
 
+int result();
+
 } // namespace Log
 
 #endif /* LOG_HPP */

@@ -209,7 +209,6 @@ Ruleset::Ruleset(std::string const& filename)
     inherit(repo_rule, result);
     if (repo_rule.abstract)
       {
-      std::cout << "skip abstract: " << repo_rule.name << std::endl;
       continue;
       }
 

@@ -501,10 +501,10 @@ int SvnRevision::exportEntry(
     }
   else
     {
-    std::stringstream msg;
-    msg << "File/folder not accounted for: '" << qPrintable(current) << "'\n";
-    msg << "Refusing to continue.";
-    throw std::runtime_error(msg.str());
+    Log::error()
+      << "File/folder not accounted for: '" << qPrintable(current) << "'"
+      << std::endl
+      ;
     }
   return EXIT_SUCCESS;
   }

@@ -211,5 +211,5 @@ retry:
     Log::error() << error.what() << "\n\n";
     return -1;
     }
-  return 0;
+  return Log::result();
   }

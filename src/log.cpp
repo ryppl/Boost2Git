@@ -16,6 +16,7 @@
  */
 
 #include "log.hpp"
+#include <stdexcept>
 
 namespace Log
 {
@@ -25,6 +26,7 @@ static Level level = Log::Info;
 static std::size_t revision;
 static std::size_t revision_reported;
 static std::ostream dummy(0);
+static std::size_t num_errors = 0;
 
 void set_level(Level value)
   {
@@ -48,6 +50,10 @@ void set_revision(std::size_t rev)
 
 std::ostream& error()
   {
+  if (++num_errors > 1000)
+    {
+    throw std::runtime_error("Too many errors, skipping.");
+    }
   check_revision();
   return std::cerr << "++ ERROR: ";
   }
@@ -86,6 +92,16 @@ std::ostream& warn()
   {
   check_revision();
   return std::cout << "++ WARNING: ";
+  }
+
+int result()
+  {
+  if (num_errors == 0)
+    {
+    return EXIT_SUCCESS;
+    }
+  std::cerr << "\n" << num_errors << " Errors occured!" << std::endl;
+  return EXIT_FAILURE;
   }
 
 } // namespace Log
