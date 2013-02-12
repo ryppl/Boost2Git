@@ -38,6 +38,7 @@ Options options;
 
 int main(int argc, char **argv)
   {
+  bool exit_success = false;
   std::string authors_file;
   std::string recurse_file;
   std::string rules_file;
@@ -54,6 +55,7 @@ int main(int argc, char **argv)
       ("quiet,q", "be quiet")
       ("verbose,V", "be verbose")
       ("extra-verbose,VV", "be even more verbose")
+      ("exit-success", "exit with 0, even if errors occured")
       ("authors", po::value(&authors_file)->value_name("FILENAME"), "map between svn username and email")
       ("svnrepo", po::value(&svn_path)->value_name("PATH")->required(), "path to svn repository")
       ("recurse", po::value(&recurse_file)->value_name("FILENAME"), "file with recurse expressions")
@@ -91,6 +93,10 @@ int main(int argc, char **argv)
     if (variables.count("extra-verbose"))
       {
       Log::set_level(Log::Trace);
+      }
+    if (variables.count("exit-success"))
+      {
+      exit_success = true;
       }
     options.add_metadata = variables.count("add-metadata");
     options.add_metadata_notes = variables.count("add-metadata-notes");
@@ -211,5 +217,6 @@ retry:
     Log::error() << error.what() << "\n\n";
     return -1;
     }
-  return Log::result();
+  int result = Log::result();
+  return exit_success ? EXIT_SUCCESS : result;
   }
