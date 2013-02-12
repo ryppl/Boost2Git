@@ -54,10 +54,11 @@ void set_revision(std::size_t rev)
 
 std::ostream& error()
   {
-  if (++num_errors > 100)
-    {
-    throw std::runtime_error("Too many errors, skipping.");
-    }
+  ++num_errors;
+  //if (num_errors > 100)
+  //  {
+  //  throw std::runtime_error("Too many errors, skipping.");
+  //  }
   check_revision();
   return std::cerr << "++ ERROR: ";
   }
