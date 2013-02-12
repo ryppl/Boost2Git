@@ -1944,7 +1944,11 @@ repository website
   }
 }
 
-repository "svn2git-fallback" : common_branches
+repository "svn2git-fallback"
 {
+  branches
+  {
+    [:] "/" : "master";
+  }
 }
 
