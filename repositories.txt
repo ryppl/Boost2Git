@@ -1742,7 +1742,7 @@ repository tti : common_branches
 {
   content
   {
-    "[libs/tti]";
+    "/libs/tti/";
   }
 }
 
