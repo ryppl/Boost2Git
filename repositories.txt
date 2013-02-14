@@ -1742,6 +1742,7 @@ repository tti : common_branches
 {
   content
   {
+    "boost/tti/" : "include/boost/tti/";
     "libs/tti/";
   }
 }
