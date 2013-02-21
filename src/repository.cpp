@@ -912,7 +912,7 @@ void Repository::Transaction::commit()
     repository->fastImport.write("merge :" + QByteArray::number(merges.last()) + "\n");
     merges.pop_back();
     qWarning() << "WARN: Discarding all but the highest merge point as a workaround for cvs2svn created branch/tag"
-    << "Discarded marks:" << merges;
+               << "Discarded marks:" << merges;
   } else {
     foreach (const int merge, merges) {
       if (merge == parentmark) {

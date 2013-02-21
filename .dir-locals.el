@@ -50,7 +50,7 @@
                        (c-forward-sws)
                        (if (looking-at "\\([-+%*^&/|~]\\|&&\|||\\)=")
                            1 '+))))
-                (stream-op . 0)         ; Guessed value
+                (stream-op . c-lineup-streamop)     ; Guessed value
                 (substatement . ++)     ; Guessed value
                 (substatement-open . +) ; Guessed value
                 (topmost-intro . 0)     ; Guessed value

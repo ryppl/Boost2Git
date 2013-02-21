@@ -194,10 +194,10 @@ Ruleset::Ruleset(std::string const& filename)
     const Position& pos = error.first.get_position();
     std::stringstream msg;
     msg << "parse error at file " << filename
-    << " line " << pos.line
-    << " column " << pos.column << std::endl
-    << "'" << error.first.get_currentline() << "'" << std::endl
-    << std::setw(pos.column) << " " << "^- here"
+        << " line " << pos.line
+        << " column " << pos.column << std::endl
+        << "'" << error.first.get_currentline() << "'" << std::endl
+        << std::setw(pos.column) << " " << "^- here"
       ;
     throw std::runtime_error(msg.str());
     }
