@@ -20,19 +20,19 @@
 
 #include <exception>
 
-struct SvnError: std::exception
+class SvnError: public std::exception
   {
-public:
-  explicit SvnError(svn_error_t* err) : err(err)
-    {
-    }
-private:
-  char const* what() const throw ()
-    {
-    return err->message ? err->message : "No Message";
-    }
-private:
-  svn_error_t* err;
+  public:
+    explicit SvnError(svn_error_t* err) : err(err)
+      {
+      }
+  private:
+    char const* what() const throw ()
+      {
+      return err->message ? err->message : "No Message";
+      }
+  private:
+    svn_error_t* err;
   };
 
 inline void check_svn(svn_error_t* err)
