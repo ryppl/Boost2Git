@@ -116,102 +116,102 @@ int main(int argc, char **argv)
 
   try {
 
-  Authors authors(authors_file);
+    Authors authors(authors_file);
 
 
-  // Load the configuration
-  Ruleset ruleset(rules_file);
+    // Load the configuration
+    Ruleset ruleset(rules_file);
 
-  QHash<QString, Repository*> repositories;
+    QHash<QString, Repository*> repositories;
 
-  int cutoff = resume_from ? resume_from : INT_MAX;
+    int cutoff = resume_from ? resume_from : INT_MAX;
 
 retry:
-  int min_rev = 1;
-  BOOST_FOREACH(Ruleset::Repository const& rule, ruleset.repositories())
-    {
-    Repository *repo = new Repository(rule);
-    if (!repo)
+    int min_rev = 1;
+    BOOST_FOREACH(Ruleset::Repository const& rule, ruleset.repositories())
       {
+      Repository *repo = new Repository(rule);
+      if (!repo)
+        {
+        return EXIT_FAILURE;
+        }
+      repositories.insert(QString::fromStdString(rule.name), repo);
+
+      int repo_next = repo->setupIncremental(cutoff);
+      if (cutoff < resume_from && repo_next == cutoff)
+        {
+        /*
+         * Restore the log file so we fail the next time
+         * svn2git is invoked with the same arguments
+         */
+        repo->restoreLog();
+        }
+
+      if (cutoff < min_rev)
+        { /*
+           * We've rewound before the last revision of some
+           * repository that we've already seen.  Start over
+           * from the beginning.  (since cutoff is decreasing,
+           * we're sure we'll make forward progress eventually)
+           */
+        goto retry;
+        }
+      if (min_rev < repo_next)
+        {
+        min_rev = repo_next;
+        }
+      }
+
+    if (cutoff < resume_from)
+      {
+      std::cerr
+        << "Cannot resume from"
+        << resume_from
+        << "as there are errors in revision"
+        << cutoff
+        ;
       return EXIT_FAILURE;
       }
-    repositories.insert(QString::fromStdString(rule.name), repo);
 
-    int repo_next = repo->setupIncremental(cutoff);
-    if (cutoff < resume_from && repo_next == cutoff)
+    if (min_rev < resume_from)
       {
-      /*
-       * Restore the log file so we fail the next time
-       * svn2git is invoked with the same arguments
-       */
-      repo->restoreLog();
+      std::cout
+        << "skipping revisions"
+        << min_rev
+        << "to"
+        << resume_from - 1
+        << "as requested"
+        ;
       }
-
-    if (cutoff < min_rev)
-      { /*
-       * We've rewound before the last revision of some
-       * repository that we've already seen.  Start over
-       * from the beginning.  (since cutoff is decreasing,
-       * we're sure we'll make forward progress eventually)
-       */
-      goto retry;
-      }
-    if (min_rev < repo_next)
+    if (resume_from)
       {
-      min_rev = repo_next;
+      min_rev = resume_from;
       }
-    }
 
-  if (cutoff < resume_from)
-    {
-    std::cerr
-      << "Cannot resume from"
-      << resume_from
-      << "as there are errors in revision"
-      << cutoff
-      ;
-    return EXIT_FAILURE;
-    }
+    Svn svn(svn_path, authors, ruleset);
+    svn.setRepositories(repositories);
 
-  if (min_rev < resume_from)
-    {
-    std::cout
-      << "skipping revisions"
-      << min_rev
-      << "to"
-      << resume_from - 1
-      << "as requested"
-      ;
-    }
-  if (resume_from)
-    {
-    min_rev = resume_from;
-    }
-
-  Svn svn(svn_path, authors, ruleset);
-  svn.setRepositories(repositories);
-
-  if (max_rev < 1)
-    {
-    max_rev = svn.youngestRevision();
-    }
-  bool errors = false;
-  for (int i = min_rev; i <= max_rev; ++i)
-    {
-    Log::set_revision(i);
-    if (!svn.exportRevision(i))
+    if (max_rev < 1)
       {
-      errors = true;
-      break;
+      max_rev = svn.youngestRevision();
       }
-    }
-  foreach(Repository *repo, repositories)
-    {
-    repo->finalizeTags();
-    delete repo;
-    }
-  return errors ? EXIT_FAILURE : EXIT_SUCCESS;
-    }
+    bool errors = false;
+    for (int i = min_rev; i <= max_rev; ++i)
+      {
+      Log::set_revision(i);
+      if (!svn.exportRevision(i))
+        {
+        errors = true;
+        break;
+        }
+      }
+    foreach(Repository *repo, repositories)
+      {
+      repo->finalizeTags();
+      delete repo;
+      }
+    return errors ? EXIT_FAILURE : EXIT_SUCCESS;
+  }
   catch (std::exception const& error)
     {
     Log::error() << error.what() << "\n\n";

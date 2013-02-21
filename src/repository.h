@@ -27,10 +27,10 @@
 #include "ruleset.hpp"
 
 class Repository
-{
-public:
+  {
+  public:
     class Transaction
-    {
+      {
         Q_DISABLE_COPY(Transaction)
         friend class Repository;
 
@@ -48,7 +48,7 @@ public:
         QByteArray modifiedFiles;
 
         inline Transaction() {}
-    public:
+      public:
         ~Transaction();
         void commit();
 
@@ -62,8 +62,8 @@ public:
         QIODevice *addFile(const QString &path, int mode, qint64 length);
 
         void commitNote(const QByteArray &noteText, bool append,
-                        const QByteArray &commit = QByteArray());
-    };
+          const QByteArray &commit = QByteArray());
+      };
     Repository(const Ruleset::Repository &rule);
     int setupIncremental(int &cutoff);
     void restoreLog();
@@ -71,40 +71,40 @@ public:
 
     void reloadBranches();
     int createBranch(const QString &branch, int revnum,
-                     const QString &branchFrom, int revFrom);
+      const QString &branchFrom, int revFrom);
     int deleteBranch(const QString &branch, int revnum);
     Repository::Transaction *newTransaction(const QString &branch, const QString &svnprefix, int revnum);
 
     void createAnnotatedTag(const QString &name, const QString &svnprefix, int revnum,
-                            const QByteArray &author, uint dt,
-                            const QByteArray &log);
+      const QByteArray &author, uint dt,
+      const QByteArray &log);
     void finalizeTags();
     void commit();
 
     static QByteArray formatMetadataMessage(const QByteArray &svnprefix, int revnum,
-                                            const QByteArray &tag = QByteArray());
+      const QByteArray &tag = QByteArray());
 
     bool branchExists(const QString& branch) const;
     const QByteArray branchNote(const QString& branch) const;
     void setBranchNote(const QString& branch, const QByteArray& noteText);
 
-private:
+  private:
     struct Branch
-    {
-        int created;
-        QVector<int> commits;
-        QVector<int> marks;
-        QByteArray note;
-    };
+      {
+      int created;
+      QVector<int> commits;
+      QVector<int> marks;
+      QByteArray note;
+      };
     struct AnnotatedTag
-    {
-        QString supportingRef;
-        QByteArray svnprefix;
-        QByteArray author;
-        QByteArray log;
-        uint dt;
-        int revnum;
-    };
+      {
+      QString supportingRef;
+      QByteArray svnprefix;
+      QByteArray author;
+      QByteArray log;
+      uint dt;
+      int revnum;
+      };
 
     QHash<QString, Branch> branches;
     QHash<QString, AnnotatedTag> annotatedTags;
@@ -135,6 +135,6 @@ private:
 
     friend class ProcessCache;
     Q_DISABLE_COPY(Repository)
-};
+  };
 
 #endif
