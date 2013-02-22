@@ -77,7 +77,7 @@ Repository::Repository(const Ruleset::Repository &rule)
   {
   BOOST_FOREACH(std::string const& branch_name, rule.branches)
     {
-    branches[QString("refs/heads/") + branch_name.c_str()].created = 1;
+    branches[QString(qualify_ref(branch_name, "heads").c_str())].created = 1;
     }
 
   // create the default branch
