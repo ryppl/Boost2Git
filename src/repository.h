@@ -65,7 +65,7 @@ class Repository
         void commitNote(const QByteArray &noteText, bool append,
           const QByteArray &commit = QByteArray());
       };
-    Repository(const Ruleset::Repository &rule);
+    Repository(const Ruleset::Repository &rule, bool incremental);
     int setupIncremental(int &cutoff);
     void restoreLog();
     ~Repository();
@@ -127,7 +127,8 @@ class Repository
     int next_file_mark;
 
     bool processHasStarted;
-
+    bool incremental;
+    
     void startFastImport();
     void closeFastImport();
 

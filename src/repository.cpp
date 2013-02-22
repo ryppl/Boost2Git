@@ -65,7 +65,7 @@ static QString marksFileName(QString name)
   return name;
   }
 
-Repository::Repository(const Ruleset::Repository &rule)
+Repository::Repository(const Ruleset::Repository &rule, bool incremental)
     : name(QString::fromStdString(rule.name))
     , prefix(/*rule.forwardTo*/)
     , fastImport(name)
@@ -74,6 +74,7 @@ Repository::Repository(const Ruleset::Repository &rule)
     , last_commit_mark(0)
     , next_file_mark(maxMark)
     , processHasStarted(false)
+    , incremental(incremental)
   {
   BOOST_FOREACH(std::string const& branch_name, rule.branches)
     {
@@ -872,15 +873,18 @@ void Repository::Transaction::commit()
   if (br.created && !br.marks.isEmpty() && br.marks.last()) {
     parentmark = br.marks.last();
   } else {
-    Log::warn()
-      << "Branch "
-      << qPrintable(branch)
-      << " in repository "
-      << qPrintable(repository->name)
-      << " doesn't exist at revision "
-      << revnum << " -- did you resume from the wrong revision?"
-      << std::endl
-      ;
+    if (repository->incremental)
+      {
+      Log::warn()
+        << "Branch "
+        << qPrintable(branch)
+        << " in repository "
+        << qPrintable(repository->name)
+        << " doesn't exist at revision "
+        << revnum << " -- did you resume from the wrong revision?"
+        << std::endl
+        ;
+      }
     br.created = revnum;
   }
   br.commits.append(revnum);
