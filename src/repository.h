@@ -91,6 +91,9 @@ class Repository
   private:
     struct Branch
       {
+      Branch(int created = 0)
+          : created(created) {}
+      
       int created;
       QVector<int> commits;
       QVector<int> marks;
