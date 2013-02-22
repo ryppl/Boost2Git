@@ -77,13 +77,11 @@ Repository::Repository(const Ruleset::Repository &rule)
   {
   BOOST_FOREACH(std::string const& branch_name, rule.branches)
     {
-    Branch branch;
-    branch.created = 1;
-    branches.insert(QString::fromStdString(branch_name), branch);
+    branches[QString("refs/heads/") + branch_name.c_str()].created = 1;
     }
 
   // create the default branch
-  branches["master"].created = 1;
+  branches[QString("refs/heads/master")].created = 1;
 
   fastImport.setWorkingDirectory(name);
   if (!options.dry_run) {

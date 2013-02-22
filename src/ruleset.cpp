@@ -23,6 +23,7 @@
 #include <boost/fusion/adapted/struct/adapt_struct.hpp>
 #include <boost/fusion/include/std_pair.hpp>
 #include <boost/spirit/home/qi.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 
 typedef std::map<std::string, std::string> Dictionary;
 typedef std::pair<std::string, std::string> DictEntry;
@@ -221,11 +222,14 @@ Ruleset::Ruleset(std::string const& filename)
         {
         continue;
         }
-      repo.branches.insert(branch_rule.name);
+      char const ref_prefix[] = "refs/heads/";
+      std::string const& ref_name = boost::starts_with(branch_rule.name, ref_prefix)
+        ? branch_rule.name : ref_prefix + branch_rule.name;
+      repo.branches.insert(ref_name);
 
       match.min = std::min(branch_rule.min, repo_rule.minrev);
       match.max = branch_rule.max;
-      match.branch = branch_rule.name;
+      match.branch = ref_name;
 
       if (repo_rule.content.empty())
         {
