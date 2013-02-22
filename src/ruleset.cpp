@@ -54,8 +54,8 @@ struct RepoRule
   std::string parent;
   std::size_t minrev;
   Dictionary content;
-  std::vector<BranchRule> branches;
-  std::vector<BranchRule> tags;
+  std::vector<BranchRule> branch_rules;
+  std::vector<BranchRule> tag_rules;
   };
 
 BOOST_FUSION_ADAPT_STRUCT(BranchRule,
@@ -71,8 +71,8 @@ BOOST_FUSION_ADAPT_STRUCT(RepoRule,
   (std::string, parent)
   (std::size_t, minrev)
   (Dictionary, content)
-  (std::vector<BranchRule>, branches)
-  (std::vector<BranchRule>, tags)
+  (std::vector<BranchRule>, branch_rules)
+  (std::vector<BranchRule>, tag_rules)
   )
 
 namespace qi = boost::spirit::qi;
@@ -145,14 +145,14 @@ void inherit(RepoRule& repo_rule, std::vector<RepoRule> const& result)
     {
     if (other.name == repo_rule.parent)
       {
-      repo_rule.branches.insert(
-          repo_rule.branches.end(),
-          other.branches.begin(),
-          other.branches.end());
-      repo_rule.tags.insert(
-          repo_rule.tags.end(),
-          other.tags.begin(),
-          other.tags.end());
+      repo_rule.branch_rules.insert(
+          repo_rule.branch_rules.end(),
+          other.branch_rules.begin(),
+          other.branch_rules.end());
+      repo_rule.tag_rules.insert(
+          repo_rule.tag_rules.end(),
+          other.tag_rules.begin(),
+          other.tag_rules.end());
       return;
       }
     }
@@ -215,7 +215,7 @@ Ruleset::Ruleset(std::string const& filename)
     Match match;
     match.repository = repo_rule.name;
 
-    BOOST_FOREACH(BranchRule const& branch_rule, repo_rule.branches)
+    BOOST_FOREACH(BranchRule const& branch_rule, repo_rule.branch_rules)
       {
       if (branch_rule.max < repo_rule.minrev)
         {
