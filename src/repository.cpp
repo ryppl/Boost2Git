@@ -309,6 +309,7 @@ void Repository::reloadBranches()
   {
   bool reset_notes = false;
   foreach (QString branch, branches.keys()) {
+    Q_ASSERT(branch.startsWith("refs/"));
     Branch &br = branches[branch];
 
     if (br.marks.isEmpty() || !br.marks.last())
@@ -317,8 +318,6 @@ void Repository::reloadBranches()
     reset_notes = true;
 
     QByteArray branchRef = branch.toUtf8();
-    if (!branchRef.startsWith("refs/"))
-        branchRef.prepend("refs/heads/");
 
     fastImport.write("reset " + branchRef +
       "\nfrom :" + QByteArray::number(br.marks.last()) + "\n\n"
@@ -334,6 +333,8 @@ void Repository::reloadBranches()
 
 int Repository::markFrom(const QString &branchFrom, int branchRevNum, QByteArray &branchFromDesc)
   {
+  Q_ASSERT(branchFrom.startsWith("refs/"));
+
   Branch &brFrom = branches[branchFrom];
   if (!brFrom.created)
       return -1;
@@ -368,6 +369,8 @@ int Repository::createBranch(
     const QString &branchFrom,
     int branchRevNum)
   {
+  Q_ASSERT(branch.startsWith("refs/"));
+  Q_ASSERT(branchFrom.startsWith("refs/"));
   QByteArray branchFromDesc = "from branch " + branchFrom.toUtf8();
   int mark = markFrom(branchFrom, branchRevNum, branchFromDesc);
 
@@ -396,10 +399,6 @@ int Repository::createBranch(
       << std::endl
       ;
     branchFromRef = branchFrom.toUtf8();
-    if (!branchFromRef.startsWith("refs/"))
-      {
-      branchFromRef.prepend("refs/heads/");
-      }
     branchFromDesc += ", deleted/unknown";
     }
   Log::debug()
@@ -421,6 +420,7 @@ int Repository::createBranch(
 
 int Repository::deleteBranch(const QString &branch, int revnum)
   {
+  Q_ASSERT(branch.startsWith("refs/"));  
   static QByteArray null_sha(40, '0');
   return resetBranch(branch, revnum, 0, null_sha, "delete");
   }
@@ -432,11 +432,8 @@ int Repository::resetBranch(
     const QByteArray &resetTo,
     const QByteArray &comment)
   {
+  Q_ASSERT(branch.startsWith("refs/"));
   QByteArray branchRef = branch.toUtf8();
-  if (!branchRef.startsWith("refs/"))
-    {
-    branchRef.prepend("refs/heads/");
-    }
   Branch &br = branches[branch];
   QByteArray backupCmd;
   if (br.created && br.created != revnum && !br.marks.isEmpty() && br.marks.last())
@@ -498,6 +495,7 @@ Repository::Transaction *Repository::newTransaction(
     const QString &svnprefix,
     int revnum)
   {
+  Q_ASSERT(branch.startsWith("refs/"));
   if (!branches.contains(branch))
     {
     Log::warn()
@@ -593,6 +591,7 @@ void Repository::finalizeTags()
     const QString &tagName = it.key();
     const AnnotatedTag &tag = it.value();
 
+    Q_ASSERT(tag.supportingRef.startsWith("refs/"));
     QByteArray message = tag.log;
     if (!message.endsWith('\n'))
         message += '\n';
@@ -601,8 +600,6 @@ void Repository::finalizeTags()
 
     {
     QByteArray branchRef = tag.supportingRef.toUtf8();
-    if (!branchRef.startsWith("refs/"))
-        branchRef.prepend("refs/heads/");
 
     QByteArray s = "progress Creating annotated tag " + tagName.toUtf8() + " from ref " + branchRef + "\n"
       + "tag " + tagName.toUtf8() + "\n"
@@ -718,6 +715,7 @@ void Repository::Transaction::noteCopyFromBranch(
     const QString &branchFrom,
     int branchRevNum)
   {
+  Q_ASSERT(branchFrom.startsWith("refs/"));
   if (branch == branchFrom)
     {
     Log::warn() << "Cannot merge inside a branch" << std::endl;
@@ -820,9 +818,8 @@ QIODevice *Repository::Transaction::addFile(const QString &path, int mode, qint6
 
 void Repository::Transaction::commitNote(const QByteArray &noteText, bool append, const QByteArray &commit)
   {
+  Q_ASSERT(branch.startsWith("refs/"));
   QByteArray branchRef = branch;
-  if (!branchRef.startsWith("refs/"))
-      branchRef.prepend("refs/heads/");
   const QByteArray &commitRef = commit.isNull() ? branchRef : commit;
   QByteArray message = "Adding Git note for current " + commitRef + "\n";
   QByteArray text = noteText;
@@ -889,9 +886,8 @@ void Repository::Transaction::commit()
   br.commits.append(revnum);
   br.marks.append(mark);
 
+  Q_ASSERT(branch.startsWith("refs/"));
   QByteArray branchRef = branch;
-  if (!branchRef.startsWith("refs/"))
-      branchRef.prepend("refs/heads/");
 
   QByteArray s("");
   s.append("commit " + branchRef + "\n");
