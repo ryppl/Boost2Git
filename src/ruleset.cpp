@@ -224,34 +224,34 @@ Ruleset::Ruleset(std::string const& filename)
       
     BOOST_FOREACH(RulesAndPrefix const& rules_and_prefix, ref_rulesets)
       {
-    BOOST_FOREACH(BranchRule const& branch_rule, *rules_and_prefix.first)
-      {
-      if (branch_rule.max < repo_rule.minrev)
+      BOOST_FOREACH(BranchRule const& branch_rule, *rules_and_prefix.first)
         {
-        continue;
-        }
+        if (branch_rule.max < repo_rule.minrev)
+          {
+          continue;
+          }
       
-      std::string const& ref_name = qualify_ref(branch_rule.name, rules_and_prefix.second);
-      repo.branches.insert(ref_name);
+        std::string const& ref_name = qualify_ref(branch_rule.name, rules_and_prefix.second);
+        repo.branches.insert(ref_name);
 
-      match.min = std::min(branch_rule.min, repo_rule.minrev);
-      match.max = branch_rule.max;
-      match.branch = ref_name;
+        match.min = std::min(branch_rule.min, repo_rule.minrev);
+        match.max = branch_rule.max;
+        match.branch = ref_name;
 
-      if (repo_rule.content.empty())
-        {
-        match.match = branch_rule.prefix;
-        match.prefix.clear();
-        matches_.push_back(match);
-        continue;
+        if (repo_rule.content.empty())
+          {
+          match.match = branch_rule.prefix;
+          match.prefix.clear();
+          matches_.push_back(match);
+          continue;
+          }
+        BOOST_FOREACH(DictEntry const& content, repo_rule.content)
+          {
+          match.match = branch_rule.prefix + content.first;
+          match.prefix = content.second;
+          matches_.push_back(match);
+          }
         }
-      BOOST_FOREACH(DictEntry const& content, repo_rule.content)
-        {
-        match.match = branch_rule.prefix + content.first;
-        match.prefix = content.second;
-        matches_.push_back(match);
-        }
-      }
       }
     repositories_.push_back(repo);
     }
