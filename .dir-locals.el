@@ -43,7 +43,12 @@
                 (namespace-close . 0)    ; Guessed value
                 (namespace-open . 0)     ; Guessed value
                 (statement . 0)          ; Guessed value
-                (statement-block-intro . c-lineup-whitesmith-in-block)
+                (statement-block-intro 
+                 . (lambda (context)
+                     (save-excursion
+                       (beginning-of-line)
+                       (c-lineup-whitesmith-in-block context)))
+                 )
                 (statement-cont 
                  . (lambda (context)
                      (save-excursion
