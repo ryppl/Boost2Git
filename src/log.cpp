@@ -103,10 +103,10 @@ int result()
   {
   if (num_errors == 0)
     {
-    return EXIT_SUCCESS;
+    return 0;
     }
   std::cerr << "\n" << num_errors << " Errors occured!" << std::endl;
-  return EXIT_FAILURE;
+  return -1;
   }
 
 } // namespace Log
