@@ -47,9 +47,10 @@
                 (statement-cont 
                  . (lambda (context)
                      (save-excursion
+                       (beginning-of-line)
                        (c-forward-sws)
                        (if (looking-at "\\([-+%*^&/|~]\\|&&\|||\\)=")
-                           1 '+))))
+                           '* '+))))
                 (stream-op . c-lineup-streamop)     ; Guessed value
                 (substatement . ++)     ; Guessed value
                 (substatement-open . +) ; Guessed value
