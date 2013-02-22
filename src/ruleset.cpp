@@ -215,14 +215,23 @@ Ruleset::Ruleset(std::string const& filename)
     Match match;
     match.repository = repo_rule.name;
 
-    BOOST_FOREACH(BranchRule const& branch_rule, repo_rule.branch_rules)
+    typedef std::pair<std::vector<BranchRule>*, char const*> RulesAndPrefix;
+    RulesAndPrefix const ref_rulesets[] =
+      {
+      std::make_pair(&repo_rule.branch_rules, "heads"),
+      std::make_pair(&repo_rule.tag_rules, "tags")
+      };
+      
+    BOOST_FOREACH(RulesAndPrefix const& rules_and_prefix, ref_rulesets)
+      {
+    BOOST_FOREACH(BranchRule const& branch_rule, *rules_and_prefix.first)
       {
       if (branch_rule.max < repo_rule.minrev)
         {
         continue;
         }
       
-      std::string const& ref_name = qualify_ref(branch_rule.name, "heads");
+      std::string const& ref_name = qualify_ref(branch_rule.name, rules_and_prefix.second);
       repo.branches.insert(ref_name);
 
       match.min = std::min(branch_rule.min, repo_rule.minrev);
@@ -242,6 +251,7 @@ Ruleset::Ruleset(std::string const& filename)
         match.prefix = content.second;
         matches_.push_back(match);
         }
+      }
       }
     repositories_.push_back(repo);
     }
