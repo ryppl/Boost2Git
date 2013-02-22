@@ -47,7 +47,8 @@ class Repository
         QStringList deletedFiles;
         QByteArray modifiedFiles;
 
-        inline Transaction() {}
+        inline Transaction()
+            : repository(0), datetime(0), revnum(0) {}
       public:
         ~Transaction();
         void commit();
