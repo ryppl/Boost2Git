@@ -25,6 +25,23 @@ add_definitions(
   -D_LARGEFILE64_SUPPORT
   )
 
+if(${CMAKE_CXX_COMPILER_ID} MATCHES Clang)
+  set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++")
+  set(CMAKE_CXX_LINK_FLAGS "-std=c++11 -stdlib=libc++")
+elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
+  include(CheckCXXCompilerFlag)
+  check_cxx_compiler_flag(-std=c++11 HAVE_STD11)
+  if(HAVE_STD11)
+    set(CMAKE_CXX_FLAGS -std=c++11)
+  else()
+    check_cxx_compiler_flag(-std=c++0x HAVE_STD0X)
+    if(HAVE_STD0X)
+      set(CMAKE_CXX_FLAGS -std=c++0x)
+    endif()
+    add_definitions(-Doverride)
+  endif()
+endif()
+
 add_executable(svn2git
   apr_init.hpp
   apr_pool.hpp

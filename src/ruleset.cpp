@@ -141,21 +141,24 @@ void inherit(RepoRule& repo_rule, std::vector<RepoRule> const& result)
     {
     return;
     }
-  BOOST_FOREACH(const RepoRule& other, result)
+  std::string const& name = repo_rule.parent;
+  const auto& parent = std::find_if(result.begin(), result.end(),
+    [&name](RepoRule const& rule) -> bool
     {
-    if (other.name == repo_rule.parent)
-      {
-      repo_rule.branches.insert(
-          repo_rule.branches.end(),
-          other.branches.begin(),
-          other.branches.end());
-      repo_rule.tags.insert(
-          repo_rule.tags.end(),
-          other.tags.begin(),
-          other.tags.end());
-      return;
-      }
+    return name == rule.name;
+    });
+  if (parent == result.end())
+    {
+    return;
     }
+  repo_rule.branches.insert(
+      repo_rule.branches.end(),
+      parent->branches.begin(),
+      parent->branches.end());
+  repo_rule.tags.insert(
+      repo_rule.tags.end(),
+      parent->tags.begin(),
+      parent->tags.end());
   }
 
 Ruleset::Ruleset(std::string const& filename)
