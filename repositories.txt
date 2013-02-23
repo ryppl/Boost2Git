@@ -174,33 +174,6 @@ abstract repository common_branches
     [38008:     ] "/branches/Boost_Jam_994/boost/" : "old-branches/Boost_Jam_994";
     [38288:     ] "/branches/RC_1_34_0/boost/" : "old-branches/RC_1_34_0";
     [38317:     ] "/branches/QUICKBOOK_BACKEND/boost/" : "old-branches/QUICKBOOK_BACKEND";
-    [38353:     ] "/branches/quickbook/QUICKBOOK_BACKEND/" : "old-branches/quickbook/QUICKBOOK_BACKEND";
-    [38354:     ] "/branches/quickbook/QUICKBOOK_INCLUDE/" : "old-branches/quickbook/QUICKBOOK_INCLUDE";
-    [38355:     ] "/branches/quickbook/QUICKBOOK_PREPROCESSOR/" : "old-branches/quickbook/QUICKBOOK_PREPROCESSOR";
-    [38357:     ] "/branches/quickbook/include/" : "old-branches/quickbook/include";
-    [38358:     ] "/branches/quickbook/preprocessor/" : "old-branches/quickbook/preprocessor";
-    [38360:     ] "/branches/jam/Boost_Jam_994/" : "old-branches/jam/Boost_Jam_994";
-    [38361:     ] "/branches/jam/jam_src/" : "old-branches/jam/jam_src";
-    [38362:     ] "/branches/jam/pipe_rule/" : "old-branches/jam/pipe_rule";
-    [38363:     ] "/branches/jam/version_2_3_2/" : "old-branches/jam/version_2_3_2";
-    [38364:     ] "/branches/jam/jam-src/" : "old-branches/jam/jam-src";
-    [38365:     ] "/branches/iterator_build/" : "old-branches/iterator_build";
-    [38935:     ] "/branches/c++0x/" : "old-branches/c++0x";
-    [38974:     ] "/branches/multi_array/" : "old-branches/multi_array";
-    [39133:     ] "/branches/libs/filesystem/" : "old-branches/libs/filesystem";
-    [39152:     ] "/branches/xpressive/nested_dynamic_regex/" : "old-branches/xpressive/nested_dynamic_regex";
-    [39167:     ] "/branches/libs/system/" : "old-branches/libs/system";
-    [39700:     ] "/branches/thread_rewrite/" : "old-branches/thread_rewrite";
-    [39748:     ] "/branches/tools/jam/" : "old-branches/tools/jam";
-    [39749:     ] "/branches/tools/regression/" : "old-branches/tools/regression";
-    [39764:     ] "/branches/tools/build/" : "old-branches/tools/build";
-    [39882:     ] "/branches/BOOST_BUILD_PYTHON/" : "old-branches/BOOST_BUILD_PYTHON";
-    [39974:     ] "/branches/release-tools/" : "old-branches/release-tools";
-    [40258:     ] "/branches/jam/4_0/" : "old-branches/jam/4_0";
-    [40266:     ] "/branches/hash/" : "old-branches/hash";
-    [40383:     ] "/branches/fusion/2_1/" : "old-branches/fusion/2_1";
-    [41031:     ] "/branches/system/" : "old-branches/system";
-    [41909:     ] "/branches/bitten/" : "old-branches/bitten";
     [42409:     ] "/branches/unordered/refactor/" : "unordered/refactor";
     [42650:     ] "/branches/serialization_next_release/" : "serialization_next_release";
     [43289:     ] "/branches/fix-links/" : "fix-links";
@@ -235,6 +208,36 @@ abstract repository common_branches
     [68398:     ] "/branches/quickbook-filenames/" : "quickbook-filenames";
     [68409:     ] "/branches/release/" : "release";
     [68640:     ] "/branches/doc-tools-docs/" : "doc-tools-docs";
+  }
+  tags
+  {
+    [38353:     ] "/branches/quickbook/QUICKBOOK_BACKEND/" : "old-branches/quickbook/QUICKBOOK_BACKEND";
+    [38354:     ] "/branches/quickbook/QUICKBOOK_INCLUDE/" : "old-branches/quickbook/QUICKBOOK_INCLUDE";
+    [38355:     ] "/branches/quickbook/QUICKBOOK_PREPROCESSOR/" : "old-branches/quickbook/QUICKBOOK_PREPROCESSOR";
+    [38357:     ] "/branches/quickbook/include/" : "old-branches/quickbook/include";
+    [38358:     ] "/branches/quickbook/preprocessor/" : "old-branches/quickbook/preprocessor";
+    [38360:     ] "/branches/jam/Boost_Jam_994/" : "old-branches/jam/Boost_Jam_994";
+    [38361:     ] "/branches/jam/jam_src/" : "old-branches/jam/jam_src";
+    [38362:     ] "/branches/jam/pipe_rule/" : "old-branches/jam/pipe_rule";
+    [38363:     ] "/branches/jam/version_2_3_2/" : "old-branches/jam/version_2_3_2";
+    [38364:     ] "/branches/jam/jam-src/" : "old-branches/jam/jam-src";
+    [38365:     ] "/branches/iterator_build/" : "old-branches/iterator_build";
+    [38935:     ] "/branches/c++0x/" : "old-branches/c++0x";
+    [38974:     ] "/branches/multi_array/" : "old-branches/multi_array";
+    [39133:     ] "/branches/libs/filesystem/" : "old-branches/libs/filesystem";
+    [39152:     ] "/branches/xpressive/nested_dynamic_regex/" : "old-branches/xpressive/nested_dynamic_regex";
+    [39167:     ] "/branches/libs/system/" : "old-branches/libs/system";
+    [39700:     ] "/branches/thread_rewrite/" : "old-branches/thread_rewrite";
+    [39748:     ] "/branches/tools/jam/" : "old-branches/tools/jam";
+    [39749:     ] "/branches/tools/regression/" : "old-branches/tools/regression";
+    [39764:     ] "/branches/tools/build/" : "old-branches/tools/build";
+    [39882:     ] "/branches/BOOST_BUILD_PYTHON/" : "old-branches/BOOST_BUILD_PYTHON";
+    [39974:     ] "/branches/release-tools/" : "old-branches/release-tools";
+    [40258:     ] "/branches/jam/4_0/" : "old-branches/jam/4_0";
+    [40266:     ] "/branches/hash/" : "old-branches/hash";
+    [40383:     ] "/branches/fusion/2_1/" : "old-branches/fusion/2_1";
+    [41031:     ] "/branches/system/" : "old-branches/system";
+    [41909:     ] "/branches/bitten/" : "old-branches/bitten";
   }
 }
 
