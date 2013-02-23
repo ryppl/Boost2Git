@@ -70,7 +70,10 @@ function(set_gitpushmirror var host repo_name)
     git push --quiet --progress --mirror git@${host}:boostorg/${repo_name}.git)
   if (SLEEP)
     set(
-      ${var} "(" ${gitpushmirror_cmd} "||" ${SLEEP} 10 "&&" ${gitpushmirror_cmd} ")"
+      ${var} "{" 
+          ${gitpushmirror_cmd} 
+     "||" "{" ${SLEEP} 10 "&&" ${gitpushmirror_cmd}; "}" 
+      "}"
       PARENT_SCOPE)
   else()
     set(${var} ${gitpushmirror_cmd} PARENT_SCOPE)
