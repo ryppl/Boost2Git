@@ -64,8 +64,8 @@ foreach(line IN LISTS repo_lines)
   string(REGEX MATCH "^repository ([^ :]+)" match "${line}")
   string(REPLACE "\"" "" name "${CMAKE_MATCH_1}")
   add_custom_target(push_${name} ALL
-    COMMAND git push --quiet --progress --mirror git@bitbucket.org:boostorg/${name}.git
-    COMMAND git push --quiet --progress --mirror git@github.com:boostorg/${name}.git
+    COMMAND git push --quiet --mirror git@bitbucket.org:boostorg/${name}.git
+    COMMAND git push --quiet --mirror git@github.com:boostorg/${name}.git
     DEPENDS conversion
     WORKING_DIRECTORY "${git_repository}/${name}"
     )
