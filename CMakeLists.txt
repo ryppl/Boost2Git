@@ -42,6 +42,8 @@ else()
   set(pipe_uniq)
 endif()
 
+find_program(SLEEP sleep)
+
 # perform conversion
 add_custom_target(conversion ALL
   COMMAND
@@ -58,14 +60,33 @@ add_custom_target(conversion ALL
     "${git_repository}"
   )
 
+# set var to a push command for the given boostorg repo hosted at the given host
+#
+# We attempt to create a command that's somewhat resilient; if it
+# fails the first time it will try again in 10 seconds, provided the
+# "sleep" command is present.
+function(set_gitpushmirror var host repo_name)
+  set(gitpushmirror_cmd
+    git push --quiet --progress --mirror git@${host}:boostorg/${repo_name}.git)
+  if (SLEEP)
+    set(
+      ${var} "(" ${gitpushmirror_cmd} "||" ${SLEEP} 10 "&&" ${gitpushmirror_cmd} ")"
+      PARENT_SCOPE)
+  else()
+    set(${var} ${gitpushmirror_cmd} PARENT_SCOPE)
+  endif()
+endfunction()
+
 # push all repositories
 file(STRINGS "${repositories}" repo_lines REGEX "^repository")
 foreach(line IN LISTS repo_lines)
   string(REGEX MATCH "^repository ([^ :]+)" match "${line}")
   string(REPLACE "\"" "" name "${CMAKE_MATCH_1}")
+  set_gitpushmirror(bitbucket_cmd bitbucket.org ${name})
+  set_gitpushmirror(github_cmd github.com ${name})
   add_custom_target(push_${name} ALL
-    COMMAND git push --quiet --progress --mirror git@bitbucket.org:boostorg/${name}.git
-    COMMAND git push --quiet --progress --mirror git@github.com:boostorg/${name}.git
+    COMMAND ${bitbucket_cmd}
+    COMMAND ${github_cmd}
     DEPENDS conversion
     WORKING_DIRECTORY "${git_repository}/${name}"
     )
