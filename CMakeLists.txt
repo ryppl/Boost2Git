@@ -35,6 +35,13 @@ add_custom_command(OUTPUT "${repositories_setup}"
   COMMENT "Cleaning temporary repositories."
   )
 
+find_program(UNIQ uniq)
+if(UNIQ)
+  set(pipe_uniq "|" "${UNIQ}" "-c")
+else()
+  set(pipe_uniq)
+endif()
+
 # perform conversion
 add_custom_target(conversion ALL
   COMMAND
@@ -44,6 +51,7 @@ add_custom_target(conversion ALL
     --authors "${authors}"
     --rules   "${repositories}"
     --svnrepo "${svn_repository}"
+    ${pipe_uniq}
   DEPENDS
     ${repositories_setup}
   WORKING_DIRECTORY
