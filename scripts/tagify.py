@@ -23,6 +23,8 @@ def run():
     
     state = 'outside'
     tags = None
+    
+    found_refs = set()
 
     for l in open("/Users/dave/src/ryppl/Boost2Git/repositories.txt"):
         if state == 'inside':
@@ -34,6 +36,8 @@ def run():
                 if not m:
                     raise RuntimeError, 'no match for branch_re in ' + repr(l)
                 start, finish, src, dst = m.groups()
+                found_refs.add(src)
+
                 if dst != 'master' and refs.get(src,dict(kind='branch'))['kind'] == 'tag':
                     tags.append(l)
                     continue
@@ -53,6 +57,13 @@ def run():
             sys.stdout.writelines(tags)
             sys.stdout.write('  }\n')
             tags = None
+
+    print >>sys.stderr, 'subconvert refs not accounted for:'
+    import pprint
+    sys.stderr.write(
+        pprint.pformat(dict(
+            kv for kv in refs.items() 
+            if kv[0] not in found_refs and kv[0] + 'boost/' not in found_refs)))
 
 if __name__ == '__main__':
     run()
