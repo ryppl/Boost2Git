@@ -1927,8 +1927,8 @@ repository sandbox
   content
   {
     "sandbox/"          : "trunk/";
-    "sandbox-branches/" : "branches";
-    "sandbox-tags/"     : "tags";
+    "sandbox-branches/" : "branches/";
+    "sandbox-tags/"     : "tags/";
   }
   branches
   {
