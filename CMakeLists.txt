@@ -37,7 +37,7 @@ add_custom_command(OUTPUT "${repositories_setup}"
 
 find_program(UNIQ uniq)
 if(UNIQ)
-  set(pipe_uniq "|" "${UNIQ}" "-c")
+  set(pipe_uniq "2>&1" "|" "${UNIQ}" "-c")
 else()
   set(pipe_uniq)
 endif()
