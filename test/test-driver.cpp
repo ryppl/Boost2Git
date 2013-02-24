@@ -73,10 +73,17 @@ BOOST_AUTO_TEST_CASE(create_repo)
   svn("add", "README.txt");
   svn("commit", "--username", "test", "-m", "no message");
 
-BOOST_AUTO_TEST_CASE(help)
-  {
-  process::execute(
-      run_exe(unit_testing::master_test_suite().argv[1]),
-      set_cmd_line("svn2git --help")
-    );
+  write_file("README.txt") << "This is the new README";
+  svn("commit", "--username", "test", "-m", "updated README");
+
+  svn("cp", "--username", "test", "-m", "create branch", uri + "/trunk", uri + "/branches/my_branch");
+  svn("cp", "--username", "test", "-m", "create tag", uri + "/trunk", uri + "/tags/my_tag");
+
+  static char const* const* const argv = unit_testing::master_test_suite().argv;
+  
+  fs::current_path( root );
+  run_sync(
+      argv[1], "--add-metadata", "--exit-success", "--rules", argv[2], "--svnrepo", "test-repo", "--authors", argv[3]);
+  
+  BOOST_CHECK(fs::exists( root/"everything.git" ));
   }

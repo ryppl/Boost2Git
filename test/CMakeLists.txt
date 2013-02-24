@@ -33,7 +33,11 @@ find_program(SVNADMIN NAMES svnadmin)
 
 add_test(update-driver "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target test-driver)
 
-add_test(NAME svn2git COMMAND test-driver $<TARGET_FILE:svn2git> ${SVN} ${SVNADMIN})
+add_test(NAME svn2git COMMAND 
+  test-driver $<TARGET_FILE:svn2git> 
+  ${CMAKE_CURRENT_LIST_DIR}/test-repositories.txt 
+  ${CMAKE_CURRENT_LIST_DIR}/test-authors.txt 
+  ${SVN} ${SVNADMIN})
 
 set_tests_properties(
   svn2git
