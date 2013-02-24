@@ -28,11 +28,11 @@ target_link_libraries(test-driver
   ${APR_LIBRARIES} ${SVN_LIBRARIES}
 )
 
-add_test(test-update-driver "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target test-driver)
+add_test(update-driver "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target test-driver)
 
-add_test(NAME rules COMMAND test-driver ../src/svn2git)
+add_test(NAME svn2git COMMAND test-driver $<TARGET_FILE:svn2git>)
 set_tests_properties(
-  rules
+  svn2git
   PROPERTIES
     DEPENDS test-update-driver
     PASS_REGULAR_EXPRESSION "Allowed options:")

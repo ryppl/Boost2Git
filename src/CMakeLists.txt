@@ -50,13 +50,13 @@ target_link_libraries(svn2git
   ${QT_LIBRARIES}
   )
 
-ADD_TEST(test-update-svn2git "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target svn2git)
+ADD_TEST(update-svn2git "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target svn2git)
 
 add_test(NAME help-cmd COMMAND svn2git --help)
 SET_TESTS_PROPERTIES (
   help-cmd 
   PROPERTIES 
-    DEPENDS test-update-svn2git
+    DEPENDS update-svn2git
     PASS_REGULAR_EXPRESSION "Allowed options:")
 
 
