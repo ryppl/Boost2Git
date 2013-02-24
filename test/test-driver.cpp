@@ -2,35 +2,74 @@
 // Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 #include <boost/process.hpp>
-#include <iostream>
+#include <boost/filesystem.hpp>
 #define BOOST_TEST_MODULE svn2git
 #include <boost/test/unit_test.hpp>
 #include <boost/test/framework.hpp>
 #include <svn_repos.h>
 #include <apr_general.h>
 #include <svn_pools.h>
+#include <fstream>
+#include <iostream>
+#include <boost/preprocessor/repetition/enum_trailing_params.hpp>
+#include <boost/preprocessor/repetition/enum_trailing_binary_params.hpp>
+#include <boost/preprocessor/cat.hpp>
+#include <boost/preprocessor/repeat.hpp>
+#include <boost/preprocessor/iteration/iterate.hpp>
 
 namespace process = boost::process;
 using namespace boost::process::initializers;
 namespace unit_testing = boost::unit_test::framework;
+namespace fs = boost::filesystem;
+
+static char const* svn_path()
+  {
+  return unit_testing::master_test_suite().argv[2];
+  }
+
+static char const* svnadmin_path()
+  {
+  return unit_testing::master_test_suite().argv[3];
+  }
+
+template <class P>
+P as_string(P x) { return x; }
+
+std::string as_string(fs::path x) { return x.generic_string(); }
+
+#define BOOST_PP_ITERATION_LIMITS (0, 5)
+#define BOOST_PP_FILENAME_1 "run_sync.hpp"
+#include BOOST_PP_ITERATE()
 
 BOOST_AUTO_TEST_CASE(create_repo)
   {
-  apr_status_t err = apr_initialize();
-  BOOST_CHECK(err == APR_SUCCESS);
+  fs::remove_all("test-repo");
+  fs::remove_all("test-ws");
+
+  std::cerr << "svnadmin path = " << svnadmin_path() << std::endl;
+  std::cerr << "Create test repository" << std::endl;
+  run_sync(svnadmin_path(), "create", "test-repo");
+
+  fs::path root = fs::current_path();
+  std::string uri = "file://" + root.generic_string() + "/test-repo";
+  std::cerr << "uri = " << uri << std::endl;
+  char const* const svn = svn_path();
   
-  svn_repos_t* repos;
-  apr_pool_t* pool = svn_pool_create(0);
-  BOOST_CHECK(pool != 0);
-  
-  svn_repos_create(
-      &repos
-      , "test-repo"
-      , (char const*)0 // unused_1
-      , (char const*)0 // unused_2
-      , (apr_hash_t*)0 // config
-      , (apr_hash_t*)0 // fs_config
-      , pool);
+  std::cerr << "Create basic structure" << std::endl;
+  run_sync(svn, "mkdir", "-m", "create trunk", uri + "/trunk");
+  run_sync(svn, "mkdir", "-m", "create tags", uri + "/tags");
+  run_sync(svn, "mkdir", "-m", "create branches", uri + "/branches");
+
+  std::cerr << "Checkout working copy" << std::endl;
+  run_sync(svn, "checkout", uri, "test-ws");
+
+  std::cerr << "Add and commit a file" << std::endl;
+  fs::current_path( root/"test-ws" );
+
+  std::ofstream("README.txt");
+  run_sync(svn, "add", "README.txt");
+  run_sync(svn, "commit", "-m", "no message");
+  run_sync(svn, "log", uri);
   }
 
 BOOST_AUTO_TEST_CASE(help)

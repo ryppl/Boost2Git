@@ -7,8 +7,8 @@ project(Svn2GitTests CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
-find_package(Boost REQUIRED system unit_test_framework)
-include_directories(${CMAKE_CURRENT_LIST_DIR}/boost.process ${Boost_INCLUDE_DIR})
+find_package(Boost REQUIRED system unit_test_framework filesystem)
+include_directories(${CMAKE_CURRENT_LIST_DIR} ${CMAKE_CURRENT_LIST_DIR}/boost.process ${Boost_INCLUDE_DIR})
 
 find_package(APR REQUIRED)
 find_package(SVN REQUIRED fs repos subr)
@@ -28,9 +28,13 @@ target_link_libraries(test-driver
   ${APR_LIBRARIES} ${SVN_LIBRARIES}
 )
 
+find_program(SVN NAMES svn)
+find_program(SVNADMIN NAMES svnadmin)
+
 add_test(update-driver "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target test-driver)
 
-add_test(NAME svn2git COMMAND test-driver $<TARGET_FILE:svn2git>)
+add_test(NAME svn2git COMMAND test-driver $<TARGET_FILE:svn2git> ${SVN} ${SVNADMIN})
+
 set_tests_properties(
   svn2git
   PROPERTIES
