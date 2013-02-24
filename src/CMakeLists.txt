@@ -19,6 +19,8 @@ include_directories(${SVN_INCLUDE_DIRS})
 find_package(Qt4 REQUIRED QtCore)
 include(${QT_USE_FILE})
 
+include_directories(${CMAKE_SOURCE_DIR}/boost.process/boost)
+
 add_definitions(
   -D_XOPEN_SOURCE
   -D_LARGEFILE_SUPPORT
