@@ -42,7 +42,7 @@ P as_string(P x) { return x; }
 
 std::string as_string(fs::path x) { return x.generic_string(); }
 
-#define BOOST_PP_ITERATION_LIMITS (0, 5)
+#define BOOST_PP_ITERATION_LIMITS (0, 8)
 #define BOOST_PP_FILENAME_1 "run_sync.hpp"
 #include BOOST_PP_ITERATE()
 
