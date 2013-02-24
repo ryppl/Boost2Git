@@ -158,6 +158,15 @@ void inherit(RepoRule& repo_rule, std::vector<RepoRule> const& result)
     }
   }
 
+Ruleset::Match Ruleset::fallback =
+  {
+  0,
+  UINT_MAX,
+  "svn2git-fallback",
+  "master",
+  ""
+  };
+
 Ruleset::Ruleset(std::string const& filename)
   {
   std::ifstream file(filename.c_str());
@@ -255,4 +264,8 @@ Ruleset::Ruleset(std::string const& filename)
       }
     repositories_.push_back(repo);
     }
+  Repository repo;
+  repo.name = fallback.repository;
+  repo.branches.insert(fallback.branch);
+  repositories_.push_back(repo);
   }

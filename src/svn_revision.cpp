@@ -499,12 +499,25 @@ int SvnRevision::exportEntry(
       << std::endl
       ;
     }
-  else
+  else if (is_dir)
     {
-    Log::error()
-      << "File/folder not accounted for: '" << qPrintable(current) << "'"
+    Log::debug()
+      << "Folder '"
+      << qPrintable(current)
+      << "' not accounted for. Recursing."
       << std::endl
       ;
+    return recurse(key, change, path_from, matchRules, rev_from, changes, revpool);
+    }
+  else
+    {
+    Log::debug()
+      << "File '"
+      << qPrintable(current)
+      << "'not accounted for. Putting to fallback."
+      << std::endl
+      ;
+    return exportDispatch(key, change, path_from, rev_from, changes, current, Ruleset::fallback, matchRules, revpool);
     }
   return EXIT_SUCCESS;
   }

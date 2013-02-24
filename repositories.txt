@@ -1948,11 +1948,3 @@ repository website
   }
 }
 
-repository "svn2git-fallback"
-{
-  branches
-  {
-    [:] "/" : "master";
-  }
-}
-
