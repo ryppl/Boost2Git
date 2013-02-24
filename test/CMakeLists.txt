@@ -10,6 +10,11 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 find_package(Boost REQUIRED system unit_test_framework)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/boost.process ${Boost_INCLUDE_DIR})
 
+find_package(APR REQUIRED)
+find_package(SVN REQUIRED fs repos subr)
+include_directories(${APR_INCLUDE_DIRS} ${SVN_INCLUDE_DIRS})
+
+
 # This is required when linking against a dynamic Boost unit test
 # framework; otherwise we get a link error looking for "main"
 add_definitions(-DBOOST_TEST_DYN_LINK)
@@ -18,7 +23,10 @@ add_executable(
   test-driver EXCLUDE_FROM_ALL
   test-driver.cpp)
 
-target_link_libraries(test-driver ${Boost_LIBRARIES})
+target_link_libraries(test-driver 
+  ${Boost_LIBRARIES}
+  ${APR_LIBRARIES} ${SVN_LIBRARIES}
+)
 
 add_test(test-update-driver "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target test-driver)
 
