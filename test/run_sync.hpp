@@ -26,3 +26,26 @@ void run_sync(Exe const& exe BOOST_PP_ENUM_TRAILING_BINARY_PARAMS(n, A, const& a
   wait_for_exit(process::execute(
      run_exe(exe_path), set_args(args), throw_on_error() ));
   }
+
+#if n == 0
+# define DEFINE_CMD(cmd)                        \
+  void cmd()                                    \
+    {                                           \
+    run_sync(#cmd);                             \
+    }
+#else 
+# define DEFINE_CMD(cmd)                                \
+  template <BOOST_PP_ENUM_PARAMS(n, class A) >          \
+  void cmd(BOOST_PP_ENUM_BINARY_PARAMS(n, A, const& a)) \
+    {                                                   \
+    run_sync(#cmd BOOST_PP_ENUM_TRAILING_PARAMS(n, a));  \
+    }
+#endif
+
+DEFINE_CMD(svn)
+DEFINE_CMD(svnadmin)
+DEFINE_CMD(git)
+
+#undef DEFINE_CMD
+#undef STREAM
+#undef PUSH_BACK_ARG
