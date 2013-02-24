@@ -483,23 +483,7 @@ int SvnRevision::exportEntry(
     {
     return EXIT_SUCCESS;
     }
-  if (wasDir(fs, revnum - 1, key, revpool))
-    {
-    Log::debug()
-      << qPrintable(current)
-      << " was a directory; ignoring"
-      << std::endl
-      ;
-    }
-  else if (change->change_kind == svn_fs_path_change_delete)
-    {
-    Log::debug()
-      << qPrintable(current)
-      << " is being deleted but I don't know anything about it; ignoring"
-      << std::endl
-      ;
-    }
-  else if (is_dir)
+  if (is_dir)
     {
     Log::warn()
       << "Folder '"
