@@ -42,5 +42,4 @@ add_test(NAME svn2git COMMAND
 set_tests_properties(
   svn2git
   PROPERTIES
-    DEPENDS test-update-driver
-    PASS_REGULAR_EXPRESSION "Allowed options:")
+    DEPENDS test-update-driver)
