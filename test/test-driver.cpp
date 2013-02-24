@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(create_repo)
 
   std::cerr << "svnadmin path = " << svnadmin_path() << std::endl;
   std::cerr << "Create test repository" << std::endl;
-  run_sync(svnadmin_path(), "create", "test-repo");
+  svnadmin("create", "test-repo");
 
   fs::path root = fs::current_path();
   std::string uri = "file://" + root.generic_string() + "/test-repo";
@@ -71,21 +71,19 @@ BOOST_AUTO_TEST_CASE(create_repo)
   char const* const svn = svn_path();
   
   std::cerr << "Create basic structure" << std::endl;
-  run_sync(svn, "mkdir", "-m", "create trunk", uri + "/trunk");
-  run_sync(svn, "mkdir", "-m", "create tags", uri + "/tags");
-  run_sync(svn, "mkdir", "-m", "create branches", uri + "/branches");
+  svn("mkdir", "--username", "test", "-m", "create trunk", uri + "/trunk");
+  svn("mkdir", "--username", "test", "-m", "create tags", uri + "/tags");
+  svn("mkdir", "--username", "test", "-m", "create branches", uri + "/branches");
 
   std::cerr << "Checkout working copy" << std::endl;
-  run_sync(svn, "checkout", uri, "test-ws");
+  svn("checkout", uri, "test-ws");
 
   std::cerr << "Add and commit a file" << std::endl;
   fs::current_path( root/"test-ws" );
 
-  std::ofstream("README.txt");
-  run_sync(svn, "add", "README.txt");
-  run_sync(svn, "commit", "-m", "no message");
-  run_sync(svn, "log", uri);
-  }
+  write_file("README.txt") << "This is the README";
+  svn("add", "README.txt");
+  svn("commit", "--username", "test", "-m", "no message");
 
 BOOST_AUTO_TEST_CASE(help)
   {
