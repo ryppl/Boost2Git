@@ -24,16 +24,6 @@ using namespace boost::process::initializers;
 namespace unit_testing = boost::unit_test::framework;
 namespace fs = boost::filesystem;
 
-static char const* svn_path()
-  {
-  return unit_testing::master_test_suite().argv[2];
-  }
-
-static char const* svnadmin_path()
-  {
-  return unit_testing::master_test_suite().argv[3];
-  }
-
 struct write_file : std::ofstream
 {
     template <class T>
@@ -61,14 +51,12 @@ BOOST_AUTO_TEST_CASE(create_repo)
   fs::remove_all("test-repo");
   fs::remove_all("test-ws");
 
-  std::cerr << "svnadmin path = " << svnadmin_path() << std::endl;
   std::cerr << "Create test repository" << std::endl;
   svnadmin("create", "test-repo");
 
   fs::path root = fs::current_path();
   std::string uri = "file://" + root.generic_string() + "/test-repo";
   std::cerr << "uri = " << uri << std::endl;
-  char const* const svn = svn_path();
   
   std::cerr << "Create basic structure" << std::endl;
   svn("mkdir", "--username", "test", "-m", "create trunk", uri + "/trunk");
