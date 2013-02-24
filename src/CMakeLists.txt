@@ -19,8 +19,6 @@ include_directories(${SVN_INCLUDE_DIRS})
 find_package(Qt4 REQUIRED QtCore)
 include(${QT_USE_FILE})
 
-include_directories(${CMAKE_SOURCE_DIR}/boost.process/boost)
-
 add_definitions(
   -D_XOPEN_SOURCE
   -D_LARGEFILE_SUPPORT
@@ -52,13 +50,13 @@ target_link_libraries(svn2git
   ${QT_LIBRARIES}
   )
 
+ADD_TEST(test-update-svn2git "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target svn2git)
+
 add_test(NAME help-cmd COMMAND svn2git --help)
-SET_TESTS_PROPERTIES(help-cmd PROPERTIES PASS_REGULAR_EXPRESSION "Allowed options:")
+SET_TESTS_PROPERTIES (
+  help-cmd 
+  PROPERTIES 
+    DEPENDS test-update-svn2git
+    PASS_REGULAR_EXPRESSION "Allowed options:")
 
-add_executable(
-  test-driver EXCLUDE_FROM_ALL
-  test-driver.cpp)
 
-add_test(NAME rules COMMAND test-driver ${CMAKE_CURRENT_BINARY_DIR}/svn2git)
-
-add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} DEPENDS svn2git test-driver)
