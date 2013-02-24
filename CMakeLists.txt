@@ -7,6 +7,7 @@
 cmake_minimum_required(VERSION 2.8.7 FATAL_ERROR)
 project(Boost2Git)
 
+enable_testing()
 add_subdirectory(src)
 
 if(NOT BOOST_SVN)

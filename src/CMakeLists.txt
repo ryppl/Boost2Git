@@ -49,3 +49,8 @@ target_link_libraries(svn2git
   ${SVN_LIBRARIES}
   ${QT_LIBRARIES}
   )
+
+add_test(NAME help-cmd COMMAND svn2git --help)
+SET_TESTS_PROPERTIES(help-cmd PROPERTIES PASS_REGULAR_EXPRESSION "Allowed options:")
+
+add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} DEPENDS svn2git)
