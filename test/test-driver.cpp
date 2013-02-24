@@ -4,8 +4,14 @@
 #include <boost/process.hpp>
 #include <iostream>
 
-int main()
+namespace process = boost::process;
+using namespace boost::process::initializers;
+
+int main(int argc, char const* argv[])
   {
-  std::cout << "ran driver\n";
+  process::execute(
+      run_exe(argv[1]),
+      set_cmd_line("svn2git --help")
+    );
   return 0;
   }

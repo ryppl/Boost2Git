@@ -15,18 +15,11 @@ add_executable(
   test-driver.cpp)
 target_link_libraries(test-driver ${Boost_LIBRARIES})
 
-ADD_TEST(test-update-driver "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target test-driver)
+add_test(test-update-driver "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target test-driver)
 
 add_test(NAME rules COMMAND test-driver ../src/svn2git)
 set_tests_properties(
   rules
   PROPERTIES
-    DEPENDS test-update-drivers
-    PASS_REGULAR_EXPRESSION "ran driver")
-
-add_test(NAME help-cmd2 COMMAND svn2git --help)
-SET_TESTS_PROPERTIES (
-  help-cmd2
-  PROPERTIES 
-    DEPENDS test-update-svn2git
+    DEPENDS test-update-driver
     PASS_REGULAR_EXPRESSION "Allowed options:")
