@@ -34,6 +34,19 @@ static char const* svnadmin_path()
   return unit_testing::master_test_suite().argv[3];
   }
 
+struct write_file : std::ofstream
+{
+    template <class T>
+    write_file(T const& name) : std::ofstream(name) {}
+
+    using std::ofstream::operator<<;
+    
+    std::ostream& operator<<(char const* rhs)
+    {
+        return *this << std::string(rhs);
+    }
+};
+
 template <class P>
 P as_string(P x) { return x; }
 
