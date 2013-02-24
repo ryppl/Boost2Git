@@ -501,7 +501,7 @@ int SvnRevision::exportEntry(
     }
   else if (is_dir)
     {
-    Log::debug()
+    Log::warn()
       << "Folder '"
       << qPrintable(current)
       << "' not accounted for. Recursing."
@@ -511,7 +511,7 @@ int SvnRevision::exportEntry(
     }
   else
     {
-    Log::debug()
+    Log::warn()
       << "File '"
       << qPrintable(current)
       << "'not accounted for. Putting to fallback."
