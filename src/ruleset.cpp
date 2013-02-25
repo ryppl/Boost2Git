@@ -20,6 +20,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/fusion/adapted/struct/adapt_struct.hpp>
 #include <boost/fusion/include/std_pair.hpp>
 #include <boost/spirit/home/qi.hpp>
@@ -135,7 +136,7 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
   qi::rule<Iterator, std::string(), Skipper> string_;
   };
 
-void inherit(RepoRule& repo_rule, std::vector<RepoRule> const& result)
+static void inherit(RepoRule& repo_rule, std::vector<RepoRule> const& result)
   {
   if (repo_rule.parent.empty() || repo_rule.parent == repo_rule.name)
     {
@@ -156,6 +157,25 @@ void inherit(RepoRule& repo_rule, std::vector<RepoRule> const& result)
       return;
       }
     }
+  }
+
+static std::string path_append(std::string path, std::string const& append)
+  {
+  if (boost::ends_with(path, "/"))
+    {
+    if (boost::starts_with(append, "/"))
+      {
+      path.resize(path.size() - 1);
+      }
+    }
+  else
+    {
+    if (!boost::starts_with(append, "/"))
+      {
+      path += '/';
+      }
+    }
+  return path + append;
   }
 
 Ruleset::Match Ruleset::fallback =
@@ -257,7 +277,7 @@ Ruleset::Ruleset(std::string const& filename)
           }
         BOOST_FOREACH(DictEntry const& content, repo_rule.content)
           {
-          match.match = branch_rule.prefix + content.first;
+          match.match = path_append(branch_rule.prefix, content.first);
           match.prefix = content.second;
           matches_.push_back(match);
           }
