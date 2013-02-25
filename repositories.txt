@@ -179,6 +179,7 @@ abstract repository common_branches
     [43289:     ] "/branches/fix-links/" : "fix-links";
     [43457:     ] "/branches/iostreams_dev/" : "iostreams_dev";
     [43495:     ] "/branches/CMake-release/" : "CMake-release";
+    [43505:     ] "/branches/CMake/release/" : "CMake/release";
     [43910:     ] "/branches/proto/v3/" : "proto/v3";
     [43972:     ] "/branches/unordered/add-on/" : "unordered/add-on";
     [44394:     ] "/branches/proto/v4.bak/" : "proto/v4.bak";
@@ -195,7 +196,6 @@ abstract repository common_branches
     [53358:     ] "/branches/phoenix_v3/" : "phoenix_v3";
     [54138:     ] "/branches/quickbook-1.5/" : "quickbook-1.5";
     [55965:     ] "/branches/sredl_2009_05_proptree_update/" : "sredl_2009_05_proptree_update";
-    [56940:     ] "/branches/CMake/" : "CMake";
     [59143:     ] "/branches/b2/" : "b2";
     [59531:     ] "/branches/maintenance/1_41/" : "maintenance/1_41";
     [59592:     ] "/branches/quickbook/backend/" : "quickbook/backend";
