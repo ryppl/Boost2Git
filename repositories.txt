@@ -1477,16 +1477,28 @@ repository boost : common_branches
   content
   {
     "doc/"                     : "doc/";
+    "libs/compiler.cfg"        : "libs/compiler.cfg";
     "libs/compiler_status.htm" : "libs/compiler_status.htm";
     "libs/cs-beos.html"        : "libs/cs-beos.html";
+    "libs/cs-irix.html"        : "libs/cs-irix.html";
+    "libs/cs-irix6.html"       : "libs/cs-irix6.html";
+    "libs/cs-linux.html"       : "libs/cs-linux.html";
     "libs/cs-linux2.html"      : "libs/cs-linux2.html";
+    "libs/cs-osf1V5.html"      : "libs/cs-osf1V5.html";
+    "libs/cs-tru64.html"       : "libs/cs-tru64.html";
     "libs/cs-win32.html"       : "libs/cs-win32.html";
     "libs/hdr_depend.html"     : "libs/hdr_depend.html";
     "libs/libraries.htm"       : "libs/libraries.htm";
+    "libs/maintainers.txt"     : "libs/maintainers.txt";
+    "libs/regression.cfg"      : "libs/regression.cfg";
+    "libs/regression.cpp"      : "libs/regression.cpp";
+    "libs/regrtest.cpp"        : "libs/regrtest.cpp";
     "libs/regrtest.py"         : "libs/regrtest.py";
+    "libs/regrtest_files.txt"  : "libs/regrtest_files.txt";
     "more/"                    : "more/";
     "people/"                  : "people/";
     "status/"                  : "status/";
+    "tools/index.html"         : "tools/index.html";
     "INSTALL"                  : "INSTALL";
     "Jamroot"                  : "Jamroot";
     "LICENSE_1_0.txt"          : "LICENSE_1_0.txt";
