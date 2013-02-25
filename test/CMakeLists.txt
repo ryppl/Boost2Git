@@ -52,7 +52,7 @@ add_test(NAME conversion
 
 # TODO: check output of
 #
-#   git log --all --pretty=format:"%s" --graph --decorate=full
+#   git log --all --pretty=format:"%s %d" --graph
 
 set_tests_properties(conversion PROPERTIES 
   DEPENDS prepare
