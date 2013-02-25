@@ -37,6 +37,9 @@ add_custom_target(test-svn-repo
   COMMAND ${IN_WC} "${SVN}" commit ${LOG_MSG} "added READYOU" 
   COMMAND "${CMAKE_COMMAND}" -E remove_directory "everything"
   COMMAND "${CMAKE_COMMAND}" -E remove_directory "svn2git-fallback"
+  COMMAND "${CMAKE_COMMAND}" -E remove -f 
+                      "log-everything" "gitlog-everything" 
+                      "log-svn2git-fallback" "gitlog-svn2git-fallback"
 )
 
 add_test(NAME prepare
