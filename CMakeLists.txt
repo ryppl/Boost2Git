@@ -37,12 +37,6 @@ add_custom_command(OUTPUT "${repositories_setup}"
   COMMENT "Cleaning temporary repositories."
   )
 
-if ("${CMAKE_HOST_SYSTEM}" STREQUAL "Windows")
-  set(SHELL_CMD cmd /c)
-else()
-  set(SHELL_CMD sh -c)
-endif()
-
 find_program(UNIQ uniq)
 if(UNIQ)
   set(pipe_uniq "2>&1" "|" "${UNIQ}")
@@ -66,7 +60,7 @@ add_custom_target(conversion ALL
     "${git_repository}"
   )
 
-set(GIT_PUSH git push --quiet --mirror)
+find_package(Git REQUIRED)
 
 # push all repositories
 file(STRINGS "${repositories}" repo_lines REGEX "^repository")
@@ -74,8 +68,10 @@ foreach(line IN LISTS repo_lines)
   string(REGEX MATCH "^repository ([^ :]+)" match "${line}")
   string(REPLACE "\"" "" name "${CMAKE_MATCH_1}")
   add_custom_target(push_${name} ALL
-    COMMAND ${SHELL_CMD} "${GIT_PUSH} git@bitbucket.org:boostorg/${name}.git || ${GIT_PUSH} git@bitbucket.org:boostorg/${name}.git"
-    COMMAND ${SHELL_CMD} "${GIT_PUSH} git@github.com:boostorg/${name}.git || ${GIT_PUSH} git@github.com:boostorg/${name}.git"
+    COMMAND ${CMAKE_COMMAND}
+      -D "GIT=${GIT_EXECUTABLE}"
+      -D "NAME=${name}"
+      -P "${Boost2Git_SOURCE_DIR}/git_push.cmake"
     DEPENDS conversion
     WORKING_DIRECTORY "${git_repository}/${name}"
     )
