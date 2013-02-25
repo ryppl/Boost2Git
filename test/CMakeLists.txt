@@ -23,7 +23,7 @@ add_custom_target(test-svn-repo
   COMMAND "${SVN}" mkdir ${LOG_MSG} "create trunk/" ${REPO_URI}/trunk
   COMMAND "${SVN}" mkdir ${LOG_MSG} "create tags/" ${REPO_URI}/tags
   COMMAND "${SVN}" mkdir ${LOG_MSG} "create branches/" ${REPO_URI}/branches
-  COMMAND "${SVN}" checkout "${REPO_URI}" test-wc
+  COMMAND "${SVN}" checkout "${REPO_URI}/trunk" test-wc
   COMMAND echo "This is the README" > "${WC_PATH}/README.txt"
   COMMAND ${IN_WC} "${SVN}" add README.txt
   COMMAND ${IN_WC} "${SVN}" commit ${LOG_MSG} "first commit" 
