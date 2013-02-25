@@ -498,7 +498,7 @@ int SvnRevision::exportEntry(
     Log::warn()
       << "File '"
       << qPrintable(current)
-      << "'not accounted for. Putting to fallback."
+      << "' not accounted for. Putting to fallback."
       << std::endl
       ;
     return exportDispatch(key, change, path_from, rev_from, changes, current, Ruleset::fallback, matchRules, revpool);
