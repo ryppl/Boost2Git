@@ -616,7 +616,7 @@ int SvnRevision::exportInternal(
         << path_from
         << "@"
         << rev_from
-        << "but no matching rules found! Ignoring copy, treating as a modification"
+        << " but no matching rules found! Ignoring copy, treating as a modification"
         << std::endl
         ;
       path_from = NULL;
@@ -788,6 +788,7 @@ int SvnRevision::exportInternal(
       << key
       << "->"
       << qPrintable(branch)
+      << "/"
       << qPrintable(path)
       << ")"
       << std::endl

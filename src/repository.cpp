@@ -88,7 +88,7 @@ Repository::Repository(const Ruleset::Repository &rule, bool incremental)
   if (!options.dry_run) {
     if (!QDir(name).exists()) { // repo doesn't exist yet.
       Log::trace()
-        << "Creating new repository"
+        << "Creating new repository "
         << qPrintable(name)
         << std::endl
         ;

@@ -19,10 +19,12 @@ void run_sync(Exe const& exe BOOST_PP_ENUM_TRAILING_BINARY_PARAMS(n, A, const& a
   std::vector<std::string> args(1, exe_str);
   BOOST_PP_REPEAT(n, PUSH_BACK_ARG, ~)
 
-  std::cerr << "++ in " << fs::current_path() << std::endl;
-  std::cerr << "++ process::execute(" << exe_path BOOST_PP_REPEAT(n, STREAM, ~)
-  << ")" << std::endl << std::flush;
-
+#if 0
+  std::cerr << "in " << fs::current_path() << std::endl
+            << "process::execute(" << exe_path BOOST_PP_REPEAT(n, STREAM, ~) << ")"
+            << std::endl << std::flush;
+#endif
+  
   wait_for_exit(process::execute(
      run_exe(exe_path), set_args(args), throw_on_error() ));
   }
