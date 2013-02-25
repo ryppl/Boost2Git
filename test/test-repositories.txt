@@ -23,6 +23,6 @@ repository everything : common_branches
 {
   content
   {
-    "/" : "/";
+    "/";
   }
 }
