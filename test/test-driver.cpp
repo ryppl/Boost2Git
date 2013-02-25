@@ -85,5 +85,5 @@ BOOST_AUTO_TEST_CASE(create_repo)
   run_sync(
       argv[1], "--add-metadata", "--exit-success", "--rules", argv[2], "--svnrepo", "test-repo", "--authors", argv[3]);
   
-  BOOST_CHECK(fs::exists( root/"everything.git" ));
+  BOOST_CHECK(fs::exists( root/"everything" ));
   }
