@@ -164,7 +164,7 @@ Ruleset::Match Ruleset::fallback =
   UINT_MAX,
   "/",
   "svn2git-fallback",
-  "master",
+  "refs/heads/master",
   ""
   };
 
