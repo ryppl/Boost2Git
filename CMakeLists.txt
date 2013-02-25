@@ -37,7 +37,7 @@ add_custom_command(OUTPUT "${repositories_setup}"
   COMMENT "Cleaning temporary repositories."
   )
 
-if ("${CMAKE_HOST_SYSTEM}" STREQUAL"Windows")
+if ("${CMAKE_HOST_SYSTEM}" STREQUAL "Windows")
   set(SHELL_CMD cmd /c)
 else()
   set(SHELL_CMD sh -c)
