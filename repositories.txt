@@ -1948,3 +1948,38 @@ repository website
   }
 }
 
+repository boost : common_branches
+{
+  content
+  {
+    "doc/"                     : "doc/";
+    "libs/compiler_status.htm" : "libs/compiler_status.htm";
+    "libs/cs-beos.html"        : "libs/cs-beos.html";
+    "libs/cs-linux2.html"      : "libs/cs-linux2.html";
+    "libs/cs-win32.html"       : "libs/cs-win32.html";
+    "libs/hdr_depend.html"     : "libs/hdr_depend.html";
+    "libs/libraries.htm"       : "libs/libraries.htm";
+    "libs/regrtest.py"         : "libs/regrtest.py";
+    "more/"                    : "more/";
+    "people/"                  : "people/";
+    "status/"                  : "status/";
+    "INSTALL"                  : "INSTALL";
+    "Jamroot"                  : "Jamroot";
+    "LICENSE_1_0.txt"          : "LICENSE_1_0.txt";
+    "README"                   : "README";
+    "boost-build.jam"          : "boost-build.jam";
+    "boost.css"                : "boost.css";
+    "boost.png"                : "boost.png";
+    "boostcpp.jam"             : "boostcpp.jam";
+    "boostcpp.py"              : "boostcpp.py";
+    "bootstrap.bat"            : "bootstrap.bat";
+    "bootstrap.sh"             : "bootstrap.sh";
+    "c++boost.gif"             : "c++boost.gif";
+    "index.htm"                : "index.htm";
+    "index.html"               : "index.html";
+    "libraries.htm"            : "libraries.htm";
+    "people.htm"               : "people.htm";
+    "rst.css"                  : "rst.css";
+  }
+}
+
