@@ -407,8 +407,8 @@ int Repository::createBranch(
     << qPrintable(branch)
     << " from "
     << qPrintable(branchFrom)
-    << " ("
-    << qPrintable(branchRevNum)
+    << " (r"
+    << branchRevNum
     << ' '
     << qPrintable(branchFromDesc)
     << ')'
