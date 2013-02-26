@@ -8,7 +8,7 @@ execute_process(COMMAND ${GIT} push --quiet --mirror git@bitbucket.org:boostorg/
 execute_process(COMMAND ${GIT} push --quiet --mirror git@bitbucket.org:boostorg/${NAME}.git
   RESULT_VARIABLE result
   )
-if(NOT result EQUALS 0)
+if(NOT result EQUAL 0)
   message(FATAL_ERROR "Failed to push ${NAME} to bitbucket!")
 endif()
 
@@ -16,6 +16,6 @@ execute_process(COMMAND ${GIT} push --quiet --mirror git@github.com:boostorg/${N
 execute_process(COMMAND ${GIT} push --quiet --mirror git@github.com:boostorg/${NAME}.git
   RESULT_VARIABLE result
   )
-if(NOT result EQUALS 0)
+if(NOT result EQUAL 0)
   message(FATAL_ERROR "Failed to push ${NAME} to github!")
 endif()
