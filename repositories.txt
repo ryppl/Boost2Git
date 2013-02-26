@@ -1505,7 +1505,10 @@ repository boost : common_branches
     "more/"                    : "more/";
     "people/"                  : "people/";
     "status/"                  : "status/";
-    "tools/index.html"         : "tools/index.html";
+
+    // lets grab all tools tools that are not matched somewhere else already.
+    "tools/"                   : "tools/";
+
     "INSTALL"                  : "INSTALL";
     "Jamfile"                  : "Jamfile";
     "Jamfile.v2"               : "Jamfile.v2";
