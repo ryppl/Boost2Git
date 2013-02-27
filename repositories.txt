@@ -174,8 +174,9 @@ abstract repository common_branches
     [38008:     ] "/branches/Boost_Jam_994/boost/" : "old-branches/Boost_Jam_994";
     [38288:     ] "/branches/RC_1_34_0/boost/" : "old-branches/RC_1_34_0";
     [38317:     ] "/branches/QUICKBOOK_BACKEND/boost/" : "old-branches/QUICKBOOK_BACKEND";
+    [38689:     ] "/branches/serialization_next_release/boost/" : "serialization_next_release";
+    [38774:     ] "/branches/quickbook/backend/boost/" : "quickbook/backend";
     [42409:     ] "/branches/unordered/refactor/" : "unordered/refactor";
-    [42650:     ] "/branches/serialization_next_release/" : "serialization_next_release";
     [43289:     ] "/branches/fix-links/" : "fix-links";
     [43457:     ] "/branches/iostreams_dev/" : "iostreams_dev";
     [43495:     ] "/branches/CMake-release/" : "CMake-release";
@@ -198,13 +199,11 @@ abstract repository common_branches
     [55965:     ] "/branches/sredl_2009_05_proptree_update/" : "sredl_2009_05_proptree_update";
     [59143:     ] "/branches/b2/" : "b2";
     [59531:     ] "/branches/maintenance/1_41/" : "maintenance/1_41";
-    [59592:     ] "/branches/quickbook/backend/" : "quickbook/backend";
     [61443:     ] "/branches/inspect/" : "inspect";
     [62517:     ] "/branches/units/autoprefix/" : "units/autoprefix";
     [62928:     ] "/branches/date_time_io_rewrite/" : "date_time_io_rewrite";
     [63100:     ] "/branches/filesystem3/" : "filesystem3";
     [63514:     ] "/branches/ublas-doxygen/" : "ublas-doxygen";
-    [65351:     ] "/branches/quickbook-1.5-spirit2/" : "quickbook-1.5-spirit2";
     [68398:     ] "/branches/quickbook-filenames/" : "quickbook-filenames";
     [68409:     ] "/branches/release/" : "release";
     [68640:     ] "/branches/doc-tools-docs/" : "doc-tools-docs";
@@ -360,6 +359,15 @@ repository compatibility : common_branches
   }
 }
 
+repository compose : common_branches
+{
+  content
+  {
+    "boost/compose.hpp" : "include/boost/compose.hpp";
+    "libs/compose/";
+  }
+}
+
 repository concept_check : common_branches
 {
   content
@@ -493,6 +501,14 @@ repository date_time : common_branches
     "boost/date_time.hpp" : "include/boost/date_time.hpp";
     "boost/date_time/" : "include/boost/date_time/";
     "libs/date_time/";
+  }
+}
+
+repository dir_it : common_branches
+{
+  content
+  {
+    "libs/dir_it/";
   }
 }
 
@@ -841,6 +857,15 @@ repository math : common_branches
     "boost/math/" : "include/boost/math/";
     "boost/math_fwd.hpp" : "include/boost/math_fwd.hpp";
     "libs/math/";
+  }
+}
+
+repository min_rand : common_branches
+{
+  content
+  {
+    "boost/min_rand.hpp" : "include/boost/min_rand.hpp";
+    "libs/min_rand/";
   }
 }
 
@@ -1459,6 +1484,18 @@ repository quickbook : common_branches
   }
 }
 
+repository quickbook
+{
+  content
+  {
+    "/";
+  }
+  branches
+  {
+    [57767:65351] "/branches/quickbook-1.5-spirit2/" : "quickbook-1.5-spirit2";
+  }
+}
+
 repository sandbox
 {
   content
@@ -1479,10 +1516,10 @@ repository website
   branches
   {
     [:]    "/website/workplace/"        : "workplace";
-    [:137] "/website/"                  : "master";
     [138:] "/website/public_html/live/" : "master";
     [138:] "/website/public_html/beta/" : "beta";
     [:]    "/website/public_html/dev/"  : "dev";
+    [:139] "/website/"                  : "master";
   }
 }
 
