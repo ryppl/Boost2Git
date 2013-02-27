@@ -448,9 +448,11 @@ repository core : common_branches
     "boost/detail/scoped_enum_emulation.hpp" : "include/boost/detail/scoped_enum_emulation.hpp";
     "boost/detail/select_type.hpp" : "include/boost/detail/select_type.hpp";
     "boost/detail/templated_streams.hpp" : "include/boost/detail/templated_streams.hpp";
+    "boost/detail/utf8_codecvt_facet.cpp" : "include/boost/detail/utf8_codecvt_facet.cpp";
     "boost/detail/utf8_codecvt_facet.hpp" : "include/boost/detail/utf8_codecvt_facet.hpp";
     "boost/detail/utf8_codecvt_facet.ipp" : "include/boost/detail/utf8_codecvt_facet.ipp";
     "boost/detail/workaround.hpp" : "include/boost/detail/workaround.hpp";
+    "boost/functional/detail/container_fwd.hpp" : "include/boost/functional/detail/container_fwd.hpp";
     "boost/pending/cstddef.hpp" : "include/boost/pending/cstddef.hpp";
     "boost/pending/integer_log2.hpp" : "include/boost/pending/integer_log2.hpp";
     "boost/blank.hpp" : "include/boost/blank.hpp";
@@ -1477,9 +1479,10 @@ repository website
   branches
   {
     [:]    "/website/workplace/"        : "workplace";
+    [:137] "/website/"                  : "master";
     [138:] "/website/public_html/live/" : "master";
-    [138:] "/website/public_html/beta/" : "develop";
-    [:137] "/website/"                  : "develop";
+    [138:] "/website/public_html/beta/" : "beta";
+    [:]    "/website/public_html/dev/"  : "dev";
   }
 }
 
@@ -1488,6 +1491,8 @@ repository boost : common_branches
   content
   {
     "doc/"                     : "doc/";
+    "libs/numeric/index.html"  : "libs/numeric/index.html";
+    "libs/numeric/sublibs"     : "libs/numeric/sublibs";
     "libs/compiler.cfg"        : "libs/compiler.cfg";
     "libs/compiler_status.htm" : "libs/compiler_status.htm";
     "libs/cs-beos.html"        : "libs/cs-beos.html";
@@ -1498,9 +1503,11 @@ repository boost : common_branches
     "libs/cs-osf1V5.html"      : "libs/cs-osf1V5.html";
     "libs/cs-tru64.html"       : "libs/cs-tru64.html";
     "libs/cs-win32.html"       : "libs/cs-win32.html";
+    "libs/expected_results.xml" : "libs/expected_results.xml";
     "libs/hdr_depend.html"     : "libs/hdr_depend.html";
     "libs/libraries.htm"       : "libs/libraries.htm";
     "libs/maintainers.txt"     : "libs/maintainers.txt";
+    "libs/platform_maintainers.txt" : "libs/platform_maintainers.txt";
     "libs/regression.cfg"      : "libs/regression.cfg";
     "libs/regression.cpp"      : "libs/regression.cpp";
     "libs/regrtest.cpp"        : "libs/regrtest.cpp";
@@ -1509,9 +1516,15 @@ repository boost : common_branches
     "more/"                    : "more/";
     "people/"                  : "people/";
     "status/"                  : "status/";
-    "tools/index.html"         : "tools/index.html";
+
+    // lets grab all tools tools that are not matched somewhere else already.
+    "tools/"                   : "tools/";
+
     "INSTALL"                  : "INSTALL";
+    "Jamfile"                  : "Jamfile";
+    "Jamfile.v2"               : "Jamfile.v2";
     "Jamroot"                  : "Jamroot";
+    "Jamrules"                 : "Jamrules";
     "LICENSE_1_0.txt"          : "LICENSE_1_0.txt";
     "README"                   : "README";
     "boost-build.jam"          : "boost-build.jam";
@@ -1521,11 +1534,14 @@ repository boost : common_branches
     "boostcpp.py"              : "boostcpp.py";
     "bootstrap.bat"            : "bootstrap.bat";
     "bootstrap.sh"             : "bootstrap.sh";
+    "configure"                : "configure";
     "c++boost.gif"             : "c++boost.gif";
+    "google_logo_40wht.png"    : "google_logo_40wht.png";
     "index.htm"                : "index.htm";
     "index.html"               : "index.html";
     "libraries.htm"            : "libraries.htm";
     "people.htm"               : "people.htm";
+    "project-root.jam"         : "project-root.jam";
     "rst.css"                  : "rst.css";
   }
 }

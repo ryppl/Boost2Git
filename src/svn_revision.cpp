@@ -685,8 +685,8 @@ int SvnRevision::exportInternal(
         // same repository but not same branch
         // this means this is a plain branch
         Log::debug()
-          << qPrintable(repository) << ": branch"
-          << qPrintable(branch) << "is branching from"
+          << qPrintable(repository) << ": branch "
+          << qPrintable(branch) << " is branching from "
           << qPrintable(prevbranch)
           << std::endl
           ;
