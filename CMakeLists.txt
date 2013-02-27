@@ -67,14 +67,16 @@ file(STRINGS "${repositories}" repo_lines REGEX "^repository")
 foreach(line IN LISTS repo_lines)
   string(REGEX MATCH "^repository ([^ :]+)" match "${line}")
   string(REPLACE "\"" "" name "${CMAKE_MATCH_1}")
-  add_custom_target(push_${name} ALL
-    COMMAND ${CMAKE_COMMAND}
-      -D "GIT=${GIT_EXECUTABLE}"
-      -D "NAME=${name}"
-      -P "${Boost2Git_SOURCE_DIR}/git_push.cmake"
-    DEPENDS conversion
-    WORKING_DIRECTORY "${git_repository}/${name}"
-    )
+  if(NOT TARGET push_${name})
+    add_custom_target(push_${name} ALL
+      COMMAND ${CMAKE_COMMAND}
+        -D "GIT=${GIT_EXECUTABLE}"
+        -D "NAME=${name}"
+        -P "${Boost2Git_SOURCE_DIR}/git_push.cmake"
+      DEPENDS conversion
+      WORKING_DIRECTORY "${git_repository}/${name}"
+      )
+  endif()
 endforeach()
 
 add_custom_target(push_fallback ALL
