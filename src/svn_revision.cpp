@@ -447,7 +447,15 @@ int SvnRevision::exportEntry(
   if (match != matchRules.end())
     {
     const Ruleset::Match &rule = *match;
-    if ( exportDispatch(key, change, path_from, rev_from, changes, current, rule, matchRules, revpool) == EXIT_FAILURE )
+    if (is_dir && rule.match.length() == current.length())
+      {
+      // make sure we don't accidentally match fallback rules!
+      if (recurse(key, change, path_from, matchRules, rev_from, changes, revpool) == EXIT_FAILURE)
+        {
+        return EXIT_FAILURE;
+        }
+      }
+    else if (exportDispatch(key, change, path_from, rev_from, changes, current, rule, matchRules, revpool) == EXIT_FAILURE)
       {
       return EXIT_FAILURE;
       }

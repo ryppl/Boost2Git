@@ -208,6 +208,7 @@ abstract repository common_branches
     [68398:     ] "/branches/quickbook-filenames/" : "quickbook-filenames";
     [68409:     ] "/branches/release/" : "release";
     [68640:     ] "/branches/doc-tools-docs/" : "doc-tools-docs";
+    [72078:     ] "/branches/quickbook-dev/" : "quickbook-dev";
   }
   tags
   {
@@ -534,6 +535,11 @@ repository filesystem : common_branches
     "boost/filesystem.hpp" : "include/boost/filesystem.hpp";
     "boost/filesystem/" : "include/boost/filesystem/";
     "libs/filesystem/";
+  }
+  branches
+  {
+    [77386:77500] "/branches/filesystem-v3/" : "filesystem-v3";
+    [77386:77500] "/branches/filesystem-v3a/" : "filesystem-v3a";
   }
 }
 
@@ -999,6 +1005,11 @@ repository preprocessor : common_branches
     "boost/preprocessor.hpp" : "include/boost/preprocessor.hpp";
     "boost/preprocessor/" : "include/boost/preprocessor/";
     "libs/preprocessor/";
+  }
+  branches
+  {
+    [70548:     ] "/branches/pplib/variadics/" : "variadics";
+    [71970:     ] "/branches/pplib/v2/" : "v2";
   }
 }
 
