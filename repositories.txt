@@ -447,6 +447,7 @@ repository core : common_branches
     "boost/detail/lightweight_test.hpp" : "include/boost/detail/lightweight_test.hpp";
     "boost/detail/lightweight_thread.hpp" : "include/boost/detail/lightweight_thread.hpp";
     "boost/detail/limits.hpp" : "include/boost/detail/limits.hpp";
+    "boost/detail/main.hpp" : "include/boost/detail/main.hpp";
     "boost/detail/named_template_params.hpp" : "include/boost/detail/named_template_params.hpp";
     "boost/detail/no_exceptions_support.hpp" : "include/boost/detail/no_exceptions_support.hpp";
     "boost/detail/none_t.hpp" : "include/boost/detail/none_t.hpp";
@@ -456,7 +457,6 @@ repository core : common_branches
     "boost/detail/scoped_enum_emulation.hpp" : "include/boost/detail/scoped_enum_emulation.hpp";
     "boost/detail/select_type.hpp" : "include/boost/detail/select_type.hpp";
     "boost/detail/templated_streams.hpp" : "include/boost/detail/templated_streams.hpp";
-    "boost/detail/utf8_codecvt_facet.cpp" : "include/boost/detail/utf8_codecvt_facet.cpp";
     "boost/detail/utf8_codecvt_facet.hpp" : "include/boost/detail/utf8_codecvt_facet.hpp";
     "boost/detail/utf8_codecvt_facet.ipp" : "include/boost/detail/utf8_codecvt_facet.ipp";
     "boost/detail/workaround.hpp" : "include/boost/detail/workaround.hpp";
@@ -472,6 +472,7 @@ repository core : common_branches
     "boost/type.hpp" : "include/boost/type.hpp";
     "boost/version.hpp" : "include/boost/version.hpp";
     "boost/visit_each.hpp" : "include/boost/visit_each.hpp";
+    "libs/detail/utf8_codecvt_facet.cpp" : "utf8_codecvt_facet.cpp";
     "libs/detail/test/" : "test/";
   }
 }
@@ -632,6 +633,8 @@ repository functional_hash : common_branches
 {
   content
   {
+    "boost/functional/detail/float_functions.hpp" : "include/boost/functional/detail/float_functions.hpp";
+    "boost/functional/detail/hash_float.hpp" : "include/boost/functional/detail/hash_float.hpp";
     "boost/functional/hash/" : "include/boost/functional/hash/";
     "boost/functional/hash.hpp" : "include/boost/functional/hash.hpp";
     "boost/functional/hash_fwd.hpp" : "include/boost/functional/hash_fwd.hpp";
@@ -1145,6 +1148,7 @@ repository regex : common_branches
     "boost/regex.hpp" : "include/boost/regex.hpp";
     "boost/regex_fwd.hpp" : "include/boost/regex_fwd.hpp";
     "boost/regex/" : "include/boost/regex/";
+    "boost/re_detail/" : "include/boost/re_detail/";
     "libs/regex/";
   }
 }
@@ -1492,6 +1496,7 @@ repository quickbook
   }
   branches
   {
+    [53447:54138] "/branches/quickbook-1.5" : "quickbook-1.5";
     [57767:65351] "/branches/quickbook-1.5-spirit2/" : "quickbook-1.5-spirit2";
   }
 }
@@ -1527,6 +1532,7 @@ repository boost : common_branches
 {
   content
   {
+    "build/"                   : "build/";
     "doc/"                     : "doc/";
     "libs/numeric/index.html"  : "libs/numeric/index.html";
     "libs/numeric/sublibs"     : "libs/numeric/sublibs";
@@ -1542,6 +1548,7 @@ repository boost : common_branches
     "libs/cs-win32.html"       : "libs/cs-win32.html";
     "libs/expected_results.xml" : "libs/expected_results.xml";
     "libs/hdr_depend.html"     : "libs/hdr_depend.html";
+    "libs/index.html"          : "libs/index.html";
     "libs/libraries.htm"       : "libs/libraries.htm";
     "libs/maintainers.txt"     : "libs/maintainers.txt";
     "libs/platform_maintainers.txt" : "libs/platform_maintainers.txt";
@@ -1552,11 +1559,14 @@ repository boost : common_branches
     "libs/regrtest_files.txt"  : "libs/regrtest_files.txt";
     "more/"                    : "more/";
     "people/"                  : "people/";
+    "regression/"              : "regression/";
     "status/"                  : "status/";
 
-    // lets grab all tools tools that are not matched somewhere else already.
+    // lets grab all tools that are not matched somewhere else already.
     "tools/"                   : "tools/";
 
+    "wiki/"                    : "wiki/";
+    "CMakeLists.txt"           : "CMakeLists.txt";
     "INSTALL"                  : "INSTALL";
     "Jamfile"                  : "Jamfile";
     "Jamfile.v2"               : "Jamfile.v2";
