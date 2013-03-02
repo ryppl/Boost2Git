@@ -442,7 +442,7 @@ abstract repository common_branches
     [38008:     ] "/branches/Boost_Jam_994/boost/" : "old-branches/Boost_Jam_994";
     [38288:     ] "/branches/RC_1_34_0/boost/" : "old-branches/RC_1_34_0";
     [38317:     ] "/branches/QUICKBOOK_BACKEND/boost/" : "old-branches/QUICKBOOK_BACKEND";
-    [38327:38327] "/devel/" : "master";
+    [38327:38328] "/devel/" : "master";
     [38328:     ] "/trunk/" : "master";
     [38689:     ] "/branches/serialization_next_release/boost/" : "serialization_next_release";
     [38774:     ] "/branches/quickbook/backend/boost/" : "quickbook/backend";
@@ -500,6 +500,7 @@ abstract repository common_branches
   }
   tags
   {
+    [     :     ] "/branches/c++0x/boost/" : "old-branches/c++0x";
     [     :     ] "/tags/release/Boost_1_46_0/" : "release/Boost_1_46_0";
     [     :     ] "/tags/release/Boost_1_47_0_beta1/" : "release/Boost_1_47_0_beta1";
     [     :     ] "/sandbox-tags/predef/" : "sandbox/predef";
@@ -899,7 +900,7 @@ abstract repository common_branches
     [39974:     ] "/branches/release-tools/" : "old-branches/release-tools";
     [40258:     ] "/branches/jam/4_0/" : "old-branches/jam/4_0";
     [40266:     ] "/branches/hash/" : "old-branches/hash";
-    [40311:     ] "/tags/Version_1_34_1/" : "Version_1_34_1";
+    [     :     ] "/tags/Version_1_34_1/boost/" : "Version_1_34_1";
     [40383:     ] "/branches/fusion/2_1/" : "old-branches/fusion/2_1";
     [41031:     ] "/branches/system/" : "old-branches/system";
     [41909:     ] "/branches/bitten/" : "old-branches/bitten";
