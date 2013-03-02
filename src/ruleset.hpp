@@ -45,6 +45,7 @@ class Ruleset
       std::string repository;
       std::string branch;
       std::string prefix;
+      bool is_fallback;
       };
     struct Repository
       {

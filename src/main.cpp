@@ -29,7 +29,6 @@
 
 #include "apr_init.hpp"
 #include "authors.hpp"
-#include "recurse.hpp"
 #include "ruleset.hpp"
 #include "repository.h"
 #include "svn.h"
@@ -41,7 +40,6 @@ int main(int argc, char **argv)
   {
   bool exit_success = false;
   std::string authors_file;
-  std::string recurse_file;
   std::string rules_file;
   std::string svn_path;
   int resume_from = 0;
@@ -59,7 +57,6 @@ int main(int argc, char **argv)
       ("exit-success", "exit with 0, even if errors occured")
       ("authors", po::value(&authors_file)->value_name("FILENAME"), "map between svn username and email")
       ("svnrepo", po::value(&svn_path)->value_name("PATH")->required(), "path to svn repository")
-      ("recurse", po::value(&recurse_file)->value_name("FILENAME"), "file with recurse expressions")
       ("rules", po::value(&rules_file)->value_name("FILENAME")->required(), "file with the conversion rules")
       ("add-metadata", "if passed, each git commit will have svn commit info")
       ("add-metadata-notes", "if passed, each git commit will have notes with svn commit info")
@@ -118,7 +115,6 @@ int main(int argc, char **argv)
   try {
 
     Authors authors(authors_file);
-    Recurse recurse(recurse_file);
 
     // Load the configuration
     Ruleset ruleset(rules_file);
@@ -189,7 +185,7 @@ retry:
       min_rev = resume_from;
       }
 
-    Svn svn(svn_path, authors, recurse, ruleset);
+    Svn svn(svn_path, authors, ruleset);
     svn.setRepositories(repositories);
 
     if (max_rev < 1)

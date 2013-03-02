@@ -27,7 +27,6 @@
 #include "apr_pool.hpp"
 
 class Authors;
-class Recurse;
 class Ruleset;
 class Repository;
 
@@ -37,7 +36,6 @@ class Svn
     Svn(
         std::string const& repo_path,
         Authors const& authors,
-        Recurse const& recurse,
         Ruleset const& ruleset);
     ~Svn();
 
@@ -54,7 +52,6 @@ class Svn
   public:
     QHash<QString, Repository*> repositories;
     Authors const& authors;
-    Recurse const& recurse;
     Ruleset const& ruleset;
   };
 

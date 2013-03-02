@@ -1532,7 +1532,7 @@ repository graph : common_branches
   content
   {
     "boost/detail/algorithm.hpp"              : "include/boost/detail/algorithm.hpp";
-    "boost/graph/"                            : "include/boost/graph/";
+    "boost/graph/"                           ?: "include/boost/graph/";
     "boost/pending/bucket_sorter.hpp"         : "include/boost/pending/bucket_sorter.hpp";
     "boost/pending/container_traits.hpp"      : "include/boost/pending/container_traits.hpp";
     "boost/pending/detail/property.hpp"       : "include/boost/pending/detail/property.hpp";
@@ -2393,7 +2393,7 @@ repository boost : common_branches
     "status/"                  : "status/";
 
     // lets grab all tools that are not matched somewhere else already.
-    "tools/"                   : "tools/";
+    "tools/"                  ?: "tools/";
 
     "wiki/"                    : "wiki/";
     "CMakeLists.txt"           : "CMakeLists.txt";

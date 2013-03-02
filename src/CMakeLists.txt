@@ -33,8 +33,6 @@ add_executable(svn2git
   log.cpp
   log.hpp
   logging_process.hpp
-  recurse.cpp
-  recurse.hpp
   repository.cpp
   repository.h
   ruleset.cpp
