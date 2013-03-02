@@ -35,6 +35,9 @@ add_custom_target(test-svn-repo
   COMMAND echo "This is the NEW YOU" > "${WC_PATH}/READYOU.txt"
   COMMAND ${IN_WC} "${SVN}" add READYOU.txt
   COMMAND ${IN_WC} "${SVN}" commit ${LOG_MSG} "added READYOU" 
+  COMMAND  ${IN_WC} "${SVN}" switch "${REPO_URI}/trunk" .
+  COMMAND echo "This is the Final README" > "${WC_PATH}/README.txt"
+  COMMAND ${IN_WC} "${SVN}" commit ${LOG_MSG} "Final README" 
   COMMAND "${CMAKE_COMMAND}" -E remove_directory "everything"
   COMMAND "${CMAKE_COMMAND}" -E remove_directory "svn2git-fallback"
   COMMAND "${CMAKE_COMMAND}" -E remove -f 
