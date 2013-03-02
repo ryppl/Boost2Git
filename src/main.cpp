@@ -29,6 +29,7 @@
 
 #include "apr_init.hpp"
 #include "authors.hpp"
+#include "recurse.hpp"
 #include "ruleset.hpp"
 #include "repository.h"
 #include "svn.h"
@@ -117,7 +118,7 @@ int main(int argc, char **argv)
   try {
 
     Authors authors(authors_file);
-
+    Recurse recurse(recurse_file);
 
     // Load the configuration
     Ruleset ruleset(rules_file);
@@ -188,7 +189,7 @@ retry:
       min_rev = resume_from;
       }
 
-    Svn svn(svn_path, authors, ruleset);
+    Svn svn(svn_path, authors, recurse, ruleset);
     svn.setRepositories(repositories);
 
     if (max_rev < 1)

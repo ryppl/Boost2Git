@@ -25,6 +25,7 @@ else()
 endif()
 
 set(authors      "${Boost2Git_SOURCE_DIR}/authors.txt")
+set(recurse      "${Boost2Git_SOURCE_DIR}/recurse.txt")
 set(repositories "${Boost2Git_SOURCE_DIR}/repositories.txt")
 
 # clean
@@ -33,7 +34,7 @@ add_custom_command(OUTPUT "${repositories_setup}"
   COMMAND ${CMAKE_COMMAND} -E remove_directory "${git_repository}"
   COMMAND ${CMAKE_COMMAND} -E make_directory "${git_repository}"
   COMMAND ${CMAKE_COMMAND} -E touch "${repositories_setup}"
-  DEPENDS svn2git "${authors}" "${repositories}"
+  DEPENDS svn2git "${authors}" "${recurse}" "${repositories}"
   COMMENT "Cleaning temporary repositories."
   )
 
@@ -51,6 +52,7 @@ add_custom_target(conversion ALL
     --add-metadata
     --exit-success
     --authors "${authors}"
+    --recurse "${recurse}"
     --rules   "${repositories}"
     --svnrepo "${svn_repository}"
     ${pipe_uniq}

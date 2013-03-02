@@ -19,6 +19,7 @@
 #define SVN_DEPRECATED
 #include "svn_revision.hpp"
 #include "authors.hpp"
+#include "recurse.hpp"
 #include "svn.h"
 #include "log.hpp"
 
@@ -371,6 +372,12 @@ int SvnRevision::exportEntry(
   const char *path_from;
   check_svn(svn_fs_copied_from(&rev_from, &path_from, fs_root, key, revpool));
 
+  if (svn.recurse.test(key))
+    {
+    MatchRuleList const& matchRules = svn.ruleset.matches();
+    return recurse(key, change, path_from, matchRules, rev_from, changes, revpool);
+    }
+
   // is this a directory?
   svn_boolean_t is_dir;
   check_svn(svn_fs_is_dir(&is_dir, fs_root, key, revpool));
@@ -447,15 +454,7 @@ int SvnRevision::exportEntry(
   if (match != matchRules.end())
     {
     const Ruleset::Match &rule = *match;
-    if (is_dir && rule.match.length() == current.length())
-      {
-      // make sure we don't accidentally match fallback rules!
-      if (recurse(key, change, path_from, matchRules, rev_from, changes, revpool) == EXIT_FAILURE)
-        {
-        return EXIT_FAILURE;
-        }
-      }
-    else if (exportDispatch(key, change, path_from, rev_from, changes, current, rule, matchRules, revpool) == EXIT_FAILURE)
+    if (exportDispatch(key, change, path_from, rev_from, changes, current, rule, matchRules, revpool) == EXIT_FAILURE)
       {
       return EXIT_FAILURE;
       }

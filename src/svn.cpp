@@ -34,8 +34,9 @@
 Svn::Svn(
     std::string const& repo_path,
     Authors const& authors,
+    Recurse const& recurse,
     Ruleset const& ruleset)
-    : global_pool(NULL), authors(authors), ruleset(ruleset)
+    : global_pool(NULL), authors(authors), recurse(recurse), ruleset(ruleset)
   {
   try
     {
