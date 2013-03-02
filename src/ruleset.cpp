@@ -17,16 +17,11 @@
 
 #include "ruleset.hpp"
 
-#include <map>
 #include <string>
 #include <vector>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/fusion/adapted/struct/adapt_struct.hpp>
-#include <boost/fusion/include/std_pair.hpp>
 #include <boost/spirit/home/qi.hpp>
-
-typedef std::map<std::string, std::string> Dictionary;
-typedef std::pair<std::string, std::string> DictEntry;
 
 #include <fstream>
 #include <iomanip>
@@ -39,6 +34,13 @@ typedef std::pair<std::string, std::string> DictEntry;
 namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
 namespace classic = boost::spirit::classic;
+
+struct ContentRule
+  {
+  std::string prefix;
+  std::string replace;
+  bool is_fallback;
+  };
 
 struct BranchRule
   {
@@ -54,10 +56,16 @@ struct RepoRule
   std::string name;
   std::string parent;
   std::size_t minrev;
-  Dictionary content;
+  std::vector<ContentRule> content;
   std::vector<BranchRule> branch_rules;
   std::vector<BranchRule> tag_rules;
   };
+
+BOOST_FUSION_ADAPT_STRUCT(ContentRule,
+  (std::string, prefix)
+  (bool, is_fallback)
+  (std::string, replace)
+  )
 
 BOOST_FUSION_ADAPT_STRUCT(BranchRule,
   (std::size_t, min)
@@ -71,7 +79,7 @@ BOOST_FUSION_ADAPT_STRUCT(RepoRule,
   (std::string, name)
   (std::string, parent)
   (std::size_t, minrev)
-  (Dictionary, content)
+  (std::vector<ContentRule>, content)
   (std::vector<BranchRule>, branch_rules)
   (std::vector<BranchRule>, tag_rules)
   )
@@ -98,7 +106,7 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
     content_
      %= qi::lit("content")
       > '{'
-      > *(string_ > -(':' > string_) > ';')
+      > +(string_ > qi::matches['?'] > -(':' > string_) > ';')
       > '}'
       ;
     branches_
@@ -130,7 +138,7 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
       ;
     }
   qi::rule<Iterator, RepoRule(), Skipper> repository_;
-  qi::rule<Iterator, Dictionary(), Skipper> content_;
+  qi::rule<Iterator, std::vector<ContentRule>(), Skipper> content_;
   qi::rule<Iterator, std::vector<BranchRule>(), Skipper> branches_, tags_;
   qi::rule<Iterator, BranchRule(), Skipper> branch_;
   qi::rule<Iterator, std::string(), Skipper> string_;
@@ -272,13 +280,15 @@ Ruleset::Ruleset(std::string const& filename)
           {
           match.match = branch_rule.prefix;
           match.prefix.clear();
+          match.is_fallback = false;
           matches_.push_back(match);
           continue;
           }
-        BOOST_FOREACH(DictEntry const& content, repo_rule.content)
+        BOOST_FOREACH(ContentRule const& content, repo_rule.content)
           {
-          match.match = path_append(branch_rule.prefix, content.first);
-          match.prefix = content.second;
+          match.match = path_append(branch_rule.prefix, content.prefix);
+          match.prefix = content.replace;
+          match.is_fallback = content.is_fallback;
           matches_.push_back(match);
           }
         }

@@ -447,9 +447,8 @@ int SvnRevision::exportEntry(
   if (match != matchRules.end())
     {
     const Ruleset::Match &rule = *match;
-    if (is_dir && rule.match.length() == current.length())
+    if (is_dir && rule.is_fallback)
       {
-      // make sure we don't accidentally match fallback rules!
       if (recurse(key, change, path_from, matchRules, rev_from, changes, revpool) == EXIT_FAILURE)
         {
         return EXIT_FAILURE;
