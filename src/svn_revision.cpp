@@ -606,7 +606,8 @@ int SvnRevision::exportInternal(
   if (path_from != NULL)
     {
     previous = QString::fromUtf8(path_from);
-    if (wasDir(fs, rev_from, path_from, pool.data()))
+    bool was_dir = wasDir(fs, rev_from, path_from, pool.data());
+    if (was_dir)
       {
       previous += '/';
       }
@@ -617,14 +618,15 @@ int SvnRevision::exportInternal(
       }
     else
       {
-      Log::warn()
-        << "SVN reports a \"copy from\" @"
+      (was_dir ? Log::warn() : Log::info())
+        << "SVN reports a " << (was_dir ? "directory" : "file") << " \"copy from\" @"
         << revnum
         << " from "
         << path_from
         << "@"
         << rev_from
-        << " but no matching rules found! Ignoring copy, treating as a modification"
+        << " but no rules match the source of the copy!"
+        << " Ignoring copy; treating as a modification"
         << std::endl
         ;
       path_from = NULL;
