@@ -363,6 +363,10 @@ int SvnRevision::exportEntry(
     const svn_fs_path_change_t *change,
     apr_hash_t *changes)
   {
+  if (boost::contains(key, "CVSROOT"))
+    {
+    return EXIT_SUCCESS;
+    }
   AprPool revpool(pool.data());
   QString current = QString::fromUtf8(key);
 
