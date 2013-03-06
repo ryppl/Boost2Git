@@ -16,6 +16,22 @@ set(WC_PATH "${CMAKE_CURRENT_BINARY_DIR}/test-wc")
 set(IN_WC "${CMAKE_COMMAND}" -E chdir "${WC_PATH}")
 set(LOG_MSG --username test -m)
 
+find_package(Boost)
+include_directories(${Boost_INCLUDE_DIRS} ../src)
+
+add_executable(patrie_test
+  patrie_test.cpp
+  )
+
+add_test(patrie_test patrie_test)
+
+add_test(NAME prepare_patrie_test
+  COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target patrie_test)
+
+set_tests_properties(patrie_test PROPERTIES 
+  DEPENDS prepare_patrie_test
+  )
+
 add_custom_target(test-svn-repo 
   COMMAND "${CMAKE_COMMAND}" -E remove_directory "${REPO_PATH}"
   COMMAND "${CMAKE_COMMAND}" -E remove_directory "${WC_PATH}"
@@ -45,7 +61,7 @@ add_custom_target(test-svn-repo
                       "log-svn2git-fallback" "gitlog-svn2git-fallback"
 )
 
-add_test(NAME prepare
+add_test(NAME prepare_conversion
   COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target test-svn-repo)
 
 add_test(NAME conversion 
@@ -69,3 +85,6 @@ set_tests_properties(conversion PROPERTIES
   FAIL_REGULAR_EXPRESSION "(^|
 )[+][+] WARNING: "
   )
+
+
+
