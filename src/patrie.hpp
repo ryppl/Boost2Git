@@ -21,15 +21,16 @@ struct patrie
 public:
   void insert(Ruleset::Match const* rule)
     {
-    this->traverse(rule->match.begin(), rule->match.end(), insert_visitor(rule));
+    insert_visitor v(rule);
+    this->traverse(rule->match.begin(), rule->match.end(), v);
     }
 
   template <class Iterator>
   Ruleset::Match const* longest_match(Iterator start, Iterator finish)
     {
-    search_visitor searcher;
-    this->traverse(start, finish, searcher);
-    return searcher.found_rule;
+    search_visitor v;
+    this->traverse(start, finish, v);
+    return v.found_rule;
     }
   
 private:
@@ -141,7 +142,7 @@ private:
     };
   
   template <class Iterator, class Visitor>
-  void traverse(Iterator start, Iterator finish, Visitor visitor)
+  void traverse(Iterator start, Iterator finish, Visitor& visitor)
     {
     vector<node> *nodes = &this->trie;
     
