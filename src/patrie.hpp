@@ -75,6 +75,9 @@ private:
       // prepare a new node with the node's unmatched text and rule
       n.next.push_back(
           node(std::string(c, n.text.end()), n.rule));
+
+      // chop that part off of the original node
+      n.text.erase(c, n.text.end());
       
       // the next nodes of the tail node are those of the original node
       boost::swap(n.next.back().next, temp);
@@ -161,21 +164,24 @@ private:
           visitor.nomatch(*nodes, n, start, finish);
           return;
         }
-      
-      ++start;
-        
+
       // Look for the first difference between [start, finish) and
       // the node's text
       std::string::iterator c = n->text.begin();
-      while (++c != n->text.end() && start != finish)
+      ++c;
+      ++start;
+
+      while (c != n->text.end())
         {
-        if (*c != *start)
+        if (start == finish || *c != *start)
           {
           visitor.partial_match(*n, c, start, finish);
           return;
           }
         ++start;
+        ++c;
         }
+
       visitor.full_match(*n, start, finish);
       nodes = &n->next;
       }
