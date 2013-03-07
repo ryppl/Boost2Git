@@ -127,7 +127,10 @@ private:
     template <class Iterator>
     void full_match(node const& n, Iterator start, Iterator finish)
       {
-      found_rule = n.rule;
+      if (n.rule)
+        {
+        found_rule = n.rule;
+        }
       }
 
     Ruleset::Match const* found_rule;
