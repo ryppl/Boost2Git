@@ -23,5 +23,15 @@ int main()
   char test[] = "abracadaver";
   assert(p.longest_match(test, test+sizeof(test)-1) == rules + 2);
   }
-  
+
+  {
+  char test[] = "quantico";
+  assert(p.longest_match(test, test+sizeof(test)-1) == 0);
+  }
+
+  {
+  char test[] = "abrahamson";
+  assert(p.longest_match(test, test+sizeof(test)-1) == rules + 3);
+  }
+
   };
