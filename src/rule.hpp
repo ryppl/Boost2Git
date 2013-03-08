@@ -9,7 +9,19 @@
 struct Rule
   {
   Rule() : is_fallback(false) {}
-  
+
+  Rule(
+      std::size_t min, std::size_t max,
+      std::string match,
+      std::string repository,
+      std::string branch,
+      std::string prefix,
+      bool is_fallback)
+      : min(min), max(max),
+      match(match), repository(repository), branch(branch),
+      prefix(prefix), is_fallback(is_fallback)
+    {}
+
   std::size_t min, max;
   std::string match;
   std::string repository;

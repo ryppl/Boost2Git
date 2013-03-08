@@ -186,15 +186,15 @@ static std::string path_append(std::string path, std::string const& append)
   return path + append;
   }
 
-Ruleset::Match Ruleset::fallback =
-  {
+Ruleset::Match Ruleset::fallback(
   0,
   UINT_MAX,
   "/",
   "svn2git-fallback",
   "refs/heads/master",
-  ""
-  };
+  "",
+  true
+  );
 
 Ruleset::Ruleset(std::string const& filename)
   {
