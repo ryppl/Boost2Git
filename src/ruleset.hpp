@@ -22,6 +22,7 @@
 #include <string>
 #include <vector>
 #include <boost/algorithm/string/predicate.hpp>
+#include "patrie.hpp"
 #include "rule.hpp"
 
 inline std::string qualify_ref(std::string ref_name, char const* prefix)
@@ -50,7 +51,7 @@ class Ruleset
   public:
     Ruleset(std::string const& filename);
   public:
-    std::vector<Match> const& matches() const
+    patrie const& matches() const
       {
       return matches_;
       }
@@ -59,7 +60,7 @@ class Ruleset
       return repositories_;
       }
   private:
-    std::vector<Match> matches_;
+    patrie matches_;
     std::vector<Repository> repositories_;
   };
 

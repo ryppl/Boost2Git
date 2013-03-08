@@ -35,31 +35,6 @@
 namespace
 {
 
-MatchRuleList::const_iterator findMatchRule(
-    MatchRuleList const& matchRules,
-    std::size_t revnum,
-    std::string const& current)
-  {
-  MatchRuleList::const_iterator it = matchRules.begin();
-  MatchRuleList::const_iterator end = matchRules.end();
-  for (; it != end; ++it)
-    {
-    if (it->min > revnum)
-      {
-      continue;
-      }
-    if (it->max < revnum)
-      {
-      continue;
-      }
-    if (boost::starts_with(current, it->match))
-      {
-      return it;
-      }
-    }
-  return end;
-  }
-
 void splitPathName(
     const Ruleset::Match &rule,
     const QString &pathName,
@@ -447,8 +422,8 @@ int SvnRevision::exportEntry(
   bool isHandled = false;
   MatchRuleList const& matchRules = svn.ruleset.matches();
   // find the first rule that matches this pathname
-  MatchRuleList::const_iterator match = findMatchRule(matchRules, revnum, current.toStdString());
-  if (match != matchRules.end())
+  Rule const* match = matchRules.longest_match(current.toStdString(), revnum);
+  if (match)
     {
     const Ruleset::Match &rule = *match;
     if (is_dir && rule.is_fallback)
@@ -614,8 +589,8 @@ int SvnRevision::exportInternal(
       {
       previous += '/';
       }
-    MatchRuleList::const_iterator prevmatch = findMatchRule(matchRules, rev_from, previous.toStdString());
-    if (prevmatch != matchRules.end())
+    Rule const* prevmatch = matchRules.longest_match(previous.toStdString(), rev_from);
+    if (prevmatch)
       {
       splitPathName(*prevmatch, previous, &prevsvnprefix, &prevrepository, &prevbranch, &prevpath);
       }
@@ -918,8 +893,8 @@ int SvnRevision::recurse(
       }
 
     // find the first rule that matches this pathname
-    MatchRuleList::const_iterator match = findMatchRule(matchRules, revnum, current.toStdString());
-    if (match != matchRules.end())
+    Rule const* match = matchRules.longest_match(current.toStdString(), revnum);
+    if (match)
       {
       if (exportDispatch(entry, change, entryFrom.isNull() ? 0 : entryFrom.constData(), rev_from, changes, current, *match, matchRules, dirpool) == EXIT_FAILURE)
         {

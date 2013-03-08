@@ -27,8 +27,9 @@
 #include "options.hpp"
 #include "repository.h"
 #include "svn_error.hpp"
+#include "patrie.hpp"
 
-typedef std::vector<Ruleset::Match> MatchRuleList;
+typedef patrie MatchRuleList;
 typedef QHash<QString, Repository*> RepositoryHash;
 
 class Svn;

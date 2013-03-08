@@ -281,7 +281,7 @@ Ruleset::Ruleset(std::string const& filename)
           match.match = branch_rule.prefix;
           match.prefix.clear();
           match.is_fallback = false;
-          matches_.push_back(match);
+          matches_.insert(match);
           continue;
           }
         BOOST_FOREACH(ContentRule const& content, repo_rule.content)
@@ -289,7 +289,7 @@ Ruleset::Ruleset(std::string const& filename)
           match.match = path_append(branch_rule.prefix, content.prefix);
           match.prefix = content.replace;
           match.is_fallback = content.is_fallback;
-          matches_.push_back(match);
+          matches_.insert(match);
           }
         }
       }
