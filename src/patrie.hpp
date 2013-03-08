@@ -25,6 +25,12 @@ public:
     this->traverse(rule->match.begin(), rule->match.end(), v);
     }
 
+  template <class Range>
+  Rule const* longest_match(Range const& r, std::size_t revision) const
+    {
+    return this->longest_match(boost::begin(r), boost::end(r), revision);
+    }
+  
   template <class Iterator>
   Rule const* longest_match(Iterator start, Iterator finish, std::size_t revision) const
     {
