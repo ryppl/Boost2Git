@@ -8,12 +8,24 @@
 
 struct Rule
   {
+  Rule() : is_fallback(false) {}
+  
   std::size_t min, max;
   std::string match;
   std::string repository;
   std::string branch;
   std::string prefix;
   bool is_fallback;
+
+  friend bool operator==(Rule const& lhs, Rule const& rhs)
+    {
+    return lhs.min == rhs.min
+      && lhs.max == rhs.max
+      && lhs.repository == rhs.repository
+      && lhs.branch == rhs.branch
+      && lhs.prefix == rhs.prefix
+      && lhs.is_fallback == rhs.is_fallback;
+    }
   };
 
 #endif // RULE_DWA201337_HPP

@@ -9,6 +9,7 @@
 # include <boost/variant.hpp>
 //# include <boost/container/vector.hpp>
 # include <vector>
+# include <deque>
 # include <boost/swap.hpp>
 # include <boost/range.hpp>
 namespace patrie_ {
@@ -17,12 +18,12 @@ using std::vector;
 
 struct patrie
   {
-  
 public:
-  void insert(Rule const* rule)
+  void insert(Rule const& rule)
     {
-    insert_visitor v(rule);
-    this->traverse(rule->match.begin(), rule->match.end(), v);
+    rules.push_back(rule);
+    insert_visitor v(&rules.back());
+    this->traverse(rule.match.begin(), rule.match.end(), v);
     }
 
   template <class Range>
@@ -218,6 +219,7 @@ private:
       nodes = &n->next;
       }
     }
+  std::deque<Rule> rules;
   vector<node> trie;
   };
 }
