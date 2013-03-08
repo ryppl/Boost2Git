@@ -22,6 +22,7 @@
 #include <string>
 #include <vector>
 #include <boost/algorithm/string/predicate.hpp>
+#include "rule.hpp"
 
 inline std::string qualify_ref(std::string ref_name, char const* prefix)
   {
@@ -38,15 +39,8 @@ inline std::string qualify_ref(std::string ref_name, char const* prefix)
 class Ruleset
   {
   public:
-    struct Match
-      {
-      std::size_t min, max;
-      std::string match;
-      std::string repository;
-      std::string branch;
-      std::string prefix;
-      bool is_fallback;
-      };
+    typedef Rule Match;
+    
     struct Repository
       {
       std::string name;

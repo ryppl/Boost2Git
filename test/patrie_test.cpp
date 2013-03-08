@@ -9,7 +9,7 @@
 
 int main()
   {
-  Ruleset::Match rules[5];
+  Rule rules[5];
   rules[0].match = "abrasives";
   rules[0].min = 1; rules[0].max = 3;
   rules[1].match = "abracadabra";
@@ -22,7 +22,7 @@ int main()
   rules[4].min = 4; rules[4].max = 5;
 
   patrie p;
-  BOOST_FOREACH(Ruleset::Match const& m, rules)
+  BOOST_FOREACH(Rule const& m, rules)
     p.insert(&m);
 
   {

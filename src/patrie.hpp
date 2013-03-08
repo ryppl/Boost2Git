@@ -4,7 +4,7 @@
 #ifndef TRIE_MAP_DWA201332_HPP
 # define TRIE_MAP_DWA201332_HPP
 
-# include <ruleset.hpp>
+# include "rule.hpp"
 # include <deque>
 # include <boost/variant.hpp>
 //# include <boost/container/vector.hpp>
@@ -19,14 +19,14 @@ struct patrie
   {
   
 public:
-  void insert(Ruleset::Match const* rule)
+  void insert(Rule const* rule)
     {
     insert_visitor v(rule);
     this->traverse(rule->match.begin(), rule->match.end(), v);
     }
 
   template <class Iterator>
-  Ruleset::Match const* longest_match(Iterator start, Iterator finish, std::size_t revision)
+  Rule const* longest_match(Iterator start, Iterator finish, std::size_t revision)
     {
     search_visitor v(revision);
     this->traverse(start, finish, v);
@@ -37,14 +37,14 @@ private:
   struct node
     {
     template<class Iterator>
-    node(Iterator text_start, Iterator text_finish, Ruleset::Match const* rule = 0)
+    node(Iterator text_start, Iterator text_finish, Rule const* rule = 0)
         : text(text_start, text_finish),
         rules(rule ? 1 : 0, rule)
       {}
     
     std::string text;
     vector<node> next;
-    vector<Ruleset::Match const*> rules;
+    vector<Rule const*> rules;
 
     friend void swap(node& l, node& r)
       {
@@ -56,7 +56,7 @@ private:
 
   struct rule_rev_comparator
     {
-    bool operator()(Ruleset::Match const* r, std::size_t revision) const
+    bool operator()(Rule const* r, std::size_t revision) const
       {
       return r->max < revision;
       }
@@ -66,7 +66,7 @@ private:
   typedef vector<node>::iterator node_iterator;
   struct insert_visitor
     {
-    insert_visitor(Ruleset::Match const* rule) : new_rule(rule) {}
+    insert_visitor(Rule const* rule) : new_rule(rule) {}
 
     // No match for *start was found in nodes
     template <class Iterator>
@@ -109,14 +109,14 @@ private:
       if (start != finish)
           return;
 
-      vector<Ruleset::Match const*>::iterator p
+      vector<Rule const*>::iterator p
         = std::lower_bound(n.rules.begin(), n.rules.end(), new_rule->max, rule_rev_comparator());
 
       assert(p == n.rules.end() || (*p)->min > new_rule->max || !"found overlapping rules!");
       n.rules.insert(p, this->new_rule);
       }
 
-    Ruleset::Match const* new_rule;
+    Rule const* new_rule;
     };
 
   struct search_visitor
@@ -140,7 +140,7 @@ private:
     template <class Iterator>
     void full_match(node const& n, Iterator start, Iterator finish)
       {
-      vector<Ruleset::Match const*>::const_iterator p
+      vector<Rule const*>::const_iterator p
         = std::lower_bound(n.rules.begin(), n.rules.end(), revision, rule_rev_comparator());
       
       if (p != n.rules.end() && (*p)->min <= revision)
@@ -150,7 +150,7 @@ private:
       }
 
     std::size_t revision;
-    Ruleset::Match const* found_rule;
+    Rule const* found_rule;
     };
   
   struct node_comparator
