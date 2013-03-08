@@ -10,7 +10,7 @@
 //# include <boost/container/vector.hpp>
 # include <vector>
 # include <boost/swap.hpp>
-
+# include <boost/range.hpp>
 namespace patrie_ {
 //using boost::container::vector;
 using std::vector;
@@ -26,7 +26,7 @@ public:
     }
 
   template <class Iterator>
-  Rule const* longest_match(Iterator start, Iterator finish, std::size_t revision)
+  Rule const* longest_match(Iterator start, Iterator finish, std::size_t revision) const
     {
     search_visitor v(revision);
     this->traverse(start, finish, v);
@@ -63,31 +63,31 @@ private:
     };
 
   
-  typedef vector<node>::iterator node_iterator;
   struct insert_visitor
     {
     insert_visitor(Rule const* rule) : new_rule(rule) {}
 
     // No match for *start was found in nodes
     template <class Iterator>
-    void nomatch(vector<node>& nodes, node_iterator pos, Iterator start, Iterator finish)
+    void nomatch(vector<node>& nodes, vector<node>::iterator pos, Iterator start, Iterator finish)
       {
       nodes.insert(pos, node(start, finish, this->new_rule));
       }
 
     // We matched up through position c in node n
     template <class Iterator>
-    void partial_match(node& n, std::string::iterator c, Iterator start, Iterator finish)
+    void partial_match(node& n, std::string::const_iterator c, Iterator start, Iterator finish)
       {
       // split the node
       vector<node> save_next;
       boost::swap(n.next, save_next); // extract its set of next nodes
       
       // prepare a new node with the node's unmatched text
-      n.next.push_back( node(c, n.text.end()) );
+      std::string::const_iterator end_ = n.text.end();
+      n.next.push_back( node(c, end_) );
 
       // chop that part off of the original node
-      n.text.erase(c, n.text.end());
+      n.text.erase(n.text.begin() + (c - n.text.begin()), n.text.end());
       
       // the next nodes and rules of the tail node are those of the original node
       boost::swap(n.next.back().next, save_next);
@@ -126,7 +126,9 @@ private:
 
     // No match for *start was found in nodes
     template <class Iterator>
-    void nomatch(vector<node> const& nodes, node_iterator pos, Iterator start, Iterator finish)
+    void nomatch(
+        vector<node> const& nodes, vector<node>::const_iterator pos,
+        Iterator start, Iterator finish)
       {
       }
 
@@ -164,12 +166,22 @@ private:
   template <class Iterator, class Visitor>
   void traverse(Iterator start, Iterator finish, Visitor& visitor)
     {
-    vector<node> *nodes = &this->trie;
-    
+    traverse(&this->trie, start, finish, visitor);
+    }
+  
+  template <class Iterator, class Visitor>
+  void traverse(Iterator start, Iterator finish, Visitor& visitor) const
+    {
+    traverse(&this->trie, start, finish, visitor);
+    }
+  
+  template <class Nodes, class Iterator, class Visitor>
+  static void traverse(Nodes* nodes, Iterator start, Iterator finish, Visitor& visitor)
+    {
     while (start != finish)
       {
       // look for the node beginning with *start
-      vector<node>::iterator n
+      typename boost::range_iterator<Nodes>::type n
         = std::lower_bound(
             nodes->begin(), nodes->end(), *start, node_comparator());
       
@@ -181,7 +193,7 @@ private:
 
       // Look for the first difference between [start, finish) and
       // the node's text
-      std::string::iterator c = n->text.begin();
+      std::string::const_iterator c = n->text.begin();
       ++c;
       ++start;
 
