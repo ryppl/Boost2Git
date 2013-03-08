@@ -26,9 +26,9 @@ public:
     }
 
   template <class Iterator>
-  Ruleset::Match const* longest_match(Iterator start, Iterator finish)
+  Ruleset::Match const* longest_match(Iterator start, Iterator finish, std::size_t revision)
     {
-    search_visitor v;
+    search_visitor v(revision);
     this->traverse(start, finish, v);
     return v.found_rule;
     }
@@ -36,22 +36,33 @@ public:
 private:
   struct node
     {
-    node(std::string const& text, Ruleset::Match const* rule)
-        : text(text), rule(rule)
+    template<class Iterator>
+    node(Iterator text_start, Iterator text_finish, Ruleset::Match const* rule = 0)
+        : text(text_start, text_finish),
+        rules(rule ? 1 : 0, rule)
       {}
     
     std::string text;
     vector<node> next;
-    Ruleset::Match const*rule;
+    vector<Ruleset::Match const*> rules;
 
     friend void swap(node& l, node& r)
       {
       boost::swap(l.text, r.text);
       boost::swap(l.next, r.next);
-      boost::swap(l.rule, r.rule);
+      boost::swap(l.rules, r.rules);
       }
     };
 
+  struct rule_rev_comparator
+    {
+    bool operator()(Ruleset::Match const* r, std::size_t revision) const
+      {
+      return r->max < revision;
+      }
+    };
+
+  
   typedef vector<node>::iterator node_iterator;
   struct insert_visitor
     {
@@ -61,7 +72,7 @@ private:
     template <class Iterator>
     void nomatch(vector<node>& nodes, node_iterator pos, Iterator start, Iterator finish)
       {
-      nodes.insert(pos, node(std::string(start, finish), this->new_rule));
+      nodes.insert(pos, node(start, finish, this->new_rule));
       }
 
     // We matched up through position c in node n
@@ -69,22 +80,21 @@ private:
     void partial_match(node& n, std::string::iterator c, Iterator start, Iterator finish)
       {
       // split the node
-      vector<node> temp;
-      boost::swap(n.next, temp); // extract its set of next nodes
+      vector<node> save_next;
+      boost::swap(n.next, save_next); // extract its set of next nodes
       
-      // prepare a new node with the node's unmatched text and rule
-      n.next.push_back(
-          node(std::string(c, n.text.end()), n.rule));
+      // prepare a new node with the node's unmatched text
+      n.next.push_back( node(c, n.text.end()) );
 
       // chop that part off of the original node
       n.text.erase(c, n.text.end());
       
-      // the next nodes of the tail node are those of the original node
-      boost::swap(n.next.back().next, temp);
-      // no rule is fully matched at the split point
-      n.rule = 0;
+      // the next nodes and rules of the tail node are those of the original node
+      boost::swap(n.next.back().next, save_next);
+      boost::swap(n.next.back().rules, n.rules);
+      
       // add a new node with the unmatched search text and rule
-      n.next.push_back(node(std::string(start, finish), this->new_rule));
+      n.next.push_back(node(start, finish, this->new_rule));
 
       // make sure the two splits are properly sorted
       if (n.next[0].text[0] > n.next[1].text[0])
@@ -98,13 +108,12 @@ private:
       // If we haven't consumed the entire search text, just keep looking.
       if (start != finish)
           return;
-      
-      // Otherwise, we had better have found a node created by
-      // splitting, that doesn't correspond to a rule.  Otherwise,
-      // we've tried to insert two rules with the same match string.
-      assert(!n.next.empty());
-      assert(!n.rule);
-      n.rule = this->new_rule;
+
+      vector<Ruleset::Match const*>::iterator p
+        = std::lower_bound(n.rules.begin(), n.rules.end(), new_rule->max, rule_rev_comparator());
+
+      assert(p == n.rules.end() || (*p)->min > new_rule->max || !"found overlapping rules!");
+      n.rules.insert(p, this->new_rule);
       }
 
     Ruleset::Match const* new_rule;
@@ -112,7 +121,8 @@ private:
 
   struct search_visitor
     {
-    search_visitor() : found_rule(0) {}
+    search_visitor(std::size_t revision)
+        : revision(revision), found_rule(0) {}
 
     // No match for *start was found in nodes
     template <class Iterator>
@@ -130,18 +140,22 @@ private:
     template <class Iterator>
     void full_match(node const& n, Iterator start, Iterator finish)
       {
-      if (n.rule)
+      vector<Ruleset::Match const*>::const_iterator p
+        = std::lower_bound(n.rules.begin(), n.rules.end(), revision, rule_rev_comparator());
+      
+      if (p != n.rules.end() && (*p)->min <= revision)
         {
-        found_rule = n.rule;
+        found_rule = *p;
         }
       }
 
+    std::size_t revision;
     Ruleset::Match const* found_rule;
     };
   
   struct node_comparator
     {
-    bool operator()(node const& lhs, char rhs)
+    bool operator()(node const& lhs, char rhs) const
       {
       return lhs.text[0] < rhs;
       }
