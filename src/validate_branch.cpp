@@ -82,8 +82,7 @@ std::string test_branch(Repository& repo, std::string const& line)
     {
     return line.substr(0, c2) + "boost/" + line.substr(c2);
     }
-  return line;
-  //return "//" + line.substr(2) + " // not a common branch!";
+  return "//" + line.substr(2) + " // TODO: check whether this is really a common branch!";
   }
 
 int main(int argc, char* argv[])
