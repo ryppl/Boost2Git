@@ -845,8 +845,10 @@ repository algorithm : common_branches
 {
   content
   {
+    "boost/minmax.hpp" : "include/boost/minmax.hpp";
     "boost/algorithm/" : "include/boost/algorithm/";
     "libs/algorithm/";
+    "libs/minmax/" : "minmax";
   }
 }
 
@@ -1061,10 +1063,10 @@ repository core : common_branches
     "boost/limits.hpp" : "include/boost/limits.hpp";
     "boost/non_type.hpp" : "include/boost/non_type.hpp";
     "boost/type.hpp" : "include/boost/type.hpp";
+    "boost/utf8_codecvt_facet.hpp" : include/boost/utf8_codecvt_facet.hpp";
     "boost/version.hpp" : "include/boost/version.hpp";
     "boost/visit_each.hpp" : "include/boost/visit_each.hpp";
-    "libs/detail/utf8_codecvt_facet.cpp" : "utf8_codecvt_facet.cpp";
-    "libs/detail/test/" : "test/";
+    "libs/detail/";
   }
 }
 
@@ -1648,6 +1650,10 @@ repository property_map : common_branches
 {
   content
   {
+    "boost/property_accessor.hpp" : "include/boost/property_accessor.hpp";
+    "boost/property_map_iterator.hpp" : "include/boost/property_map_iterator.hpp";
+    "boost/property_map.hpp" : "include/boost/property_map.hpp";
+    "boost/vector_property_map.hpp" : "include/boost/vector_property_map.hpp";
     "boost/property_map/" : "include/boost/property_map/";
     "libs/property_map/";
   }
@@ -1687,6 +1693,22 @@ repository python : common_branches
     "boost/python.hpp" : "include/boost/python.hpp";
     "boost/python/" : "include/boost/python/";
     "libs/python/";
+  }
+}
+
+repository py_cpp // not using common_branches!
+{
+  branches
+  {
+    [7931:8454] "/branches/boost/boost/development/py_cpp/" : "development";
+    [7932:8454] "/trunk/boost/development/py_cpp/" : "master";
+    [7963:8454] "/branches/numerics/boost/development/py_cpp/" : "numerics";
+    [8004:8454] "/branches/to_python_experiments/boost/development/py_cpp/" : "to_python_experiments";
+    [8021:8454] "/branches/coercion_experiments/boost/development/py_cpp/" : "coercion_experiments";
+    [8230:8454] "/branches/data_driven/boost/development/py_cpp/" : "data_driven";
+    [8230:8454] "/tags/detailified/boost/development/py_cpp/" : "detailified";
+    [8304:8454] "/branches/error_handling/boost/development/py_cpp/" : "error_handling";
+    [8447:8454] "/tags/Version_1_19_0/boost/development/py_cpp/" : "Version_1_19_0";
   }
 }
 
@@ -1791,6 +1813,11 @@ repository smart_ptr : common_branches
   content
   {
     "boost/detail/atomic_count.hpp" : "include/boost/detail/atomic_count.hpp";
+    "boost/detail/atomic_count_gcc.hpp" : "include/boost/detail/atomic_count_gcc.hpp";
+    "boost/detail/atomic_count_linux.hpp" : "include/boost/detail/atomic_count_linux.hpp";
+    "boost/detail/atomic_count_pthreads.hpp" : "include/boost/detail/atomic_count_pthreads.hpp";
+    "boost/detail/atomic_count_win32.hpp" : "include/boost/detail/atomic_count_win32.hpp";
+    "boost/detail/shared_count.hpp" : "include/boost/detail/shared_count.hpp";
     "boost/detail/sp_typeinfo.hpp" : "include/boost/detail/sp_typeinfo.hpp";
     "boost/enable_shared_from_this.hpp" : "include/boost/enable_shared_from_this.hpp";
     "boost/intrusive_ptr.hpp" : "include/boost/intrusive_ptr.hpp";
@@ -1979,6 +2006,7 @@ repository utility : common_branches
     "boost/detail/compressed_pair.hpp" : "include/boost/detail/compressed_pair.hpp";
     "boost/detail/ob_compressed_pair.hpp" : "include/boost/detail/ob_compressed_pair.hpp";
     "boost/utility.hpp" : "include/boost/utility.hpp";
+    "boost/utility_fwd.hpp" : "include/boost/utility_fwd.hpp";
     "boost/utility/" : "include/boost/utility/";
     "libs/utility/";
   }
@@ -2163,6 +2191,8 @@ repository boost : common_branches
     "Jamfile.v2"               : "Jamfile.v2";
     "Jamroot"                  : "Jamroot";
     "Jamrules"                 : "Jamrules";
+    "LICENSE"                  : "LICENSE";
+    "LICENSE-1.0"              : "LICENSE-1.0";
     "LICENSE_1_0.txt"          : "LICENSE_1_0.txt";
     "README"                   : "README";
     "boost-build.jam"          : "boost-build.jam";
