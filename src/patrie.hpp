@@ -10,6 +10,7 @@
 //# include <boost/container/vector.hpp>
 # include <vector>
 # include <deque>
+# include <stdexcept>
 # include <boost/swap.hpp>
 # include <boost/range.hpp>
 namespace patrie_ {
@@ -119,7 +120,10 @@ private:
       vector<Rule const*>::iterator p
         = std::lower_bound(n.rules.begin(), n.rules.end(), new_rule->max, rule_rev_comparator());
 
-      assert(p == n.rules.end() || (*p)->min > new_rule->max || !"found overlapping rules!");
+      if (!(p == n.rules.end() || (*p)->min > new_rule->max))
+        {
+        throw std::runtime_error("found duplicate rule: " + new_rule->match);
+        }
       n.rules.insert(p, this->new_rule);
       }
 
