@@ -59,4 +59,10 @@ SET_TESTS_PROPERTIES (
     DEPENDS update-svn2git
     PASS_REGULAR_EXPRESSION "Allowed options:")
 
-
+add_executable(validate_branch
+  validate_branch.cpp
+  )
+target_link_libraries(validate_branch
+  ${APR_LIBRARIES}
+  ${SVN_LIBRARIES}
+  )

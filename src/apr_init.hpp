@@ -19,6 +19,8 @@
 #define APR_INIT_HPP
 
 #include <apr_general.h>
+#include <stdexcept>
+
 
 class AprInit
   {
