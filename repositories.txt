@@ -254,6 +254,8 @@ abstract repository common_branches
     [68433:     ] "/sandbox/" : "sandbox/trunk";
     [68640:     ] "/branches/doc-tools-docs/" : "doc-tools-docs";
     [72078:     ] "/branches/quickbook-dev/" : "quickbook-dev";
+    [25038:     ] "/branches/build/boost/" : "build";
+    [27041:     ] "/branches/BOOST_BUILD_PYTHON/boost/" : "BOOST_BUILD_PYTHON";
   }
   tags
   {
@@ -735,6 +737,63 @@ abstract repository common_branches
     [66789:     ] "/sandbox-tags/geometry/boost-geometry-0.7.0/" : "sandbox/geometry/boost-geometry-0.7.0";
     [67500:     ] "/sandbox-tags/geometry/boost-geometry-0.8.0/" : "sandbox/geometry/boost-geometry-0.8.0";
     [68626:     ] "/tags/release/Boost_1_46_0_beta_1/" : "release/Boost_1_46_0_beta_1";
+    [ 8275:     ] "/tags/detailified/boost/" : "detailified";
+    [ 9522:     ] "/tags/before_partial_unit_test_merge/boost/" : "before_partial_unit_test_merge";
+    [14038:     ] "/tags/header-cache/boost/" : "header-cache";
+    [14832:     ] "/tags/bjam_3_1_2/boost/" : "bjam_3_1_2";
+    [14920:     ] "/tags/milestone_1/boost/" : "milestone_1";
+    [17734:     ] "/tags/RC_1_30_0_last_merge/boost/" : "RC_1_30_0_last_merge";
+    [18194:     ] "/tags/version_0-7-0/boost/" : "version_0-7-0";
+    [18200:     ] "/tags/version_0-7-2/boost/" : "version_0-7-2";
+    [18438:     ] "/tags/bjam_3_1_5/boost/" : "bjam_3_1_5";
+    [18460:     ] "/tags/version_0-7-8/boost/" : "version_0-7-8";
+    [18478:     ] "/tags/Milestone_3/boost/" : "Milestone_3";
+    [18517:     ] "/tags/version_0-7-9/boost/" : "version_0-7-9";
+    [18620:     ] "/tags/version_0-8-1/boost/" : "version_0-8-1";
+    [18631:     ] "/tags/version_0-8-2/boost/" : "version_0-8-2";
+    [18651:     ] "/tags/version_0-9-0/boost/" : "version_0-9-0";
+    [18658:     ] "/tags/version_0-9-1/boost/" : "version_0-9-1";
+    [18673:     ] "/tags/version_0-9-2/boost/" : "version_0-9-2";
+    [18682:     ] "/tags/version_0-9-3/boost/" : "version_0-9-3";
+    [18816:     ] "/tags/version_0-9-4/boost/" : "version_0-9-4";
+    [18827:     ] "/tags/version_0-9-5/boost/" : "version_0-9-5";
+    [18834:     ] "/tags/Milestone_4/boost/" : "Milestone_4";
+    [18946:     ] "/tags/version_0-9-8/boost/" : "version_0-9-8";
+    [18970:     ] "/tags/version_0-9-9/boost/" : "version_0-9-9";
+    [18972:     ] "/tags/version_0-9-10/boost/" : "version_0-9-10";
+    [19259:     ] "/tags/Milestone_6/boost/" : "Milestone_6";
+    [19646:     ] "/tags/version_0-9-13/boost/" : "version_0-9-13";
+    [19649:     ] "/tags/version_0-9-14/boost/" : "version_0-9-14";
+    [19665:     ] "/tags/version_0-9-15/boost/" : "version_0-9-15";
+    [19671:     ] "/tags/version_0-9-16/boost/" : "version_0-9-16";
+    [19758:     ] "/tags/version_0-9-19/boost/" : "version_0-9-19";
+    [19760:     ] "/tags/version_0-9-20/boost/" : "version_0-9-20";
+    [19777:     ] "/tags/version_0-9-21/boost/" : "version_0-9-21";
+    [19793:     ] "/tags/version_0-9-22/boost/" : "version_0-9-22";
+    [20021:     ] "/tags/Milestone_7/boost/" : "Milestone_7";
+    [20128:     ] "/tags/version_0-9-26/boost/" : "version_0-9-26";
+    [20264:     ] "/tags/Boost_Jam_3_1_7/boost/" : "Boost_Jam_3_1_7";
+    [20267:     ] "/tags/version_0-9-27/boost/" : "version_0-9-27";
+    [20339:     ] "/tags/Milestone_8/boost/" : "Milestone_8";
+    [20465:     ] "/tags/version_0-9-28/boost/" : "version_0-9-28";
+    [20700:     ] "/tags/Milestone_9/boost/" : "Milestone_9";
+    [20710:     ] "/tags/Milestone_9_1/boost/" : "Milestone_9_1";
+    [20751:     ] "/tags/Milestone_10_dev/boost/" : "Milestone_10_dev";
+    [21220:     ] "/tags/Milestone_10_dev2/boost/" : "Milestone_10_dev2";
+    [21943:     ] "/tags/Boost_Jam_3_1_9/boost/" : "Boost_Jam_3_1_9";
+    [22366:     ] "/tags/merged_to_mplbook/boost/" : "merged_to_mplbook";
+    [22988:     ] "/tags/Boost_Jam_3_1_10/boost/" : "Boost_Jam_3_1_10";
+    [24206:     ] "/tags/USING_BOOST_TEST/boost/" : "USING_BOOST_TEST";
+    [25937:     ] "/tags/Milestone_10/boost/" : "Milestone_10";
+    [27040:     ] "/tags/BOOST_BUILD_PYTHON_BASE/boost/" : "BOOST_BUILD_PYTHON_BASE";
+    [30215:     ] "/tags/Boost_Jam_3_1_11/boost/" : "Boost_Jam_3_1_11";
+    [32868:     ] "/tags/Boost_Jam_3_1_12/boost/" : "Boost_Jam_3_1_12";
+    [33814:     ] "/tags/M11_rc2/boost/" : "M11_rc2";
+    [34217:     ] "/tags/Boost_Jam_3_1_13/boost/" : "Boost_Jam_3_1_13";
+    [34617:     ] "/tags/Milestone_11/boost/" : "Milestone_11";
+    [35069:     ] "/tags/dwa-postlicense/boost/" : "dwa-postlicense";
+    [35306:     ] "/tags/BOOST_BUILD_V1/boost/" : "BOOST_BUILD_V1";
+    [36695:     ] "/tags/Boost_Jam_3_1_14/boost/" : "Boost_Jam_3_1_14";
   }
 }
 
