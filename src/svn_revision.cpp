@@ -35,6 +35,24 @@
 namespace
 {
 
+Rule const* find_match(patrie const& rules, QString& path, std::size_t revnum)
+  {
+  Rule const* match = rules.longest_match(path.toStdString(), revnum);
+  if (match)
+    {
+    return match;
+    }
+  // maybe it is a directory?
+  QString dir = path + '/';
+  match = rules.longest_match(dir.toStdString(), revnum);
+  // it is!
+  if (match)
+    {
+    path = dir;
+    }
+  return match;
+  }
+
 void splitPathName(
     const Ruleset::Match &rule,
     const QString &pathName,
@@ -422,7 +440,7 @@ int SvnRevision::exportEntry(
   bool isHandled = false;
   MatchRuleList const& matchRules = svn.ruleset.matches();
   // find the first rule that matches this pathname
-  Rule const* match = matchRules.longest_match(current.toStdString(), revnum);
+  Rule const* match = find_match(matchRules, current, revnum);
   if (match)
     {
     const Ruleset::Match &rule = *match;
@@ -589,7 +607,7 @@ int SvnRevision::exportInternal(
       {
       previous += '/';
       }
-    Rule const* prevmatch = matchRules.longest_match(previous.toStdString(), rev_from);
+    Rule const* prevmatch = find_match(matchRules, previous, rev_from);
     if (prevmatch)
       {
       splitPathName(*prevmatch, previous, &prevsvnprefix, &prevrepository, &prevbranch, &prevpath);
@@ -893,7 +911,7 @@ int SvnRevision::recurse(
       }
 
     // find the first rule that matches this pathname
-    Rule const* match = matchRules.longest_match(current.toStdString(), revnum);
+    Rule const* match = find_match(matchRules, current, revnum);
     if (match)
       {
       if (exportDispatch(entry, change, entryFrom.isNull() ? 0 : entryFrom.constData(), rev_from, changes, current, *match, matchRules, dirpool) == EXIT_FAILURE)
