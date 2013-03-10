@@ -8,7 +8,7 @@
 
 struct Rule
   {
-  Rule() : is_fallback(false) {}
+  Rule() : min(0), max(0), is_fallback(false) {}
 
   Rule(
       std::size_t min, std::size_t max,
