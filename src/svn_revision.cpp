@@ -378,9 +378,7 @@ int SvnRevision::exportEntry(
   svn_boolean_t is_dir;
   if (path_from)
     {
-    svn_fs_root_t *root_from;
-    check_svn(svn_fs_revision_root(&root_from, fs, rev_from, revpool));
-    check_svn(svn_fs_is_dir(&is_dir, root_from, path_from, revpool));
+    is_dir = wasDir(fs, rev_from, path_from, revpool);
     }
   else
     {
