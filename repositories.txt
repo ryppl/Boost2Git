@@ -1887,7 +1887,7 @@ repository spirit
 {
   branches
   {
-    "/branches/SPIRIT_RC_1_6_2/boost/libs/" : "SPIRIT_RC_1_6_2";
+    [:] "/branches/SPIRIT_RC_1_6_2/boost/libs/" : "SPIRIT_RC_1_6_2";
   }
 }
 
