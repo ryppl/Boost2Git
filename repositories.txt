@@ -384,7 +384,7 @@ abstract repository common_branches
 //  [14282:     ] "/tags/state-update_rule-1/" : "state-update_rule-1"; // TODO: check whether this is really a common branch!
 //  [14832:     ] "/tags/bjam_3_1_2/" : "bjam_3_1_2"; // TODO: check whether this is really a common branch!
 //  [14920:     ] "/tags/milestone_1/" : "milestone_1"; // TODO: check whether this is really a common branch!
-//  [15400:     ] "/tags/factor_out_redundant_macro_code_into_base_class/" : "factor_out_redundant_macro_code_into_base_class"; // TODO: check whether this is really a common branch!
+    [15400:     ] "/tags/factor_out_redundant_macro_code_into_base_class/" : "factor_out_redundant_macro_code_into_base_class";
     [15542:     ] "/tags/boost_python_llnl_/boost/" : "boost_python_llnl_";
     [15824:     ] "/tags/merge_to_RC_1_29_0/boost/" : "merge_to_RC_1_29_0";
     [15904:     ] "/tags/Version_1_29_0/boost/" : "Version_1_29_0";
@@ -932,6 +932,7 @@ repository concept_check : common_branches
     "boost/concept_check.hpp" : "include/boost/concept_check.hpp";
     "boost/concept/" : "include/boost/concept/";
     "boost/concept_check/" : "include/boost/concept_check/";
+    "libs/concept_checking/";
     "libs/concept_check/";
   }
 }
@@ -1692,7 +1693,7 @@ repository python : common_branches
   }
 }
 
-repository py_cpp // not using common_branches!
+repository python
 {
   branches
   {
@@ -1817,9 +1818,14 @@ repository smart_ptr : common_branches
     "boost/detail/atomic_count_sync.hpp" : "include/boost/detail/atomic_count_sync.hpp";
     "boost/detail/atomic_count_win32.hpp" : "include/boost/detail/atomic_count_win32.hpp";
     "boost/detail/bad_weak_ptr.hpp" : "include/boost/detail/bad_weak_ptr.hpp";
+    "boost/detail/lwm_gcc.hpp" : "include/boost/detail/lwm_gcc.hpp";
+    "boost/detail/lwm_irix.hpp" : "include/boost/detail/lwm_irix.hpp";
+    "boost/detail/lwm_linux.hpp" : "include/boost/detail/lwm_linux.hpp";
     "boost/detail/lwm_nop.hpp" : "include/boost/detail/lwm_nop.hpp";
     "boost/detail/lwm_pthreads.hpp" : "include/boost/detail/lwm_pthreads.hpp";
     "boost/detail/lwm_win32_cs.hpp" : "include/boost/detail/lwm_win32_cs.hpp";
+    "boost/detail/lwm_win32.hpp" : "include/boost/detail/lwm_win32.hpp";
+    "boost/detail/lwm_win32_nt.hpp" : "include/boost/detail/lwm_win32_nt.hpp";
     "boost/detail/shared_array_nmt.hpp" : "include/boost/detail/shared_array_nmt.hpp";
     "boost/detail/shared_count.hpp" : "include/boost/detail/shared_count.hpp";
     "boost/detail/shared_ptr_nmt.hpp" : "include/boost/detail/shared_ptr_nmt.hpp";
@@ -1874,6 +1880,14 @@ repository spirit : common_branches
     "boost/spirit.hpp" : "include/boost/spirit.hpp";
     "boost/spirit/" : "include/boost/spirit/";
     "libs/spirit/";
+  }
+}
+
+repository spirit
+{
+  branches
+  {
+    "/branches/SPIRIT_RC_1_6_2/boost/libs/" : "SPIRIT_RC_1_6_2";
   }
 }
 
@@ -2233,6 +2247,8 @@ repository boost : common_branches
     "libs/regrtest.cpp"        : "libs/regrtest.cpp";
     "libs/regrtest.py"         : "libs/regrtest.py";
     "libs/regrtest_files.txt"  : "libs/regrtest_files.txt";
+    "libs/boost.css"           : "libs/boost.css";
+    "libs/cs-win32.zip"        : "libs/cs-win32.zip";
     "more/"                    : "more/";
     "people/"                  : "people/";
     "regression/"              : "regression/";
@@ -2264,6 +2280,7 @@ repository boost : common_branches
     "bootstrap.sh"             : "bootstrap.sh";
     "configure"                : "configure";
     "c++boost.gif"             : "c++boost.gif";
+    "google_logo_40wht.gif"    : "google_logo_40wht.gif";
     "google_logo_40wht.png"    : "google_logo_40wht.png";
     "index.htm"                : "index.htm";
     "index.html"               : "index.html";
@@ -2271,5 +2288,7 @@ repository boost : common_branches
     "people.htm"               : "people.htm";
     "project-root.jam"         : "project-root.jam";
     "rst.css"                  : "rst.css";
+    "readme.html"              : "readme.html";
+    "index_1_33_0.htm"         : "index_1_33_0.htm";
   }
 }
