@@ -421,7 +421,11 @@ int Repository::createBranch(
 
 int Repository::deleteBranch(const QString &branch, int revnum)
   {
-  Q_ASSERT(branch.startsWith("refs/"));  
+  Q_ASSERT(branch.startsWith("refs/"));
+
+  if (branch == "refs/heads/master")
+      return EXIT_SUCCESS;
+
   static QByteArray null_sha(40, '0');
   return resetBranch(branch, revnum, 0, null_sha, "delete");
   }
