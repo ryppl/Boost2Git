@@ -48,6 +48,12 @@ Rule const* find_match(patrie const& rules, QString& path, std::size_t revnum)
   // it is!
   if (match)
     {
+    Log::warn()
+      << "Guessing that '"
+      << path.toStdString()
+      << "' is a directory."
+      << std::endl
+      ;
     path = dir;
     }
   return match;
@@ -370,7 +376,17 @@ int SvnRevision::exportEntry(
 
   // is this a directory?
   svn_boolean_t is_dir;
-  check_svn(svn_fs_is_dir(&is_dir, fs_root, key, revpool));
+  if (path_from)
+    {
+    svn_fs_root_t *root_from;
+    check_svn(svn_fs_revision_root(&root_from, fs, rev_from, revpool));
+    check_svn(svn_fs_is_dir(&is_dir, root_from, path_from, revpool));
+    }
+  else
+    {
+    check_svn(svn_fs_is_dir(&is_dir, fs_root, key, revpool));
+    }
+
   if (is_dir)
     {
     if (change->change_kind == svn_fs_path_change_modify || change->change_kind == svn_fs_path_change_add)
