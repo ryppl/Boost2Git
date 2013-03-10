@@ -202,7 +202,7 @@ abstract repository common_branches
     [38288:     ] "/branches/RC_1_34_0/boost/" : "old-branches/RC_1_34_0";
     [37305:     ] "/branches/QUICKBOOK_BACKEND/boost/" : "old-branches/QUICKBOOK_BACKEND"; 
     [38327:38328] "/devel/" : "master";
-    [38328:     ] "/trunk/" : "master";
+    [     :     ] "/trunk/" : "master";
     [38689:     ] "/branches/serialization_next_release/boost/" : "serialization_next_release";
 //  [38774:     ] "/branches/quickbook/backend/boost/" : "quickbook/backend"; // TODO: check whether this is really a common branch!
     [39182:     ] "/sandbox-branches/birbacher/tmp_iostreams/" : "sandbox/birbacher/tmp_iostreams";
