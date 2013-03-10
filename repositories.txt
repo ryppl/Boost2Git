@@ -204,7 +204,6 @@ abstract repository common_branches
     [38327:38328] "/devel/" : "master";
     [     :     ] "/trunk/" : "master";
     [38689:     ] "/branches/serialization_next_release/boost/" : "serialization_next_release";
-//  [38774:     ] "/branches/quickbook/backend/boost/" : "quickbook/backend"; // TODO: check whether this is really a common branch!
     [39182:     ] "/sandbox-branches/birbacher/tmp_iostreams/" : "sandbox/birbacher/tmp_iostreams";
     [40341:     ] "/branches/release/" : "release";
     [40700:     ] "/sandbox-branches/birbacher/fix_iostreams/" : "sandbox/birbacher/fix_iostreams";
@@ -994,6 +993,7 @@ repository core : common_branches
     "boost/detail/identifier.hpp" : "include/boost/detail/identifier.hpp";
     "boost/detail/indirect_traits.hpp" : "include/boost/detail/indirect_traits.hpp";
     "boost/detail/interlocked.hpp" : "include/boost/detail/interlocked.hpp";
+    "boost/detail/iomanip.hpp" : "include/boost/detail/iomanip.hpp";
     "boost/detail/is_function_ref_tester.hpp" : "include/boost/detail/is_function_ref_tester.hpp";
     "boost/detail/is_incrementable.hpp" : "include/boost/detail/is_incrementable.hpp";
     "boost/detail/is_sorted.hpp" : "include/boost/detail/is_sorted.hpp";
@@ -1014,11 +1014,13 @@ repository core : common_branches
     "boost/detail/scoped_enum_emulation.hpp" : "include/boost/detail/scoped_enum_emulation.hpp";
     "boost/detail/select_type.hpp" : "include/boost/detail/select_type.hpp";
     "boost/detail/templated_streams.hpp" : "include/boost/detail/templated_streams.hpp";
+    "boost/detail/test_framework.hpp" : "include/boost/detail/test_framework.hpp";
     "boost/detail/utf8_codecvt_facet.hpp" : "include/boost/detail/utf8_codecvt_facet.hpp";
     "boost/detail/utf8_codecvt_facet.ipp" : "include/boost/detail/utf8_codecvt_facet.ipp";
     "boost/detail/workaround.hpp" : "include/boost/detail/workaround.hpp";
     "boost/functional/detail/container_fwd.hpp" : "include/boost/functional/detail/container_fwd.hpp";
     "boost/pending/cstddef.hpp" : "include/boost/pending/cstddef.hpp";
+    "boost/pending/ct_if.hpp" : "include/boost/pending/ct_if.hpp";
     "boost/pending/integer_log2.hpp" : "include/boost/pending/integer_log2.hpp";
     "boost/blank.hpp" : "include/boost/blank.hpp";
     "boost/blank_fwd.hpp" : "include/boost/blank_fwd.hpp";
@@ -1110,6 +1112,7 @@ repository filesystem : common_branches
 {
   content
   {
+    "boost/delimit_string.hpp" : "include/boost/delimit_string.hpp";
     "boost/filesystem.hpp" : "include/boost/filesystem.hpp";
     "boost/filesystem/" : "include/boost/filesystem/";
     "libs/filesystem/";
@@ -1371,6 +1374,21 @@ repository lambda : common_branches
   {
     "boost/lambda/" : "include/boost/lambda/";
     "libs/lambda/";
+  }
+}
+
+repository langbinding
+{
+  content
+  {
+    "boost/langbinding/" : "include/boost/langbinding/";
+    "boost/luabind/" : "include/boost/luabind/";
+    "libs/langbinding/";
+    "libs/luabind/" : "luabind/";
+  }
+  branches
+  {
+    [:] "/branches/langbinding/boost/" : "master";
   }
 }
 
@@ -1829,6 +1847,7 @@ repository smart_ptr : common_branches
     "boost/detail/spinlock_pt.hpp" : "include/boost/detail/spinlock_pt.hpp";
     "boost/detail/spinlock_sync.hpp" : "include/boost/detail/spinlock_sync.hpp";
     "boost/detail/spinlock_w32.hpp" : "include/boost/detail/spinlock_w32.hpp";
+    "boost/detail/yield_k.hpp" : "include/boost/detail/yield_k.hpp";
     "boost/enable_shared_from_this.hpp" : "include/boost/enable_shared_from_this.hpp";
     "boost/enable_shared_from_this2.hpp" : "include/boost/enable_shared_from_this2.hpp";
     "boost/intrusive_ptr.hpp" : "include/boost/intrusive_ptr.hpp";
@@ -2147,6 +2166,7 @@ repository quickbook
   {
     [53447:54138] "/branches/quickbook-1.5" : "quickbook-1.5";
     [57767:65351] "/branches/quickbook-1.5-spirit2/" : "quickbook-1.5-spirit2";
+    [59592:59592] "/branches/quickbook/backend/boost/tools/quickbook/" : "quickbook/backend";
   }
 }
 
@@ -2183,6 +2203,13 @@ repository boost : common_branches
   {
     "build/"                   : "build/";
     "doc/"                     : "doc/";
+    "libs/CMakeLists.txt"       : "libs/CMakeLists.txt";
+    "libs/concept/CMakeLists.txt" : "libs/concept/CMakeLists.txt";
+    "libs/concept/module.cmake" : "libs/concept/module.cmake";
+    "libs/functional/CMakeLists.txt" : "libs/functional/CMakeLists.txt";
+    "libs/functional/module.cmake" : "libs/functional/module.cmake";
+    "libs/numeric/CMakeLists.txt" : "libs/numeric/CMakeLists.txt";
+    "libs/numeric/module.cmake" : "libs/numeric/module.cmake";
     "libs/numeric/index.html"  : "libs/numeric/index.html";
     "libs/numeric/sublibs"     : "libs/numeric/sublibs";
     "libs/compiler.cfg"        : "libs/compiler.cfg";
@@ -2215,7 +2242,10 @@ repository boost : common_branches
     "tools/"                  ?: "tools/";
 
     "wiki/"                    : "wiki/";
+    "Welcome.txt"              : "Welcome.txt";
     "CMakeLists.txt"           : "CMakeLists.txt";
+    "CTestConfig.cmake"        : "CTestConfig.cmake";
+    "BuildSlave.cmake"         : "BuildSlave.cmake";
     "INSTALL"                  : "INSTALL";
     "Jamfile"                  : "Jamfile";
     "Jamfile.v2"               : "Jamfile.v2";
