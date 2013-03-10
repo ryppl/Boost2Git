@@ -247,15 +247,14 @@ abstract repository common_branches
     [62517:     ] "/branches/units/autoprefix/" : "units/autoprefix";
     [62928:     ] "/branches/date_time_io_rewrite/" : "date_time_io_rewrite";
     [63100:     ] "/branches/filesystem3/" : "filesystem3";
-//  [63514:     ] "/branches/ublas-doxygen/" : "ublas-doxygen"; // TODO: check whether this is really a common branch!
 //  [65351:     ] "/branches/quickbook-1.5-spirit2/" : "quickbook-1.5-spirit2"; // TODO: check whether this is really a common branch!
     [68398:     ] "/branches/quickbook-filenames/" : "quickbook-filenames";
-//  [68426:     ] "/website/" : "website"; // TODO: check whether this is really a common branch!
     [68433:     ] "/sandbox/" : "sandbox/trunk";
     [68640:     ] "/branches/doc-tools-docs/" : "doc-tools-docs";
     [72078:     ] "/branches/quickbook-dev/" : "quickbook-dev";
     [25038:     ] "/branches/build/boost/" : "build";
     [27041:     ] "/branches/BOOST_BUILD_PYTHON/boost/" : "BOOST_BUILD_PYTHON";
+    [45474:45867] "/branches/CMake/Boost_1_35_0/" : "CMake/Boost_1_35_0";
   }
   tags
   {
@@ -1541,6 +1540,14 @@ repository ublas : common_branches
   }
 }
 
+repository ublas
+{
+  branches
+  {
+    [:] "/branches/ublas-doxygen/" : "doxygen";
+  }
+}
+
 repository optional : common_branches
 {
   content
@@ -1798,7 +1805,9 @@ repository smart_ptr : common_branches
     "boost/detail/shared_array_nmt.hpp" : "include/boost/detail/shared_array_nmt.hpp";
     "boost/detail/shared_count.hpp" : "include/boost/detail/shared_count.hpp";
     "boost/detail/shared_ptr_nmt.hpp" : "include/boost/detail/shared_ptr_nmt.hpp";
+    "boost/detail/sp_convertible.hpp" : "include/boost/detail/sp_convertible.hpp";
     "boost/detail/sp_counted_base.hpp" : "include/boost/detail/sp_counted_base.hpp";
+    "boost/detail/sp_counted_base_acc_ia64.hpp" : "include/boost/detail/sp_counted_base_acc_ia64.hpp";
     "boost/detail/sp_counted_base_cw_ppc.hpp" : "include/boost/detail/sp_counted_base_cw_ppc.hpp";
     "boost/detail/sp_counted_base_cw_x86.hpp" : "include/boost/detail/sp_counted_base_cw_x86.hpp";
     "boost/detail/sp_counted_base_gcc_ia64.hpp" : "include/boost/detail/sp_counted_base_gcc_ia64.hpp";
@@ -1808,11 +1817,20 @@ repository smart_ptr : common_branches
     "boost/detail/sp_counted_base_nt.hpp" : "include/boost/detail/sp_counted_base_nt.hpp";
     "boost/detail/sp_counted_base_pt.hpp" : "include/boost/detail/sp_counted_base_pt.hpp";
     "boost/detail/sp_counted_base_solaris.hpp" : "include/boost/detail/sp_counted_base_solaris.hpp";
+    "boost/detail/sp_counted_base_spin.hpp" : "include/boost/detail/sp_counted_base_spin.hpp";
     "boost/detail/sp_counted_base_sync.hpp" : "include/boost/detail/sp_counted_base_sync.hpp";
     "boost/detail/sp_counted_base_w32.hpp" : "include/boost/detail/sp_counted_base_w32.hpp";
     "boost/detail/sp_counted_impl.hpp" : "include/boost/detail/sp_counted_impl.hpp";
     "boost/detail/sp_typeinfo.hpp" : "include/boost/detail/sp_typeinfo.hpp";
+    "boost/detail/spinlock.hpp" : "include/boost/detail/spinlock.hpp";
+    "boost/detail/spinlock_gcc_arm.hpp" : "include/boost/detail/spinlock_gcc_arm.hpp";
+    "boost/detail/spinlock_nt.hpp" : "include/boost/detail/spinlock_nt.hpp";
+    "boost/detail/spinlock_pool.hpp" : "include/boost/detail/spinlock_pool.hpp";
+    "boost/detail/spinlock_pt.hpp" : "include/boost/detail/spinlock_pt.hpp";
+    "boost/detail/spinlock_sync.hpp" : "include/boost/detail/spinlock_sync.hpp";
+    "boost/detail/spinlock_w32.hpp" : "include/boost/detail/spinlock_w32.hpp";
     "boost/enable_shared_from_this.hpp" : "include/boost/enable_shared_from_this.hpp";
+    "boost/enable_shared_from_this2.hpp" : "include/boost/enable_shared_from_this2.hpp";
     "boost/intrusive_ptr.hpp" : "include/boost/intrusive_ptr.hpp";
     "boost/get_pointer.hpp" : "include/boost/get_pointer.hpp";
     "boost/make_shared.hpp" : "include/boost/make_shared.hpp";
@@ -1945,6 +1963,15 @@ repository typeof : common_branches
   }
 }
 
+repository type_erasure : common_branches
+{
+  content
+  {
+    "boost/type_erasure/" : "include/boost/type_erasure/";
+    "libs/type_erasure/";
+  }
+}
+
 repository type_traits : common_branches
 {
   content
@@ -1955,6 +1982,16 @@ repository type_traits : common_branches
     "boost/type_traits.hpp" : "include/boost/type_traits.hpp";
     "boost/type_traits/" : "include/boost/type_traits/";
     "libs/type_traits/";
+  }
+  branches
+  {
+    [:] "/trunk/boost/development/type_traits/" : "development";
+    [:] "/branches/type_traits2/boost/development/type_traits/" : "development/type_traits2";
+    [:] "/branches/unlabeled-1.1.1.1.2/boost/development/type_traits/" : "development/unlabeled-1.1.1.1.2";
+    [:] "/tags/Version_1_20_1/boost/development/type_traits/" : "development/Version_1_20_1";
+    [:] "/branches/unlabeled-1.3.2/boost/development/type_traits/" : "development/unlabeled-1.3.2";
+    [:] "/branches/unlabeled-1.1.2/boost/development/type_traits/" : "development/unlabeled-1.1.2";
+    [:] "/branches/unlabeled-1.2.2/boost/development/type_traits/" : "development/unlabeled-1.2.2";
   }
 }
 
