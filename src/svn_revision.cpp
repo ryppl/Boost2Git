@@ -602,7 +602,7 @@ int SvnRevision::exportInternal(
     Log::trace()
       << "repository "
       << qPrintable(repository)
-      << "branch "
+      << " branch "
       << qPrintable(branch)
       << " deleted"
       << std::endl
