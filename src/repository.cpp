@@ -412,6 +412,8 @@ int Repository::createBranch(
     << ' '
     << qPrintable(branchFromDesc)
     << ')'
+    << " in repository "
+    << qPrintable(name)
     << std::endl
     ;
   // Preserve note
@@ -457,6 +459,8 @@ int Repository::resetBranch(
       << qPrintable(branch)
       << " to "
       << qPrintable(backupBranch)
+      << " in repository "
+      << qPrintable(name)
       << std::endl
       ;
     backupCmd = "reset " + backupBranch + "\nfrom " + branchRef + "\n\n";
@@ -567,6 +571,8 @@ void Repository::createAnnotatedTag(
       << "Creating annotated tag "
       << qPrintable(tagName)
       << " (" << qPrintable(ref) << ')'
+      << " in repository "
+      << qPrintable(name)
       << std::endl
       ;
     }
@@ -575,6 +581,8 @@ void Repository::createAnnotatedTag(
     Log::debug()
       << "Re-creating annotated tag "
       << qPrintable(tagName)
+      << " in repository "
+      << qPrintable(name)
       << std::endl
       ;
     }
@@ -732,7 +740,10 @@ void Repository::Transaction::noteCopyFromBranch(
   Q_ASSERT(branchFrom.startsWith("refs/"));
   if (branch == branchFrom)
     {
-    Log::warn() << "Cannot merge inside a branch" << std::endl;
+    Log::warn() << "Cannot merge inside a branch"
+                << " in repository "
+                << qPrintable(repository->name)
+                << std::endl;
     return;
     }
 
@@ -746,7 +757,9 @@ void Repository::Transaction::noteCopyFromBranch(
       << qPrintable(branch)
       << " is copying from branch "
       << qPrintable(branchFrom)
-      << " but the latter doesn't exist. Continuing, assuming the files exist."
+      << " but the latter doesn't exist. Continuing, assuming the files exist"
+      << " in repository "
+      << qPrintable(repository->name)
       << std::endl
       ;
     }
@@ -755,7 +768,9 @@ void Repository::Transaction::noteCopyFromBranch(
     Log::warn()
       << "Unknown revision r"
       << branchRevNum
-      << ". Continuing, assuming the files exist."
+      << ". Continuing, assuming the files exist"
+      << " in repository "
+      << qPrintable(repository->name)
       << std::endl
       ;
     }
@@ -783,12 +798,17 @@ void Repository::Transaction::noteCopyFromBranch(
         << " : "
         << mark
         << " as a merge point"
+        << " in repository "
+        << qPrintable(repository->name)
         << std::endl
         ;
       }
     else
       {
-      Log::debug() << "merge point already recorded" << std::endl;
+      Log::debug() << "merge point already recorded"
+                   << " in repository "
+                   << qPrintable(repository->name)
+                   << std::endl;
       }
     }
   }
@@ -931,6 +951,8 @@ void Repository::Transaction::commit()
           << "Skipping marking "
           << merge
           << " as a merge point as it matches the parent"
+          << " in repository "
+          << qPrintable(repository->name)
           << std::endl
           ;
         continue;
@@ -943,7 +965,10 @@ void Repository::Transaction::commit()
         //   (3) create another commit on branch to soak up additional parents
         // we've chosen option (2) for now, since only artificial commits
         // created by cvs2svn seem to have this issue
-        Log::warn() << "too many merge parents" << std::endl;
+        Log::warn() << "too many merge parents"
+                    << " in repository "
+                    << qPrintable(repository->name)
+                    << std::endl;
         break;
       }
 
