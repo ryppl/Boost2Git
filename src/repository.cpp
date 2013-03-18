@@ -473,12 +473,13 @@ int Repository::resetBranch(
 
   if (comment == "delete")
     {
-    deletedBranches.append(backupCmd).append(cmd);
+    deletedBranches[branch].append(backupCmd).append(cmd);
     }
   else
     {
-    resetBranches.append(backupCmd).append(cmd);
+    resetBranches[branch].append(backupCmd).append(cmd);
     }
+  
   return EXIT_SUCCESS;
   }
 
@@ -489,8 +490,10 @@ void Repository::commit()
     return;
     }
   startFastImport();
-  fastImport.write(deletedBranches);
-  fastImport.write(resetBranches);
+  foreach(QByteArray const& cmd, deletedBranches.values())
+    fastImport.write(cmd);
+  foreach(QByteArray const& cmd, resetBranches.values())
+    fastImport.write(cmd);
   deletedBranches.clear();
   resetBranches.clear();
   }

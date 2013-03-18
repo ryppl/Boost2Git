@@ -117,8 +117,8 @@ class Repository
     LoggingQProcess fastImport;
     int commitCount;
     int outstandingTransactions;
-    QByteArray deletedBranches;
-    QByteArray resetBranches;
+    QHash<QString, QByteArray> deletedBranches;
+    QHash<QString, QByteArray> resetBranches;
 
     /* starts at 0, and counts up.  */
     int last_commit_mark;
