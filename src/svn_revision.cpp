@@ -650,9 +650,9 @@ int SvnRevision::exportInternal(
       {
       // source is not the whole of its branch
       Log::debug()
-        << qPrintable(current) << "is a partial branch of repository"
-        << qPrintable(prevrepository) << "branch"
-        << qPrintable(prevbranch) << "subdir"
+        << qPrintable(current) << "is a partial branch of repository "
+        << qPrintable(prevrepository) << " branch "
+        << qPrintable(prevbranch) << " subdir "
         << qPrintable(prevpath)
         << std::endl
         ;
@@ -660,11 +660,11 @@ int SvnRevision::exportInternal(
     else if (prevrepository != repository)
       {
       Log::warn()
-        << qPrintable(current) << "rev" << revnum
-        << "is a cross-repository copy (from repository"
-        << qPrintable(prevrepository) << "branch"
-        << qPrintable(prevbranch) << "path"
-        << qPrintable(prevpath) << "rev" << rev_from << ")"
+        << qPrintable(current) << " rev " << revnum
+        << " is a cross-repository copy (from repository "
+        << qPrintable(prevrepository) << " branch "
+        << qPrintable(prevbranch) << " path "
+        << qPrintable(prevpath) << " rev " << rev_from << ")"
         << std::endl
         ;
       }
@@ -672,8 +672,8 @@ int SvnRevision::exportInternal(
       {
       Log::debug()
         << qPrintable(current)
-        << "is a branch copy which renames base directory of all contents"
-        << qPrintable(prevpath) << "to" << qPrintable(path)
+        << " is a branch copy which renames base directory of all contents "
+        << qPrintable(prevpath) << " to " << qPrintable(path)
         << std::endl
         ;
       // FIXME: Handle with fast-import 'file rename' facility
@@ -685,10 +685,10 @@ int SvnRevision::exportInternal(
         {
         // same branch and same repository
         Log::debug()
-          << qPrintable(current) << "rev" << revnum
-          << "is reseating branch" << qPrintable(branch)
-          << "to an earlier revision"
-          << qPrintable(previous) << "rev" << rev_from
+          << qPrintable(current) << " rev " << revnum
+          << " is reseating branch " << qPrintable(branch)
+          << " to an earlier revision "
+          << qPrintable(previous) << " rev " << rev_from
           << std::endl
           ;
         }
@@ -726,6 +726,7 @@ int SvnRevision::exportInternal(
           << key
           << "->"
           << qPrintable(branch)
+          << "/"
           << qPrintable(path)
           << ")"
           << std::endl
@@ -784,6 +785,7 @@ int SvnRevision::exportInternal(
     Log::trace()
       << "replaced with empty path ("
       << qPrintable(branch)
+      << "/"
       << qPrintable(path)
       << ")"
       << std::endl
@@ -795,6 +797,7 @@ int SvnRevision::exportInternal(
     Log::trace()
       << "delete ("
       << qPrintable(branch)
+      << "/"
       << qPrintable(path)
       << ")"
       << std::endl
@@ -822,6 +825,7 @@ int SvnRevision::exportInternal(
       << key
       << "->"
       << qPrintable(branch)
+      << "/"
       << qPrintable(path)
       << ")"
       << std::endl
