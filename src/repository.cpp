@@ -473,7 +473,13 @@ int Repository::resetBranch(
 
   if (comment == "delete")
     {
-    deletedBranches[branch].append(backupCmd).append(cmd);
+    // In a single revision, we can create a branch after deleting it,
+    // but not vice-versa.  Just ignore both the deletion and the
+    // original creation if they occur in the same revision.
+    if (resetBranches.contains(branch))
+        resetBranches.remove(branch);
+    else
+        deletedBranches[branch].append(backupCmd).append(cmd);
     }
   else
     {
