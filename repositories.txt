@@ -2191,6 +2191,11 @@ repository sandbox
   branches
   {
     [:] "/" : "master";
+    // Commits in the SVN sandbox before this revision 
+    // belong in the sandbox and not in smart_ptr.  Not
+    // sure if this is the way to express it
+    [:552] "/libs/smart_ptr" : "master";
+    [:552] "/boost/smart_ptr" : "master";
   }
 }
 
