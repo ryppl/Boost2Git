@@ -20,7 +20,7 @@
 #include <string>
 #include <vector>
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost/fusion/adapted/struct/adapt_struct.hpp>
+#include <boost/fusion/adapted/struct/define_struct.hpp>
 #include <boost/spirit/home/qi.hpp>
 
 #include <fstream>
@@ -35,46 +35,23 @@ namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
 namespace classic = boost::spirit::classic;
 
-struct ContentRule
-  {
-  std::string prefix;
-  std::string replace;
-  bool is_fallback;
-  };
+namespace boost2git {}
+using namespace boost2git;
 
-struct BranchRule
-  {
-  std::size_t min;
-  std::size_t max;
-  std::string prefix;
-  std::string name;
-  };
-
-struct RepoRule
-  {
-  bool abstract;
-  std::string name;
-  std::string parent;
-  std::size_t minrev;
-  std::vector<ContentRule> content;
-  std::vector<BranchRule> branch_rules;
-  std::vector<BranchRule> tag_rules;
-  };
-
-BOOST_FUSION_ADAPT_STRUCT(ContentRule,
+BOOST_FUSION_DEFINE_STRUCT((boost2git), ContentRule,
   (std::string, prefix)
   (bool, is_fallback)
   (std::string, replace)
   )
 
-BOOST_FUSION_ADAPT_STRUCT(BranchRule,
+BOOST_FUSION_DEFINE_STRUCT((boost2git), BranchRule,
   (std::size_t, min)
   (std::size_t, max)
   (std::string, prefix)
   (std::string, name)
   )
 
-BOOST_FUSION_ADAPT_STRUCT(RepoRule,
+BOOST_FUSION_DEFINE_STRUCT((boost2git), RepoRule,
   (bool, abstract)
   (std::string, name)
   (std::string, parent)
