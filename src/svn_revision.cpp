@@ -35,6 +35,60 @@
 namespace
 {
 
+bool pathExists(apr_pool_t* pool, svn_fs_t *fs, QString const& path_, int revnum)
+  {
+  // Log::debug() << "### checking for existence of " << qPrintable(path_) << "@" << revnum << std::endl;
+  QByteArray path = path_.toUtf8();
+    
+  AprPool subpool(pool);
+  svn_fs_root_t *fs_root;
+  check_svn(svn_fs_revision_root(&fs_root, fs, revnum, subpool));
+  svn_boolean_t is_dir;
+
+  check_svn(svn_fs_is_dir(&is_dir, fs_root, path, subpool));
+
+  if (is_dir)
+    {
+    // Log::debug() << "## identified as directory" << std::endl;
+    apr_hash_t* tree_entries = apr_hash_make(subpool);
+    check_svn(svn_fs_dir_entries(&tree_entries, fs_root, path, subpool));
+
+    // As far as Git is concerned, an empty directory might as well
+    // not exist
+    apr_hash_index_t *i = apr_hash_first(subpool, tree_entries);
+
+    if (i == 0)
+      {
+      // Log::debug() << "## no entries." << std::endl;
+      return false;
+      }
+
+    const void       *key;
+    void             *val;
+    apr_hash_this(i, &key, NULL, &val);
+    
+    char const* node = static_cast<char const*>(key);
+    // Log::debug() << "## found entry " << node << std::endl;
+    }
+  else
+    {
+    // Log::debug() << "## identified as file" << std::endl;
+    svn_filesize_t stream_length;
+    svn_error_t* err = svn_fs_file_length(&stream_length, fs_root, path, subpool);
+    if (err)
+      {
+      // Log::debug() << "## file_length => ERROR" << std::endl;
+      return false;
+      }
+    else
+      {
+      // Log::debug() << "## file_length == " << stream_length << std::endl;
+      }
+    }
+  return true;
+  }
+
+
 Rule const* find_match(patrie const& rules, QString& path, std::size_t revnum)
   {
   Rule const* match = rules.longest_match(path.toStdString(), revnum);
@@ -542,9 +596,28 @@ int SvnRevision::exportDispatch(
     << qPrintable(current)
     << " matched rule: '"
     << rule.match
-    << "'; exporting."
-    << std::endl
     ;
+
+  if (change->change_kind == svn_fs_path_change_delete
+    && !pathExists(pool, fs, current, revnum - 1))
+    {
+    Log::trace() << "but deleted path missing in previous revision."
+                 << std::endl;
+    return EXIT_SUCCESS;
+    }
+  else
+    {
+    Log::trace()
+      << "'; exporting to repository "
+      << rule.repository
+      << " branch "
+      << rule.branch
+      << " path "
+      << rule.prefix
+      << std::endl
+      ;
+    }
+  
   if (exportInternal(key, change, path_from, rev_from, current, rule, matchRules) == EXIT_SUCCESS)
     {
     return EXIT_SUCCESS;
@@ -703,7 +776,7 @@ int SvnRevision::exportInternal(
           << std::endl
           ;
         }
-
+ 
       if (repo->createBranch(branch, revnum, prevbranch, rev_from) == EXIT_FAILURE)
         {
         return EXIT_FAILURE;
@@ -731,8 +804,11 @@ int SvnRevision::exportInternal(
           << ")"
           << std::endl
           ;
-        txn->deleteFile(path);
-        recursiveDumpDir(txn, fs_root, key, path, pool);
+        if (pathExists(pool, fs, path, revnum - 1))
+          {
+          txn->deleteFile(path);
+          recursiveDumpDir(txn, fs_root, key, path, pool);
+          }
         }
 //      if (rule.annotate)
 //        {
@@ -802,7 +878,10 @@ int SvnRevision::exportInternal(
       << ")"
       << std::endl
       ;
-    txn->deleteFile(path);
+    if (pathExists(pool, fs, path, revnum - 1))
+      {
+      txn->deleteFile(path);
+      }
     }
   else if (!current.endsWith('/'))
     {
@@ -830,7 +909,10 @@ int SvnRevision::exportInternal(
       << ")"
       << std::endl
       ;
-    txn->deleteFile(path);
+    if (pathExists(pool, fs, path, revnum - 1))
+      {
+      txn->deleteFile(path);
+      }
     recursiveDumpDir(txn, fs_root, key, path, pool);
     }
   return EXIT_SUCCESS;
