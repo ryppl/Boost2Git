@@ -48,7 +48,7 @@ abstract repository common_branches
     [ 7671:     ] "/branches/iterator-adaptors/boost/" : "old-branches/iterator-adaptors";
     [ 7673:     ] "/branches/conversion/boost/" : "old-branches/conversion";
     [ 7698:     ] "/branches/boost-graph-library/boost/" : "old-branches/boost-graph-library";
-    [ 7808:     ] "/branches/regex-sub/boost/" : "old-branches/regex-sub";
+    [ 7754:     ] "/branches/regex-sub/boost/" : "old-branches/regex-sub";
 //  [ 7931:     ] "/branches/boost/boost/" : "old-branches/boost"; // TODO: check whether this is really a common branch!
 //  [ 7994:     ] "/branches/numerics/boost/" : "old-branches/numerics"; // TODO: check whether this is really a common branch!
 //  [ 8005:     ] "/branches/to_python_experiments/boost/" : "old-branches/to_python_experiments"; // TODO: check whether this is really a common branch!
@@ -76,7 +76,7 @@ abstract repository common_branches
 //  [ 9444:     ] "/branches/unlabeled-1.1.1.1.8/boost/" : "old-branches/unlabeled-1.1.1.1.8"; // TODO: check whether this is really a common branch!
     [ 7699:     ] "/branches/unlabeled-1.4.6/boost/" : "old-branches/unlabeled-1.4.6";
     [ 8772:     ] "/branches/unlabeled-1.37.2/boost/" : "old-branches/unlabeled-1.37.2"; 
-//  [ 9444:     ] "/branches/unlabeled-1.1.1.1.6/boost/" : "old-branches/unlabeled-1.1.1.1.6"; // TODO: check whether this is really a common branch!
+    [ 8329:     ] "/branches/unlabeled-1.1.1.1.6/boost/" : "old-branches/unlabeled-1.1.1.1.6";
     [ 8775:     ] "/branches/unlabeled-1.65.2/boost/" : "old-branches/unlabeled-1.65.2"; 
     [ 8365:     ] "/branches/unlabeled-1.2.8/boost/" : "old-branches/unlabeled-1.2.8";
     [ 9444:     ] "/branches/unlabeled-1.15.2/boost/" : "old-branches/unlabeled-1.15.2";
@@ -85,7 +85,7 @@ abstract repository common_branches
     [ 9444:     ] "/branches/unlabeled-1.4.2/boost/" : "old-branches/unlabeled-1.4.2";
     [ 8770:     ] "/branches/unlabeled-1.19.2/boost/" : "old-branches/unlabeled-1.19.2"; 
     [ 8742:     ] "/branches/unlabeled-1.21.2/boost/" : "old-branches/unlabeled-1.21.2"; 
-//  [ 9444:     ] "/branches/unlabeled-1.1.1.1.10/boost/" : "old-branches/unlabeled-1.1.1.1.10"; // TODO: check whether this is really a common branch!
+    [ 7623:     ] "/branches/unlabeled-1.1.1.1.10/boost/" : "old-branches/unlabeled-1.1.1.1.10";
     [ 9291:     ] "/branches/unlabeled-1.37.6/boost/" : "old-branches/unlabeled-1.37.6"; 
     [ 9558:     ] "/branches/more1/boost/" : "old-branches/more1"; 
     [ 9818:     ] "/branches/ralf_grosse_kunstleve/boost/" : "old-branches/ralf_grosse_kunstleve";
@@ -112,7 +112,7 @@ abstract repository common_branches
     [12128:     ] "/branches/rollback/boost/" : "old-branches/rollback";
     [12748:     ] "/branches/RC_1_27_0/boost/" : "old-branches/RC_1_27_0";
     [12509:     ] "/branches/test-development/boost/" : "old-branches/test-development"; 
-    [12898:     ] "/branches/lambda_development/boost/" : "old-branches/lambda_development";
+    [11710:     ] "/branches/lambda_development/boost/" : "old-branches/lambda_development";
 //  [13123:     ] "/branches/perforce_jam_2_4/boost/" : "old-branches/perforce_jam_2_4"; // TODO: check whether this is really a common branch!
     [12504:     ] "/branches/perforce_2_4_merge/boost/" : "old-branches/perforce_2_4_merge"; 
     [13336:     ] "/branches/compiler_supported_error_messages/boost/" : "old-branches/compiler_supported_error_messages";
@@ -120,17 +120,17 @@ abstract repository common_branches
     [13504:     ] "/branches/unlabeled-1.8.2/boost/" : "old-branches/unlabeled-1.8.2";
     [13151:     ] "/branches/unlabeled-1.5.4/boost/" : "old-branches/unlabeled-1.5.4"; 
     [13160:     ] "/branches/unlabeled-1.10.4/boost/" : "old-branches/unlabeled-1.10.4"; 
-    [13504:     ] "/branches/unlabeled-1.5.2/boost/" : "old-branches/unlabeled-1.5.2";
+    [11588:     ] "/branches/unlabeled-1.5.2/boost/" : "old-branches/unlabeled-1.5.2";
     [12635:     ] "/branches/unlabeled-1.3.6/boost/" : "old-branches/unlabeled-1.3.6"; 
-    [ 8781:     ] "/branches/unlabeled-1.10.2/boost/" : "old-branches/unlabeled-1.10.2"; 
-    [13504:     ] "/branches/unlabeled-1.2.6/boost/" : "old-branches/unlabeled-1.2.6";
+    [ 8781:     ] "/branches/unlabeled-1.10.2/boost/" : "old-branches/unlabeled-1.10.2";
+    [ 8343:     ] "/branches/unlabeled-1.2.6/boost/" : "old-branches/unlabeled-1.2.6";
     [13504:     ] "/branches/unlabeled-1.6.2/boost/" : "old-branches/unlabeled-1.6.2";
     [ 8722:     ] "/branches/unlabeled-1.18.2/boost/" : "old-branches/unlabeled-1.18.2"; 
     [13513:     ] "/branches/unlabeled-1.7.2/boost/" : "old-branches/unlabeled-1.7.2";
     [13515:     ] "/branches/unlabeled-1.11.2/boost/" : "old-branches/unlabeled-1.11.2";
     [ 8656:     ] "/branches/unlabeled-1.14.2/boost/" : "old-branches/unlabeled-1.14.2"; 
     [12863:     ] "/branches/unlabeled-1.7.4/boost/" : "old-branches/unlabeled-1.7.4"; 
-    [13516:     ] "/branches/unlabeled-1.1.6/boost/" : "old-branches/unlabeled-1.1.6";
+    [ 7641:     ] "/branches/unlabeled-1.1.6/boost/" : "old-branches/unlabeled-1.1.6";
     [13537:     ] "/branches/lambda_development_during_review/boost/" : "old-branches/lambda_development_during_review";
     [13824:     ] "/branches/function_v2/boost/" : "old-branches/function_v2";
     [13703:     ] "/branches/aix_so/boost/" : "old-branches/aix_so"; 
@@ -158,7 +158,7 @@ abstract repository common_branches
     [19097:     ] "/branches/build_for_distribution/boost/" : "old-branches/build_for_distribution"; 
     [20904:     ] "/branches/simplify/boost/" : "old-branches/simplify";
     [21052:     ] "/branches/RC_1_30_0/boost/" : "old-branches/RC_1_30_0";
-    [21992:     ] "/branches/unlabeled-1.2.2/boost/" : "old-branches/unlabeled-1.2.2";
+    [ 9019:     ] "/branches/unlabeled-1.2.2/boost/" : "old-branches/unlabeled-1.2.2";
     [22197:     ] "/branches/indexing_v2/boost/" : "old-branches/indexing_v2";
     [22682:     ] "/branches/function_signature_patches_1_31/boost/" : "old-branches/function_signature_patches_1_31";
     [23328:     ] "/branches/RC_1_31_0/boost/" : "old-branches/RC_1_31_0";
@@ -248,7 +248,7 @@ abstract repository common_branches
     [63100:     ] "/branches/filesystem3/" : "filesystem3";
 //  [65351:     ] "/branches/quickbook-1.5-spirit2/" : "quickbook-1.5-spirit2"; // TODO: check whether this is really a common branch!
     [68398:     ] "/branches/quickbook-filenames/" : "quickbook-filenames";
-    [68433:     ] "/sandbox/" : "sandbox/trunk";
+    [     :     ] "/sandbox/" : "sandbox/trunk";
     [68640:     ] "/branches/doc-tools-docs/" : "doc-tools-docs";
     [72078:     ] "/branches/quickbook-dev/" : "quickbook-dev";
     [25038:     ] "/branches/build/boost/" : "build";
@@ -321,7 +321,7 @@ abstract repository common_branches
 //  [ 9444:     ] "/branches/unlabeled-1.37.6/" : "old-branches/unlabeled-1.37.6"; // TODO: check whether this is really a common branch!
 //  [ 9444:     ] "/branches/unlabeled-1.19.2/" : "old-branches/unlabeled-1.19.2"; // TODO: check whether this is really a common branch!
 //  [ 9444:     ] "/branches/unlabeled-1.13.2/" : "old-branches/unlabeled-1.13.2"; // TODO: check whether this is really a common branch!
-//  [ 9444:     ] "/branches/unlabeled-1.1.1.1.8/" : "old-branches/unlabeled-1.1.1.1.8"; // TODO: check whether this is really a common branch!
+    [ 8334:     ] "/branches/unlabeled-1.1.1.1.8/" : "old-branches/unlabeled-1.1.1.1.8";
 //  [ 9444:     ] "/branches/unlabeled-1.2.8/" : "old-branches/unlabeled-1.2.8"; // TODO: check whether this is really a common branch!
 //  [ 9444:     ] "/branches/unlabeled-1.4.6/" : "old-branches/unlabeled-1.4.6"; // TODO: check whether this is really a common branch!
 //  [ 9444:     ] "/branches/unlabeled-1.1.8/" : "old-branches/unlabeled-1.1.8"; // TODO: check whether this is really a common branch!
