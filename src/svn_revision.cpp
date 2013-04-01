@@ -804,7 +804,7 @@ int SvnRevision::exportInternal(
           << ")"
           << std::endl
           ;
-        if (pathExists(pool, fs, path, revnum - 1))
+        if (pathExists(pool, fs, current, revnum - 1))
           {
           txn->deleteFile(path);
           recursiveDumpDir(txn, fs_root, key, path, pool);
@@ -878,7 +878,7 @@ int SvnRevision::exportInternal(
       << ")"
       << std::endl
       ;
-    if (pathExists(pool, fs, path, revnum - 1))
+    if (pathExists(pool, fs, current, revnum - 1))
       {
       txn->deleteFile(path);
       }
@@ -909,7 +909,7 @@ int SvnRevision::exportInternal(
       << ")"
       << std::endl
       ;
-    if (pathExists(pool, fs, path, revnum - 1))
+    if (pathExists(pool, fs, current, revnum - 1))
       {
       txn->deleteFile(path);
       }
