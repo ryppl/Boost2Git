@@ -56,6 +56,7 @@ BOOST_FUSION_DEFINE_STRUCT((boost2git), RepoRule,
   (std::string, name)
   (std::string, parent)
   (std::size_t, minrev)
+  (std::size_t, maxrev)
   (std::vector<ContentRule>, content)
   (std::vector<BranchRule>, branch_rules)
   (std::vector<BranchRule>, tag_rules)
@@ -74,7 +75,8 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
       > string_
       > -(':' > string_) // TODO: make sure abstract parent exists and copy branches!
       > '{'
-      > (("start_from" > qi::uint_ > ';') | qi::attr(0))
+      > (("minrev" > qi::uint_ > ';') | qi::attr(0))
+      > (("maxrev" > qi::uint_ > ';') | qi::attr(UINT_MAX))
       > -content_
       > -branches_
       > -tags_
@@ -249,9 +251,13 @@ Ruleset::Ruleset(std::string const& filename)
         std::string const& ref_name = qualify_ref(branch_rule.name, rules_and_prefix.second);
         repo.branches.insert(ref_name);
 
-        match.min = std::min(branch_rule.min, repo_rule.minrev);
-        match.max = branch_rule.max;
         match.branch = ref_name;
+        match.min = std::max(branch_rule.min, repo_rule.minrev);
+        match.max = std::min(branch_rule.max, repo_rule.maxrev);
+        if (match.min > match.max)
+          {
+          continue;
+          }
 
         if (repo_rule.content.empty())
           {

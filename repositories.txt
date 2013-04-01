@@ -1812,6 +1812,7 @@ repository signals2 : common_branches
 
 repository smart_ptr : common_branches
 {
+  minrev 7620;
   content
   {
     "boost/detail/atomic_count.hpp" : "include/boost/detail/atomic_count.hpp";
