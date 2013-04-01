@@ -939,7 +939,7 @@ int SvnRevision::recurse(
   if(kind == svn_node_none)
     {
     Log::warn()
-      << "Trying to recurse using a nonexistant path '"
+      << "Trying to recurse using a nonexistent path '"
       << path
       << "'; ignoring"
       << std::endl
