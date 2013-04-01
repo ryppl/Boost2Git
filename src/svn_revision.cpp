@@ -809,6 +809,11 @@ int SvnRevision::exportInternal(
           txn->deleteFile(path);
           recursiveDumpDir(txn, fs_root, key, path, pool);
           }
+        else
+          {
+          Log::trace() << "...deleted file missing in previous revision, so skipped"
+                 << std::endl;
+          }
         }
 //      if (rule.annotate)
 //        {
@@ -882,6 +887,11 @@ int SvnRevision::exportInternal(
       {
       txn->deleteFile(path);
       }
+    else
+      {
+      Log::trace() << "...deleted file missing in previous revision, so skipped"
+                   << std::endl;
+      }
     }
   else if (!current.endsWith('/'))
     {
@@ -912,6 +922,11 @@ int SvnRevision::exportInternal(
     if (pathExists(pool, fs, current, revnum - 1))
       {
       txn->deleteFile(path);
+      }
+    else
+      {
+      Log::trace() << "...deleted file missing in previous revision, so skipped"
+                   << std::endl;
       }
     recursiveDumpDir(txn, fs_root, key, path, pool);
     }
