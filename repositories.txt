@@ -45,7 +45,7 @@ abstract repository common_branches
 //  [ 7556:     ] "/sandbox-branches/indexing_20031006/" : "sandbox/indexing_20031006"; // TODO: check whether this is really a common branch!
 //  [ 7556:     ] "/sandbox-branches/vendor/" : "sandbox/vendor"; // TODO: check whether this is really a common branch!
     [ 7620:     ] "/branches/unlabeled-1.1.1/boost/" : "old-branches/unlabeled-1.1.1";
-    [ 7671:     ] "/branches/iterator-adaptors/boost/" : "old-branches/iterator-adaptors";
+    [ 7633:     ] "/branches/iterator-adaptors/boost/" : "old-branches/iterator-adaptors";
     [ 7673:     ] "/branches/conversion/boost/" : "old-branches/conversion";
     [ 7698:     ] "/branches/boost-graph-library/boost/" : "old-branches/boost-graph-library";
     [ 7754:     ] "/branches/regex-sub/boost/" : "old-branches/regex-sub";
@@ -63,7 +63,7 @@ abstract repository common_branches
     [ 8587:     ] "/branches/boostify/boost/" : "old-branches/boostify";
     [ 9063:     ] "/branches/better_indirect/boost/" : "old-branches/better_indirect";
     [ 9294:     ] "/branches/named-args/boost/" : "old-branches/named-args";
-    [ 9348:     ] "/branches/moved_pointer/boost/" : "old-branches/moved_pointer";
+    [ 9293:     ] "/branches/moved_pointer/boost/" : "old-branches/moved_pointer";
     [ 8443:     ] "/branches/null_ptr_is_none/boost/" : "old-branches/null_ptr_is_none";
     [ 8674:     ] "/branches/unlabeled-1.12.2/boost/" : "old-branches/unlabeled-1.12.2";
     [ 8636:     ] "/branches/unlabeled-1.16.2/boost/" : "old-branches/unlabeled-1.16.2"; 
@@ -78,16 +78,16 @@ abstract repository common_branches
     [ 8329:     ] "/branches/unlabeled-1.1.1.1.6/boost/" : "old-branches/unlabeled-1.1.1.1.6";
     [ 8775:     ] "/branches/unlabeled-1.65.2/boost/" : "old-branches/unlabeled-1.65.2"; 
     [ 8365:     ] "/branches/unlabeled-1.2.8/boost/" : "old-branches/unlabeled-1.2.8";
-    [ 9444:     ] "/branches/unlabeled-1.15.2/boost/" : "old-branches/unlabeled-1.15.2";
+    [ 9377:     ] "/branches/unlabeled-1.15.2/boost/" : "old-branches/unlabeled-1.15.2";
     [ 7702:     ] "/branches/unlabeled-1.1.4/boost/" : "old-branches/unlabeled-1.1.4";
     [ 8350:     ] "/branches/unlabeled-1.3.8/boost/" : "old-branches/unlabeled-1.3.8";
-    [ 9444:     ] "/branches/unlabeled-1.4.2/boost/" : "old-branches/unlabeled-1.4.2";
+    [ 9366:     ] "/branches/unlabeled-1.4.2/boost/" : "old-branches/unlabeled-1.4.2";
     [ 8770:     ] "/branches/unlabeled-1.19.2/boost/" : "old-branches/unlabeled-1.19.2"; 
     [ 8742:     ] "/branches/unlabeled-1.21.2/boost/" : "old-branches/unlabeled-1.21.2"; 
     [ 7623:     ] "/branches/unlabeled-1.1.1.1.10/boost/" : "old-branches/unlabeled-1.1.1.1.10";
     [ 9291:     ] "/branches/unlabeled-1.37.6/boost/" : "old-branches/unlabeled-1.37.6"; 
     [ 9558:     ] "/branches/more1/boost/" : "old-branches/more1"; 
-    [ 9818:     ] "/branches/ralf_grosse_kunstleve/boost/" : "old-branches/ralf_grosse_kunstleve";
+    [ 9458:     ] "/branches/ralf_grosse_kunstleve/boost/" : "old-branches/ralf_grosse_kunstleve";
     [10226:     ] "/branches/boost_python_friend_fixes/boost/" : "old-branches/boost_python_friend_fixes";
     [10251:     ] "/branches/persistence-initial/boost/" : "old-branches/persistence-initial";
     [10262:     ] "/branches/build-developement/boost/" : "old-branches/build-developement"; 
@@ -116,17 +116,17 @@ abstract repository common_branches
     [12504:     ] "/branches/perforce_2_4_merge/boost/" : "old-branches/perforce_2_4_merge"; 
     [13336:     ] "/branches/compiler_supported_error_messages/boost/" : "old-branches/compiler_supported_error_messages";
     [13118:     ] "/branches/boost_build_v2/boost/" : "old-branches/boost_build_v2"; 
-    [13504:     ] "/branches/unlabeled-1.8.2/boost/" : "old-branches/unlabeled-1.8.2";
+    [ 9368:     ] "/branches/unlabeled-1.8.2/boost/" : "old-branches/unlabeled-1.8.2";
     [13151:     ] "/branches/unlabeled-1.5.4/boost/" : "old-branches/unlabeled-1.5.4"; 
     [13160:     ] "/branches/unlabeled-1.10.4/boost/" : "old-branches/unlabeled-1.10.4"; 
-    [11588:     ] "/branches/unlabeled-1.5.2/boost/" : "old-branches/unlabeled-1.5.2";
+    [ 9288:     ] "/branches/unlabeled-1.5.2/boost/" : "old-branches/unlabeled-1.5.2";
     [12635:     ] "/branches/unlabeled-1.3.6/boost/" : "old-branches/unlabeled-1.3.6"; 
     [ 8781:     ] "/branches/unlabeled-1.10.2/boost/" : "old-branches/unlabeled-1.10.2";
     [ 8343:     ] "/branches/unlabeled-1.2.6/boost/" : "old-branches/unlabeled-1.2.6";
-    [13504:     ] "/branches/unlabeled-1.6.2/boost/" : "old-branches/unlabeled-1.6.2";
+    [ 9380:     ] "/branches/unlabeled-1.6.2/boost/" : "old-branches/unlabeled-1.6.2";
     [ 8722:     ] "/branches/unlabeled-1.18.2/boost/" : "old-branches/unlabeled-1.18.2"; 
-    [13513:     ] "/branches/unlabeled-1.7.2/boost/" : "old-branches/unlabeled-1.7.2";
-    [13515:     ] "/branches/unlabeled-1.11.2/boost/" : "old-branches/unlabeled-1.11.2";
+    [ 9367:     ] "/branches/unlabeled-1.7.2/boost/" : "old-branches/unlabeled-1.7.2";
+    [ 9365:     ] "/branches/unlabeled-1.11.2/boost/" : "old-branches/unlabeled-1.11.2";
     [ 8656:     ] "/branches/unlabeled-1.14.2/boost/" : "old-branches/unlabeled-1.14.2"; 
     [12863:     ] "/branches/unlabeled-1.7.4/boost/" : "old-branches/unlabeled-1.7.4"; 
     [ 7641:     ] "/branches/unlabeled-1.1.6/boost/" : "old-branches/unlabeled-1.1.6";
@@ -135,14 +135,14 @@ abstract repository common_branches
     [13703:     ] "/branches/aix_so/boost/" : "old-branches/aix_so"; 
     [14278:     ] "/branches/feature_branch-update_rule/boost/" : "old-branches/feature_branch-update_rule"; 
     [14776:     ] "/branches/unit_test_development/boost/" : "old-branches/unit_test_development";
-    [14788:     ] "/branches/RC_1_28_0/boost/" : "old-branches/RC_1_28_0";
+    [13795:     ] "/branches/RC_1_28_0/boost/" : "old-branches/RC_1_28_0";
     [14963:     ] "/branches/python-v2-dev/boost/" : "old-branches/python-v2-dev";
     [15286:     ] "/branches/mpl-development/boost/" : "old-branches/mpl-development";
-    [15294:     ] "/branches/matrix_development/boost/" : "old-branches/matrix_development";
+    [13769:     ] "/branches/matrix_development/boost/" : "old-branches/matrix_development";
     [15354:     ] "/branches/python_v2_API_restructure/boost/" : "old-branches/python_v2_API_restructure";
     [15426:     ] "/branches/mpl_v2/boost/" : "old-branches/mpl_v2";
     [16126:     ] "/branches/thread_development/boost/" : "old-branches/thread_development";
-    [16497:     ] "/branches/RC_1_29_0/boost/" : "old-branches/RC_1_29_0";
+    [15460:     ] "/branches/RC_1_29_0/boost/" : "old-branches/RC_1_29_0";
     [16590:     ] "/branches/fs_review/boost/" : "old-branches/fs_review";
     [10399:     ] "/branches/coding_guidelines/boost/" : "old-branches/coding_guidelines"; 
     [15043:     ] "/branches/sane-testing/boost/" : "old-branches/sane-testing"; 
@@ -1716,6 +1716,7 @@ repository python
 {
   branches
   {
+    [:] "/trunk/boost/development/py_cpp/" : "py_cpp/trunk";
     [:] "/branches/boost/boost/development/py_cpp/" : "py_cpp/development";
     [:] "/branches/numerics/boost/development/py_cpp/" : "py_cpp/numerics";
     [:] "/branches/to_python_experiments/boost/development/py_cpp/" : "py_cpp/to_python_experiments";
