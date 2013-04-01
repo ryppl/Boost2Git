@@ -49,7 +49,7 @@ add_custom_target(conversion ALL
   COMMAND
     $<TARGET_FILE:svn2git>
     --add-metadata
-    --exit-success
+#   --exit-success
     --authors "${authors}"
     --rules   "${repositories}"
     --svnrepo "${svn_repository}"
