@@ -53,6 +53,7 @@ blindberg = Björn Lindberg <bjoern.lindberg@gmail.com>
 blq = Fredrik Blomqvist <fredrik_blomqvist@home.se>
 bms = Bruce Simpson <bms@incunabulum.net>
 bobwalters = Bob Walters <bob.s.walters@gmail.com>
+boeschf = Fabian Bösch <boeschf@student.ethz.ch>
 boost_admin = Boost Administrator <boost_admin@users.sourceforge.net>
 bpeabody = Brock Peabody <brock.peabody@gmail.com>
 brandon.kohn = Brandon Kohn <blkohn@hotmail.com>
