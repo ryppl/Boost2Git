@@ -662,6 +662,7 @@ repository concept_check : common_branches
   {
     "boost/pending/concept_checks.hpp" : "include/boost/pending/concept_checks.hpp";
     "boost/pending/concept_skeletons.hpp" : "include/boost/pending/concept_skeletons.hpp";
+    "boost/pending/concept_archetypes.hpp" : "include/boost/pending/concept_archetypes.hpp";
     "boost/concept_archetype.hpp" : "include/boost/concept_archetype.hpp";
     "boost/concept_check.hpp" : "include/boost/concept_check.hpp";
     "boost/concept/" : "include/boost/concept/";
@@ -1399,6 +1400,7 @@ repository property_map : common_branches
     "boost/dynamic_property_map.hpp" : "include/boost/dynamic_property_map.hpp";
     "boost/property_accessor.hpp" : "include/boost/property_accessor.hpp";
     "boost/detail/property_accessor.hpp" : "include/boost/detail/property_accessor.hpp";
+    "boost/detail/property_map.hpp" : "include/boost/detail/property_map.hpp";
     "boost/property_map_iterator.hpp" : "include/boost/property_map_iterator.hpp";
     "boost/property_map.hpp" : "include/boost/property_map.hpp";
     "boost/vector_property_map.hpp" : "include/boost/vector_property_map.hpp";
@@ -1458,6 +1460,7 @@ repository python
     [:] "/branches/error_handling/boost/development/py_cpp/" : "py_cpp/error_handling";
     [:] "/tags/detailified/boost/development/py_cpp/" : "py_cpp/detailified";
     [:] "/tags/Version_1_19_0/boost/development/py_cpp/" : "py_cpp/Version_1_19_0";
+    [:] "/branches/boost/boost" : "python/oops";
   }
 }
 
