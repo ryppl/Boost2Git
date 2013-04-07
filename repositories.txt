@@ -660,6 +660,8 @@ repository concept_check : common_branches
 {
   content
   {
+    "boost/pending/concept_checks.hpp" : "include/boost/pending/concept_checks.hpp";
+    "boost/pending/concept_skeletons.hpp" : "include/boost/pending/concept_skeletons.hpp";
     "boost/concept_archetype.hpp" : "include/boost/concept_archetype.hpp";
     "boost/concept_check.hpp" : "include/boost/concept_check.hpp";
     "boost/concept/" : "include/boost/concept/";
@@ -755,6 +757,7 @@ repository core : common_branches
     "boost/pending/cstddef.hpp" : "include/boost/pending/cstddef.hpp";
     "boost/pending/ct_if.hpp" : "include/boost/pending/ct_if.hpp";
     "boost/pending/integer_log2.hpp" : "include/boost/pending/integer_log2.hpp";
+    "boost/pending/limits.hpp" : "include/boost/pending/limits.hpp";
     "boost/blank.hpp" : "include/boost/blank.hpp";
     "boost/blank_fwd.hpp" : "include/boost/blank_fwd.hpp";
     "boost/cstdlib.hpp" : "include/boost/cstdlib.hpp";
@@ -1092,10 +1095,12 @@ repository iterator : common_branches
     "boost/counting_permutation.hpp" : "include/boost/permutation_iterator.hpp";
     "boost/iterator.hpp" : "include/boost/iterator.hpp";
     "boost/iterator_adaptors.hpp" : "include/boost/iterator_adaptors.hpp";
+    "boost/iterator_tests.hpp" : "include/boost/iterator_tests.hpp";
     "boost/function_output_iterator.hpp" : "include/boost/function_output_iterator.hpp";
     "boost/pending/detail/int_iterator.hpp" : "include/boost/pending/detail/int_iterator.hpp";
     "boost/pending/iterator_adaptors.hpp" : "include/boost/pending/iterator_adaptors.hpp";
     "boost/pending/iterator_tests.hpp" : "include/boost/pending/iterator_tests.hpp";
+    "boost/pending/integer_range.hpp" : "include/boost/pending/integer_range.hpp";
     "boost/pointee.hpp" : "include/boost/pointee.hpp";
     "boost/shared_container_iterator.hpp" : "include/boost/shared_container_iterator.hpp";
     "boost/iterator/" : "include/boost/iterator/";
@@ -1389,13 +1394,17 @@ repository property_map : common_branches
 {
   content
   {
+    "boost/pending/plugin.hpp" : "include/boost/pending/plugin.hpp";
+    "boost/pending/detail/plugin.hpp" : "include/boost/pending/detail/plugin.hpp";
     "boost/dynamic_property_map.hpp" : "include/boost/dynamic_property_map.hpp";
     "boost/property_accessor.hpp" : "include/boost/property_accessor.hpp";
+    "boost/detail/property_accessor.hpp" : "include/boost/detail/property_accessor.hpp";
     "boost/property_map_iterator.hpp" : "include/boost/property_map_iterator.hpp";
     "boost/property_map.hpp" : "include/boost/property_map.hpp";
     "boost/vector_property_map.hpp" : "include/boost/vector_property_map.hpp";
     "boost/property_map/" : "include/boost/property_map/";
     "libs/property_map/";
+    "libs/property_accessor/";
   }
 }
 
@@ -1496,6 +1505,8 @@ repository regex : common_branches
 {
   content
   {
+    "boost/pattern_except.hpp" : "include/boost/pattern_except.hpp";
+    "boost/regex_traits.hpp" : "include/boost/regex_traits.hpp";
     "boost/cregex.hpp" : "include/boost/cregex.hpp";
     "boost/regex.h" : "include/boost/regex.h";
     "boost/regex.hpp" : "include/boost/regex.hpp";
