@@ -1444,26 +1444,32 @@ repository python : common_branches
     "boost/python.hpp" : "include/boost/python.hpp";
     "boost/python/" : "include/boost/python/";
     "libs/python/";
+    "libs/python/build/" : "build/";
+    "boost/development/py_cpp" : "development";
   }
-}
-
-repository python
-{
   branches
   {
-    [:] "/trunk/boost/development/py_cpp/" : "py_cpp/trunk";
-    [:] "/branches/boost/boost/development/py_cpp/" : "py_cpp/development";
-    [:] "/branches/numerics/boost/development/py_cpp/" : "py_cpp/numerics";
-    [:] "/branches/to_python_experiments/boost/development/py_cpp/" : "py_cpp/to_python_experiments";
-    [:] "/branches/coercion_experiments/boost/development/py_cpp/" : "py_cpp/coercion_experiments";
-    [:] "/branches/data_driven/boost/development/py_cpp/" : "py_cpp/data_driven";
-    [:] "/branches/error_handling/boost/development/py_cpp/" : "py_cpp/error_handling";
-    [:] "/tags/detailified/boost/development/py_cpp/" : "py_cpp/detailified";
-    [:] "/tags/Version_1_19_0/boost/development/py_cpp/" : "py_cpp/Version_1_19_0";
-    [:] "/branches/boost/boost/" : "old-branches/oops";
+    [:] "/branches/boost/boost/" : "master";
     [:] "/branches/build_system/boost/" : "old-branches/build_system";
   }
 }
+
+// repository python
+// {
+//   branches
+//   {
+//     [:] "/trunk/boost/development/py_cpp/" : "py_cpp/trunk";
+//     [:] "/branches/boost/boost/development/py_cpp/" : "py_cpp/development";
+//     [:] "/branches/numerics/boost/development/py_cpp/" : "py_cpp/numerics";
+//     [:] "/branches/to_python_experiments/boost/development/py_cpp/" : "py_cpp/to_python_experiments";
+//     [:] "/branches/coercion_experiments/boost/development/py_cpp/" : "py_cpp/coercion_experiments";
+//     [:] "/branches/data_driven/boost/development/py_cpp/" : "py_cpp/data_driven";
+//     [:] "/branches/error_handling/boost/development/py_cpp/" : "py_cpp/error_handling";
+//     [:] "/tags/detailified/boost/development/py_cpp/" : "py_cpp/detailified";
+//     [:] "/tags/Version_1_19_0/boost/development/py_cpp/" : "py_cpp/Version_1_19_0";
+//     [:] "/branches/build_system/boost/" : "old-branches/build_system";
+//   }
+// }
 
 repository random : common_branches
 {
@@ -1938,6 +1944,7 @@ repository sandbox
 {
   content
   {
+    "trunk/boost/development/" : "trunk/";
     "sandbox/"          : "trunk/";
     "sandbox-branches/" : "branches/";
     "sandbox-tags/"     : "tags/";
