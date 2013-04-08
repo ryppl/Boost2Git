@@ -13,6 +13,8 @@
 # include <stdexcept>
 # include <boost/swap.hpp>
 # include <boost/range.hpp>
+# include <ostream>
+
 namespace patrie_ {
 //using boost::container::vector;
 using std::vector;
@@ -59,6 +61,17 @@ private:
       boost::swap(l.text, r.text);
       boost::swap(l.next, r.next);
       boost::swap(l.rules, r.rules);
+      }
+
+    friend std::ostream& print_indented(std::ostream& os, node const& n, std::string const& indent)
+      {
+      os << indent << "+ \"" << n.text << "\" : ";
+      for (vector<Rule const*>::const_iterator p = n.rules.begin(); p != n.rules.end(); ++p)
+        {
+        os << "{ " << **p << "} ";
+        }
+      os << std::endl;
+      return print_indented(os, n.next, indent + "  ");
       }
     };
 
@@ -184,6 +197,20 @@ private:
   void traverse(Iterator start, Iterator finish, Visitor& visitor) const
     {
     traverse(&this->trie, start, finish, visitor);
+    }
+
+  friend std::ostream& operator<<(std::ostream& os, patrie const& data)
+    {
+    return print_indented(os, data.trie, std::string());
+    }
+  
+  friend std::ostream& print_indented(std::ostream& os, vector<node> const& data, std::string const& indent)
+    {
+    for(vector<node>::const_iterator p = data.begin(); p != data.end(); ++p)
+      {
+      print_indented(os, *p, indent);
+      }
+    return os;
     }
   
   template <class Nodes, class Iterator, class Visitor>

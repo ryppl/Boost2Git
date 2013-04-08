@@ -5,6 +5,8 @@
 # define RULE_DWA201337_HPP
 
 # include <string>
+# include <ostream>
+# include <climits>
 
 struct Rule
   {
@@ -39,5 +41,16 @@ struct Rule
       && lhs.is_fallback == rhs.is_fallback;
     }
   };
+
+inline std::ostream& operator<<(std::ostream& os, Rule const& r)
+  {
+  os << "[";
+  if (r.min != 0) os << r.min;
+  os << ":";
+  if (r.max != UINT_MAX)
+      os << r.max;
+  os << "]=>" << r.repository << "@" << r.branch << "->" << r.prefix;
+  return os;
+  }
 
 #endif // RULE_DWA201337_HPP
