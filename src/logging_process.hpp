@@ -62,7 +62,7 @@ class LoggingQProcess: public QProcess
       Q_ASSERT(state() == QProcess::Running);
       if (logging)
         {
-        log.write(data);
+        log.write(data, length);
         }
       return QProcess::write(data, length);
       }
