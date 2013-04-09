@@ -44,6 +44,7 @@ int main(int argc, char **argv)
   std::string svn_path;
   int resume_from = 0;
   int max_rev = 0;
+  bool dump_rules = false;
   try
     {
     namespace po = boost::program_options;
@@ -65,6 +66,7 @@ int main(int argc, char **argv)
       ("debug-rules", "print what rule is being used for each file")
       ("commit-interval", po::value(&options.commit_interval)->value_name("NUMBER")->default_value(10000), "if passed the cache will be flushed to git every NUMBER of commits")
       ("svn-branches", "Use the contents of SVN when creating branches, Note: SVN tags are branches as well")
+      ("dump-rules", "Dump the contents of the rule trie and exit")
       ;
     po::variables_map variables;
     store(po::command_line_parser(argc, argv)
@@ -96,6 +98,7 @@ int main(int argc, char **argv)
       {
       exit_success = true;
       }
+    dump_rules = variables.count("dump-rules") > 0;
     options.add_metadata = variables.count("add-metadata");
     options.add_metadata_notes = variables.count("add-metadata-notes");
     options.dry_run = variables.count("dry-run");
@@ -119,6 +122,12 @@ int main(int argc, char **argv)
     // Load the configuration
     Ruleset ruleset(rules_file);
 
+    if (dump_rules)
+      {
+      std::cout << ruleset.matches();
+      exit(0);
+      }
+    
     QHash<QString, Repository*> repositories;
 
     int cutoff = resume_from ? resume_from : INT_MAX;
