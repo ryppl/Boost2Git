@@ -45,7 +45,10 @@ else()
 endif()
 
 # perform conversion
-add_custom_target(conversion ALL
+set(conversion_successful "${git_repository}/_conversion_successful")
+add_custom_command(OUTPUT "${conversion_successful}"
+  COMMAND
+    ${CMAKE_COMMAND} -E remove "${conversion_successful}"
   COMMAND
     $<TARGET_FILE:svn2git>
     --add-metadata
@@ -54,6 +57,8 @@ add_custom_target(conversion ALL
     --rules   "${repositories}"
     --svnrepo "${svn_repository}"
     ${pipe_uniq}
+  COMMAND
+    ${CMAKE_COMMAND} -E touch "${conversion_successful}"
   DEPENDS
     ${repositories_setup}
   WORKING_DIRECTORY
@@ -73,7 +78,7 @@ foreach(line IN LISTS repo_lines)
         -D "GIT=${GIT_EXECUTABLE}"
         -D "NAME=${name}"
         -P "${Boost2Git_SOURCE_DIR}/git_push.cmake"
-      DEPENDS conversion
+      DEPENDS "${conversion_successful}"
       WORKING_DIRECTORY "${git_repository}/${name}"
       )
   endif()
