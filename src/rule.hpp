@@ -44,12 +44,16 @@ struct Rule
 
 inline std::ostream& operator<<(std::ostream& os, Rule const& r)
   {
-  os << "[";
-  if (r.min != 0) os << r.min;
-  os << ":";
-  if (r.max != UINT_MAX)
-      os << r.max;
-  os << "]=>" << r.repository << "@" << r.branch << "->" << r.prefix;
+  if (r.min != 0 || r.max != UINT_MAX)
+    {
+    os << "[";
+    if (r.min != 0) os << r.min;
+    os << ":";
+    if (r.max != UINT_MAX)
+        os << r.max;
+    os << "] ";
+    }
+  os << r.repository << ".git:<" << r.branch << ">:/" << r.prefix;
   return os;
   }
 

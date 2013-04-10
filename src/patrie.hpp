@@ -65,13 +65,16 @@ private:
 
     friend std::ostream& print_indented(std::ostream& os, node const& n, std::string const& indent)
       {
-      os << indent << "+ \"" << n.text << "\" : ";
-      for (vector<Rule const*>::const_iterator p = n.rules.begin(); p != n.rules.end(); ++p)
+      if (!n.rules.empty())
         {
-        os << "{ " << **p << "} ";
+        os << indent << n.text << "]: ";
+        for (vector<Rule const*>::const_iterator p = n.rules.begin(); p != n.rules.end(); ++p)
+          {
+          os << "{ " << **p << "} ";
+          }
+        os << std::endl;
         }
-      os << std::endl;
-      return print_indented(os, n.next, indent + "  ");
+      return print_indented(os, n.next, indent + n.text);
       }
     };
 
@@ -201,7 +204,7 @@ private:
 
   friend std::ostream& operator<<(std::ostream& os, patrie const& data)
     {
-    return print_indented(os, data.trie, std::string());
+    return print_indented(os, data.trie, "[");
     }
   
   friend std::ostream& print_indented(std::ostream& os, vector<node> const& data, std::string const& indent)
