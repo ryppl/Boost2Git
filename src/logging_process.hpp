@@ -21,9 +21,11 @@
 #include <QFile>
 #include <QProcess>
 #include "options.hpp"
+#include <stdexcept>
 
 class LoggingQProcess: public QProcess
   {
+    Q_OBJECT
   public:
     LoggingQProcess(const QString filename)
       {
@@ -40,6 +42,11 @@ class LoggingQProcess: public QProcess
         {
         logging = false;
         }
+      connect(
+          this, SIGNAL(error(QProcess::ProcessError)),
+          this, SLOT(processError(QProcess::ProcessError)));
+      connect(this, SIGNAL(finished(int, QProcess::ExitStatus)),
+        this, SLOT(processFinished(int, QProcess::ExitStatus)));
       }
     ~LoggingQProcess()
       {
@@ -98,6 +105,22 @@ class LoggingQProcess: public QProcess
         log.putChar(c);
         }
       return QProcess::putChar(c);
+      }
+  private slots:
+    void processError(QProcess::ProcessError x)
+      {
+      throw std::runtime_error("fast-import process error");
+      }
+    void processFinished(int exitCode, QProcess::ExitStatus exitStatus)
+      {
+      if (exitStatus == QProcess::CrashExit)
+        {
+        throw std::runtime_error("fast-import crashed");
+        }
+      else if (exitCode != 0)
+        {
+        throw std::runtime_error("fast-import failed");
+        }
       }
   private:
     QFile log;

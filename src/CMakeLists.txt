@@ -25,24 +25,30 @@ add_definitions(
   -D_LARGEFILE64_SUPPORT
   )
 
-add_executable(svn2git
+set(svn2git_SOURCES
+  authors.cpp
+  log.cpp
+  repository.cpp
+  ruleset.cpp
+  svn_revision.cpp
+  svn.cpp
+  main.cpp)
+
+set(svn2git_HEADERS
   apr_init.hpp
   apr_pool.hpp
-  authors.cpp
   authors.hpp
-  log.cpp
   log.hpp
   logging_process.hpp
-  repository.cpp
   repository.h
-  ruleset.cpp
   ruleset.hpp
-  svn_revision.cpp
   svn_revision.hpp
-  svn.cpp
-  svn.h
-  main.cpp
-  )
+  svn.h)
+
+qt4_wrap_cpp(svn2git_HEADERS_MOC ${svn2git_HEADERS})
+
+add_executable(svn2git ${svn2git_SOURCES} ${svn2git_HEADERS_MOC})
+
 target_link_libraries(svn2git
   ${Boost_LIBRARIES}
   ${APR_LIBRARIES}
