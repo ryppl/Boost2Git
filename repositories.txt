@@ -1172,6 +1172,16 @@ repository logic : common_branches
   }
 }
 
+repository log : common_branches
+{
+  minrev 83860;
+  content
+  {
+    "boost/log/" : "include/boost/log/";
+    "libs/log/";
+  }
+}
+
 repository math : common_branches
 {
   content
@@ -1779,7 +1789,8 @@ repository type_traits : common_branches
   }
   branches
   {
-    [:] "/branches/type_traits2/" : "old-branches/type_traits2";
+    [:] "/branches/type_traits2/boost/" : "old-branches/type_traits2";
+    [:] "/branches/unlabeled-1.1.1.1.2/boost/" : "old-branches/unlabeled-1.1.1.1.2";
   }
 }
 
@@ -1977,6 +1988,7 @@ repository boost : common_branches
   {
     "build/"                   : "build/";
     "doc/"                     : "doc/";
+    "development/more/directory-structure.htm" : "development/more/directory-structure.htm";
     "libs/CMakeLists.txt"       : "libs/CMakeLists.txt";
     "libs/concept/CMakeLists.txt" : "libs/concept/CMakeLists.txt";
     "libs/concept/module.cmake" : "libs/concept/module.cmake";
