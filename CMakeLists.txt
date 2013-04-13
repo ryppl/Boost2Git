@@ -60,12 +60,11 @@ add_custom_command(OUTPUT "${conversion_successful}"
     ${pipe_uniq}
   COMMAND
     ${CMAKE_COMMAND} -E touch "${conversion_successful}"
-  DEPENDS
-    setup
   WORKING_DIRECTORY
     "${git_repository}"
   )
 add_custom_target(conversion DEPENDS "${conversion_successful}")
+add_dependencies(conversion setup)
 
 find_package(Git REQUIRED)
 
@@ -80,15 +79,15 @@ foreach(line IN LISTS repo_lines)
         -D "GIT=${GIT_EXECUTABLE}"
         -D "NAME=${name}"
         -P "${Boost2Git_SOURCE_DIR}/git_push.cmake"
-      DEPENDS conversion
       WORKING_DIRECTORY "${git_repository}/${name}"
       )
+    add_dependencies(push_${name} conversion)
   endif()
 endforeach()
 
 add_custom_target(push_fallback ALL
   COMMAND git push --quiet --mirror git@bitbucket.org:boostorg/svn2git-fallback.git
   COMMAND git push --quiet --mirror git@github.com:boostorg/svn2git-fallback.git
-  DEPENDS conversion
   WORKING_DIRECTORY "${git_repository}/svn2git-fallback"
   )
+add_dependencies(push_fallback conversion)
