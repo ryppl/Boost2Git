@@ -36,6 +36,7 @@ add_custom_command(OUTPUT "${repositories_setup}"
   DEPENDS svn2git "${authors}" "${repositories}"
   COMMENT "Cleaning temporary repositories."
   )
+add_custom_target(setup DEPENDS "${repositories_setup}")
 
 find_program(UNIQ uniq)
 if(UNIQ)
@@ -60,10 +61,11 @@ add_custom_command(OUTPUT "${conversion_successful}"
   COMMAND
     ${CMAKE_COMMAND} -E touch "${conversion_successful}"
   DEPENDS
-    ${repositories_setup}
+    setup
   WORKING_DIRECTORY
     "${git_repository}"
   )
+add_custom_target(conversion DEPENDS "${conversion_successful}")
 
 find_package(Git REQUIRED)
 
@@ -78,7 +80,7 @@ foreach(line IN LISTS repo_lines)
         -D "GIT=${GIT_EXECUTABLE}"
         -D "NAME=${name}"
         -P "${Boost2Git_SOURCE_DIR}/git_push.cmake"
-      DEPENDS "${conversion_successful}"
+      DEPENDS conversion
       WORKING_DIRECTORY "${git_repository}/${name}"
       )
   endif()
@@ -87,6 +89,6 @@ endforeach()
 add_custom_target(push_fallback ALL
   COMMAND git push --quiet --mirror git@bitbucket.org:boostorg/svn2git-fallback.git
   COMMAND git push --quiet --mirror git@github.com:boostorg/svn2git-fallback.git
-  DEPENDS "${conversion_successful}"
+  DEPENDS conversion
   WORKING_DIRECTORY "${git_repository}/svn2git-fallback"
   )
