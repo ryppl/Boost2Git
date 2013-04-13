@@ -1340,6 +1340,15 @@ repository parameter : common_branches
   }
 }
 
+repository persistence : common_branches
+{
+  content
+  {
+    "development/persistence/";
+    "libs/persistence/";
+  }
+}
+
 repository phoenix : common_branches
 {
   content
@@ -1546,6 +1555,7 @@ repository serialization : common_branches
   {
     "boost/archive/" : "include/boost/archive/";
     "boost/serialization/" : "include/boost/serialization/";
+    "boost/smart_cast.hpp" : "include/boost/smart_cast.hpp";
     "boost/strong_typedef.hpp" : "include/boost/strong_typedef.hpp";
     "libs/serialization/";
   }
@@ -1674,6 +1684,7 @@ repository static_assert : common_branches
   content
   {
     "boost/static_assert.hpp" : "include/boost/static_assert.hpp";
+    "boost/static_warning.hpp" : "include/boost/static_warning.hpp";
     "libs/static_assert/";
   }
 }
@@ -1818,6 +1829,7 @@ repository utility : common_branches
 {
   content
   {
+    "boost/binary.hpp" : "include/boost/binary.hpp";
     "boost/exception.hpp" : "include/boost/exception.hpp";
     "boost/swap.hpp" : "include/boost/swap.hpp";
     "boost/ref.hpp" : "include/boost/ref.hpp";
