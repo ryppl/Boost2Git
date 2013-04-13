@@ -1773,9 +1773,8 @@ repository type_traits : common_branches
     "boost/detail/ob_type_traits.hpp" : "include/boost/detail/ob_type_traits.hpp";
     "boost/type_traits.hpp" : "include/boost/type_traits.hpp";
     "boost/type_traits/" : "include/boost/type_traits/";
-    "development/type_traits/" : "development/";
-    "boost/development/type_traits/libs/type_traits";
-    "boost/development/type_traits/boost/" : "include/boost/";
+    "development/type_traits/boost/" : "include/boost/";
+    "development/type_traits/libs/type_traits/";
     "libs/type_traits/";
   }
   branches
