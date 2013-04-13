@@ -28,6 +28,7 @@ class LoggingQProcess: public QProcess
     Q_OBJECT
   public:
     LoggingQProcess(const QString filename)
+        : id(filename)
       {
       if (options.debug_rules)
         {
@@ -107,22 +108,29 @@ class LoggingQProcess: public QProcess
       return QProcess::putChar(c);
       }
   private slots:
-    void processError(QProcess::ProcessError x)
+    void processError(QProcess::ProcessError x) const
       {
-      throw std::runtime_error("fast-import process error");
+      report_error("fast-import process error");
       }
-    void processFinished(int exitCode, QProcess::ExitStatus exitStatus)
+    void processFinished(int exitCode, QProcess::ExitStatus exitStatus) const
       {
       if (exitStatus == QProcess::CrashExit)
         {
-        throw std::runtime_error("fast-import crashed");
+        report_error("fast-import crashed");
         }
       else if (exitCode != 0)
         {
-        throw std::runtime_error("fast-import failed");
+        report_error("fast-import failed");
         }
       }
   private:
+    void report_error(char const* const msg) const
+      {
+      throw std::runtime_error(
+          (std::string(id.toUtf8().constData()) + ": " + msg).c_str());
+      }
+  private:
+    QString id;
     QFile log;
     bool logging;
   };
