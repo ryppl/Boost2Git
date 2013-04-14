@@ -718,6 +718,7 @@ repository core : common_branches
   content
   {
     "boost/detail/win/" : "include/boost/detail/win/";
+    "boost/detail/allocator.hpp" : "include/boost/detail/allocator.hpp";
     "boost/detail/allocator_utilities.hpp" : "include/boost/detail/allocator_utilities.hpp";
     "boost/detail/binary_search.hpp" : "include/boost/detail/binary_search.hpp";
     "boost/detail/bitmask.hpp" : "include/boost/detail/bitmask.hpp";
@@ -1041,12 +1042,13 @@ repository integer : common_branches
 {
   content
   {
-    "boost/stdint.h" : "include/boost/stdint.h";
     "boost/cstdint.hpp" : "include/boost/cstdint.hpp";
-    "boost/integer.hpp" : "include/boost/integer.hpp";
+    "boost/detail/extended_integer.hpp" : "include/boost/detail/extended_integer.hpp";
     "boost/integer_fwd.hpp" : "include/boost/integer_fwd.hpp";
-    "boost/integer_traits.hpp" : "include/boost/integer_traits.hpp";
+    "boost/integer.hpp" : "include/boost/integer.hpp";
     "boost/integer/" : "include/boost/integer/";
+    "boost/integer_traits.hpp" : "include/boost/integer_traits.hpp";
+    "boost/stdint.h" : "include/boost/stdint.h";
     "libs/integer/";
   }
 }
@@ -1094,17 +1096,19 @@ repository iterator : common_branches
   {
     "boost/counting_iterator.hpp" : "include/boost/counting_iterator.hpp";
     "boost/counting_permutation.hpp" : "include/boost/permutation_iterator.hpp";
-    "boost/iterator.hpp" : "include/boost/iterator.hpp";
-    "boost/iterator_adaptors.hpp" : "include/boost/iterator_adaptors.hpp";
-    "boost/iterator_tests.hpp" : "include/boost/iterator_tests.hpp";
     "boost/function_output_iterator.hpp" : "include/boost/function_output_iterator.hpp";
+    "boost/half_open_range.hpp" : "include/boost/half_open_range.hpp";
+    "boost/iterator_adaptors.hpp" : "include/boost/iterator_adaptors.hpp";
+    "boost/iterator.hpp" : "include/boost/iterator.hpp";
+    "boost/iterator/" : "include/boost/iterator/";
+    "boost/iterator_tests.hpp" : "include/boost/iterator_tests.hpp";
     "boost/pending/detail/int_iterator.hpp" : "include/boost/pending/detail/int_iterator.hpp";
+    "boost/pending/integer_range.hpp" : "include/boost/pending/integer_range.hpp";
     "boost/pending/iterator_adaptors.hpp" : "include/boost/pending/iterator_adaptors.hpp";
     "boost/pending/iterator_tests.hpp" : "include/boost/pending/iterator_tests.hpp";
-    "boost/pending/integer_range.hpp" : "include/boost/pending/integer_range.hpp";
+    "boost/permutation_iterator.hpp" : "include/boost/permutation_iterator.hpp";
     "boost/pointee.hpp" : "include/boost/pointee.hpp";
     "boost/shared_container_iterator.hpp" : "include/boost/shared_container_iterator.hpp";
-    "boost/iterator/" : "include/boost/iterator/";
     "development/iterator/" : "development/";
     "libs/iterator/";
   }
@@ -1247,6 +1251,7 @@ repository multi_array : common_branches
   {
     "boost/multi_array.hpp" : "include/boost/multi_array.hpp";
     "boost/multi_array/" : "include/boost/multi_array/";
+    "boost/multi_array_ref.hpp" : "include/boost/multi_array_ref.hpp";
     "libs/multi_array/";
   }
 }
@@ -1322,6 +1327,11 @@ repository optional : common_branches
 {
   content
   {
+    "boost/detail/in_place_factory.hpp" : "include/boost/detail/in_place_factory.hpp";
+    "boost/detail/in_place_factory_prefix.hpp" : "include/boost/detail/in_place_factory_prefix.hpp";
+    "boost/detail/in_place_factory_suffix.hpp" : "include/boost/detail/in_place_factory_suffix.hpp";
+    "boost/detail/typed_in_place_factory.hpp" : "include/boost/detail/typed_in_place_factory.hpp";
+    "boost/detail/none.hpp" : "include/boost/detail/none.hpp";
     "boost/none.hpp" : "include/boost/none.hpp";
     "boost/none_t.hpp" : "include/boost/none_t.hpp";
     "boost/optional.hpp" : "include/boost/optional.hpp";
@@ -1545,7 +1555,11 @@ repository serialization : common_branches
   content
   {
     "boost/archive/" : "include/boost/archive/";
+    "boost/pfto.hpp" : "include/boost/pfto.hpp";
     "boost/serialization/" : "include/boost/serialization/";
+    "boost/smart_cast.hpp" : "include/boost/smart_cast.hpp";
+    "boost/state_saver.hpp" : "include/boost/state_saver.hpp";
+    "boost/static_warning.hpp" : "include/boost/static_warning.hpp";
     "boost/strong_typedef.hpp" : "include/boost/strong_typedef.hpp";
     "libs/serialization/";
   }
@@ -1622,6 +1636,7 @@ repository smart_ptr : common_branches
     "boost/detail/spinlock_pt.hpp" : "include/boost/detail/spinlock_pt.hpp";
     "boost/detail/spinlock_sync.hpp" : "include/boost/detail/spinlock_sync.hpp";
     "boost/detail/spinlock_w32.hpp" : "include/boost/detail/spinlock_w32.hpp";
+    "boost/detail/winapi.hpp" : "include/boost/detail/winapi.hpp";
     "boost/detail/yield_k.hpp" : "include/boost/detail/yield_k.hpp";
     "boost/enable_shared_from_this.hpp" : "include/boost/enable_shared_from_this.hpp";
     "boost/enable_shared_from_this2.hpp" : "include/boost/enable_shared_from_this2.hpp";
@@ -1818,6 +1833,7 @@ repository utility : common_branches
 {
   content
   {
+    "boost/binary.hpp" : "include/boost/binary.hpp";
     "boost/exception.hpp" : "include/boost/exception.hpp";
     "boost/swap.hpp" : "include/boost/swap.hpp";
     "boost/ref.hpp" : "include/boost/ref.hpp";
@@ -1854,6 +1870,10 @@ repository variant : common_branches
 {
   content
   {
+    "boost/empty.hpp" : "include/boost/empty.hpp";
+    "boost/empty_fwd.hpp" : "include/boost/empty_fwd.hpp";
+    "boost/incomplete.hpp" : "include/boost/incomplete.hpp";
+    "boost/incomplete_fwd.hpp" : "include/boost/incomplete_fwd.hpp";
     "boost/variant.hpp" : "include/boost/variant.hpp";
     "boost/variant/" : "include/boost/variant/";
     "libs/variant/";
