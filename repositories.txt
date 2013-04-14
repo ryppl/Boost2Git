@@ -615,6 +615,7 @@ repository bind : common_branches
     "boost/bind/" : "include/boost/bind/";
     "boost/mem_fn.hpp" : "include/boost/mem_fn.hpp";
     "libs/bind/";
+    "libs/mem_fn/index.html" : "mem_fn.html";
   }
 }
 
@@ -858,6 +859,7 @@ repository filesystem : common_branches
   }
   branches
   {
+    [38875:     ] "/branches/libs/filesystem/" : "filesystem";
     [77386:77500] "/branches/filesystem-v3/" : "filesystem-v3";
     [77386:77500] "/branches/filesystem-v3a/" : "filesystem-v3a";
   }
@@ -1705,6 +1707,10 @@ repository system : common_branches
     "boost/cerrno.hpp" : "include/boost/cerrno.hpp";
     "boost/system/" : "include/boost/system/";
     "libs/system/";
+  }
+  branches
+  {
+    [38875:     ] "/branches/libs/system/" : "system";
   }
 }
 
