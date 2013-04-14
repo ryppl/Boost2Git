@@ -336,7 +336,7 @@ abstract repository common_branches
     [38193:     ] "/tags/Version_1_34_1_RC2/boost/" : "Version_1_34_1_RC2";
     [38225:     ] "/tags/Version_1_34_1_RC3/boost/" : "Version_1_34_1_RC3";
     [38381:     ] "/tags/jam/parameter_merged_to_RC_1_34_0/boost/" : "jam/parameter_merged_to_RC_1_34_0";
-    [38382:     ] "/tags/parameter_merged_to_RC_1_34_0/boost/" : "parameter_merged_to_RC_1_34_0";
+    [35182:     ] "/tags/parameter_merged_to_RC_1_34_0/boost/" : "parameter_merged_to_RC_1_34_0";
     [37928:     ] "/tags/SPIRIT_1_8_5/boost/" : "SPIRIT_1_8_5";
     [38031:     ] "/tags/SPIRIT_1_8_5_MINIBOOST/boost/" : "SPIRIT_1_8_5_MINIBOOST";
     [38959:     ] "/branches/multi_array/" : "old-branches/multi_array";
@@ -515,6 +515,7 @@ abstract repository common_branches
     [35069:     ] "/tags/dwa-postlicense/boost/" : "dwa-postlicense";
     [35306:     ] "/tags/BOOST_BUILD_V1/boost/" : "BOOST_BUILD_V1";
     [36695:     ] "/tags/Boost_Jam_3_1_14/boost/" : "Boost_Jam_3_1_14";
+    [13112:     ] "/tags/perforce_2_4_merge_1/boost/" : "perforce_2_4_merge_1";
   }
 }
 
@@ -1017,6 +1018,10 @@ repository graph : common_branches
     "boost/pending/queue.hpp"                 : "include/boost/pending/queue.hpp";
     "boost/pending/relaxed_heap.hpp"          : "include/boost/pending/relaxed_heap.hpp";
     "libs/graph/";
+  }
+  tags
+  {
+    [:] "/tags/boost++graph/boost/" : "boost++graph";
   }
 }
 
@@ -1981,11 +1986,30 @@ repository sandbox
   branches
   {
     [:] "/" : "master";
-    // Commits in the SVN sandbox before this revision 
-    // belong in the sandbox and not in smart_ptr.  Not
-    // sure if this is the way to express it
-    [:552] "/libs/smart_ptr" : "master";
-    [:552] "/boost/smart_ptr" : "master";
+  }
+}
+
+// smart_ptr before 552 was a different library.
+// Commits before this revision belong in the sandbox and not in smart_ptr.
+repository sandbox : common_branches
+{
+  maxrev 552;
+  content
+  {
+    "boost/smart_ptr/" : "boost/smart_ptr/";
+    "libs/smart_ptr/" : "libs/smart_ptr/";
+  }
+}
+
+// Persistence never has been released.
+// All commits belong in the sandbox
+repository sandbox : common_branches
+{
+  content
+  {
+    "boost/persistence/" : "boost/persistence/";
+    "development/persistence/" : "development/persistence/";
+    "libs/persistence/" : "libs/persistence/";
   }
 }
 
