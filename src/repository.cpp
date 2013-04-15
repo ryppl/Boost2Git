@@ -516,12 +516,12 @@ Repository::Transaction *Repository::newTransaction(
   Q_ASSERT(branch.startsWith("refs/"));
   if (!branches.contains(branch))
     {
-    Log::warn()
-      << "Transaction: "
+    Log::debug()
+      << "Creating branch '"
       << qPrintable(branch)
-      << " is not a known branch in repository "
+      << "' in repository '"
       <<  qPrintable(name)
-      << ". Going to create it automatically"
+      << "'."
       << std::endl
       ;
     }

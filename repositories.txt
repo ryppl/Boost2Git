@@ -2009,6 +2009,7 @@ repository sandbox
 {
   content
   {
+    "branches/perforce_jam_2_4/" : "branches/perforce_jam_2_4/";
     "sandbox/"          : "trunk/";
     "sandbox-branches/" : "branches/";
     "sandbox-tags/"     : "tags/";
