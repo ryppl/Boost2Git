@@ -91,26 +91,7 @@ bool pathExists(apr_pool_t* pool, svn_fs_t *fs, QString const& path_, int revnum
 
 Rule const* find_match(patrie const& rules, QString& path, std::size_t revnum)
   {
-  Rule const* match = rules.longest_match(path.toStdString(), revnum);
-  if (match)
-    {
-    return match;
-    }
-  // maybe it is a directory?
-  QString dir = path + '/';
-  match = rules.longest_match(dir.toStdString(), revnum);
-  // it is!
-  if (match)
-    {
-    Log::warn()
-      << "Guessing that '"
-      << path.toStdString()
-      << "' is a directory."
-      << std::endl
-      ;
-    path = dir;
-    }
-  return match;
+  return rules.longest_match(path.toStdString(), revnum);
   }
 
 void splitPathName(
@@ -284,6 +265,15 @@ void recursiveDumpDir(
       dumpBlob(txn, fs_root, entryName, entryFinalName, dirpool);
       }
     }
+  }
+
+bool existed(svn_fs_t *fs, int revnum, const char *pathname, apr_pool_t *pool)
+  {
+  svn_fs_root_t *fs_root;
+  svn_node_kind_t kind;
+  check_svn(svn_fs_revision_root(&fs_root, fs, revnum, pool));
+  check_svn(svn_fs_check_path(&kind, fs_root, pathname, pool));
+  return kind != svn_node_none;
   }
 
 bool wasDir(svn_fs_t *fs, int revnum, const char *pathname, apr_pool_t *pool)
@@ -495,6 +485,17 @@ int SvnRevision::exportEntry(
     }
   else if (change->change_kind == svn_fs_path_change_delete)
     {
+    // if it did not exist in the previous revision, we ignore the deletion
+    // this happens is a folder is copied and part of its contents are removed
+    if (!existed(fs, revnum - 1, key, revpool))
+      {
+      Log::debug()
+        << "Ignoring deletion of non-existing path: "
+        << key
+        << std::endl
+        ;
+      return EXIT_SUCCESS;
+      }
     is_dir = wasDir(fs, revnum - 1, key, revpool);
     }
 
