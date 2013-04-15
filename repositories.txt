@@ -856,13 +856,26 @@ repository filesystem : common_branches
     "boost/filesystem.hpp" : "include/boost/filesystem.hpp";
     "boost/filesystem/" : "include/boost/filesystem/";
     "libs/filesystem/";
+  }
+  branches
+  {
+    [77386:77500] "/branches/filesystem-v3/" : "filesystem-v3";
+    [77386:77500] "/branches/filesystem-v3a/" : "filesystem-v3a";
+  }
+}
+
+repository filesystem
+{
+  content
+  {
+    "boost/delimit_string.hpp" : "include/boost/delimit_string.hpp";
+    "boost/filesystem.hpp" : "include/boost/filesystem.hpp";
+    "boost/filesystem/" : "include/boost/filesystem/";
     "filesystem/";
   }
   branches
   {
     [38875:     ] "/branches/libs/filesystem/" : "filesystem";
-    [77386:77500] "/branches/filesystem-v3/" : "filesystem-v3";
-    [77386:77500] "/branches/filesystem-v3a/" : "filesystem-v3a";
   }
 }
 
@@ -1708,6 +1721,15 @@ repository system : common_branches
     "boost/cerrno.hpp" : "include/boost/cerrno.hpp";
     "boost/system/" : "include/boost/system/";
     "libs/system/";
+  }
+}
+
+repository system
+{
+  content
+  {
+    "boost/cerrno.hpp" : "include/boost/cerrno.hpp";
+    "boost/system/" : "include/boost/system/";
     "system/";
   }
   branches
