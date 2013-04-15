@@ -856,6 +856,7 @@ repository filesystem : common_branches
     "boost/filesystem.hpp" : "include/boost/filesystem.hpp";
     "boost/filesystem/" : "include/boost/filesystem/";
     "libs/filesystem/";
+    "filesystem/";
   }
   branches
   {
@@ -1707,6 +1708,7 @@ repository system : common_branches
     "boost/cerrno.hpp" : "include/boost/cerrno.hpp";
     "boost/system/" : "include/boost/system/";
     "libs/system/";
+    "system/";
   }
   branches
   {
