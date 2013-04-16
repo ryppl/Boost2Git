@@ -73,7 +73,6 @@ abstract repository common_branches
     [ 9558:     ] "/branches/more1/boost/" : "old-branches/more1";
     [ 9458:     ] "/branches/ralf_grosse_kunstleve/boost/" : "old-branches/ralf_grosse_kunstleve";
     [10123:     ] "/branches/boost_python_friend_fixes/boost/" : "old-branches/boost_python_friend_fixes";
-    [ 9477:     ] "/branches/persistence-initial/boost/" : "old-branches/persistence-initial";
     [10262:     ] "/branches/build-developement/boost/" : "old-branches/build-developement";
     [10453:     ] "/branches/iter-adaptor-and-categories/boost/" : "old-branches/iter-adaptor-and-categories";
     [10303:     ] "/branches/build-development-2/boost/" : "old-branches/build-development-2";
@@ -158,7 +157,6 @@ abstract repository common_branches
     [29726:     ] "/branches/uBLAS_assignment_sematics/boost/" : "old-branches/uBLAS_assignment_sematics";
     [30118:     ] "/branches/robstewart/boost/" : "old-branches/robstewart";
     [26343:     ] "/branches/SPIRIT_MINIBOOST/boost/" : "old-branches/SPIRIT_MINIBOOST";
-    [19248:     ] "/branches/langbinding/boost/" : "old-branches/langbinding";
     [31665:     ] "/branches/QUICKBOOK_PREPROCESSOR/boost/" : "old-branches/QUICKBOOK_PREPROCESSOR";
     [30671:     ] "/branches/fast_array_serialization/boost/" : "old-branches/fast_array_serialization";
     [31998:     ] "/branches/array_wrapper/boost/" : "old-branches/array_wrapper";
@@ -191,8 +189,6 @@ abstract repository common_branches
     [42181:     ] "/branches/unordered/refactor/" : "unordered/refactor";
     [41573:     ] "/branches/fix-links/" : "fix-links";
     [42144:     ] "/branches/iostreams_dev/" : "iostreams_dev";
-    [43486:     ] "/branches/CMake-release/" : "CMake-release";
-    [43498:     ] "/branches/CMake/release/" : "CMake/release";
     [38539:     ] "/branches/proto/v3/" : "proto/v3";
     [43960:     ] "/branches/unordered/add-on/" : "unordered/add-on";
     [44394:     ] "/branches/proto/v4.bak/" : "proto/v4.bak";
@@ -227,7 +223,6 @@ abstract repository common_branches
     [70613:     ] "/branches/quickbook-dev/" : "quickbook-dev";
     [25038:     ] "/branches/build/boost/" : "build";
     [27041:     ] "/branches/BOOST_BUILD_PYTHON/boost/" : "BOOST_BUILD_PYTHON";
-    [45459:     ] "/branches/CMake/Boost_1_35_0/" : "CMake/Boost_1_35_0";
   }
   tags
   {
@@ -1126,21 +1121,6 @@ repository lambda : common_branches
   }
 }
 
-repository langbinding
-{
-  content
-  {
-    "boost/langbinding/" : "include/boost/langbinding/";
-    "boost/luabind/" : "include/boost/luabind/";
-    "libs/langbinding/";
-    "libs/luabind/" : "luabind/";
-  }
-  branches
-  {
-    [:] "/branches/langbinding/boost/" : "master";
-  }
-}
-
 repository locale : common_branches
 {
   content
@@ -1578,9 +1558,9 @@ repository smart_ptr : common_branches
   minrev 7620;
   content
   {
-    "boost/detail/atomic_count.hpp" : "include/boost/detail/atomic_count.hpp";
     "boost/detail/atomic_count_gcc.hpp" : "include/boost/detail/atomic_count_gcc.hpp";
     "boost/detail/atomic_count_gcc_x86.hpp" : "include/boost/detail/atomic_count_gcc_x86.hpp";
+    "boost/detail/atomic_count.hpp" : "include/boost/detail/atomic_count.hpp";
     "boost/detail/atomic_count_linux.hpp" : "include/boost/detail/atomic_count_linux.hpp";
     "boost/detail/atomic_count_pthreads.hpp" : "include/boost/detail/atomic_count_pthreads.hpp";
     "boost/detail/atomic_count_solaris.hpp" : "include/boost/detail/atomic_count_solaris.hpp";
@@ -1599,7 +1579,6 @@ repository smart_ptr : common_branches
     "boost/detail/shared_count.hpp" : "include/boost/detail/shared_count.hpp";
     "boost/detail/shared_ptr_nmt.hpp" : "include/boost/detail/shared_ptr_nmt.hpp";
     "boost/detail/sp_convertible.hpp" : "include/boost/detail/sp_convertible.hpp";
-    "boost/detail/sp_counted_base.hpp" : "include/boost/detail/sp_counted_base.hpp";
     "boost/detail/sp_counted_base_acc_ia64.hpp" : "include/boost/detail/sp_counted_base_acc_ia64.hpp";
     "boost/detail/sp_counted_base_cw_ppc.hpp" : "include/boost/detail/sp_counted_base_cw_ppc.hpp";
     "boost/detail/sp_counted_base_cw_x86.hpp" : "include/boost/detail/sp_counted_base_cw_x86.hpp";
@@ -1607,6 +1586,7 @@ repository smart_ptr : common_branches
     "boost/detail/sp_counted_base_gcc_ppc.hpp" : "include/boost/detail/sp_counted_base_gcc_ppc.hpp";
     "boost/detail/sp_counted_base_gcc_sparc.hpp" : "include/boost/detail/sp_counted_base_gcc_sparc.hpp";
     "boost/detail/sp_counted_base_gcc_x86.hpp" : "include/boost/detail/sp_counted_base_gcc_x86.hpp";
+    "boost/detail/sp_counted_base.hpp" : "include/boost/detail/sp_counted_base.hpp";
     "boost/detail/sp_counted_base_nt.hpp" : "include/boost/detail/sp_counted_base_nt.hpp";
     "boost/detail/sp_counted_base_pt.hpp" : "include/boost/detail/sp_counted_base_pt.hpp";
     "boost/detail/sp_counted_base_solaris.hpp" : "include/boost/detail/sp_counted_base_solaris.hpp";
@@ -1614,20 +1594,20 @@ repository smart_ptr : common_branches
     "boost/detail/sp_counted_base_sync.hpp" : "include/boost/detail/sp_counted_base_sync.hpp";
     "boost/detail/sp_counted_base_w32.hpp" : "include/boost/detail/sp_counted_base_w32.hpp";
     "boost/detail/sp_counted_impl.hpp" : "include/boost/detail/sp_counted_impl.hpp";
-    "boost/detail/sp_typeinfo.hpp" : "include/boost/detail/sp_typeinfo.hpp";
-    "boost/detail/spinlock.hpp" : "include/boost/detail/spinlock.hpp";
     "boost/detail/spinlock_gcc_arm.hpp" : "include/boost/detail/spinlock_gcc_arm.hpp";
+    "boost/detail/spinlock.hpp" : "include/boost/detail/spinlock.hpp";
     "boost/detail/spinlock_nt.hpp" : "include/boost/detail/spinlock_nt.hpp";
     "boost/detail/spinlock_pool.hpp" : "include/boost/detail/spinlock_pool.hpp";
     "boost/detail/spinlock_pt.hpp" : "include/boost/detail/spinlock_pt.hpp";
     "boost/detail/spinlock_sync.hpp" : "include/boost/detail/spinlock_sync.hpp";
     "boost/detail/spinlock_w32.hpp" : "include/boost/detail/spinlock_w32.hpp";
+    "boost/detail/sp_typeinfo.hpp" : "include/boost/detail/sp_typeinfo.hpp";
     "boost/detail/winapi.hpp" : "include/boost/detail/winapi.hpp";
     "boost/detail/yield_k.hpp" : "include/boost/detail/yield_k.hpp";
-    "boost/enable_shared_from_this.hpp" : "include/boost/enable_shared_from_this.hpp";
     "boost/enable_shared_from_this2.hpp" : "include/boost/enable_shared_from_this2.hpp";
-    "boost/intrusive_ptr.hpp" : "include/boost/intrusive_ptr.hpp";
+    "boost/enable_shared_from_this.hpp" : "include/boost/enable_shared_from_this.hpp";
     "boost/get_pointer.hpp" : "include/boost/get_pointer.hpp";
+    "boost/intrusive_ptr.hpp" : "include/boost/intrusive_ptr.hpp";
     "boost/make_shared.hpp" : "include/boost/make_shared.hpp";
     "boost/memory_order.hpp" : "include/boost/memory_order.hpp";
     "boost/pointer_cast.hpp" : "include/boost/pointer_cast.hpp";
@@ -1637,8 +1617,8 @@ repository smart_ptr : common_branches
     "boost/shared_array.hpp" : "include/boost/shared_array.hpp";
     "boost/shared_ptr.hpp" : "include/boost/shared_ptr.hpp";
     "boost/smart_ptr.hpp" : "include/boost/smart_ptr.hpp";
-    "boost/weak_ptr.hpp" : "include/boost/weak_ptr.hpp";
     "boost/smart_ptr/" : "include/boost/smart_ptr/";
+    "boost/weak_ptr.hpp" : "include/boost/weak_ptr.hpp";
     "libs/smart_ptr/";
   }
 }
@@ -1716,6 +1696,8 @@ repository thread : common_branches
 {
   content
   {
+    "boost/detail/atomic_redef_macros.hpp" : "include/boost/detail/atomic_redef_macros.hpp"
+    "boost/detail/atomic_undef_macros.hpp" : "include/boost/detail/atomic_undef_macros.hpp"
     "boost/thread.hpp" : "include/boost/thread.hpp";
     "boost/thread/" : "include/boost/thread/";
     "libs/thread/";
@@ -1974,19 +1956,24 @@ repository sandbox
 {
   content
   {
+    "branches/boost-graph-library/boost/boost/array_traits.hpp" : "branches/boost-graph-library/boost/boost/array_traits.hpp";
     "branches/boost-graph-library/boost/libs/dir_it/" : "branches/boost-graph-library/boost/libs/dir_it/";
     "branches/boost-graph-library/boost/libs/min_rand/" : "branches/boost-graph-library/boost/libs/min_rand/";
-    "branches/build_development/" : "branches/build_development/";
+    "branches/build-development/" : "branches/build-development/";
     "branches/build/python_port/" : "branches/build/python_port/";
+    "branches/CMake/" : "branches/CMake/";
+    "branches/CMake-release/" : "branches/CMake-release/";
     "branches/compiler_supported_error_messages/boost/boost/min_rand.hpp" : "branches/compiler_supported_error_messages/boost/boost/min_rand.hpp";
     "branches/compiler_supported_error_messages/boost/libs/dir_it/" : "branches/compiler_supported_error_messages/boost/libs/dir_it/";
     "branches/compiler_supported_error_messages/boost/libs/min_rand/" : "branches/compiler_supported_error_messages/boost/libs/min_rand/";
     "branches/iter-adaptor-and-categories/boost/boost/min_rand.hpp" : "branches/iter-adaptor-and-categories/boost/boost/min_rand.hpp";
     "branches/iter-adaptor-and-categories/boost/libs/dir_it/" : "branches/iter-adaptor-and-categories/boost/libs/dir_it/";
     "branches/iter-adaptor-and-categories/boost/libs/min_rand/" : "branches/iter-adaptor-and-categories/boost/libs/min_rand/";
+    "branches/langbinding/" : "branches/langbinding/";
     "branches/matrix_development/" : "branches/matrix_development/";
     "branches/mpl_v2_2/boost/boost/min_rand.hpp" : "branches/mpl_v2_2/boost/boost/min_rand.hpp";
     "branches/perforce_jam_2_4/" : "branches/perforce_jam_2_4/";
+    "branches/persistence-initial/" : "branches/persistence-initial/";
     "branches/python-v2-dev/boost/boost/min_rand.hpp" : "branches/python-v2-dev/boost/boost/min_rand.hpp";
     "branches/python-v2-dev/boost/libs/min_rand/" : "branches/python-v2-dev/boost/libs/min_rand/";
     "branches/RC_1_27_0/boost/boost/min_rand.hpp" : "branches/RC_1_27_0/boost/boost/min_rand.hpp";
@@ -2008,6 +1995,8 @@ repository sandbox
     "branches/unlabeled-1.1.1/boost/boost/min_rand.hpp" : "branches/unlabeled-1.1.1/boost/boost/min_rand.hpp";
     "branches/unlabeled-1.1.1/boost/libs/dir_it/" : "branches/unlabeled-1.1.1/boost/libs/dir_it/";
     "branches/unlabeled-1.1.1/boost/libs/min_rand/" : "branches/unlabeled-1.1.1/boost/libs/min_rand/";
+    "branches/unlabeled-1.1.2/boost/development/persistence/" : "branches/unlabeled-1.1.2/boost/development/persistence/";
+    "branches/unlabeled-1.2.2/boost/boost/array_traits.hpp" : "branches/unlabeled-1.2.2/boost/boost/array_traits.hpp";
     "sandbox-branches/" : "sandbox-branches/";
     "sandbox/" : "sandbox/";
     "sandbox-tags/" : "sandbox-tags/";
@@ -2067,6 +2056,7 @@ repository sandbox
     "tags/Version_1_26_0/boost/boost/min_rand.hpp" : "tags/Version_1_26_0/boost/boost/min_rand.hpp";
     "tags/Version_1_26_0/boost/libs/dir_it/" : "tags/Version_1_26_0/boost/libs/dir_it/";
     "tags/Version_1_26_0/boost/libs/min_rand/" : "tags/Version_1_26_0/boost/libs/min_rand/";
+    "trunk/boost/boost/array_traits.hpp" : "trunk/boost/boost/array_traits.hpp";
     "trunk/boost/boost/min_rand.hpp" : "trunk/boost/boost/min_rand.hpp";
     "trunk/boost/development/persistence/" : "trunk/boost/development/persistence/";
     "trunk/boost/libs/array_traits/" : "trunk/boost/libs/array_traits/";
