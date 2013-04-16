@@ -1696,8 +1696,8 @@ repository thread : common_branches
 {
   content
   {
-    "boost/detail/atomic_redef_macros.hpp" : "include/boost/detail/atomic_redef_macros.hpp"
-    "boost/detail/atomic_undef_macros.hpp" : "include/boost/detail/atomic_undef_macros.hpp"
+    "boost/detail/atomic_redef_macros.hpp" : "include/boost/detail/atomic_redef_macros.hpp";
+    "boost/detail/atomic_undef_macros.hpp" : "include/boost/detail/atomic_undef_macros.hpp";
     "boost/thread.hpp" : "include/boost/thread.hpp";
     "boost/thread/" : "include/boost/thread/";
     "libs/thread/";
