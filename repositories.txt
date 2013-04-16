@@ -566,15 +566,6 @@ repository array : common_branches
   }
 }
 
-repository array_traits : common_branches
-{
-  content
-  {
-    "boost/array_traits.hpp" : "include/boost/array_traits.hpp";
-    "libs/array_traits/";
-  }
-}
-
 repository asio : common_branches
 {
   content
@@ -802,14 +793,6 @@ repository date_time : common_branches
     "boost/gdtl/" : "include/boost/gdtl/";
     "libs/date_time/";
     "libs/gdtl/";
-  }
-}
-
-repository dir_it : common_branches
-{
-  content
-  {
-    "libs/dir_it/";
   }
 }
 
@@ -1216,15 +1199,6 @@ repository math : common_branches
   }
 }
 
-repository min_rand : common_branches
-{
-  content
-  {
-    "boost/min_rand.hpp" : "include/boost/min_rand.hpp";
-    "libs/min_rand/";
-  }
-}
-
 repository move : common_branches
 {
   content
@@ -1395,14 +1369,6 @@ repository pool : common_branches
   {
     "boost/pool/" : "include/boost/pool/";
     "libs/pool/";
-  }
-}
-
-repository pri_queue : common_branches
-{
-  content
-  {
-    "libs/pri_queue/";
   }
 }
 
@@ -2018,30 +1984,6 @@ repository sandbox
   branches
   {
     [:] "/" : "master";
-  }
-}
-
-// smart_ptr before 552 was a different library.
-// Commits before this revision belong in the sandbox and not in smart_ptr.
-repository sandbox : common_branches
-{
-  maxrev 552;
-  content
-  {
-    "boost/smart_ptr/" : "boost/smart_ptr/";
-    "libs/smart_ptr/" : "libs/smart_ptr/";
-  }
-}
-
-// Persistence never has been released.
-// All commits belong in the sandbox
-repository sandbox : common_branches
-{
-  content
-  {
-    "boost/persistence/" : "boost/persistence/";
-    "development/persistence/" : "development/persistence/";
-    "libs/persistence/" : "libs/persistence/";
   }
 }
 
