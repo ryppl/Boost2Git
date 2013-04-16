@@ -120,7 +120,6 @@ abstract repository common_branches
     [13795:     ] "/branches/RC_1_28_0/boost/" : "old-branches/RC_1_28_0";
     [14785:     ] "/branches/python-v2-dev/boost/" : "old-branches/python-v2-dev";
     [11264:     ] "/branches/mpl-development/boost/" : "old-branches/mpl-development";
-    [10187:     ] "/branches/matrix_development/boost/" : "old-branches/matrix_development";
     [15326:     ] "/branches/python_v2_API_restructure/boost/" : "old-branches/python_v2_API_restructure";
     [13332:     ] "/branches/mpl_v2/boost/" : "old-branches/mpl_v2";
     [13571:     ] "/branches/thread_development/boost/" : "old-branches/thread_development";
@@ -2009,10 +2008,12 @@ repository sandbox
 {
   content
   {
-    "branches/perforce_jam_2_4/" : "branches/perforce_jam_2_4/";
-    "sandbox/"          : "trunk/";
-    "sandbox-branches/" : "branches/";
-    "sandbox-tags/"     : "tags/";
+    "branches/build/python_port/"  : "branches/build/python_port/";
+    "branches/matrix_development/" : "branches/matrix_development/";
+    "branches/perforce_jam_2_4/"   : "branches/perforce_jam_2_4/";
+    "sandbox-branches/"            : "sandbox-branches/";
+    "sandbox-tags/"                : "sandbox-tags/";
+    "sandbox/"                     : "sandbox/";
   }
   branches
   {
