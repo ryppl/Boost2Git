@@ -942,8 +942,11 @@ void Repository::Transaction::commit()
     qSort(merges);
     repository->fastImport.write("merge :" + QByteArray::number(merges.last()) + "\n");
     merges.pop_back();
-    qWarning() << "WARN: Discarding all but the highest merge point as a workaround for cvs2svn created branch/tag"
-               << "Discarded marks:" << merges;
+    Log::debug()
+      << "Discarding all but the highest merge point "
+      << "as a workaround for cvs2svn created branch/tag. "
+      //<< "Discarded marks: " << merges
+      ;
   } else {
     foreach (const int merge, merges) {
       if (merge == parentmark) {
