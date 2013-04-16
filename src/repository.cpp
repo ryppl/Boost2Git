@@ -454,7 +454,7 @@ int Repository::resetBranch(
       {
       backupBranch = "refs/backups/r" + QByteArray::number(revnum) + branchRef.mid(4);
       }
-    Log::warn()
+    Log::debug()
       << "backing up branch "
       << qPrintable(branch)
       << " to "

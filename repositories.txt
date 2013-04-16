@@ -1431,6 +1431,10 @@ repository python : common_branches
     "boost/python/" : "include/boost/python/";
     "libs/python/";
   }
+  branches
+  {
+    [:] "/branches/boost/boost/" : "old-branches/oops";
+  }
 }
 
 repository python
@@ -1446,7 +1450,6 @@ repository python
     [:] "/branches/error_handling/boost/development/py_cpp/" : "py_cpp/error_handling";
     [:] "/tags/detailified/boost/development/py_cpp/" : "py_cpp/detailified";
     [:] "/tags/Version_1_19_0/boost/development/py_cpp/" : "py_cpp/Version_1_19_0";
-    [:] "/branches/boost/boost/" : "old-branches/oops";
     [:] "/branches/build_system/boost/" : "old-branches/build_system";
   }
 }
@@ -2164,5 +2167,9 @@ repository boost : common_branches
     "rst.css"                  : "rst.css";
     "readme.html"              : "readme.html";
     "index_1_33_0.htm"         : "index_1_33_0.htm";
+  }
+  branches
+  {
+    [:] "/branches/boost/boost/" : "old-branches/oops";
   }
 }
