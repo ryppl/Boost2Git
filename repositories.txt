@@ -1923,6 +1923,14 @@ repository build : common_branches
   }
 }
 
+repository build
+{
+  branches
+  {
+    [:] "/branches/build/Milestone_12/build/v2/" : "Milestone_12";
+  }
+}
+
 repository inspect : common_branches
 {
   content
