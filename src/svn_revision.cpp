@@ -89,7 +89,7 @@ bool pathExists(apr_pool_t* pool, svn_fs_t *fs, QString const& path_, int revnum
   }
 
 
-Rule const* find_match(patrie const& rules, QString& path, std::size_t revnum)
+Rule const* find_match(patrie const& rules, QString const& path, std::size_t revnum)
   {
   return rules.longest_match(path.toStdString(), revnum);
   }
@@ -947,113 +947,94 @@ int SvnRevision::recurse(
     apr_hash_t *changes,
     apr_pool_t *pool)
   {
+  const char *recurse_base = path;
   svn_fs_root_t *fs_root = this->fs_root;
   if (change->change_kind == svn_fs_path_change_delete)
     {
     check_svn(svn_fs_revision_root(&fs_root, fs, revnum - 1, pool));
     }
+  else if (path_from)
+    {
+    recurse_base = path_from;
+    check_svn(svn_fs_revision_root(&fs_root, fs, rev_from, pool));
+    }
+
+  // make sure it is a directory
+  svn_node_kind_t kind;
+  check_svn(svn_fs_check_path(&kind, fs_root, recurse_base, pool));
+  if (kind != svn_node_dir)
+    {
+    char *msg = apr_pstrcat(pool, "Trying to recurse using a non-directory path '", path, "'");
+    throw std::runtime_error(msg);
+    }
 
   // get the dir listing
-  svn_node_kind_t kind;
-  check_svn(svn_fs_check_path(&kind, fs_root, path, pool));
-  if(kind == svn_node_none)
-    {
-    Log::warn()
-      << "Trying to recurse using a nonexistent path '"
-      << path
-      << "'; ignoring"
-      << std::endl
-      ;
-    return EXIT_SUCCESS;
-    }
-  else if(kind != svn_node_dir)
-    {
-    Log::warn()
-      << "Trying to recurse using a non-directory path '"
-      << path
-      << "'; ignoring"
-      << std::endl
-      ;
-    return EXIT_SUCCESS;
-    }
-
   apr_hash_t *entries;
-  check_svn(svn_fs_dir_entries(&entries, fs_root, path, pool));
-  AprPool dirpool(pool);
+  check_svn(svn_fs_dir_entries(&entries, fs_root, recurse_base, pool));
 
-  // While we get a hash, put it in a map for sorted lookup, so we can
-  // repeat the conversions and get the same git commit hashes.
-  QMap<QByteArray, svn_node_kind_t> map;
   for (apr_hash_index_t *i = apr_hash_first(pool, entries); i; i = apr_hash_next(i))
     {
-    dirpool.clear();
-    const void *vkey;
-    void *value;
-    apr_hash_this(i, &vkey, NULL, &value);
-    svn_fs_dirent_t *dirent = reinterpret_cast<svn_fs_dirent_t *>(value);
-    if (dirent->kind != svn_node_dir)
-      {
-      continue; // not a directory, so can't recurse; skip
-      }
-    map.insertMulti(QByteArray(dirent->name), dirent->kind);
-    }
+    //const void *vkey;
+    //void *value;
+    //apr_hash_this(i, &vkey, NULL, &value);
+    //svn_fs_dirent_t *dirent = reinterpret_cast<svn_fs_dirent_t *>(value);
+    //map.insertMulti(QByteArray(dirent->name), dirent->kind);
+    svn_fs_dirent_t *dirent;
+    apr_hash_this(i, NULL, NULL, (void**) &dirent);
 
-  QMapIterator<QByteArray, svn_node_kind_t> i(map);
-  while (i.hasNext())
-    {
-    dirpool.clear();
-    i.next();
-    QByteArray entry = path + QByteArray("/") + i.key();
-    QByteArray entryFrom;
-    if (path_from)
-      {
-      entryFrom = path_from + QByteArray("/") + i.key();
-      }
+    const char *entry = apr_pstrcat(pool, path, "/", dirent->name);
+    const char *entryFrom = path_from ? apr_pstrcat(pool, path_from, "/", dirent->name) : NULL;
 
     // check if this entry is in the changelist for this revision already
-    svn_fs_path_change_t *otherchange = (svn_fs_path_change_t*)apr_hash_get(changes, entry.constData(), APR_HASH_KEY_STRING);
+    svn_fs_path_change_t *otherchange = (svn_fs_path_change_t*) apr_hash_get(changes, entry, APR_HASH_KEY_STRING);
     if (otherchange && otherchange->change_kind == svn_fs_path_change_add)
       {
       Log::debug()
-        << qPrintable(entry)
-        << " rev "
-        << revnum
+        << '"' << entry << '@' << revnum << '"'
         << " is in the change-list, deferring to that one"
         << std::endl
         ;
       continue;
       }
 
-    QString current = QString::fromUtf8(entry);
-    if (i.value() == svn_node_dir)
+    const char *current = entry;
+    if (dirent->kind == svn_node_dir)
       {
-      current += '/';
+      current = apr_pstrcat(pool, current, "/");
       }
 
     // find the first rule that matches this pathname
     Rule const* match = find_match(matchRules, current, revnum);
     if (match)
       {
-      if (exportDispatch(entry, change, entryFrom.isNull() ? 0 : entryFrom.constData(), rev_from, changes, current, *match, matchRules, dirpool) == EXIT_FAILURE)
+      if (exportDispatch(entry, change, entryFrom, rev_from, changes, current, *match, matchRules, pool) == EXIT_FAILURE)
+        {
+        return EXIT_FAILURE;
+        }
+      }
+    else if (dirent->kind == svn_node_dir)
+      {
+      Log::debug()
+        << '"' << current << '@' << revnum << '"'
+        << " did not match any rules; auto-recursing"
+        << std::endl
+        ;
+      if (recurse(entry, change, entryFrom, matchRules, rev_from, changes, pool) == EXIT_FAILURE)
         {
         return EXIT_FAILURE;
         }
       }
     else
       {
-      if (i.value() == svn_node_dir)
+      Log::warn()
+        << "File '"
+        << qPrintable(current)
+        << "' not accounted for. Putting to fallback."
+        << std::endl
+        ;
+      if (exportDispatch(entry, change, path_from, rev_from, changes, current, Ruleset::fallback, matchRules, pool) == EXIT_FAILURE)
         {
-        Log::debug()
-          << qPrintable(current)
-          << " rev "
-          << revnum
-          << " did not match any rules; auto-recursing"
-          << std::endl
-          ;
-        if (recurse(entry, change, entryFrom.isNull() ? 0 : entryFrom.constData(), matchRules, rev_from, changes, dirpool) == EXIT_FAILURE)
-          {
-          return EXIT_FAILURE;
-          }
+        return EXIT_FAILURE;
         }
       }
     }
