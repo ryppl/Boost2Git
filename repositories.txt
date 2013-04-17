@@ -1635,6 +1635,8 @@ repository spirit : common_branches
     "boost/spirit.hpp" : "include/boost/spirit.hpp";
     "boost/spirit/" : "include/boost/spirit/";
     "libs/spirit/";
+    "top-level-dir/" : "top/level/dir/";
+    "mini-boost-dir/" : "mini-boost-dir/";
   }
 }
 
