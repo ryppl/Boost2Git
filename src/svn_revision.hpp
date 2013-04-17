@@ -61,8 +61,7 @@ class SvnRevision
         apr_hash_t *changes,
         const QString &current,
         const Ruleset::Match &rule,
-        const MatchRuleList &matchRules,
-        apr_pool_t *pool);
+        const MatchRuleList &matchRules);
     int exportInternal(
         const char *path,
         const svn_fs_path_change_t *change,
@@ -71,16 +70,14 @@ class SvnRevision
         const QString &current,
         const Ruleset::Match &rule,
         const MatchRuleList &matchRules,
-        apr_hash_t *changes,
-        apr_pool_t *pool);
+        apr_hash_t *changes);
     int recurse(
         const char *path,
         const svn_fs_path_change_t *change,
         const char *path_from,
         const MatchRuleList &matchRules,
         svn_revnum_t rev_from,
-        apr_hash_t *changes,
-        apr_pool_t *pool);
+        apr_hash_t *changes);
   private:
     Svn const& svn;
     AprPool pool;

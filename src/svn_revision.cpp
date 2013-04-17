@@ -278,14 +278,13 @@ bool existed(svn_fs_t *fs, int revnum, const char *pathname, apr_pool_t *pool)
 
 bool wasDir(svn_fs_t *fs, int revnum, const char *pathname, apr_pool_t *pool)
   {
-  AprPool subpool(pool);
   svn_fs_root_t *fs_root;
-  if (svn_fs_revision_root(&fs_root, fs, revnum, subpool) != SVN_NO_ERROR)
+  if (svn_fs_revision_root(&fs_root, fs, revnum, pool) != SVN_NO_ERROR)
     {
     return false;
     }
   svn_boolean_t is_dir;
-  if (svn_fs_is_dir(&is_dir, fs_root, pathname, subpool) != SVN_NO_ERROR)
+  if (svn_fs_is_dir(&is_dir, fs_root, pathname, pool) != SVN_NO_ERROR)
     {
     return false;
     }
@@ -410,23 +409,22 @@ int SvnRevision::exportEntry(
     {
     return EXIT_SUCCESS;
     }
-  AprPool revpool(pool.data());
   QString current = QString::fromUtf8(key);
 
   // was this copied from somewhere?
   svn_revnum_t rev_from;
   const char *path_from;
-  check_svn(svn_fs_copied_from(&rev_from, &path_from, fs_root, key, revpool));
+  check_svn(svn_fs_copied_from(&rev_from, &path_from, fs_root, key, pool));
 
   // is this a directory?
   svn_boolean_t is_dir;
   if (path_from)
     {
-    is_dir = wasDir(fs, rev_from, path_from, revpool);
+    is_dir = wasDir(fs, rev_from, path_from, pool);
     }
   else
     {
-    check_svn(svn_fs_is_dir(&is_dir, fs_root, key, revpool));
+    check_svn(svn_fs_is_dir(&is_dir, fs_root, key, pool));
     }
 
   if (is_dir)
@@ -487,7 +485,7 @@ int SvnRevision::exportEntry(
     {
     // if it did not exist in the previous revision, we ignore the deletion
     // this happens is a folder is copied and part of its contents are removed
-    if (!existed(fs, revnum - 1, key, revpool))
+    if (!existed(fs, revnum - 1, key, pool))
       {
       Log::debug()
         << "Ignoring deletion of non-existing path: "
@@ -496,7 +494,7 @@ int SvnRevision::exportEntry(
         ;
       return EXIT_SUCCESS;
       }
-    is_dir = wasDir(fs, revnum - 1, key, revpool);
+    is_dir = wasDir(fs, revnum - 1, key, pool);
     }
 
   if (is_dir)
@@ -515,12 +513,12 @@ int SvnRevision::exportEntry(
     const Ruleset::Match &rule = *match;
     if (is_dir && rule.is_fallback)
       {
-      if (recurse(key, change, path_from, matchRules, rev_from, changes, revpool) == EXIT_FAILURE)
+      if (recurse(key, change, path_from, matchRules, rev_from, changes) == EXIT_FAILURE)
         {
         return EXIT_FAILURE;
         }
       }
-    else if (exportDispatch(key, change, path_from, rev_from, changes, current, rule, matchRules, revpool) == EXIT_FAILURE)
+    else if (exportDispatch(key, change, path_from, rev_from, changes, current, rule, matchRules) == EXIT_FAILURE)
       {
       return EXIT_FAILURE;
       }
@@ -533,7 +531,7 @@ int SvnRevision::exportEntry(
       << " is a copy-with-history, auto-recursing"
       << std::endl
       ;
-    if ( recurse(key, change, path_from, matchRules, rev_from, changes, revpool) == EXIT_FAILURE )
+    if ( recurse(key, change, path_from, matchRules, rev_from, changes) == EXIT_FAILURE )
       {
       return EXIT_FAILURE;
       }
@@ -546,7 +544,7 @@ int SvnRevision::exportEntry(
       << " deleted, auto-recursing"
       << std::endl
       ;
-    if ( recurse(key, change, path_from, matchRules, rev_from, changes, revpool) == EXIT_FAILURE )
+    if ( recurse(key, change, path_from, matchRules, rev_from, changes) == EXIT_FAILURE )
       {
       return EXIT_FAILURE;
       }
@@ -564,7 +562,7 @@ int SvnRevision::exportEntry(
       << "' not accounted for. Recursing."
       << std::endl
       ;
-    return recurse(key, change, path_from, matchRules, rev_from, changes, revpool);
+    return recurse(key, change, path_from, matchRules, rev_from, changes);
     }
   else
     {
@@ -574,7 +572,7 @@ int SvnRevision::exportEntry(
       << "' not accounted for. Putting to fallback."
       << std::endl
       ;
-    return exportDispatch(key, change, path_from, rev_from, changes, current, Ruleset::fallback, matchRules, revpool);
+    return exportDispatch(key, change, path_from, rev_from, changes, current, Ruleset::fallback, matchRules);
     }
   return EXIT_SUCCESS;
   }
@@ -587,8 +585,7 @@ int SvnRevision::exportDispatch(
     apr_hash_t *changes,
     const QString &current,
     const Ruleset::Match &rule,
-    const MatchRuleList &matchRules,
-    apr_pool_t *pool)
+    const MatchRuleList &matchRules)
   {
   Log::trace()
     << "rev "
@@ -619,7 +616,7 @@ int SvnRevision::exportDispatch(
       ;
     }
   
-  if (exportInternal(key, change, path_from, rev_from, current, rule, matchRules, changes, pool) == EXIT_SUCCESS)
+  if (exportInternal(key, change, path_from, rev_from, current, rule, matchRules, changes) == EXIT_SUCCESS)
     {
     return EXIT_SUCCESS;
     }
@@ -645,7 +642,7 @@ int SvnRevision::exportDispatch(
     << "'; auto-recursing"
     << std::endl
     ;
-  return recurse(key, change, path_from, matchRules, rev_from, changes, pool);
+  return recurse(key, change, path_from, matchRules, rev_from, changes);
   }
 
 int SvnRevision::exportInternal(
@@ -656,8 +653,7 @@ int SvnRevision::exportInternal(
     const QString &current,
     const Ruleset::Match &rule,
     const MatchRuleList &matchRules,
-    apr_hash_t *cc,
-    apr_pool_t *pp)
+    apr_hash_t *cc)
   {
   needCommit = true;
   QString svnprefix, repository, branch, path;
@@ -702,11 +698,10 @@ int SvnRevision::exportInternal(
       {
       splitPathName(*prevmatch, previous, &prevsvnprefix, &prevrepository, &prevbranch, &prevpath);
       }
-    //// TODO: recurse() traverses the dst path, here we need to traverse the source path!!!
-    //else if (was_dir)
-    //  {
-    //  return recurse(key, change, path_from, matchRules, rev_from, cc, pp);
-    //  }
+    else if (was_dir)
+      {
+      return recurse(key, change, path_from, matchRules, rev_from, cc);
+      }
     else
       {
       Log::warn()
@@ -944,17 +939,12 @@ int SvnRevision::recurse(
     const char *path_from,
     const MatchRuleList &matchRules,
     svn_revnum_t rev_from,
-    apr_hash_t *changes,
-    apr_pool_t *pool)
+    apr_hash_t *changes)
   {
   svn_fs_root_t *fs_root = this->fs_root;
   if (change->change_kind == svn_fs_path_change_delete)
     {
     check_svn(svn_fs_revision_root(&fs_root, fs, revnum - 1, pool));
-    }
-  else if (path_from)
-    {
-    check_svn(svn_fs_revision_root(&fs_root, fs, rev_from, pool));
     }
 
   // make sure it is a directory
@@ -1000,7 +990,7 @@ int SvnRevision::recurse(
     Rule const* match = find_match(matchRules, current, revnum);
     if (match)
       {
-      if (exportDispatch(entry, change, entryFrom, rev_from, changes, current, *match, matchRules, pool) == EXIT_FAILURE)
+      if (exportDispatch(entry, change, entryFrom, rev_from, changes, current, *match, matchRules) == EXIT_FAILURE)
         {
         return EXIT_FAILURE;
         }
@@ -1012,7 +1002,7 @@ int SvnRevision::recurse(
         << " did not match any rules; auto-recursing"
         << std::endl
         ;
-      if (recurse(entry, change, entryFrom, matchRules, rev_from, changes, pool) == EXIT_FAILURE)
+      if (recurse(entry, change, entryFrom, matchRules, rev_from, changes) == EXIT_FAILURE)
         {
         return EXIT_FAILURE;
         }
@@ -1020,12 +1010,11 @@ int SvnRevision::recurse(
     else
       {
       Log::warn()
-        << "File '"
-        << qPrintable(current)
-        << "' not accounted for. Putting to fallback."
+        << '"' << current << '@' << revnum << '"'
+        << " not accounted for. Putting to fallback."
         << std::endl
         ;
-      if (exportDispatch(entry, change, path_from, rev_from, changes, current, Ruleset::fallback, matchRules, pool) == EXIT_FAILURE)
+      if (exportDispatch(entry, change, entryFrom, rev_from, changes, current, Ruleset::fallback, matchRules) == EXIT_FAILURE)
         {
         return EXIT_FAILURE;
         }
