@@ -70,7 +70,9 @@ class SvnRevision
         svn_revnum_t rev_from,
         const QString &current,
         const Ruleset::Match &rule,
-        const MatchRuleList &matchRules);
+        const MatchRuleList &matchRules,
+        apr_hash_t *changes,
+        apr_pool_t *pool);
     int recurse(
         const char *path,
         const svn_fs_path_change_t *change,

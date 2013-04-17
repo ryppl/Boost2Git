@@ -619,7 +619,7 @@ int SvnRevision::exportDispatch(
       ;
     }
   
-  if (exportInternal(key, change, path_from, rev_from, current, rule, matchRules) == EXIT_SUCCESS)
+  if (exportInternal(key, change, path_from, rev_from, current, rule, matchRules, changes, pool) == EXIT_SUCCESS)
     {
     return EXIT_SUCCESS;
     }
@@ -655,7 +655,9 @@ int SvnRevision::exportInternal(
     svn_revnum_t rev_from,
     const QString &current,
     const Ruleset::Match &rule,
-    const MatchRuleList &matchRules)
+    const MatchRuleList &matchRules,
+    apr_hash_t *cc,
+    apr_pool_t *pp)
   {
   needCommit = true;
   QString svnprefix, repository, branch, path;
@@ -700,15 +702,16 @@ int SvnRevision::exportInternal(
       {
       splitPathName(*prevmatch, previous, &prevsvnprefix, &prevrepository, &prevbranch, &prevpath);
       }
+    else if (was_dir)
+      {
+      return recurse(key, change, path_from, matchRules, rev_from, cc, pp);
+      }
     else
       {
-      (was_dir ? Log::warn() : Log::info())
-        << "SVN reports a " << (was_dir ? "directory" : "file") << " \"copy from\" @"
-        << revnum
-        << " from "
-        << path_from
-        << "@"
-        << rev_from
+      Log::warn()
+        << '"' << key << '@' << revnum << '"'
+        << " is copied from "
+        << '"' << qPrintable(previous) << '@' << rev_from << '"'
         << " but no rules match the source of the copy!"
         << " Ignoring copy; treating as a modification"
         << std::endl
