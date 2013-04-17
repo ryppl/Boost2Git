@@ -947,7 +947,6 @@ int SvnRevision::recurse(
     apr_hash_t *changes,
     apr_pool_t *pool)
   {
-  const char *recurse_base = path;
   svn_fs_root_t *fs_root = this->fs_root;
   if (change->change_kind == svn_fs_path_change_delete)
     {
@@ -955,13 +954,12 @@ int SvnRevision::recurse(
     }
   else if (path_from)
     {
-    recurse_base = path_from;
     check_svn(svn_fs_revision_root(&fs_root, fs, rev_from, pool));
     }
 
   // make sure it is a directory
   svn_node_kind_t kind;
-  check_svn(svn_fs_check_path(&kind, fs_root, recurse_base, pool));
+  check_svn(svn_fs_check_path(&kind, fs_root, path, pool));
   if (kind != svn_node_dir)
     {
     char *msg = apr_pstrcat(pool, "Trying to recurse using a non-directory path '", path, "'", NULL);
@@ -970,15 +968,10 @@ int SvnRevision::recurse(
 
   // get the dir listing
   apr_hash_t *entries;
-  check_svn(svn_fs_dir_entries(&entries, fs_root, recurse_base, pool));
+  check_svn(svn_fs_dir_entries(&entries, fs_root, path, pool));
 
   for (apr_hash_index_t *i = apr_hash_first(pool, entries); i; i = apr_hash_next(i))
     {
-    //const void *vkey;
-    //void *value;
-    //apr_hash_this(i, &vkey, NULL, &value);
-    //svn_fs_dirent_t *dirent = reinterpret_cast<svn_fs_dirent_t *>(value);
-    //map.insertMulti(QByteArray(dirent->name), dirent->kind);
     svn_fs_dirent_t *dirent;
     apr_hash_this(i, NULL, NULL, (void**) &dirent);
 
