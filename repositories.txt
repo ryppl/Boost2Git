@@ -1097,6 +1097,8 @@ repository iterator : common_branches
     "boost/function_output_iterator.hpp" : "include/boost/function_output_iterator.hpp";
     "boost/half_open_range.hpp" : "include/boost/half_open_range.hpp";
     "boost/iterator_adaptors.hpp" : "include/boost/iterator_adaptors.hpp";
+    "boost/iterator_categories.hpp" : "include/boost/iterator_categories.hpp";
+    "boost/iterator_concepts.hpp" : "include/boost/iterator_concepts.hpp";
     "boost/iterator.hpp" : "include/boost/iterator.hpp";
     "boost/iterator/" : "include/boost/iterator/";
     "boost/iterator_tests.hpp" : "include/boost/iterator_tests.hpp";
