@@ -146,13 +146,12 @@ abstract repository common_branches
     [24097:     ] "/branches/graph_devel/boost/" : "old-branches/graph_devel";
     [21831:     ] "/branches/mplbook/boost/" : "old-branches/mplbook";
     [25737:     ] "/branches/graph_devel_1_33_0/boost/" : "old-branches/graph_devel_1_33_0";
-    [26383:     ] "/branches/SPIRIT_RC_1_6_2/boost/" : "old-branches/SPIRIT_RC_1_6_2";
-    [26380:     ] "/branches/SPIRIT_RC_1_8_2/boost/" : "old-branches/SPIRIT_RC_1_8_2";
     [25682:     ] "/branches/uBLAS_pure/boost/" : "old-branches/uBLAS_pure";
     [21527:     ] "/branches/regex5/boost/" : "old-branches/regex5";
     [25797:     ] "/branches/RC_1_32_0/boost/" : "old-branches/RC_1_32_0";
     [28262:     ] "/branches/logo_contest_images/boost/" : "old-branches/logo_contest_images";
     [28977:     ] "/branches/parameter-post-1_33/boost/" : "old-branches/parameter-post-1_33";
+    [     :     ] "/branches/quickbook/backend" : "quickbook/backend";
     [29057:     ] "/branches/QUICKBOOK_INCLUDE/boost/" : "old-branches/QUICKBOOK_INCLUDE";
     [29726:     ] "/branches/uBLAS_assignment_sematics/boost/" : "old-branches/uBLAS_assignment_sematics";
     [30118:     ] "/branches/robstewart/boost/" : "old-branches/robstewart";
@@ -1644,7 +1643,10 @@ repository spirit
 {
   branches
   {
-    [:] "/branches/SPIRIT_RC_1_6_2/boost/libs/" : "SPIRIT_RC_1_6_2";
+    [:] "/branches/SPIRIT_RC_1_6_2/boost/" : "old-branches/SPIRIT_RC_1_6_2";
+    [:] "/branches/SPIRIT_RC_1_6_2/boost/libs/" : "old-branches/SPIRIT_RC_1_6_2";
+    [:] "/branches/SPIRIT_RC_1_8_2/boost/" : "old-branches/SPIRIT_RC_1_8_2";
+    [:] "/branches/SPIRIT_RC_1_8_2/boost/libs/" : "old-branches/SPIRIT_RC_1_8_2";
   }
 }
 
