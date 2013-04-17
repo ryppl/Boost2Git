@@ -702,10 +702,11 @@ int SvnRevision::exportInternal(
       {
       splitPathName(*prevmatch, previous, &prevsvnprefix, &prevrepository, &prevbranch, &prevpath);
       }
-    else if (was_dir)
-      {
-      return recurse(key, change, path_from, matchRules, rev_from, cc, pp);
-      }
+    //// TODO: recurse() traverses the dst path, here we need to traverse the source path!!!
+    //else if (was_dir)
+    //  {
+    //  return recurse(key, change, path_from, matchRules, rev_from, cc, pp);
+    //  }
     else
       {
       Log::warn()
