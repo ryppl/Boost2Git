@@ -965,6 +965,11 @@ int SvnRevision::recurse(
     svn_fs_dirent_t *dirent;
     apr_hash_this(i, NULL, NULL, (void**) &dirent);
 
+    if (strstr(dirent->name, "CVSROOT"))
+      {
+      continue;
+      }
+
     const char *entry = apr_pstrcat(pool, path, "/", dirent->name, NULL);
     const char *entryFrom = path_from ? apr_pstrcat(pool, path_from, "/", dirent->name, NULL) : NULL;
 
