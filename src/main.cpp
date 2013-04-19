@@ -24,6 +24,7 @@
 #include <QTextStream>
 #include <QDebug>
 
+#include <fstream>
 #include <limits.h>
 #include <stdio.h>
 
@@ -36,10 +37,27 @@
 
 Options options;
 
+static std::set<int> load_ignore(std::string const& filename)
+  {
+  std::string line;
+  std::set<int> result;
+  std::ifstream file(filename.c_str());
+  while (std::getline(file, line))
+    {
+    if (line.empty() || line[0] == '#')
+      {
+      continue;
+      }
+    result.insert(boost::lexical_cast<int>(line));
+    }
+  return result;
+  }
+
 int main(int argc, char **argv)
   {
   bool exit_success = false;
   std::string authors_file;
+  std::string ignore_file;
   std::string rules_file;
   std::string svn_path;
   int resume_from = 0;
@@ -58,6 +76,7 @@ int main(int argc, char **argv)
       ("exit-success", "exit with 0, even if errors occured")
       ("authors", po::value(&authors_file)->value_name("FILENAME"), "map between svn username and email")
       ("svnrepo", po::value(&svn_path)->value_name("PATH")->required(), "path to svn repository")
+      ("ignore", po::value(&ignore_file)->value_name("FILENAME"), "file with revisions to ignore")
       ("rules", po::value(&rules_file)->value_name("FILENAME")->required(), "file with the conversion rules")
       ("add-metadata", "if passed, each git commit will have svn commit info")
       ("add-metadata-notes", "if passed, each git commit will have notes with svn commit info")
@@ -121,6 +140,7 @@ int main(int argc, char **argv)
 
     // Load the configuration
     Ruleset ruleset(rules_file);
+    std::set<int> ignore_revisions = load_ignore(ignore_file);
 
     if (dump_rules)
       {
@@ -205,6 +225,10 @@ retry:
     for (int i = min_rev; i <= max_rev; ++i)
       {
       Log::set_revision(i);
+      if (ignore_revisions.find(i) != ignore_revisions.end())
+        {
+        continue;
+        }
       if (!svn.exportRevision(i))
         {
         errors = true;
@@ -217,7 +241,7 @@ retry:
       delete repo;
       }
     return errors ? EXIT_FAILURE : EXIT_SUCCESS;
-  }
+    }
   catch (std::exception const& error)
     {
     Log::error() << error.what() << "\n\n";
