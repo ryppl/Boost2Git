@@ -1443,6 +1443,32 @@ repository python : common_branches
   branches
   {
     [:] "/branches/boost/boost/" : "old-branches/oops";
+    [:] "/tags/release/Boost_0_7_0/boost/" : "old-branches/Boost_0_7_0";
+    [:] "/tags/release/Boost_0_7_2/boost/" : "old-branches/Boost_0_7_2";
+    [:] "/tags/release/Boost_0_7_8/boost/" : "old-branches/Boost_0_7_8";
+    [:] "/tags/release/Boost_0_7_9/boost/" : "old-branches/Boost_0_7_9";
+    [:] "/tags/release/Boost_0_8_1/boost/" : "old-branches/Boost_0_8_1";
+    [:] "/tags/release/Boost_0_8_2/boost/" : "old-branches/Boost_0_8_2";
+    [:] "/tags/release/Boost_0_9_0/boost/" : "old-branches/Boost_0_9_0";
+    [:] "/tags/release/Boost_0_9_1/boost/" : "old-branches/Boost_0_9_1";
+    [:] "/tags/release/Boost_0_9_2/boost/" : "old-branches/Boost_0_9_2";
+    [:] "/tags/release/Boost_0_9_3/boost/" : "old-branches/Boost_0_9_3";
+    [:] "/tags/release/Boost_0_9_4/boost/" : "old-branches/Boost_0_9_4";
+    [:] "/tags/release/Boost_0_9_5/boost/" : "old-branches/Boost_0_9_5";
+    [:] "/tags/release/Boost_0_9_8/boost/" : "old-branches/Boost_0_9_8";
+    [:] "/tags/release/Boost_0_9_9/boost/" : "old-branches/Boost_0_9_9";
+    [:] "/tags/release/Boost_0_9_10/boost/" : "old-branches/Boost_0_9_10";
+    [:] "/tags/release/Boost_0_9_13/boost/" : "old-branches/Boost_0_9_13";
+    [:] "/tags/release/Boost_0_9_14/boost/" : "old-branches/Boost_0_9_14";
+    [:] "/tags/release/Boost_0_9_15/boost/" : "old-branches/Boost_0_9_15";
+    [:] "/tags/release/Boost_0_9_16/boost/" : "old-branches/Boost_0_9_16";
+    [:] "/tags/release/Boost_0_9_19/boost/" : "old-branches/Boost_0_9_19";
+    [:] "/tags/release/Boost_0_9_20/boost/" : "old-branches/Boost_0_9_20";
+    [:] "/tags/release/Boost_0_9_21/boost/" : "old-branches/Boost_0_9_21";
+    [:] "/tags/release/Boost_0_9_22/boost/" : "old-branches/Boost_0_9_22";
+    [:] "/tags/release/Boost_0_9_26/boost/" : "old-branches/Boost_0_9_26";
+    [:] "/tags/release/Boost_0_9_27/boost/" : "old-branches/Boost_0_9_27";
+    [:] "/tags/release/Boost_0_9_28/boost/" : "old-branches/Boost_0_9_28";
     [:] "/tags/release/version_0-7-0/boost/" : "old-branches/version_0-7-0";
     [:] "/tags/release/version_0-7-2/boost/" : "old-branches/version_0-7-2";
     [:] "/tags/release/version_0-7-8/boost/" : "old-branches/version_0-7-8";
@@ -1484,6 +1510,7 @@ repository python
     [:] "/branches/numerics/boost/development/py_cpp/" : "py_cpp/numerics";
     [:] "/branches/to_python_experiments/boost/development/py_cpp/" : "py_cpp/to_python_experiments";
     [:] "/tags/detailified/boost/development/py_cpp/" : "py_cpp/detailified";
+    [:] "/tags/release/Version_1_19_0/boost/development/py_cpp/" : "py_cpp/release/Version_1_19_0";
     [:] "/tags/start/boost/development/py_cpp/" : "py_cpp/start";
     [:] "/tags/Version_1_19_0/boost/development/py_cpp/" : "py_cpp/Version_1_19_0";
     [:] "/trunk/boost/development/py_cpp/" : "py_cpp/trunk";
