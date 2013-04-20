@@ -2023,10 +2023,8 @@ repository build : common_branches
     [:] "/tags/jam/FreeType_Jam_2_3_5/boost/" : "jam/FreeType_Jam_2_3_5";
     [:] "/tags/jam/ftjam_2_3_5/boost/" : "jam/ftjam_2_3_5";
     [:] "/tags/jam/jam_2_3_2/boost/" : "jam/jam_2_3_2";
-    [:] "/tags/jam/perforce_2_4_merge_1/boost/" : "jam/perforce_2_4_merge_1";
     [:] "/tags/jam/perforce_jam_2_4_beta_1/boost/" : "jam/perforce_jam_2_4_beta_1";
     [:] "/tags/jam/Perforce_Jam_2_4_beta_1/boost/" : "jam/Perforce_Jam_2_4_beta_1";
-    [:] "/tags/jam/Perforce_Jam_2_4_merge_1/boost/" : "jam/Perforce_Jam_2_4_merge_1";
     [:] "/tags/jam/Perfroce_Jam_2_3_2/boost/" : "jam/Perfroce_Jam_2_3_2";
     [:] "/tags/perforce_jam_2_4_beta_1/boost/" : "perforce_jam_2_4_beta_1";
     [:] "/tags/state-perforce_2_4_merge-1/boost/" : "state-perforce_2_4_merge-1";
