@@ -219,7 +219,6 @@ abstract repository common_branches
     [61439:     ] "/branches/inspect/" : "inspect";
     [59996:     ] "/branches/units/autoprefix/" : "units/autoprefix";
     [62584:     ] "/branches/date_time_io_rewrite/" : "date_time_io_rewrite";
-    [62649:     ] "/branches/filesystem3/" : "filesystem3";
     [68345:     ] "/branches/quickbook-filenames/" : "quickbook-filenames";
     [  146:     ] "/sandbox/" : "sandbox/trunk";
     [68640:     ] "/branches/doc-tools-docs/" : "doc-tools-docs";
@@ -227,7 +226,10 @@ abstract repository common_branches
     [     :     ] "/branches/build/docs_2001_10_24/boost/" : "docs_2001_10_24";
     [25038:     ] "/branches/build/boost/" : "build";
     [27041:     ] "/branches/BOOST_BUILD_PYTHON/boost/" : "BOOST_BUILD_PYTHON";
+
+    [62649:     ] "/branches/filesystem3/" : "filesystem3";
     [77385:77500] "/branches/filesystem-v3/" : "filesystem-v3";
+    [77385:77500] "/branches/filesystem-v3a/" : "filesystem-v3a";
   }
   tags
   {
@@ -842,10 +844,6 @@ repository filesystem : common_branches
     "boost/filesystem.hpp" : "include/boost/filesystem.hpp";
     "boost/filesystem/" : "include/boost/filesystem/";
     "libs/filesystem/";
-  }
-  branches
-  {
-    [77385:77500] "/branches/filesystem-v3a/" : "filesystem-v3a";
   }
 }
 
@@ -2000,6 +1998,10 @@ repository build : common_branches
     "tools/build/" : "build";
     "tools/jam/" : "jam";
   }
+  branches
+  {
+    [38357:     ] "/branches/quickbook/include/boost/" : "quickbook/include";
+  }
   tags
   {
     [:] "/tags/boost-initial/boost/" : "boost-initial";
@@ -2092,6 +2094,10 @@ repository quickbook : common_branches
   content
   {
     "tools/quickbook/";
+  }
+  branches
+  {
+    [38357:     ] "/branches/quickbook/include/boost/" : "quickbook/include";
   }
 }
 
