@@ -18,7 +18,6 @@ abstract repository common_branches
     [     :     ] "/sandbox-branches/geometry/index_dyn/" : "sandbox/geometry/index_dyn";
     [     :     ] "/branches/maintenance/1_52_0/" : "maintenance/1_52_0";
     [     :     ] "/sandbox-branches/geometry/index_080/" : "sandbox/geometry/index_080";
-    [     :     ] "/branches/filesystem-v3a/" : "filesystem-v3a";
     [77091:     ] "/sandbox-branches/optional_optimization/" : "sandbox/optional_optimization";
     [79440:     ] "/branches/maintenance/1_50_0/" : "maintenance/1_50_0";
     [77438:     ] "/sandbox-branches/birbacher/propertymap-functormap/" : "sandbox/birbacher/propertymap-functormap";
@@ -228,6 +227,7 @@ abstract repository common_branches
     [     :     ] "/branches/build/docs_2001_10_24/boost/" : "docs_2001_10_24";
     [25038:     ] "/branches/build/boost/" : "build";
     [27041:     ] "/branches/BOOST_BUILD_PYTHON/boost/" : "BOOST_BUILD_PYTHON";
+    [77385:77500] "/branches/filesystem-v3/" : "filesystem-v3";
   }
   tags
   {
@@ -845,7 +845,6 @@ repository filesystem : common_branches
   }
   branches
   {
-    [77385:77500] "/branches/filesystem-v3/" : "filesystem-v3";
     [77385:77500] "/branches/filesystem-v3a/" : "filesystem-v3a";
   }
 }
@@ -2006,37 +2005,66 @@ repository build : common_branches
     [:] "/tags/boost-initial/boost/" : "boost-initial";
     [:] "/tags/ftjam_2_3_5/boost/" : "ftjam_2_3_5";
     [:] "/tags/jam_2_3_2/boost/" : "jam_2_3_2";
+    [:] "/tags/jam/bjam_3_1_2/boost/" : "jam/bjam_3_1_2";
+    [:] "/tags/jam/bjam_3_1_5/boost/" : "jam/bjam_3_1_5";
+    [:] "/tags/jam/Boost_Jam_3_1_10/boost/" : "jam/Boost_Jam_3_1_10";
+    [:] "/tags/jam/Boost_Jam_3_1_11/boost/" : "jam/Boost_Jam_3_1_11";
+    [:] "/tags/jam/Boost_Jam_3_1_2/boost/" : "jam/Boost_Jam_3_1_2";
+    [:] "/tags/jam/Boost_Jam_3_1_5/boost/" : "jam/Boost_Jam_3_1_5";
+    [:] "/tags/jam/Boost_Jam_3_1_7/boost/" : "jam/Boost_Jam_3_1_7";
+    [:] "/tags/jam/Boost_Jam_3_1_9/boost/" : "jam/Boost_Jam_3_1_9";
+    [:] "/tags/jam/FreeType_Jam_2_3_5/boost/" : "jam/FreeType_Jam_2_3_5";
+    [:] "/tags/jam/ftjam_2_3_5/boost/" : "jam/ftjam_2_3_5";
+    [:] "/tags/jam/jam_2_3_2/boost/" : "jam/jam_2_3_2";
+    [:] "/tags/jam/perforce_2_4_merge_1/boost/" : "jam/perforce_2_4_merge_1";
+    [:] "/tags/jam/perforce_jam_2_4_beta_1/boost/" : "jam/perforce_jam_2_4_beta_1";
+    [:] "/tags/jam/Perforce_Jam_2_4_beta_1/boost/" : "jam/Perforce_Jam_2_4_beta_1";
+    [:] "/tags/jam/perforce_jam_2_4_beta_1/boost/" : "jam/perforce_jam_2_4_beta_1";
+    [:] "/tags/jam/Perforce_Jam_2_4_beta_1/boost/" : "jam/Perforce_Jam_2_4_beta_1";
+    [:] "/tags/jam/Perforce_Jam_2_4_merge_1/boost/" : "jam/Perforce_Jam_2_4_merge_1";
+    [:] "/tags/jam/Perfroce_Jam_2_3_2/boost/" : "jam/Perfroce_Jam_2_3_2";
     [:] "/tags/perforce_jam_2_4_beta_1/boost/" : "perforce_jam_2_4_beta_1";
     [:] "/tags/state-perforce_2_4_merge-1/boost/" : "state-perforce_2_4_merge-1";
     [:] "/tags/state-update_rule-1/boost/" : "state-update_rule-1";
+    [:] "/tags/tools/build/BOOST_BUILD_V1/boost/" : "tools/build/BOOST_BUILD_V1";
     [:] "/tags/tools/build/M11_rc2/boost/" : "M11_rc2";
     [:] "/tags/tools/build/Milestone_10/boost/" : "Milestone_10";
-    [:] "/tags/tools/build/Milestone_10_dev/boost/" : "Milestone_10_dev";
     [:] "/tags/tools/build/Milestone_10_dev2/boost/" : "Milestone_10_dev2";
+    [:] "/tags/tools/build/Milestone_10_dev/boost/" : "Milestone_10_dev";
     [:] "/tags/tools/build/Milestone_11/boost/" : "Milestone_11";
+    [:] "/tags/tools/build/milestone_1/boost/" : "milestone_1";
     [:] "/tags/tools/build/Milestone_3/boost/" : "Milestone_3";
     [:] "/tags/tools/build/Milestone_4/boost/" : "Milestone_4";
     [:] "/tags/tools/build/Milestone_6/boost/" : "Milestone_6";
     [:] "/tags/tools/build/Milestone_7/boost/" : "Milestone_7";
     [:] "/tags/tools/build/Milestone_8/boost/" : "Milestone_8";
-    [:] "/tags/tools/build/Milestone_9/boost/" : "Milestone_9";
     [:] "/tags/tools/build/Milestone_9_1/boost/" : "Milestone_9_1";
-    [:] "/tags/tools/build/milestone_1/boost/" : "milestone_1";
+    [:] "/tags/tools/build/Milestone_9/boost/" : "Milestone_9";
     [:] "/tags/tools/jam/Boost_Jam_3_1_10/boost/" : "Boost_Jam_3_1_10";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_10/boost/" : "tools/jam/Boost_Jam_3_1_10";
     [:] "/tags/tools/jam/Boost_Jam_3_1_11/boost/" : "Boost_Jam_3_1_11";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_11/boost/" : "tools/jam/Boost_Jam_3_1_11";
     [:] "/tags/tools/jam/Boost_Jam_3_1_12/boost/" : "Boost_Jam_3_1_12";
     [:] "/tags/tools/jam/Boost_Jam_3_1_13/boost/" : "Boost_Jam_3_1_13";
     [:] "/tags/tools/jam/Boost_Jam_3_1_14/boost/" : "Boost_Jam_3_1_14";
     [:] "/tags/tools/jam/Boost_Jam_3_1_15/boost/" : "Boost_Jam_3_1_15";
     [:] "/tags/tools/jam/Boost_Jam_3_1_16/boost/" : "Boost_Jam_3_1_16";
     [:] "/tags/tools/jam/Boost_Jam_3_1_2/boost/" : "Boost_Jam_3_1_2";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_2/boost/" : "tools/jam/Boost_Jam_3_1_2";
     [:] "/tags/tools/jam/Boost_Jam_3_1_5/boost/" : "Boost_Jam_3_1_5";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_5/boost/" : "tools/jam/Boost_Jam_3_1_5";
     [:] "/tags/tools/jam/Boost_Jam_3_1_7/boost/" : "Boost_Jam_3_1_7";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_7/boost/" : "tools/jam/Boost_Jam_3_1_7";
     [:] "/tags/tools/jam/Boost_Jam_3_1_9/boost/" : "Boost_Jam_3_1_9";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_9/boost/" : "tools/jam/Boost_Jam_3_1_9";
     [:] "/tags/tools/jam/FreeType_Jam_2_3_5/boost/" : "FreeType_Jam_2_3_5";
+    [:] "/tags/tools/jam/FreeType_Jam_2_3_5/boost/" : "tools/jam/FreeType_Jam_2_3_5";
     [:] "/tags/tools/jam/Perforce_Jam_2_4_beta_1/boost/" : "Perforce_Jam_2_4_beta_1";
+    [:] "/tags/tools/jam/Perforce_Jam_2_4_beta_1/boost/" : "tools/jam/Perforce_Jam_2_4_beta_1";
     [:] "/tags/tools/jam/Perforce_Jam_2_4_merge_1/boost/" : "Perforce_Jam_2_4_merge_1";
+    [:] "/tags/tools/jam/Perforce_Jam_2_4_merge_1/boost/" : "tools/jam/Perforce_Jam_2_4_merge_1";
     [:] "/tags/tools/jam/Perfroce_Jam_2_3_2/boost/" : "Perfroce_Jam_2_3_2";
+    [:] "/tags/tools/jam/Perfroce_Jam_2_3_2/boost/" : "tools/jam/Perfroce_Jam_2_3_2";
   }
 }
 
