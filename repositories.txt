@@ -228,8 +228,8 @@ abstract repository common_branches
     [27041:     ] "/branches/BOOST_BUILD_PYTHON/boost/" : "BOOST_BUILD_PYTHON";
 
     [62649:     ] "/branches/filesystem3/" : "filesystem3";
-    [77385:77500] "/branches/filesystem-v3/" : "filesystem-v3";
-    [77385:77500] "/branches/filesystem-v3a/" : "filesystem-v3a";
+    [77385:     ] "/branches/filesystem-v3/" : "filesystem-v3";
+    [77385:77584] "/branches/filesystem-v3a/" : "filesystem-v3a";
   }
   tags
   {
@@ -521,6 +521,8 @@ abstract repository common_branches
     [36695:     ] "/tags/Boost_Jam_3_1_14/boost/" : "Boost_Jam_3_1_14";
     [13112:     ] "/tags/perforce_2_4_merge_1/boost/" : "perforce_2_4_merge_1";
     [44232:     ] "/tags/start/Version_1_18_3/boost/" : "start/Version_1_18_3";
+    [38383:     ] "/tags/jam/perforce_2_4_merge_1/boost/" : "jam/perforce_2_4_merge_1";
+    [38389:     ] "/tags/jam/Perforce_Jam_2_4_merge_1/boost/" : "jam/Perforce_Jam_2_4_merge_1";
   }
 }
 
@@ -2011,6 +2013,9 @@ repository build : common_branches
     [:] "/tags/jam/bjam_3_1_5/boost/" : "jam/bjam_3_1_5";
     [:] "/tags/jam/Boost_Jam_3_1_10/boost/" : "jam/Boost_Jam_3_1_10";
     [:] "/tags/jam/Boost_Jam_3_1_11/boost/" : "jam/Boost_Jam_3_1_11";
+    [:] "/tags/jam/Boost_Jam_3_1_12/boost/" : "jam/Boost_Jam_3_1_12";
+    [:] "/tags/jam/Boost_Jam_3_1_13/boost/" : "jam/Boost_Jam_3_1_13";
+    [:] "/tags/jam/Boost_Jam_3_1_14/boost/" : "jam/Boost_Jam_3_1_14";
     [:] "/tags/jam/Boost_Jam_3_1_2/boost/" : "jam/Boost_Jam_3_1_2";
     [:] "/tags/jam/Boost_Jam_3_1_5/boost/" : "jam/Boost_Jam_3_1_5";
     [:] "/tags/jam/Boost_Jam_3_1_7/boost/" : "jam/Boost_Jam_3_1_7";
