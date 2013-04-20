@@ -37,6 +37,7 @@ abstract repository common_branches
     [ 1773:     ] "/sandbox-branches/rhdunn/" : "sandbox/rhdunn";
     [ 7620:     ] "/branches/unlabeled-1.1.1/boost/" : "old-branches/unlabeled-1.1.1";
     [ 7633:     ] "/branches/iterator-adaptors/boost/" : "old-branches/iterator-adaptors";
+    [     :     ] "/branches/iterator_build/boost/" : "old-branches/iterator_build";
     [ 7663:     ] "/branches/conversion/boost/" : "old-branches/conversion";
     [ 7698:     ] "/branches/boost-graph-library/boost/" : "old-branches/boost-graph-library";
     [ 7754:     ] "/branches/regex-sub/boost/" : "old-branches/regex-sub";
