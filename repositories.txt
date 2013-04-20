@@ -2019,8 +2019,6 @@ repository build : common_branches
     [:] "/tags/jam/perforce_2_4_merge_1/boost/" : "jam/perforce_2_4_merge_1";
     [:] "/tags/jam/perforce_jam_2_4_beta_1/boost/" : "jam/perforce_jam_2_4_beta_1";
     [:] "/tags/jam/Perforce_Jam_2_4_beta_1/boost/" : "jam/Perforce_Jam_2_4_beta_1";
-    [:] "/tags/jam/perforce_jam_2_4_beta_1/boost/" : "jam/perforce_jam_2_4_beta_1";
-    [:] "/tags/jam/Perforce_Jam_2_4_beta_1/boost/" : "jam/Perforce_Jam_2_4_beta_1";
     [:] "/tags/jam/Perforce_Jam_2_4_merge_1/boost/" : "jam/Perforce_Jam_2_4_merge_1";
     [:] "/tags/jam/Perfroce_Jam_2_3_2/boost/" : "jam/Perfroce_Jam_2_3_2";
     [:] "/tags/perforce_jam_2_4_beta_1/boost/" : "perforce_jam_2_4_beta_1";
@@ -2041,30 +2039,30 @@ repository build : common_branches
     [:] "/tags/tools/build/Milestone_9_1/boost/" : "Milestone_9_1";
     [:] "/tags/tools/build/Milestone_9/boost/" : "Milestone_9";
     [:] "/tags/tools/jam/Boost_Jam_3_1_10/boost/" : "Boost_Jam_3_1_10";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_10/boost/" : "tools/jam/Boost_Jam_3_1_10";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_10/boost/" : "Boost_Jam_3_1_10";
     [:] "/tags/tools/jam/Boost_Jam_3_1_11/boost/" : "Boost_Jam_3_1_11";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_11/boost/" : "tools/jam/Boost_Jam_3_1_11";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_11/boost/" : "Boost_Jam_3_1_11";
     [:] "/tags/tools/jam/Boost_Jam_3_1_12/boost/" : "Boost_Jam_3_1_12";
     [:] "/tags/tools/jam/Boost_Jam_3_1_13/boost/" : "Boost_Jam_3_1_13";
     [:] "/tags/tools/jam/Boost_Jam_3_1_14/boost/" : "Boost_Jam_3_1_14";
     [:] "/tags/tools/jam/Boost_Jam_3_1_15/boost/" : "Boost_Jam_3_1_15";
     [:] "/tags/tools/jam/Boost_Jam_3_1_16/boost/" : "Boost_Jam_3_1_16";
     [:] "/tags/tools/jam/Boost_Jam_3_1_2/boost/" : "Boost_Jam_3_1_2";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_2/boost/" : "tools/jam/Boost_Jam_3_1_2";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_2/boost/" : "Boost_Jam_3_1_2";
     [:] "/tags/tools/jam/Boost_Jam_3_1_5/boost/" : "Boost_Jam_3_1_5";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_5/boost/" : "tools/jam/Boost_Jam_3_1_5";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_5/boost/" : "Boost_Jam_3_1_5";
     [:] "/tags/tools/jam/Boost_Jam_3_1_7/boost/" : "Boost_Jam_3_1_7";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_7/boost/" : "tools/jam/Boost_Jam_3_1_7";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_7/boost/" : "Boost_Jam_3_1_7";
     [:] "/tags/tools/jam/Boost_Jam_3_1_9/boost/" : "Boost_Jam_3_1_9";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_9/boost/" : "tools/jam/Boost_Jam_3_1_9";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_9/boost/" : "Boost_Jam_3_1_9";
     [:] "/tags/tools/jam/FreeType_Jam_2_3_5/boost/" : "FreeType_Jam_2_3_5";
-    [:] "/tags/tools/jam/FreeType_Jam_2_3_5/boost/" : "tools/jam/FreeType_Jam_2_3_5";
+    [:] "/tags/tools/jam/FreeType_Jam_2_3_5/boost/" : "FreeType_Jam_2_3_5";
     [:] "/tags/tools/jam/Perforce_Jam_2_4_beta_1/boost/" : "Perforce_Jam_2_4_beta_1";
-    [:] "/tags/tools/jam/Perforce_Jam_2_4_beta_1/boost/" : "tools/jam/Perforce_Jam_2_4_beta_1";
+    [:] "/tags/tools/jam/Perforce_Jam_2_4_beta_1/boost/" : "Perforce_Jam_2_4_beta_1";
     [:] "/tags/tools/jam/Perforce_Jam_2_4_merge_1/boost/" : "Perforce_Jam_2_4_merge_1";
-    [:] "/tags/tools/jam/Perforce_Jam_2_4_merge_1/boost/" : "tools/jam/Perforce_Jam_2_4_merge_1";
+    [:] "/tags/tools/jam/Perforce_Jam_2_4_merge_1/boost/" : "Perforce_Jam_2_4_merge_1";
     [:] "/tags/tools/jam/Perfroce_Jam_2_3_2/boost/" : "Perfroce_Jam_2_3_2";
-    [:] "/tags/tools/jam/Perfroce_Jam_2_3_2/boost/" : "tools/jam/Perfroce_Jam_2_3_2";
+    [:] "/tags/tools/jam/Perfroce_Jam_2_3_2/boost/" : "Perfroce_Jam_2_3_2";
   }
 }
 
