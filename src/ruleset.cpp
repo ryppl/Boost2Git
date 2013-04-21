@@ -30,18 +30,36 @@
 #include <boost/spirit/include/support_multi_pass.hpp>
 #include <boost/spirit/include/classic_position_iterator.hpp>
 #include <boost/spirit/repository/include/qi_confix.hpp>
+#include <boost/spirit/repository/include/qi_iter_pos.hpp>
+#include <boost/spirit/home/phoenix/bind/bind_function.hpp>
 
 namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
 namespace classic = boost::spirit::classic;
+namespace phoenix = boost::phoenix;
 
-namespace boost2git {}
+namespace boost2git
+{
+
+typedef std::istreambuf_iterator<char> BaseIterator;
+typedef boost::spirit::multi_pass<BaseIterator> ForwardIterator;
+typedef classic::position_iterator2<ForwardIterator> PosIterator;
+
+static void get_line(int& line, PosIterator const& iterator)
+  {
+  line = iterator.get_position().line;
+  }
+
+} // namespace boost2git
+
 using namespace boost2git;
+using boost::spirit::make_default_multi_pass;
 
 BOOST_FUSION_DEFINE_STRUCT((boost2git), ContentRule,
   (std::string, prefix)
   (bool, is_fallback)
   (std::string, replace)
+  (int, line)
   )
 
 BOOST_FUSION_DEFINE_STRUCT((boost2git), BranchRule,
@@ -49,10 +67,12 @@ BOOST_FUSION_DEFINE_STRUCT((boost2git), BranchRule,
   (std::size_t, max)
   (std::string, prefix)
   (std::string, name)
+  (int, line)
   )
 
 BOOST_FUSION_DEFINE_STRUCT((boost2git), RepoRule,
   (bool, abstract)
+  (int, line)
   (std::string, name)
   (std::string, parent)
   (std::size_t, minrev)
@@ -62,9 +82,6 @@ BOOST_FUSION_DEFINE_STRUCT((boost2git), RepoRule,
   (std::vector<BranchRule>, tag_rules)
   )
 
-namespace qi = boost::spirit::qi;
-namespace ascii = boost::spirit::ascii;
-
 template<typename Iterator, typename Skipper>
 struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
   {
@@ -72,6 +89,7 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
     {
     repository_
      %= (qi::matches["abstract"] >> "repository")
+      > line_number_
       > string_
       > -(':' > string_) // TODO: make sure abstract parent exists and copy branches!
       > '{'
@@ -85,7 +103,7 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
     content_
      %= qi::lit("content")
       > '{'
-      > +(string_ > qi::matches['?'] > -(':' > string_) > ';')
+      > +(string_ > qi::matches['?'] > -(':' > string_) > line_number_ > ';')
       > '}'
       ;
     branches_
@@ -109,18 +127,24 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
       > string_
       > ':'
       > string_
+      > line_number_
       > ';'
       ;
     string_
      %= qi::char_("a-zA-Z_") >> *qi::char_("a-zA-Z_0-9")
       | qi::lexeme['"' >> +(qi::char_ - '"') >> '"']
       ;
+    line_number_ = boost::spirit::repository::qi::iter_pos
+      [
+      phoenix::bind(get_line, qi::_val, qi::_1)
+      ];
     }
   qi::rule<Iterator, RepoRule(), Skipper> repository_;
   qi::rule<Iterator, std::vector<ContentRule>(), Skipper> content_;
   qi::rule<Iterator, std::vector<BranchRule>(), Skipper> branches_, tags_;
   qi::rule<Iterator, BranchRule(), Skipper> branch_;
   qi::rule<Iterator, std::string(), Skipper> string_;
+  qi::rule<Iterator, int(), Skipper> line_number_;
   };
 
 static void inherit(RepoRule& repo_rule, std::vector<RepoRule> const& result)
@@ -183,16 +207,9 @@ Ruleset::Ruleset(std::string const& filename)
     throw std::runtime_error("cannot read ruleset: " + filename);
     }
 
-  typedef std::istreambuf_iterator<char> BaseIterator;
   BaseIterator in_begin(file);
-
-  typedef boost::spirit::multi_pass<BaseIterator> ForwardIterator;
-  ForwardIterator fwd_begin = boost::spirit::make_default_multi_pass(in_begin);
-  ForwardIterator fwd_end;
-
-  typedef classic::position_iterator2<ForwardIterator> PosIterator;
-  PosIterator begin(fwd_begin, fwd_end);
-  PosIterator end;
+  ForwardIterator fwd_begin = make_default_multi_pass(in_begin), fwd_end;
+  PosIterator begin(fwd_begin, fwd_end), end;
 
   BOOST_AUTO(comment
     , ascii::space
@@ -231,6 +248,7 @@ Ruleset::Ruleset(std::string const& filename)
 
     Match match;
     match.repository = repo_rule.name;
+    match.repo_line = repo_rule.line;
 
     typedef std::pair<std::vector<BranchRule>*, char const*> RulesAndPrefix;
     RulesAndPrefix const ref_rulesets[] =
@@ -252,6 +270,7 @@ Ruleset::Ruleset(std::string const& filename)
         repo.branches.insert(ref_name);
 
         match.branch = ref_name;
+        match.branch_line = branch_rule.line;
         match.min = std::max(branch_rule.min, repo_rule.minrev);
         match.max = std::min(branch_rule.max, repo_rule.maxrev);
         if (match.min > match.max)
@@ -272,6 +291,7 @@ Ruleset::Ruleset(std::string const& filename)
           match.match = path_append(branch_rule.prefix, content.prefix);
           match.prefix = content.replace;
           match.is_fallback = content.is_fallback;
+          match.content_line = content.line;
           matches_.insert(match);
           }
         }

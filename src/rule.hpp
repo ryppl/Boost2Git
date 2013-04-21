@@ -10,7 +10,15 @@
 
 struct Rule
   {
-  Rule() : min(0), max(0), is_fallback(false) {}
+  Rule()
+      : min(0)
+      , max(UINT_MAX)
+      , is_fallback(false)
+      , repo_line(0)
+      , branch_line(0)
+      , content_line(0)
+    {
+    }
 
   Rule(
       std::size_t min, std::size_t max,
@@ -31,6 +39,10 @@ struct Rule
   std::string prefix;
   bool is_fallback;
 
+  int repo_line;    ///< Line number of the repository
+  int branch_line;  ///< Line number of the branch or tag (might be in an inherited repo)
+  int content_line; ///< Line number of the content
+
   friend bool operator==(Rule const& lhs, Rule const& rhs)
     {
     return lhs.min == rhs.min
@@ -38,7 +50,10 @@ struct Rule
       && lhs.repository == rhs.repository
       && lhs.branch == rhs.branch
       && lhs.prefix == rhs.prefix
-      && lhs.is_fallback == rhs.is_fallback;
+      && lhs.is_fallback == rhs.is_fallback
+      && lhs.repo_line == rhs.repo_line
+      && lhs.branch_line == rhs.branch_line
+      && lhs.content_line == rhs.content_line;
     }
   };
 
