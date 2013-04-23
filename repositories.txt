@@ -2253,3 +2253,7 @@ repository boost : common_branches
     [:] "/branches/boost/boost/" : "old-branches/oops";
   }
 }
+
+// Local Variables:
+// mode: js
+// End:
