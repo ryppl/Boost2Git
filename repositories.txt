@@ -2036,6 +2036,7 @@ repository build : common_branches
     [:] "/tags/jam/Boost_Jam_3_1_12/boost/" : "jam/Boost_Jam_3_1_12";
     [:] "/tags/jam/Boost_Jam_3_1_13/boost/" : "jam/Boost_Jam_3_1_13";
     [:] "/tags/jam/Boost_Jam_3_1_14/boost/" : "jam/Boost_Jam_3_1_14";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_15/" : "tools/jam/Boost_Jam_3_1_15";
     [:] "/tags/jam/Boost_Jam_3_1_2/boost/" : "jam/Boost_Jam_3_1_2";
     [:] "/tags/jam/Boost_Jam_3_1_5/boost/" : "jam/Boost_Jam_3_1_5";
     [:] "/tags/jam/Boost_Jam_3_1_7/boost/" : "jam/Boost_Jam_3_1_7";
@@ -2108,6 +2109,21 @@ repository build
     [:] "/branches/build/Milestone_12/" : "Milestone_12";
   }
 }
+
+// Match SVN tags and branches that contain only Boost.Jam-related stuff at the top level
+repository build
+{
+  content
+  {
+    "/" : "jam/";
+  }
+  tags
+  {
+    [:] "/tags/jam/Boost_Jam_3_1_15/" : "jam/Boost_Jam_3_1_15";
+  }
+}
+
+// ==============================================================================
 
 repository inspect : common_branches
 {
