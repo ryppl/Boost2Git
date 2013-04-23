@@ -245,6 +245,7 @@ abstract repository common_branches
   tags
   {
     [:] "/tags/reference_types_in_return_type_deduction/boost/" : "reference_types_in_return_type_deduction";
+    [:] "/tags/tools/jam/Perforce_Jam_2_4_merge_1/boost/" : "Perforce_Jam_2_4_merge_1";
     [44228:     ] "/tags/release/Version_1_17_0/boost/" : "release/Version_1_17_0";
     [44229:     ] "/tags/release/Version_1_18_0/boost/" : "release/Version_1_18_0";
     [44231:     ] "/tags/release/Version_1_18_2/boost/" : "release/Version_1_18_2";
@@ -2075,7 +2076,6 @@ repository build : common_branches
     [:] "/tags/tools/jam/Boost_Jam_3_1_9/boost/" : "Boost_Jam_3_1_9";
     [:] "/tags/tools/jam/FreeType_Jam_2_3_5/boost/" : "FreeType_Jam_2_3_5";
     [:] "/tags/tools/jam/Perforce_Jam_2_4_beta_1/boost/" : "Perforce_Jam_2_4_beta_1";
-    [:] "/tags/tools/jam/Perforce_Jam_2_4_merge_1/boost/" : "Perforce_Jam_2_4_merge_1";
     [:] "/tags/tools/jam/Perfroce_Jam_2_3_2/boost/" : "Perfroce_Jam_2_3_2";
   }
 }
