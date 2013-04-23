@@ -66,9 +66,11 @@ bool pathExists(apr_pool_t* pool, svn_fs_t *fs, QString const& path_, int revnum
     const void       *key;
     void             *val;
     apr_hash_this(i, &key, NULL, &val);
-    
+
+#if 0
     char const* node = static_cast<char const*>(key);
-    // Log::debug() << "## found entry " << node << std::endl;
+    Log::debug() << "## found entry " << node << std::endl;
+#endif 
     }
   else
     {
