@@ -2115,7 +2115,7 @@ repository build
 {
   content
   {
-    "/" : "jam/";
+    "/" : "jam";
   }
   branches
   {
