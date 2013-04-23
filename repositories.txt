@@ -2003,6 +2003,15 @@ repository boostbook : common_branches
   }
 }
 
+// ==============================================================
+// Boost.Build has lots of quirky branches and tags, so we are using
+// several repository declarations.  The best way to understand these
+// is to start with the "content" section of each one.  The content
+// section limits the matched SVN paths to those containing the given
+// path fragments.  However, those path fragments are only relevant 
+// where preceded by some branch or tag prefix either inherited or
+// listed in a "branches" or "tags" section.
+
 repository build : common_branches
 {
   content
@@ -2082,7 +2091,21 @@ repository build : tools_branches
   tags
   {
     [:] "/tags/build-development-checkpoint-2/boost/" : "build-development-checkpoint-2";
-    [:] "/branches/tools/jam/" : "old-branches/jam";
+  }
+}
+
+// Match SVN tags and branches that contain jam/ and/or build/
+// directories at the top level, but also a few miscellaneous other
+// things like an index.html file
+repository build
+{
+  content
+  {
+    "/";
+  }
+  branches
+  {
+    [:] "/branches/build/Milestone_12/" : "Milestone_12";
   }
 }
 
