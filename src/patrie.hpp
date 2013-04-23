@@ -50,7 +50,9 @@ private:
     node(Iterator text_start, Iterator text_finish, Rule const* rule = 0)
         : text(text_start, text_finish),
         rules(rule ? 1 : 0, rule)
-      {}
+      {
+      assert(text_start != text_finish);
+      }
     
     std::string text;
     vector<node> next;
