@@ -243,11 +243,11 @@ private:
 
       // Look for the first difference between [start, finish) and
       // the node's text
-      std::string::const_iterator c = n->text.begin();
+      std::string::const_iterator c = n->text.begin(), e = n->text.end();
       ++c;
       ++start;
 
-      while (c != n->text.end())
+      while (c != e)
         {
         if (start == finish || *c != *start)
           {
