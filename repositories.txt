@@ -2117,6 +2117,10 @@ repository build
   {
     "/" : "jam/";
   }
+  branches
+  {
+    [:] "/branches/jam/4_0/" : "jam/4_0";
+  }
   tags
   {
     [:] "/tags/tools/jam/Boost_Jam_3_1_15/" : "jam/Boost_Jam_3_1_15";
