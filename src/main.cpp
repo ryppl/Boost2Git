@@ -63,6 +63,8 @@ int main(int argc, char **argv)
   int resume_from = 0;
   int max_rev = 0;
   bool dump_rules = false;
+  std::string match_path;
+  int match_rev = 0;
   try
     {
     namespace po = boost::program_options;
@@ -86,6 +88,8 @@ int main(int argc, char **argv)
       ("commit-interval", po::value(&options.commit_interval)->value_name("NUMBER")->default_value(10000), "if passed the cache will be flushed to git every NUMBER of commits")
       ("svn-branches", "Use the contents of SVN when creating branches, Note: SVN tags are branches as well")
       ("dump-rules", "Dump the contents of the rule trie and exit")
+      ("match-path", po::value(&match_path)->value_name("PATH"), "Path to match in a quick ruleset test")
+      ("match-rev", po::value(&match_rev)->value_name("REVISION"), "Optional revision to match in a quick ruleset test")
       ;
     po::variables_map variables;
     store(po::command_line_parser(argc, argv)
@@ -146,6 +150,13 @@ int main(int argc, char **argv)
       {
       std::cout << ruleset.matches();
       exit(0);
+      }
+
+    if (match_path.size() > 0)
+      {
+      Rule const* r = ruleset.matches().longest_match(match_path, match_rev);
+      std::cout <<  "The path " << (r ? "was" : "wasn't") << " matched" << std::endl;
+      exit(r ? 0 : 1);
       }
     
     QHash<QString, Repository*> repositories;
