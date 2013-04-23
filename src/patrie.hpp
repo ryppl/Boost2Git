@@ -119,12 +119,19 @@ private:
       boost::swap(n.next.back().next, save_next);
       boost::swap(n.next.back().rules, n.rules);
       
-      // add a new node with the unmatched search text and rule
-      n.next.push_back(node(start, finish, this->new_rule));
-
-      // make sure the two splits are properly sorted
-      if (n.next[0].text[0] > n.next[1].text[0])
-          boost::swap(n.next[0], n.next[1]);
+      if (start != finish)
+        {
+        // add a new node with the unmatched search text and rule
+        n.next.push_back(node(start, finish, this->new_rule));
+        
+        // make sure the two splits are properly sorted
+        if (n.next[0].text[0] > n.next[1].text[0])
+            boost::swap(n.next[0], n.next[1]);
+        }
+      else
+        {
+        this->full_match(n, start, finish);
+        }
       }
 
     // We matched all of node n
