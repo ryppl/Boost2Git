@@ -6,6 +6,17 @@
  *   http://www.boost.org/LICENSE_1_0.txt
  */
 
+// Contains regression/ which currently goes into the "boost" repo,
+// and jam/ and build/, which go into the "build" repo
+abstract repository tools_branches
+{
+  branches
+  {
+    [:] "/branches/tools/" : "tools";
+    [:] "/branches/release-tools/" : "release-tools";
+  }
+}
+
 abstract repository common_branches
 {
   branches
@@ -191,7 +202,6 @@ abstract repository common_branches
     [37305:     ] "/branches/QUICKBOOK_BACKEND/boost/" : "old-branches/QUICKBOOK_BACKEND";
     [38613:     ] "/branches/serialization_next_release/boost/" : "serialization_next_release";
     [39108:     ] "/sandbox-branches/birbacher/tmp_iostreams/" : "sandbox/birbacher/tmp_iostreams";
-    [     :     ] "/branches/release-tools/" : "release-tools";
     [39706:     ] "/branches/release/" : "release";
     [40545:     ] "/sandbox-branches/birbacher/fix_iostreams/" : "sandbox/birbacher/fix_iostreams";
     [41573:     ] "/branches/fix-links/" : "fix-links";
@@ -351,7 +361,6 @@ abstract repository common_branches
     [82734:     ] "/tags/release/Boost_1_53_0/" : "release/Boost_1_53_0";
 
     [     :     ] "/branches/c++0x/boost/" : "old-branches/c++0x";
-    [     :     ] "/branches/tools/" : "unknown/tools";
     [77006:     ] "/tags/geometry/boost_1_49_0/" : "geometry/boost_1_49_0";
     [     :     ] "/tags/jam/" : "unknown/jam";
     [70322:     ] "/sandbox-tags/geometry/boost-geometry-0.9.0/" : "sandbox/geometry/boost-geometry-0.9.0";
@@ -2062,17 +2071,17 @@ repository build : common_branches
   }
 }
 
-repository build
+// Match SVN tags and branches that contain jam/ and/or build/ directories at the top level
+repository build : tools_branches
 {
-  branches
+  content
   {
-    [:] "/branches/build/Milestone_12/" : "Milestone_12";
-    [:] "/branches/build/Milestone_12/boost/" : "Milestone_12";
-    [:] "/branches/build/Milestone_12/build/v2/" : "Milestone_12";
+    "jam/" : "jam";
+    "build/" : "build";
   }
   tags
   {
-    [:] "/tags/build-development-checkpoint-2/boost/build/" : "build-development-checkpoint-2";
+    [:] "/tags/build-development-checkpoint-2/boost/" : "build-development-checkpoint-2";
     [:] "/branches/tools/jam/" : "old-branches/jam";
   }
 }
@@ -2251,6 +2260,14 @@ repository boost : common_branches
   branches
   {
     [:] "/branches/boost/boost/" : "old-branches/oops";
+  }
+}
+
+repository boost : tools_branches
+{
+  content
+  {
+    "regression/" : "regression/";
   }
 }
 
