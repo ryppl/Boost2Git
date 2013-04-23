@@ -2256,4 +2256,6 @@ repository boost : common_branches
 
 // Local Variables:
 // mode: js
+// tab-width: 2
+// js-indent-level: 2
 // End:
