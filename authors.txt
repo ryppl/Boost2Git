@@ -270,6 +270,7 @@ murilov = Murilo Adriano Vasconcelos <muriloufg@gmail.com>
 nasonov = Alexander Nasonov <alexander.nasonov@gmail.com>
 nathanridge = Nathan Ridge <zeratul976@hotmail.com>
 nbecker = Neal D. Becker <ndbecker2@gmail.com>
+ned14 = Niall Douglas <s_sourceforge@nedprod.com>
 neilgroves = Neil Groves <neil@grovescomputing.com>
 nesotto = Thorsten Jørgen Ottosen <thorsten.ottosen@gmail.com>
 ngedmond = Nicholas Edmonds <ngedmond@cs.indiana.edu>
