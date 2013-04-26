@@ -81,6 +81,7 @@ int main(int argc, char **argv)
       ("ignore", po::value(&ignore_file)->value_name("FILENAME"), "file with revisions to ignore")
       ("rules", po::value(&rules_file)->value_name("FILENAME")->required(), "file with the conversion rules")
       ("dry-run", "Write no Git repositories")
+      ("coverage", "Dump an analysis of rule coverage")
       ("add-metadata", "if passed, each git commit will have svn commit info")
       ("add-metadata-notes", "if passed, each git commit will have notes with svn commit info")
       ("resume-from", po::value(&resume_from)->value_name("REVISION"), "start importing at svn revision number")
@@ -126,6 +127,7 @@ int main(int argc, char **argv)
     options.add_metadata = variables.count("add-metadata");
     options.add_metadata_notes = variables.count("add-metadata-notes");
     options.dry_run = variables.count("dry-run");
+    options.coverage = variables.count("coverage");
     options.debug_rules = variables.count("debug-rules");
     options.svn_branches = variables.count("svn-branches");
     notify(variables);

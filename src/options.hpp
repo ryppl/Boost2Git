@@ -24,6 +24,7 @@ struct Options
   bool add_metadata_notes;
   bool dry_run;
   bool debug_rules;
+  bool coverage;
   int commit_interval;
   bool svn_branches;
   };
