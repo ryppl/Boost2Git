@@ -7,6 +7,7 @@
 # include <string>
 # include <ostream>
 # include <climits>
+# include "AST.hpp"
 
 struct Rule
   {
@@ -14,9 +15,9 @@ struct Rule
       : min(0)
       , max(UINT_MAX)
       , is_fallback(false)
-      , repo_line(0)
-      , branch_line(0)
-      , content_line(0)
+      , repo_rule(0)
+      , branch_rule(0)
+      , content_rule(0)
     {
     }
 
@@ -39,9 +40,10 @@ struct Rule
   std::string prefix;
   bool is_fallback;
 
-  int repo_line;    ///< Line number of the repository
-  int branch_line;  ///< Line number of the branch or tag (might be in an inherited repo)
-  int content_line; ///< Line number of the content
+  // Constituent rules in the AST
+  boost2git::RepoRule const* repo_rule;
+  boost2git::BranchRule const* branch_rule;
+  boost2git::ContentRule const* content_rule;
 
   friend bool operator==(Rule const& lhs, Rule const& rhs)
     {
@@ -51,9 +53,9 @@ struct Rule
       && lhs.branch == rhs.branch
       && lhs.prefix == rhs.prefix
       && lhs.is_fallback == rhs.is_fallback
-      && lhs.repo_line == rhs.repo_line
-      && lhs.branch_line == rhs.branch_line
-      && lhs.content_line == rhs.content_line;
+      && lhs.repo_rule == rhs.repo_rule
+      && lhs.branch_rule == rhs.branch_rule
+      && lhs.content_rule == rhs.content_rule;
     }
   };
 

@@ -219,7 +219,7 @@ Ruleset::Ruleset(std::string const& filename)
 
     Match match;
     match.repository = repo_rule.name;
-    match.repo_line = repo_rule.line;
+    match.repo_rule = &repo_rule;
 
     typedef std::pair<std::vector<BranchRule>*, char const*> RulesAndPrefix;
     RulesAndPrefix const ref_rulesets[] =
@@ -241,7 +241,7 @@ Ruleset::Ruleset(std::string const& filename)
         repo.branches.insert(ref_name);
 
         match.branch = ref_name;
-        match.branch_line = branch_rule.line;
+        match.branch_rule = &branch_rule;
         match.min = std::max(branch_rule.min, repo_rule.minrev);
         match.max = std::min(branch_rule.max, repo_rule.maxrev);
         if (match.min > match.max)
@@ -262,7 +262,7 @@ Ruleset::Ruleset(std::string const& filename)
           match.match = path_append(branch_rule.prefix, content.prefix);
           match.prefix = content.replace;
           match.is_fallback = content.is_fallback;
-          match.content_line = content.line;
+          match.content_rule = &content;
           matches_.insert(match);
           }
         }
