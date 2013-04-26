@@ -55,6 +55,21 @@ add_custom_target(conversion
     "${git_repository}"
   )
 
+# perform conversion
+add_custom_target(analysis
+  COMMAND
+    $<TARGET_FILE:svn2git>
+    --dry-run
+    --authors "${authors}"
+    --ignore  "${ignore_rev}"
+    --rules   "${repositories}"
+    --svnrepo "${svn_repository}"
+  COMMENT
+    "Performing analysis."
+  WORKING_DIRECTORY
+    "${git_repository}"
+  )
+
 find_package(Git REQUIRED)
 
 # push all repositories
