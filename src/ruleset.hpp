@@ -24,6 +24,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include "patrie.hpp"
 #include "rule.hpp"
+#include "AST.hpp"
 
 inline std::string qualify_ref(std::string ref_name, char const* prefix)
   {
@@ -59,9 +60,14 @@ class Ruleset
       {
       return repositories_;
       }
+    boost2git::AST const& getAST() const
+      {
+      return ast_;
+      }
   private:
     patrie matches_;
     std::vector<Repository> repositories_;
+    boost2git::AST ast_;
   };
 
 #endif /* RULESET_HPP */

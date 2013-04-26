@@ -20,7 +20,6 @@
 #include <string>
 #include <vector>
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost/fusion/adapted/struct/define_struct.hpp>
 #include <boost/spirit/home/qi.hpp>
 
 #include <fstream>
@@ -54,33 +53,6 @@ static void get_line(int& line, PosIterator const& iterator)
 
 using namespace boost2git;
 using boost::spirit::make_default_multi_pass;
-
-BOOST_FUSION_DEFINE_STRUCT((boost2git), ContentRule,
-  (std::string, prefix)
-  (bool, is_fallback)
-  (std::string, replace)
-  (int, line)
-  )
-
-BOOST_FUSION_DEFINE_STRUCT((boost2git), BranchRule,
-  (std::size_t, min)
-  (std::size_t, max)
-  (std::string, prefix)
-  (std::string, name)
-  (int, line)
-  )
-
-BOOST_FUSION_DEFINE_STRUCT((boost2git), RepoRule,
-  (bool, abstract)
-  (int, line)
-  (std::string, name)
-  (std::string, parent)
-  (std::size_t, minrev)
-  (std::size_t, maxrev)
-  (std::vector<ContentRule>, content)
-  (std::vector<BranchRule>, branch_rules)
-  (std::vector<BranchRule>, tag_rules)
-  )
 
 template<typename Iterator, typename Skipper>
 struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
@@ -147,13 +119,13 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
   qi::rule<Iterator, int(), Skipper> line_number_;
   };
 
-static void inherit(RepoRule& repo_rule, std::vector<RepoRule> const& result)
+static void inherit(RepoRule& repo_rule, AST const& ast)
   {
   if (repo_rule.parent.empty() || repo_rule.parent == repo_rule.name)
     {
     return;
     }
-  BOOST_FOREACH(const RepoRule& other, result)
+  BOOST_FOREACH(const RepoRule& other, ast)
     {
     if (other.name == repo_rule.parent)
       {
@@ -216,11 +188,10 @@ Ruleset::Ruleset(std::string const& filename)
     | boost::spirit::repository::confix("/*", "*/")[*(qi::char_ - "*/")]
     | boost::spirit::repository::confix("//", qi::eol)[*(qi::char_ - qi::eol)]
     );
-  std::vector<RepoRule> result;
   RepositoryGrammar<PosIterator, BOOST_TYPEOF(comment)> grammar;
   try
     {
-    qi::phrase_parse(begin, end, qi::eps > +grammar, comment, result);
+    qi::phrase_parse(begin, end, qi::eps > +grammar, comment, ast_);
     }
   catch (const qi::expectation_failure<PosIterator>& error)
     {
@@ -235,9 +206,9 @@ Ruleset::Ruleset(std::string const& filename)
       ;
     throw std::runtime_error(msg.str());
     }
-  BOOST_FOREACH(RepoRule& repo_rule, result)
+  BOOST_FOREACH(RepoRule& repo_rule, ast_)
     {
-    inherit(repo_rule, result);
+    inherit(repo_rule, ast_);
     if (repo_rule.abstract)
       {
       continue;
