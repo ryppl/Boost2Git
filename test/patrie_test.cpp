@@ -9,6 +9,7 @@
 
 int main()
   {
+      /*
   Rule rules[5];
   rules[0].match = "abrasives";
   rules[0].min = 1; rules[0].max = 3;
@@ -50,5 +51,5 @@ int main()
   assert(*p.longest_match(test, test+sizeof(test)-1, 2) == rules[2]);
   assert(p.longest_match(test, test+sizeof(test)-1, 5) == 0);
   }
-
+      */
   };

@@ -19,7 +19,6 @@
 
 #include <string>
 #include <vector>
-#include <boost/algorithm/string/predicate.hpp>
 #include <boost/spirit/home/qi.hpp>
 
 #include <fstream>
@@ -31,6 +30,8 @@
 #include <boost/spirit/repository/include/qi_confix.hpp>
 #include <boost/spirit/repository/include/qi_iter_pos.hpp>
 #include <boost/spirit/home/phoenix/bind/bind_function.hpp>
+#include <boost/fusion/include/make_vector.hpp>
+
 
 namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
@@ -142,34 +143,38 @@ static void inherit(RepoRule& repo_rule, AST const& ast)
     }
   }
 
-static std::string path_append(std::string path, std::string const& append)
-  {
-  if (boost::ends_with(path, "/"))
-    {
-    if (boost::starts_with(append, "/"))
-      {
-      path.resize(path.size() - 1);
-      }
-    }
-  else
-    {
-    if (!boost::starts_with(append, "/"))
-      {
-      path += '/';
-      }
-    }
-  return path + append;
-  }
+boost2git::RepoRule fallback_repo(
+  boost::fusion::make_vector(
+  false, /* bool abstract */
+  0, /* int line */
+  "svn2git-fallback", /* std::string name */
+  "", /* std::string parent */
+  0, /* std::size_t minrev */
+  UINT_MAX, /* std::size_t maxrev */
+  0, // std::vector<boost2git::ContentRule>(), /* std::vector<boost2git::ContentRule> content */
+  0, // std::vector<boost2git::BranchRule>(), /* std::vector<boost2git::BranchRule> branch_rules */
+  0 // std::vector<boost2git::BranchRule>() /* std::vector<boost2git::BranchRule> tag_rules */
+    ));
 
-Ruleset::Match Ruleset::fallback(
-  0,
-  UINT_MAX,
-  "/",
-  "svn2git-fallback",
-  "refs/heads/master",
-  "",
-  true
-  );
+boost2git::BranchRule fallback_branch(
+  boost::fusion::make_vector(
+      0, /* std::size_t min */
+      std::size_t(-1), /* std::size_t max */
+      "", /* std::string prefix */
+      "master", /* std::string name */
+      0 /* int line */
+    ));
+
+boost2git::ContentRule fallback_content(
+  boost::fusion::make_vector(
+      "", /* std::string prefix */
+      true, /* bool is_fallback */
+      "", /* std::string replace */
+      0 /* int line */
+    ));
+
+Ruleset::Match const Ruleset::fallback(
+    &fallback_repo, &fallback_branch, &fallback_content, "refs/heads/");
 
 Ruleset::Ruleset(std::string const& filename)
   {
@@ -217,15 +222,11 @@ Ruleset::Ruleset(std::string const& filename)
     Repository repo;
     repo.name = repo_rule.name;
 
-    Match match;
-    match.repository = repo_rule.name;
-    match.repo_rule = &repo_rule;
-
     typedef std::pair<std::vector<BranchRule>*, char const*> RulesAndPrefix;
     RulesAndPrefix const ref_rulesets[] =
       {
-      std::make_pair(&repo_rule.branch_rules, "heads"),
-      std::make_pair(&repo_rule.tag_rules, "tags")
+      std::make_pair(&repo_rule.branch_rules, "refs/heads/"),
+      std::make_pair(&repo_rule.tag_rules, "refs/tags/")
       };
       
     BOOST_FOREACH(RulesAndPrefix const& rules_and_prefix, ref_rulesets)
@@ -240,37 +241,32 @@ Ruleset::Ruleset(std::string const& filename)
         std::string const& ref_name = qualify_ref(branch_rule.name, rules_and_prefix.second);
         repo.branches.insert(ref_name);
 
-        match.branch = ref_name;
-        match.branch_rule = &branch_rule;
-        match.min = std::max(branch_rule.min, repo_rule.minrev);
-        match.max = std::min(branch_rule.max, repo_rule.maxrev);
-        if (match.min > match.max)
+        std::size_t minrev = std::max(branch_rule.min, repo_rule.minrev);
+        std::size_t maxrev = std::min(branch_rule.max, repo_rule.maxrev);
+        if (minrev > maxrev)
           {
           continue;
           }
 
-        if (repo_rule.content.empty())
+        if (repo_rule.content_rules.empty())
           {
-          match.match = branch_rule.prefix;
-          match.prefix.clear();
-          match.is_fallback = false;
-          matches_.insert(match);
-          continue;
+          matches_.insert(Match(&repo_rule, &branch_rule, 0, rules_and_prefix.second));
           }
-        BOOST_FOREACH(ContentRule const& content, repo_rule.content)
+        else
           {
-          match.match = path_append(branch_rule.prefix, content.prefix);
-          match.prefix = content.replace;
-          match.is_fallback = content.is_fallback;
-          match.content_rule = &content;
-          matches_.insert(match);
+          BOOST_FOREACH(ContentRule const& content_rule, repo_rule.content_rules)
+            {
+            matches_.insert(
+                Match(&repo_rule, &branch_rule, &content_rule, rules_and_prefix.second
+                  ));
+            }
           }
         }
       }
     repositories_.push_back(repo);
     }
   Repository repo;
-  repo.name = fallback.repository;
-  repo.branches.insert(fallback.branch);
+  repo.name = fallback.repo_rule->name;
+  repo.branches.insert(fallback.branch_rule->name);
   repositories_.push_back(repo);
   }

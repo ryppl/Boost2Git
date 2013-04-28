@@ -30,7 +30,7 @@ BOOST_FUSION_DEFINE_STRUCT((boost2git), RepoRule,
   (std::string, parent)
   (std::size_t, minrev)
   (std::size_t, maxrev)
-  (std::vector<boost2git::ContentRule>, content)
+  (std::vector<boost2git::ContentRule>, content_rules)
   (std::vector<boost2git::BranchRule>, branch_rules)
   (std::vector<boost2git::BranchRule>, tag_rules)
   )

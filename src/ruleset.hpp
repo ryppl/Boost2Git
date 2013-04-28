@@ -48,7 +48,7 @@ class Ruleset
       std::string name;
       std::set<std::string> branches;
       };
-    static Match fallback;
+    static Match const fallback;
   public:
     Ruleset(std::string const& filename);
   public:

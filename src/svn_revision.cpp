@@ -104,22 +104,23 @@ void splitPathName(
     QString *branch_p,
     QString *path_p)
   {
+  std::string svn_path = rule.svn_path();
   if (svnprefix_p)
     {
-    *svnprefix_p = QString::fromStdString(rule.match);
+    *svnprefix_p = QString::fromStdString(svn_path);
     }
   if (repository_p)
     {
-    *repository_p = QString::fromStdString(rule.repository);
+    *repository_p = QString::fromStdString(rule.repo_rule->name);
     }
   if (branch_p)
     {
-    *branch_p = QString::fromStdString(rule.branch);
+    *branch_p = QString::fromStdString(rule.git_ref_prefix + rule.branch_rule->name);
     }
   if (path_p)
     {
     std::string current = pathName.toStdString();
-    std::string path = rule.prefix + current.substr(rule.match.length());
+    std::string path = rule.prefix() + current.substr(svn_path.length());
     *path_p = QString::fromStdString(path);
     }
   }
@@ -513,7 +514,7 @@ int SvnRevision::exportEntry(
   if (match)
     {
     const Ruleset::Match &rule = *match;
-    if (is_dir && rule.is_fallback)
+    if (is_dir && rule.is_fallback())
       {
       if (recurse(key, change, path_from, matchRules, rev_from, changes) == EXIT_FAILURE)
         {
@@ -595,7 +596,7 @@ int SvnRevision::exportDispatch(
     << ' '
     << qPrintable(current)
     << " matched rule: '"
-    << rule.match
+    << rule.svn_path()
     ;
 
   if (change->change_kind == svn_fs_path_change_delete
@@ -609,11 +610,11 @@ int SvnRevision::exportDispatch(
     {
     Log::trace()
       << "'; exporting to repository "
-      << rule.repository
+      << rule.repo_rule->name
       << " branch "
-      << rule.branch
+      << rule.branch_rule->name
       << " path "
-      << rule.prefix
+      << rule.prefix()
       << std::endl
       ;
     }
@@ -630,7 +631,7 @@ int SvnRevision::exportDispatch(
       << ' '
       << qPrintable(current)
       << " matched rule: '"
-      << rule.match
+      << rule.svn_path()
       << "'; Unable to export non path removal."
       << std::endl
       ;
@@ -666,7 +667,7 @@ int SvnRevision::exportInternal(
     {
     if (change->change_kind != svn_fs_path_change_delete)
       {
-      throw std::runtime_error("Rule " + rule.match + " references unknown repository " + repository.toStdString());
+      throw std::runtime_error("Rule " + rule.svn_path() + " references unknown repository " + repository.toStdString());
       }
     return EXIT_FAILURE;
     }

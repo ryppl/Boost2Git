@@ -8,54 +8,73 @@
 # include <ostream>
 # include <climits>
 # include "AST.hpp"
+#include <boost/algorithm/string/predicate.hpp>
+
+inline std::string path_append(std::string path, std::string const& append)
+  {
+  if (boost::ends_with(path, "/"))
+    {
+    if (boost::starts_with(append, "/"))
+      {
+      path.resize(path.size() - 1);
+      }
+    }
+  else
+    {
+    if (!boost::starts_with(append, "/"))
+      {
+      path += '/';
+      }
+    }
+  return path + append;
+  }
 
 struct Rule
   {
-  Rule()
-      : min(0)
-      , max(UINT_MAX)
-      , is_fallback(false)
-      , repo_rule(0)
-      , branch_rule(0)
-      , content_rule(0)
-    {
-    }
-
   Rule(
-      std::size_t min, std::size_t max,
-      std::string match,
-      std::string repository,
-      std::string branch,
-      std::string prefix,
-      bool is_fallback)
-      : min(min), max(max),
-      match(match), repository(repository), branch(branch),
-      prefix(prefix), is_fallback(is_fallback)
+      boost2git::RepoRule const* repo_rule,
+      boost2git::BranchRule const* branch_rule,
+      boost2git::ContentRule const* content_rule,
+      char const* git_ref_prefix
+    )
+      : repo_rule(repo_rule),
+      branch_rule(branch_rule),
+      content_rule(content_rule),
+      git_ref_prefix(git_ref_prefix),
+      min(std::max(branch_rule->min, repo_rule->minrev)),
+      max(std::min(branch_rule->max, repo_rule->maxrev))
     {}
 
-  std::size_t min, max;
-  std::string match;
-  std::string repository;
-  std::string branch;
-  std::string prefix;
-  bool is_fallback;
-
   // Constituent rules in the AST
-  boost2git::RepoRule const* repo_rule;
-  boost2git::BranchRule const* branch_rule;
-  boost2git::ContentRule const* content_rule;
+  boost2git::RepoRule const* repo_rule;       // never 0
+  boost2git::BranchRule const* branch_rule;   // never 0
+  boost2git::ContentRule const* content_rule; // can be 0
+  char const* git_ref_prefix;                 // "heads" or "tags"
+  
+  std::size_t min, max;
 
   friend bool operator==(Rule const& lhs, Rule const& rhs)
     {
-    return lhs.min == rhs.min
-      && lhs.max == rhs.max
-      && lhs.repository == rhs.repository
-      && lhs.branch == rhs.branch
-      && lhs.prefix == rhs.prefix
-      && lhs.is_fallback == rhs.is_fallback
-      && lhs.repo_rule == rhs.repo_rule
+    return lhs.repo_rule == rhs.repo_rule
       && lhs.branch_rule == rhs.branch_rule
-      && lhs.content_rule == rhs.content_rule;
+      && lhs.content_rule == rhs.content_rule
+      && lhs.min == rhs.min
+      && lhs.max == rhs.max;
+    }
+
+  std::string svn_path() const
+    {
+    return content_rule
+      ? path_append(branch_rule->prefix, content_rule->prefix)
+      : branch_rule->prefix;
+    }
+  std::string prefix() const
+    {
+    return content_rule ? content_rule->replace : std::string();
+    }
+  bool is_fallback() const
+    {
+    return content_rule != 0 && content_rule->is_fallback;
     }
   };
 
@@ -70,7 +89,7 @@ inline std::ostream& operator<<(std::ostream& os, Rule const& r)
         os << r.max;
     os << "] ";
     }
-  os << r.repository << ".git:<" << r.branch << ">:/" << r.prefix;
+  os << r.repo_rule->name << ".git:<" << r.branch_rule->name << ">:/" << r.prefix();
   return os;
   }
 

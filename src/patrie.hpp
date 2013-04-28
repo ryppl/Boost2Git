@@ -5,6 +5,8 @@
 # define TRIE_MAP_DWA201332_HPP
 
 # include "rule.hpp"
+# include "to_string.hpp"
+# include "options.hpp"
 # include <deque>
 # include <boost/variant.hpp>
 //# include <boost/container/vector.hpp>
@@ -26,7 +28,8 @@ public:
     {
     rules.push_back(rule);
     insert_visitor v(&rules.back());
-    this->traverse(rule.match.begin(), rule.match.end(), v);
+    std::string svn_path = rule.svn_path();
+    this->traverse(svn_path.begin(), svn_path.end(), v);
     }
 
   template <class Range>
@@ -147,7 +150,7 @@ private:
 
       if (!(p == n.rules.end() || (*p)->min > new_rule->max))
         {
-        throw std::runtime_error("found duplicate rule: " + new_rule->match
+        throw std::runtime_error("found duplicate rule: " + new_rule->svn_path()
           + "\n"
           + options.rules_file + ":" + to_string(new_rule->branch_rule->line)
           + ": error: duplicate rule branch fragment\n"
