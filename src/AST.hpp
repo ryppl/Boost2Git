@@ -5,6 +5,8 @@
 # define AST_DWA2013425_HPP
 
 #include <boost/fusion/adapted/struct/define_struct.hpp>
+#include <vector>
+#include <string>
 
 BOOST_FUSION_DEFINE_STRUCT((boost2git), ContentRule,
   (std::string, prefix)
