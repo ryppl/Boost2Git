@@ -27,6 +27,7 @@ struct Options
   bool coverage;
   int commit_interval;
   bool svn_branches;
+  std::string rules_file;
   };
 
 extern Options options;

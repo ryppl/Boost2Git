@@ -58,7 +58,6 @@ int main(int argc, char **argv)
   bool exit_success = false;
   std::string authors_file;
   std::string ignore_file;
-  std::string rules_file;
   std::string svn_path;
   int resume_from = 0;
   int max_rev = 0;
@@ -79,7 +78,7 @@ int main(int argc, char **argv)
       ("authors", po::value(&authors_file)->value_name("FILENAME"), "map between svn username and email")
       ("svnrepo", po::value(&svn_path)->value_name("PATH")->required(), "path to svn repository")
       ("ignore", po::value(&ignore_file)->value_name("FILENAME"), "file with revisions to ignore")
-      ("rules", po::value(&rules_file)->value_name("FILENAME")->required(), "file with the conversion rules")
+      ("rules", po::value(&options.rules_file)->value_name("FILENAME")->required(), "file with the conversion rules")
       ("dry-run", "Write no Git repositories")
       ("coverage", "Dump an analysis of rule coverage")
       ("add-metadata", "if passed, each git commit will have svn commit info")
@@ -146,7 +145,7 @@ int main(int argc, char **argv)
     Authors authors(authors_file);
 
     // Load the configuration
-    Ruleset ruleset(rules_file);
+    Ruleset ruleset(options.rules_file);
     std::set<int> ignore_revisions = load_ignore(ignore_file);
 
     if (dump_rules)
