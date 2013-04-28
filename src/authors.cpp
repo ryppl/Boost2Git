@@ -16,6 +16,7 @@
  */
 
 #include "authors.hpp"
+#include "to_string.hpp"
 #include <boost/regex.hpp>
 #include <fstream>
 
@@ -26,9 +27,11 @@ Authors::Authors(std::string const& filename)
   std::string line;
   boost::smatch match;
   std::ifstream file(filename.c_str());
+  unsigned line_number = 0;
   while (file)
     {
     std::getline(file, line);
+    ++line_number;
     if (line.empty() || line[0] == '#')
       {
       continue;
@@ -39,7 +42,10 @@ Authors::Authors(std::string const& filename)
       }
     else
       {
-      throw std::runtime_error("error in authors file: " + line);
+      throw std::runtime_error(
+          "\n" + filename + ":"
+          + to_string(line_number)
+          + ": error: invalid author mapping");
       }
     }
   }
