@@ -126,8 +126,7 @@ class LoggingQProcess: public QProcess
   private:
     void report_error(char const* const msg) const
       {
-      throw std::runtime_error(
-          (std::string(id.toUtf8().constData()) + ": " + msg).c_str());
+      throw std::runtime_error( std::string(id.toUtf8().constData()) + ": " + msg );
       }
   private:
     QString id;
