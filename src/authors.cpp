@@ -60,7 +60,7 @@ std::string const& Authors::operator[](std::string const& svnuser) const
   map_t::const_iterator it = map.find(svnuser);
   if (it == map.end())
     {
-    throw std::runtime_error("no user mapping for '" + svnuser + "'");
+    throw std::runtime_error("no user mapping for SVN user: '" + svnuser + "'");
     }
   return it->second;
   }
