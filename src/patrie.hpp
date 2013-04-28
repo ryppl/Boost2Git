@@ -147,7 +147,19 @@ private:
 
       if (!(p == n.rules.end() || (*p)->min > new_rule->max))
         {
-        throw std::runtime_error("found duplicate rule: " + new_rule->match);
+        throw std::runtime_error("found duplicate rule: " + new_rule->match
+          + "\n"
+          + options.rules_file + ":" + to_string(new_rule->branch_rule->line)
+          + ": error: duplicate rule branch fragment\n"
+          
+          + options.rules_file + ":" + to_string(new_rule->content_rule->line)
+          + ": error: duplicate rule content fragment\nerror: see earlier definition:\n"
+          
+          + options.rules_file + ":" + to_string((*p)->branch_rule->line)
+          + ": error: previous branch fragment\n"
+          
+          + options.rules_file + ":" + to_string((*p)->content_rule->line)
+          + ": error: previous content fragment");
         }
       n.rules.insert(p, this->new_rule);
       }
