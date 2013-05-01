@@ -248,6 +248,7 @@ retry:
         break;
         }
       }
+    coverage::report();
     foreach(Repository *repo, repositories)
       {
       repo->finalizeTags();

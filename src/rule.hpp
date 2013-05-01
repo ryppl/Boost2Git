@@ -49,7 +49,7 @@ struct Rule
   boost2git::RepoRule const* repo_rule;       // never 0
   boost2git::BranchRule const* branch_rule;   // never 0
   boost2git::ContentRule const* content_rule; // can be 0
-  char const* git_ref_prefix;                 // "heads" or "tags"
+  char const* git_ref_prefix;                 // "refs/heads/" or "refs/tags/"
   
   std::size_t min, max;
 

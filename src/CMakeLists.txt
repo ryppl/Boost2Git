@@ -27,6 +27,7 @@ add_definitions(
 
 set(svn2git_SOURCES
   authors.cpp
+  coverage.cpp
   log.cpp
   repository.cpp
   ruleset.cpp

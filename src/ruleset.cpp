@@ -16,6 +16,7 @@
  */
 
 #include "ruleset.hpp"
+#include "to_string.hpp"
 
 #include <string>
 #include <vector>
@@ -64,7 +65,7 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
      %= (qi::matches["abstract"] >> "repository")
       > line_number_
       > string_
-      > -(':' > string_) // TODO: make sure abstract parent exists and copy branches!
+      > -(':' > +string_)
       > '{'
       > (("minrev" > qi::uint_ > ';') | qi::attr(0))
       > (("maxrev" > qi::uint_ > ';') | qi::attr(UINT_MAX))
@@ -120,40 +121,17 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
   qi::rule<Iterator, int(), Skipper> line_number_;
   };
 
-static void inherit(RepoRule& repo_rule, AST const& ast)
-  {
-  if (repo_rule.parent.empty() || repo_rule.parent == repo_rule.name)
-    {
-    return;
-    }
-  BOOST_FOREACH(const RepoRule& other, ast)
-    {
-    if (other.name == repo_rule.parent)
-      {
-      repo_rule.branch_rules.insert(
-          repo_rule.branch_rules.end(),
-          other.branch_rules.begin(),
-          other.branch_rules.end());
-      repo_rule.tag_rules.insert(
-          repo_rule.tag_rules.end(),
-          other.tag_rules.begin(),
-          other.tag_rules.end());
-      return;
-      }
-    }
-  }
-
 boost2git::RepoRule fallback_repo(
   boost::fusion::make_vector(
   false, /* bool abstract */
   0, /* int line */
   "svn2git-fallback", /* std::string name */
-  "", /* std::string parent */
+  0, /* std::vector<std::string> bases */
   0, /* std::size_t minrev */
   UINT_MAX, /* std::size_t maxrev */
-  0, // std::vector<boost2git::ContentRule>(), /* std::vector<boost2git::ContentRule> content */
-  0, // std::vector<boost2git::BranchRule>(), /* std::vector<boost2git::BranchRule> branch_rules */
-  0 // std::vector<boost2git::BranchRule>() /* std::vector<boost2git::BranchRule> tag_rules */
+  0, /* std::vector<boost2git::ContentRule> content */
+  0, /* std::vector<boost2git::BranchRule> branch_rules */
+  0 /* std::vector<boost2git::BranchRule> tag_rules */
     ));
 
 boost2git::BranchRule fallback_branch(
@@ -176,6 +154,46 @@ boost2git::ContentRule fallback_content(
 Ruleset::Match const Ruleset::fallback(
     &fallback_repo, &fallback_branch, &fallback_content, "refs/heads/");
 
+template <class Seq1, class Seq2>
+void append_addresses(Seq1& target, Seq2 const& source)
+  {
+  BOOST_FOREACH(typename Seq2::const_reference x, source)
+    target.push_back(&x);
+  }
+          
+static void
+collect_rule_components(
+    AST const& ast,
+    boost2git::RepoRule const& repo_rule,
+    std::vector<boost2git::BranchRule const*>& branches,
+    std::vector<boost2git::BranchRule const*>& tags,
+    std::vector<boost2git::ContentRule const*>& content)
+  {
+  boost2git::RepoRule search_target;
+
+  BOOST_FOREACH(std::string const& base_name, repo_rule.bases)
+    {
+    search_target.name = base_name;
+    std::pair<AST::iterator,AST::iterator> base_range = ast.equal_range(search_target);
+
+    if (base_range.first == base_range.second)
+      {
+      throw std::runtime_error(
+         options.rules_file + ":" + to_string(repo_rule.line) + ": error: " +
+         "base repository rule '" + base_name+ "' not found");
+      }
+    
+    for (AST::iterator p = base_range.first; p != base_range.second; ++p)
+      {
+      collect_rule_components(ast, *p, branches, tags, content);
+      }
+    }
+
+  append_addresses(branches, repo_rule.branch_rules);
+  append_addresses(tags, repo_rule.tag_rules);
+  append_addresses(content, repo_rule.content_rules);
+  }
+    
 Ruleset::Ruleset(std::string const& filename)
   {
   std::ifstream file(filename.c_str());
@@ -211,38 +229,42 @@ Ruleset::Ruleset(std::string const& filename)
       ;
     throw std::runtime_error(msg.str());
     }
-  BOOST_FOREACH(RepoRule& repo_rule, ast_)
-    {
-    inherit(repo_rule, ast_);
+  BOOST_FOREACH(RepoRule const& repo_rule, ast_)
+    {  
     if (repo_rule.abstract)
       {
       continue;
       }
 
+    std::vector<BranchRule const*> branches;
+    std::vector<BranchRule const*> tags;
+    std::vector<ContentRule const*> content;
+    collect_rule_components(ast_, repo_rule, branches, tags, content);
+    
     Repository repo;
     repo.name = repo_rule.name;
 
-    typedef std::pair<std::vector<BranchRule>*, char const*> RulesAndPrefix;
+    typedef std::pair<std::vector<BranchRule const*> const*, char const*> RulesAndPrefix;
     RulesAndPrefix const ref_rulesets[] =
       {
-      std::make_pair(&repo_rule.branch_rules, "refs/heads/"),
-      std::make_pair(&repo_rule.tag_rules, "refs/tags/")
+      std::make_pair(&branches, "refs/heads/"),
+      std::make_pair(&tags, "refs/tags/")
       };
       
     BOOST_FOREACH(RulesAndPrefix const& rules_and_prefix, ref_rulesets)
       {
-      BOOST_FOREACH(BranchRule const& branch_rule, *rules_and_prefix.first)
+      BOOST_FOREACH(BranchRule const* branch_rule, *rules_and_prefix.first)
         {
-        if (branch_rule.max < repo_rule.minrev)
+        if (branch_rule->max < repo_rule.minrev)
           {
           continue;
           }
       
-        std::string const& ref_name = qualify_ref(branch_rule.name, rules_and_prefix.second);
+        std::string const& ref_name = qualify_ref(branch_rule->name, rules_and_prefix.second);
         repo.branches.insert(ref_name);
 
-        std::size_t minrev = std::max(branch_rule.min, repo_rule.minrev);
-        std::size_t maxrev = std::min(branch_rule.max, repo_rule.maxrev);
+        std::size_t minrev = std::max(branch_rule->min, repo_rule.minrev);
+        std::size_t maxrev = std::min(branch_rule->max, repo_rule.maxrev);
         if (minrev > maxrev)
           {
           continue;
@@ -250,14 +272,14 @@ Ruleset::Ruleset(std::string const& filename)
 
         if (repo_rule.content_rules.empty())
           {
-          matches_.insert(Match(&repo_rule, &branch_rule, 0, rules_and_prefix.second));
+          matches_.insert(Match(&repo_rule, branch_rule, 0, rules_and_prefix.second));
           }
         else
           {
-          BOOST_FOREACH(ContentRule const& content_rule, repo_rule.content_rules)
+          BOOST_FOREACH(ContentRule const* content_rule, content)
             {
             matches_.insert(
-                Match(&repo_rule, &branch_rule, &content_rule, rules_and_prefix.second
+                Match(&repo_rule, branch_rule, content_rule, rules_and_prefix.second
                   ));
             }
           }

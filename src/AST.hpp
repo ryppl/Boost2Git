@@ -7,6 +7,7 @@
 #include <boost/fusion/adapted/struct/define_struct.hpp>
 #include <vector>
 #include <string>
+#include <set>
 
 BOOST_FUSION_DEFINE_STRUCT((boost2git), ContentRule,
   (std::string, prefix)
@@ -27,7 +28,7 @@ BOOST_FUSION_DEFINE_STRUCT((boost2git), RepoRule,
   (bool, abstract)
   (int, line)
   (std::string, name)
-  (std::string, parent)
+  (std::vector<std::string>, bases)
   (std::size_t, minrev)
   (std::size_t, maxrev)
   (std::vector<boost2git::ContentRule>, content_rules)
@@ -37,7 +38,16 @@ BOOST_FUSION_DEFINE_STRUCT((boost2git), RepoRule,
 
 namespace boost2git
 {
-typedef std::vector<RepoRule> AST;
+
+struct RepoRuleByName
+  {
+  bool operator()(RepoRule const& lhs, RepoRule const& rhs) const
+    {
+    return lhs.name < rhs.name;
+    }
+  };
+
+typedef std::multiset<RepoRule, RepoRuleByName> AST;
 }
 
 #endif // AST_DWA2013425_HPP

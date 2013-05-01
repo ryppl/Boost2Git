@@ -60,6 +60,7 @@ add_custom_target(analysis
   COMMAND
     $<TARGET_FILE:svn2git>
     --dry-run
+    --coverage
     --authors "${authors}"
     --ignore  "${ignore_rev}"
     --rules   "${repositories}"

@@ -7,6 +7,7 @@
 # include "rule.hpp"
 # include "to_string.hpp"
 # include "options.hpp"
+# include "coverage.hpp"
 # include <deque>
 # include <boost/variant.hpp>
 //# include <boost/container/vector.hpp>
@@ -27,6 +28,8 @@ public:
   void insert(Rule const& rule)
     {
     rules.push_back(rule);
+    if (options.coverage)
+        coverage::declare(rules.back());
     insert_visitor v(&rules.back());
     std::string svn_path = rule.svn_path();
     this->traverse(svn_path.begin(), svn_path.end(), v);
@@ -43,6 +46,8 @@ public:
     {
     search_visitor v(revision);
     this->traverse(start, finish, v);
+    if (v.found_rule && options.coverage)
+        coverage::match(*v.found_rule, revision);
     return v.found_rule;
     }
   
