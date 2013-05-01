@@ -22,38 +22,30 @@ abstract repository common_branches
   branches
   {
     [     :38326] "/trunk/boost/" : "master";
-    [38327:     ] "/devel/" : "master";
     [38329:     ] "/trunk/" : "master";
 
     [     :     ] "/sandbox-branches/geometry/index_dev/" : "sandbox/geometry/index_dev";
     [     :     ] "/sandbox-branches/geometry/index_dyn/" : "sandbox/geometry/index_dyn";
-    [     :     ] "/branches/maintenance/1_52_0/" : "maintenance/1_52_0";
     [     :     ] "/sandbox-branches/geometry/index_080/" : "sandbox/geometry/index_080";
     [77091:     ] "/sandbox-branches/optional_optimization/" : "sandbox/optional_optimization";
     [79440:     ] "/branches/maintenance/1_50_0/" : "maintenance/1_50_0";
     [77438:     ] "/sandbox-branches/birbacher/propertymap-functormap/" : "sandbox/birbacher/propertymap-functormap";
-    [     :     ] "/branches/maintenance/1_51_0/" : "maintenance/1_51_0";
     [     :     ] "/sandbox-branches/geometry/index_080_new/" : "sandbox/geometry/index_080_new";
     [     :     ] "/sandbox-branches/geometry/index_080_nhch/" : "sandbox/geometry/index_080_nhch";
     [77158:     ] "/branches/spirit_3x/" : "spirit_3x";
     [     :     ] "/sandbox-branches/geometry/index_080_vis/" : "sandbox/geometry/index_080_vis";
-    [     :     ] "/sandbox-branc/geometry/index_080_new/" : "sandbox/geometry/index_080_new_mistyped";
     [71680:     ] "/branches/msm/msm_phoenix/" : "msm/msm_phoenix";
     [69829:     ] "/branches/msm/v2_30/" : "msm/v2_30";
     [ 2957:     ] "/sandbox-branches/math_toolkit/" : "sandbox/math_toolkit";
     [ 2110:     ] "/sandbox-branches/expaler/" : "sandbox/expaler";
     [ 2221:     ] "/sandbox-branches/cppljevans/" : "sandbox/cppljevans";
     [ 3783:     ] "/sandbox-branches/steven_watanabe/" : "sandbox/steven_watanabe";
-    [  524:     ] "/sandbox-branches/avendor/" : "sandbox/avendor";
-    [ 1773:     ] "/sandbox-branches/rhdunn/" : "sandbox/rhdunn";
     [ 7620:     ] "/branches/unlabeled-1.1.1/boost/" : "old-branches/unlabeled-1.1.1";
     [ 7633:     ] "/branches/iterator-adaptors/boost/" : "old-branches/iterator-adaptors";
     [     :     ] "/branches/iterator_build/boost/" : "old-branches/iterator_build";
     [ 7663:     ] "/branches/conversion/boost/" : "old-branches/conversion";
     [ 7698:     ] "/branches/boost-graph-library/boost/" : "old-branches/boost-graph-library";
     [ 7754:     ] "/branches/regex-sub/boost/" : "old-branches/regex-sub";
-    [ 8230:     ] "/branches/data_driven/boost/" : "old-branches/data_driven";
-    [ 8304:     ] "/branches/error_handling/boost/" : "old-branches/error_handling";
     [ 8327:     ] "/branches/python/boost/" : "old-branches/python";
     [ 8363:     ] "/branches/cursor/boost/" : "old-branches/cursor";
     [ 8376:     ] "/branches/shared_modules/boost/" : "old-branches/shared_modules";
@@ -214,11 +206,9 @@ abstract repository common_branches
     [39356:     ] "/branches/bcbboost/" : "bcbboost";
     [48740:     ] "/branches/serialization_helper_support/" : "serialization_helper_support";
     [44061:     ] "/branches/proto/v4/" : "proto/v4";
-    [50891:     ] "/sandbox-branches/guigl-openGL-wrappers/" : "sandbox/guigl-openGL-wrappers";
     [50979:     ] "/sandbox-branches/guigl-wmbuild/" : "sandbox/guigl-wmbuild";
     [46531:     ] "/branches/cpp0x/" : "cpp0x";
     [53280:     ] "/sandbox-branches/straszheim/merge_me_into_trunk/" : "sandbox/straszheim/merge_me_into_trunk";
-    [53281:     ] "/sandbox-branches/straszheim/merge_trunk_into_me/" : "sandbox/straszheim/merge_trunk_into_me";
     [53348:     ] "/branches/phoenix_v3/" : "phoenix_v3";
     [51204:     ] "/sandbox-branches/andreo/guigl/" : "sandbox/andreo/guigl";
     [52115:     ] "/sandbox-branches/bhy/py3k/" : "sandbox/bhy/py3k";
@@ -363,15 +353,11 @@ abstract repository common_branches
 
     [     :     ] "/branches/c++0x/boost/" : "old-branches/c++0x";
     [77006:     ] "/tags/geometry/boost_1_49_0/" : "geometry/boost_1_49_0";
-    [     :     ] "/tags/jam/" : "unknown/jam";
     [70322:     ] "/sandbox-tags/geometry/boost-geometry-0.9.0/" : "sandbox/geometry/boost-geometry-0.9.0";
-    [  494:     ] "/sandbox-tags/Boost_formal_review/" : "sandbox/Boost_formal_review";
     [  515:     ] "/sandbox-tags/Formal_Review/" : "sandbox/Formal_Review";
     [ 2565:     ] "/sandbox-tags/TYPEOF_WITH_VINTAGE/" : "sandbox/TYPEOF_WITH_VINTAGE";
     [ 2692:     ] "/sandbox-tags/start/" : "sandbox/start";
     [ 3791:     ] "/sandbox-tags/HEAD/" : "sandbox/HEAD";
-    [ 2605:     ] "/sandbox-tags/policy_ptr_before_cycle_collect/" : "sandbox/policy_ptr_before_cycle_collect";
-    [  532:     ] "/sandbox-tags/arelease/" : "sandbox/arelease";
     [ 2440:     ] "/sandbox-tags/init_import/" : "sandbox/init_import";
     [ 7622:     ] "/tags/release_1_16_1/boost/" : "release_1_16_1";
     [ 7674:     ] "/tags/conversion-merge-1/boost/" : "conversion-merge-1";
@@ -384,7 +370,6 @@ abstract repository common_branches
     [ 8548:     ] "/tags/Version_1_20_1/boost/" : "Version_1_20_1";
     [ 9073:     ] "/tags/Version_1_20_2/boost/" : "Version_1_20_2";
     [ 9301:     ] "/tags/before_adding_complex/boost/" : "before_adding_complex";
-    [ 8334:     ] "/branches/unlabeled-1.1.1.1.8/" : "old-branches/unlabeled-1.1.1.1.8";
     [ 9525:     ] "/tags/Version_1_21_0/boost/" : "Version_1_21_0";
     [ 9561:     ] "/tags/Version_1_21_1/boost/" : "Version_1_21_1";
     [ 9983:     ] "/tags/Version_1_21_2/boost/" : "Version_1_21_2";
@@ -468,12 +453,6 @@ abstract repository common_branches
     [44230:     ] "/tags/release/release_1_16_1/boost/" : "release/release_1_16_1";
     [ 8333:     ] "/tags/start/boost/" : "start";
     [44271:     ] "/tags/release/RC_1_30_2/boost/" : "release/RC_1_30_2";
-    [51318:     ] "/sandbox-tags/old-move/" : "sandbox/old-move";
-    [59768:     ] "/sandbox-tags/geometry/v2010_02_20/" : "sandbox/geometry/v2010_02_20";
-    [59805:     ] "/sandbox-tags/geometry/boost-geometry-0.6.0/" : "sandbox/geometry/boost-geometry-0.6.0";
-    [66789:     ] "/sandbox-tags/geometry/boost-geometry-0.7.0/" : "sandbox/geometry/boost-geometry-0.7.0";
-    [67500:     ] "/sandbox-tags/geometry/boost-geometry-0.8.0/" : "sandbox/geometry/boost-geometry-0.8.0";
-    [ 8275:     ] "/tags/detailified/boost/" : "detailified";
     [ 9522:     ] "/tags/before_partial_unit_test_merge/boost/" : "before_partial_unit_test_merge";
     [14038:     ] "/tags/header-cache/boost/" : "header-cache";
     [14832:     ] "/tags/bjam_3_1_2/boost/" : "bjam_3_1_2";
@@ -2069,8 +2048,6 @@ repository build : common_branches
     [:] "/tags/tools/jam/Boost_Jam_3_1_12/boost/" : "Boost_Jam_3_1_12";
     [:] "/tags/tools/jam/Boost_Jam_3_1_13/boost/" : "Boost_Jam_3_1_13";
     [:] "/tags/tools/jam/Boost_Jam_3_1_14/boost/" : "Boost_Jam_3_1_14";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_15/boost/" : "Boost_Jam_3_1_15";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_16/boost/" : "Boost_Jam_3_1_16";
     [:] "/tags/tools/jam/Boost_Jam_3_1_2/boost/" : "Boost_Jam_3_1_2";
     [:] "/tags/tools/jam/Boost_Jam_3_1_5/boost/" : "Boost_Jam_3_1_5";
     [:] "/tags/tools/jam/Boost_Jam_3_1_7/boost/" : "Boost_Jam_3_1_7";
@@ -2126,7 +2103,6 @@ repository build
     [:] "/tags/tools/jam/Boost_Jam_3_1_15/" : "jam/Boost_Jam_3_1_15";
     [:] "/tags/jam/Boost_Jam_3_1_15/" : "jam/Boost_Jam_3_1_15";
     [:] "/tags/tools/jam/Boost_Jam_3_1_16/" : "jam/Boost_Jam_3_1_16";
-    [:] "/tags/jam/Boost_Jam_3_1_16/" : "jam/Boost_Jam_3_1_16";
   }
 }
 
