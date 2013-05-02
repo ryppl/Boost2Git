@@ -300,16 +300,16 @@ int SvnRevision::prepareTransactions()
   {
   // find out what was changed in this revision:
   apr_hash_t *changes;
-  check_svn(svn_fs_paths_changed(&changes, fs_root, pool));
+  check_svn(svn_fs_paths_changed2(&changes, fs_root, pool));
 
-  QMap<QByteArray, svn_fs_path_change_t*> map;
+  QMap<QByteArray, svn_fs_path_change2_t*> map;
   for (apr_hash_index_t *i = apr_hash_first(pool, changes); i; i = apr_hash_next(i))
     {
     const void *vkey;
     void *value;
     apr_hash_this(i, &vkey, NULL, &value);
-    const char *key = reinterpret_cast<const char *>(vkey);
-    svn_fs_path_change_t *change = reinterpret_cast<svn_fs_path_change_t *>(value);
+    const char *key = static_cast<const char *>(vkey);
+    svn_fs_path_change2_t *change = static_cast<svn_fs_path_change2_t *>(value);
     // If we mix path deletions with path adds/replaces we might erase a
     // branch after that it has been reset -> history truncated
     if (map.contains(QByteArray(key)))
@@ -328,7 +328,7 @@ int SvnRevision::prepareTransactions()
     map.insertMulti(QByteArray(key), change);
     }
 
-  QMapIterator<QByteArray, svn_fs_path_change_t*> i(map);
+  QMapIterator<QByteArray, svn_fs_path_change2_t*> i(map);
   while (i.hasNext())
     {
     i.next();
@@ -405,7 +405,7 @@ void SvnRevision::commit()
 
 int SvnRevision::exportEntry(
     const char *key,
-    const svn_fs_path_change_t *change,
+    const svn_fs_path_change2_t *change,
     apr_hash_t *changes)
   {
   if (boost::contains(key, "CVSROOT"))
@@ -582,7 +582,7 @@ int SvnRevision::exportEntry(
 
 int SvnRevision::exportDispatch(
     const char *key,
-    const svn_fs_path_change_t *change,
+    const svn_fs_path_change2_t *change,
     const char *path_from,
     svn_revnum_t rev_from,
     apr_hash_t *changes,
@@ -650,7 +650,7 @@ int SvnRevision::exportDispatch(
 
 int SvnRevision::exportInternal(
     const char *key,
-    const svn_fs_path_change_t *change,
+    const svn_fs_path_change2_t *change,
     const char *path_from,
     svn_revnum_t rev_from,
     const QString &current,
@@ -938,7 +938,7 @@ int SvnRevision::exportInternal(
 
 int SvnRevision::recurse(
     const char *path,
-    const svn_fs_path_change_t *change,
+    const svn_fs_path_change2_t *change,
     const char *path_from,
     const MatchRuleList &matchRules,
     svn_revnum_t rev_from,
@@ -977,7 +977,7 @@ int SvnRevision::recurse(
     const char *entryFrom = path_from ? apr_pstrcat(pool, path_from, "/", dirent->name, NULL) : NULL;
 
     // check if this entry is in the changelist for this revision already
-    svn_fs_path_change_t *otherchange = (svn_fs_path_change_t*) apr_hash_get(changes, entry, APR_HASH_KEY_STRING);
+    svn_fs_path_change2_t *otherchange = (svn_fs_path_change2_t*) apr_hash_get(changes, entry, APR_HASH_KEY_STRING);
     if (otherchange && otherchange->change_kind == svn_fs_path_change_add)
       {
       Log::debug()

@@ -51,11 +51,11 @@ class SvnRevision
     void fetchRevProps();
     int exportEntry(
         const char *path,
-        const svn_fs_path_change_t *change,
+        const svn_fs_path_change2_t *change,
         apr_hash_t *changes);
     int exportDispatch(
         const char *path,
-        const svn_fs_path_change_t *change,
+        const svn_fs_path_change2_t *change,
         const char *path_from,
         svn_revnum_t rev_from,
         apr_hash_t *changes,
@@ -64,7 +64,7 @@ class SvnRevision
         const MatchRuleList &matchRules);
     int exportInternal(
         const char *path,
-        const svn_fs_path_change_t *change,
+        const svn_fs_path_change2_t *change,
         const char *path_from,
         svn_revnum_t rev_from,
         const QString &current,
@@ -73,7 +73,7 @@ class SvnRevision
         apr_hash_t *changes);
     int recurse(
         const char *path,
-        const svn_fs_path_change_t *change,
+        const svn_fs_path_change2_t *change,
         const char *path_from,
         const MatchRuleList &matchRules,
         svn_revnum_t rev_from,
