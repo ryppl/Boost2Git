@@ -74,7 +74,8 @@ void report()
         continue;
     
     std::cout << options.rules_file << ":" << b->line << ": warning:"
-              << "branch rule utilization " << percentage << "% ("
+              << b->prefix << " ==> " << b->name 
+              << " utilization " << percentage << "% ("
               << nmatches << " repositories)" << std::endl;
 
     if (nmatches < 10)
