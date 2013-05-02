@@ -886,6 +886,7 @@ int SvnRevision::exportInternal(
     {
     Log::trace() << "add/change dir (" << key << "->" << qPrintable(branch) << "/"
                  << qPrintable(path) << ")" << std::endl ;
+#if 0
     if (pathExists(pool, fs, current, revnum - 1))
       {
       txn->deleteFile(path);
@@ -895,6 +896,7 @@ int SvnRevision::exportInternal(
       Log::trace() << "...deleted file missing in previous revision, so skipped"
                    << std::endl;
       }
+#endif 
     recursiveDumpDir(txn, fs_root, key, path, pool);
     }
   return EXIT_SUCCESS;
