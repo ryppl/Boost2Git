@@ -487,7 +487,7 @@ int SvnRevision::exportEntry(
   else if (change->change_kind == svn_fs_path_change_delete)
     {
     // if it did not exist in the previous revision, we ignore the deletion
-    // this happens is a folder is copied and part of its contents are removed
+    // this happens if a folder is copied and part of its contents are removed
     if (!existed(fs, revnum - 1, key, pool))
       {
       Log::debug()
