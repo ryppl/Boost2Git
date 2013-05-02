@@ -551,7 +551,18 @@ repository conversion : common_branches
   }
 }
 
-repository core : common_branches
+abstract repository unordered_foreign_branches
+{
+  branches
+  {
+    [:] "/branches/unordered/refactor/" : "unordered/refactor";
+    [:] "/branches/unordered/trunk/" : "unordered/trunk";
+    [:] "/branches/unordered/dev/" : "unordered/dev";
+    [:] "/branches/unordered/add-on/" : "unordered/add-on";
+  }
+}
+
+repository core : common_branches, unordered_foreign_branches
 {
   content
   {
@@ -790,7 +801,7 @@ repository functional : common_branches
   }
 }
 
-repository functional_hash : common_branches
+repository functional_hash : common_branches, unordered_foreign_branches
 {
   content
   {
@@ -1162,6 +1173,8 @@ repository msm : common_branches
   {
     "boost/msm/" : "include/boost/msm/";
     "libs/msm/";
+    "libs/example/SimplePhoenix.cpp" : "example/SimplePhoenix.cpp";
+    "libs/example/logging_functors.h" : "example/logging_functors.h";
   }
   branches
   {
@@ -1335,12 +1348,38 @@ repository preprocessor : common_branches
   {
     "boost/preprocessor.hpp" : "include/boost/preprocessor.hpp";
     "boost/preprocessor/" : "include/boost/preprocessor/";
+    "preprocessor/" : "include/boost/preprocessor/";
     "libs/preprocessor/";
   }
   branches
   {
-    [70548:     ] "/branches/pplib/variadics/" : "variadics";
+    [:] "/branches/pplib/variadics/" : "variadics";
     [71970:     ] "/branches/pplib/v2/" : "v2";
+  }
+}
+
+repository preprocessor
+{
+  content
+  {
+    "Jamroot.jam";
+    "Jamfile.v2";
+  }
+  branches
+  {
+    [:] "/branches/pplib/variadics/" : "variadics";
+  }
+}
+
+repository preprocessor
+{
+  content
+  {
+    "/" : "include/boost/preprocessor/";
+  }
+  branches
+  {
+    [:] "/branches/pplib/variadics/trunk/" : "variadics";
   }
 }
 
@@ -1968,23 +2007,40 @@ repository units : common_branches
   }
 }
 
-repository unordered : common_branches
+abstract repository unordered_branches
+{
+  branches
+  {
+    [:] "/sandbox/unordered/" : "sandbox/unordered";
+    [:] "/sandbox-branches/unordered-refactor/" : "sandbox/refactor";
+    [:] "/branches/unordered/refactor/" : "refactor";
+    [:] "/branches/unordered/trunk/" : "trunk";
+    [:] "/branches/unordered/dev/" : "dev";
+    [:] "/branches/unordered/add-on/" : "add-on";
+  }
+}
+
+repository unordered : common_branches, unordered_branches
 {
   content
   {
     "boost/unordered_map.hpp" : "include/boost/unordered_map.hpp";
     "boost/unordered_set.hpp" : "include/boost/unordered_set.hpp";
     "boost/unordered/" : "include/boost/unordered/";
-    "libs/unordered/";
+    "libs/unordered/" : "/";
   }
-  branches
+}
+
+repository unordered : unordered_branches
+{
+  content
   {
-    [ 4045:42180] "/sandbox/unordered/" : "sandbox/unordered";
-    [41820:42180] "/sandbox-branches/unordered-refactor/" : "sandbox/unordered-refactor";
-    [42181:45744] "/branches/unordered/refactor/" : "unordered/refactor";
-    [42183:46608] "/branches/unordered/trunk/" : "unordered/trunk";
-    [42731:45743] "/branches/unordered/dev/" : "unordered/dev/";
-    [43960:46608] "/branches/unordered/add-on/" : "unordered/add-on";
+    "release.sh";
+    "project-root.jam";
+    "index.html";
+    "index.htm";
+    "Jamfile.v2";
+    "doc/";
   }
 }
 
@@ -2169,6 +2225,21 @@ repository build : common_branches
   }
 }
 
+repository build
+{
+// NOTE: This accounts for our last fallback commit.  Uncomment to make the
+//   build fail due to failure to push the empty master branch!
+//
+// content
+// {
+//    "boost-build.jam" : "boost-build.jam";
+// }
+  tags
+  {
+    [:] "/tags/tools/build/BOOST_BUILD_V1/boost/" : "tools/build/BOOST_BUILD_V1";
+  }
+}
+
 // Match SVN tags and branches that contain jam/ and/or build/ directories at the top level
 repository build : tools_branches
 {
@@ -2214,6 +2285,8 @@ repository build
     [:] "/tags/tools/jam/Boost_Jam_3_1_15/" : "jam/Boost_Jam_3_1_15";
     [:] "/tags/jam/Boost_Jam_3_1_15/" : "jam/Boost_Jam_3_1_15";
     [:] "/tags/tools/jam/Boost_Jam_3_1_16/" : "jam/Boost_Jam_3_1_16";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_17/" : "jam/Boost_Jam_3_1_17";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_18/" : "jam/Boost_Jam_3_1_18";
   }
 }
 
@@ -2249,10 +2322,16 @@ repository quickbook : common_branches
 
 repository quickbook
 {
+  content
+  {
+    "/" : "/";
+//    "test/" : "test/";
+//    "extra/" : "extra/";
+  }
   branches
   {
-    [53325:54138] "/branches/quickbook-1.5/" : "quickbook-1.5";
-    [57654:65351] "/branches/quickbook-1.5-spirit2/" : "quickbook-1.5-spirit2";
+    [:] "/branches/quickbook-1.5/" : "quickbook-1.5";
+    [:] "/branches/quickbook-1.5-spirit2/" : "quickbook-1.5-spirit2";
     [75162:     ] "/branches/quickbook/literate/" : "literate";
   }
 }
