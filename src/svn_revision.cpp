@@ -852,42 +852,22 @@ int SvnRevision::exportInternal(
   //
   if (path_from != NULL && prevrepository == repository && prevbranch != branch)
     {
-    Log::trace()
-      << "copy from branch "
-      << qPrintable(prevbranch)
-      << " to branch "
-      << qPrintable(branch)
-      << "@rev"
-      << rev_from
-      << std::endl
-      ;
+    Log::trace() << "copy from branch " << qPrintable(prevbranch) << " to branch "
+                 << qPrintable(branch) << "@rev" << rev_from << std::endl;
     txn->noteCopyFromBranch (prevbranch, rev_from);
     }
 
   if (change->change_kind == svn_fs_path_change_replace && path_from == NULL)
     {
-    Log::trace()
-      << "replaced with empty path ("
-      << qPrintable(branch)
-      << "/"
-      << qPrintable(path)
-      << ")"
-      << std::endl
-      ;
+    Log::trace() << "replaced with empty path (" << qPrintable(branch) << "/"
+                 << qPrintable(path) << ")" << std::endl;
     txn->deleteFile(path);
     }
-  if (change->change_kind == svn_fs_path_change_delete)
+  else if (change->change_kind == svn_fs_path_change_delete)
     {
-    Log::trace()
-      << "delete ("
-      << qPrintable(branch)
-      << "/"
-      << qPrintable(path)
-      << ")"
-      << std::endl
-      ;
-    if (pathExists(pool, fs, current, revnum - 1))
-      {
+    Log::trace() << "delete (" << qPrintable(branch) << "/" << qPrintable(path) << ")"
+      << std::endl;
+    if (pathExists(pool, fs, current, revnum - 1)) {
       txn->deleteFile(path);
       }
     else
@@ -898,30 +878,14 @@ int SvnRevision::exportInternal(
     }
   else if (!current.endsWith('/'))
     {
-    Log::trace()
-      << "add/change file ("
-      << key
-      << "->"
-      << qPrintable(branch)
-      << "/"
-      << qPrintable(path)
-      << ")"
-      << std::endl
-      ;
+    Log::trace() << "add/change file (" << key << "->" << qPrintable(branch)
+                 << "/" << qPrintable(path) << ")" << std::endl;
     dumpBlob(txn, fs_root, key, path, pool);
     }
   else
     {
-    Log::trace()
-      << "add/change dir ("
-      << key
-      << "->"
-      << qPrintable(branch)
-      << "/"
-      << qPrintable(path)
-      << ")"
-      << std::endl
-      ;
+    Log::trace() << "add/change dir (" << key << "->" << qPrintable(branch) << "/"
+                 << qPrintable(path) << ")" << std::endl ;
     if (pathExists(pool, fs, current, revnum - 1))
       {
       txn->deleteFile(path);
