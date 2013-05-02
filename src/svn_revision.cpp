@@ -692,7 +692,7 @@ int SvnRevision::exportInternal(
     {
     previous = QString::fromUtf8(path_from);
     bool was_dir = wasDir(fs, rev_from, path_from, pool.data());
-    if (was_dir)
+    if (was_dir && !previous.endsWith('/'))
       {
       previous += '/';
       }
