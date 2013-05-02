@@ -1977,15 +1977,15 @@ repository unordered : common_branches
     "boost/unordered/" : "include/boost/unordered/";
     "libs/unordered/";
   }
-//  branches
-//  {
-//    [ 4045:42180] "/sandbox/unordered/" : "sandbox/unordered";
-//    [41820:42180] "/sandbox-branches/unordered-refactor/" : "sandbox/unordered-refactor";
-//    [42181:45744] "/branches/unordered/refactor/" : "unordered/refactor";
-//    [42183:46608] "/branches/unordered/trunk/" : "unordered/trunk";
-//    [42731:45743] "/branches/unordered/dev/" : "unordered/dev/";
-//    [43960:46608] "/branches/unordered/add-on/" : "unordered/add-on";
-//  }
+  branches
+  {
+    [ 4045:42180] "/sandbox/unordered/" : "sandbox/unordered";
+    [41820:42180] "/sandbox-branches/unordered-refactor/" : "sandbox/unordered-refactor";
+    [42181:45744] "/branches/unordered/refactor/" : "unordered/refactor";
+    [42183:46608] "/branches/unordered/trunk/" : "unordered/trunk";
+    [42731:45743] "/branches/unordered/dev/" : "unordered/dev/";
+    [43960:46608] "/branches/unordered/add-on/" : "unordered/add-on";
+  }
 }
 
 repository utility : common_branches

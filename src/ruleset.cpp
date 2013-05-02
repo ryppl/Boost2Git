@@ -65,7 +65,7 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
      %= (qi::matches["abstract"] >> "repository")
       > line_number_
       > string_
-      > -(':' > +string_)
+      > -(':' > string_ % ',')
       > '{'
       > (("minrev" > qi::uint_ > ';') | qi::attr(0))
       > (("maxrev" > qi::uint_ > ';') | qi::attr(UINT_MAX))
