@@ -2227,13 +2227,10 @@ repository build : common_branches
 
 repository build
 {
-// NOTE: This accounts for our last fallback commit.  Uncomment to make the
-//   build fail due to failure to push the empty master branch!
-//
-// content
-// {
-//    "boost-build.jam" : "boost-build.jam";
-// }
+  content
+  {
+    "boost-build.jam" : "boost-build.jam";
+  }
   tags
   {
     [:] "/tags/tools/build/BOOST_BUILD_V1/boost/" : "tools/build/BOOST_BUILD_V1";
