@@ -23,6 +23,7 @@ add_definitions(
   -D_XOPEN_SOURCE
   -D_LARGEFILE_SUPPORT
   -D_LARGEFILE64_SUPPORT
+  -DQT_FATAL_ASSERT
   )
 
 set(svn2git_SOURCES

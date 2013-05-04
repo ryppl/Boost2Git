@@ -827,6 +827,8 @@ QIODevice *Repository::Transaction::addFile(const QString &path, int mode, qint6
 
   // in case the two mark allocations meet, we might as well just abort
   Q_ASSERT(mark > repository->last_commit_mark + 1);
+  
+  Q_ASSERT(!(repository->prefix + path.toUtf8()).toStdString().empty());
 
   if (modifiedFiles.capacity() == 0)
       modifiedFiles.reserve(2048);
