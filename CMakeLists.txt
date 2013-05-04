@@ -91,7 +91,7 @@ foreach(line IN LISTS repo_lines)
 endforeach()
 
 add_custom_target(push_fallback ALL
-  COMMAND (git branch -v | grep . || git fast-import < ${CMAKE_CURRENT_SOURCE_DIR}/empty-fallback-fast-import.txt)
+  COMMAND git branch -v | grep . || git fast-import < ${CMAKE_CURRENT_SOURCE_DIR}/empty-fallback-fast-import.txt
   COMMAND git push --quiet --mirror git@bitbucket.org:boostorg/svn2git-fallback.git
   COMMAND git push --quiet --mirror git@github.com:boostorg/svn2git-fallback.git
   DEPENDS conversion
