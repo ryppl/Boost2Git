@@ -1362,8 +1362,8 @@ repository preprocessor
 {
   content
   {
-    "Jamroot.jam";
-    "Jamfile.v2";
+    "Jamroot.jam" : "Jamroot.jam";
+    "Jamfile.v2" : "Jamfile.v2";
   }
   branches
   {
