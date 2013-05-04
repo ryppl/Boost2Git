@@ -2035,12 +2035,12 @@ repository unordered : unordered_branches
 {
   content
   {
-    "release.sh";
-    "project-root.jam";
-    "index.html";
-    "index.htm";
-    "Jamfile.v2";
-    "doc/";
+    "release.sh" : "release.sh";
+    "project-root.jam" : "project-root.jam";
+    "index.html" : "index.html";
+    "index.htm" : "index.htm";
+    "Jamfile.v2" : "Jamfile.v2";
+    "doc/" : "doc/";
   }
 }
 
