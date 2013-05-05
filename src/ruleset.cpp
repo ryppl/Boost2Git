@@ -245,6 +245,12 @@ Ruleset::Ruleset(std::string const& filename)
     
     Repository repo;
     repo.name = repo_rule.name;
+    if (!repo_rule.submodule_info.empty())
+      {
+      assert(repo_rule.submodule_info.size() == 2);
+      repo.submodule_in_repo = repo_rule.submodule_info[0];
+      repo.submodule_path = repo_rule.submodule_info[1];
+      }
 
     typedef std::pair<std::vector<BranchRule const*> const*, char const*> RulesAndPrefix;
     RulesAndPrefix const ref_rulesets[] =

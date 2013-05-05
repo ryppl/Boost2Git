@@ -46,6 +46,8 @@ class Ruleset
     struct Repository
       {
       std::string name;
+      std::string submodule_in_repo;
+      std::string submodule_path;
       std::set<std::string> branches;
       };
     static Match const fallback;
