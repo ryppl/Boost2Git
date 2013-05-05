@@ -158,7 +158,7 @@ boost2git::ContentRule fallback_content(
     ));
 
 Ruleset::Match const Ruleset::fallback(
-    &fallback_repo, &fallback_branch, &fallback_content, "refs/heads/");
+    &fallback_repo, &fallback_branch, &fallback_content);
 
 template <class Seq1, class Seq2>
 void append_addresses(Seq1& target, Seq2 const& source)
@@ -242,8 +242,9 @@ Ruleset::Ruleset(std::string const& filename)
       continue;
       }
 
-    std::vector<BranchRule const*> branches;
-    std::vector<BranchRule const*> tags;
+    typedef std::vector<BranchRule const*> BranchRules;
+    BranchRules branches;
+    BranchRules tags;
     std::vector<ContentRule const*> content;
     collect_rule_components(ast_, repo_rule, branches, tags, content);
     
@@ -256,16 +257,11 @@ Ruleset::Ruleset(std::string const& filename)
       repo.submodule_path = repo_rule.submodule_info[1];
       }
 
-    typedef std::pair<std::vector<BranchRule const*> const*, char const*> RulesAndPrefix;
-    RulesAndPrefix const ref_rulesets[] =
-      {
-      std::make_pair(&branches, "refs/heads/"),
-      std::make_pair(&tags, "refs/tags/")
-      };
+    BranchRules const* ref_rulesets[] = { &branches, &tags };
       
-    BOOST_FOREACH(RulesAndPrefix const& rules_and_prefix, ref_rulesets)
+    BOOST_FOREACH(BranchRules const* rules, ref_rulesets)
       {
-      BOOST_FOREACH(BranchRule const* branch_rule, *rules_and_prefix.first)
+      BOOST_FOREACH(BranchRule const* branch_rule, *rules)
         {
         assert(std::strcmp(branch_rule->git_ref_qualifier, "refs/heads/") == 0
               || std::strcmp(branch_rule->git_ref_qualifier, "refs/tags/") == 0);
@@ -274,7 +270,6 @@ Ruleset::Ruleset(std::string const& filename)
           continue;
           }
       
-        std::string const& ref_name = qualify_ref(branch_rule->name, rules_and_prefix.second);
         repo.branches.insert(branch_rule);
 
         std::size_t minrev = std::max(branch_rule->min, repo_rule.minrev);
@@ -286,15 +281,14 @@ Ruleset::Ruleset(std::string const& filename)
 
         if (repo_rule.content_rules.empty())
           {
-          matches_.insert(Match(&repo_rule, branch_rule, 0, rules_and_prefix.second));
+          matches_.insert(Match(&repo_rule, branch_rule, 0));
           }
         else
           {
           BOOST_FOREACH(ContentRule const* content_rule, content)
             {
             matches_.insert(
-                Match(&repo_rule, branch_rule, content_rule, rules_and_prefix.second
-                  ));
+                Match(&repo_rule, branch_rule, content_rule));
             }
           }
         }

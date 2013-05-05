@@ -34,13 +34,11 @@ struct Rule
   Rule(
       boost2git::RepoRule const* repo_rule,
       boost2git::BranchRule const* branch_rule,
-      boost2git::ContentRule const* content_rule,
-      char const* git_ref_prefix
+      boost2git::ContentRule const* content_rule
     )
       : repo_rule(repo_rule),
       branch_rule(branch_rule),
       content_rule(content_rule),
-      git_ref_prefix(git_ref_prefix),
       min(std::max(branch_rule->min, repo_rule->minrev)),
       max(std::min(branch_rule->max, repo_rule->maxrev))
     {}
@@ -49,7 +47,6 @@ struct Rule
   boost2git::RepoRule const* repo_rule;       // never 0
   boost2git::BranchRule const* branch_rule;   // never 0
   boost2git::ContentRule const* content_rule; // can be 0
-  char const* git_ref_prefix;                 // "refs/heads/" or "refs/tags/"
   
   std::size_t min, max;
 
