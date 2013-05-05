@@ -441,35 +441,17 @@ int SvnRevision::exportEntry(
         //qDebug() << "   mkdir ignored:" << key;
         return EXIT_SUCCESS;
         }
-      Log::debug()
-        << key
-        << " was copied from "
-        << path_from
-        << " rev "
-        << rev_from
-        << std::endl
-        ;
+      Log::debug() << key << " was copied from " << path_from << " rev " << rev_from << std::endl;
       }
     else if (change->change_kind == svn_fs_path_change_replace)
       {
       if (path_from == NULL)
         {
-        Log::debug()
-          << key
-          << " was replaced"
-          << std::endl
-          ;
+        Log::debug() << key << " was replaced" << std::endl;
         }
       else
         {
-        Log::debug()
-          << key
-          << " was replaced from "
-          << path_from
-          << " rev "
-          << rev_from
-          << std::endl
-          ;
+        Log::debug() << key << " was replaced from " << path_from << " rev " << rev_from << std::endl;
         }
       }
     else if (change->change_kind == svn_fs_path_change_reset)
@@ -490,11 +472,7 @@ int SvnRevision::exportEntry(
     // this happens if a folder is copied and part of its contents are removed
     if (!existed(fs, revnum - 1, key, pool))
       {
-      Log::debug()
-        << "Ignoring deletion of non-existing path: "
-        << key
-        << std::endl
-        ;
+      Log::debug() << "Ignoring deletion of non-existing path: " << key << std::endl;
       return EXIT_SUCCESS;
       }
     is_dir = wasDir(fs, revnum - 1, key, pool);
@@ -529,11 +507,7 @@ int SvnRevision::exportEntry(
     }
   else if (is_dir && path_from != NULL)
     {
-    Log::debug()
-      << qPrintable(current)
-      << " is a copy-with-history, auto-recursing"
-      << std::endl
-      ;
+    Log::debug() << qPrintable(current) << " is a copy-with-history, auto-recursing" << std::endl;
     if ( recurse(key, change, path_from, matchRules, rev_from, changes) == EXIT_FAILURE )
       {
       return EXIT_FAILURE;
@@ -542,11 +516,7 @@ int SvnRevision::exportEntry(
     }
   else if (is_dir && change->change_kind == svn_fs_path_change_delete)
     {
-    Log::debug()
-      << qPrintable(current)
-      << " deleted, auto-recursing"
-      << std::endl
-      ;
+    Log::debug() << qPrintable(current) << " deleted, auto-recursing" << std::endl;
     if ( recurse(key, change, path_from, matchRules, rev_from, changes) == EXIT_FAILURE )
       {
       return EXIT_FAILURE;
@@ -559,22 +529,12 @@ int SvnRevision::exportEntry(
     }
   if (is_dir)
     {
-    Log::warn()
-      << "Folder '"
-      << qPrintable(current)
-      << "' not accounted for. Recursing."
-      << std::endl
-      ;
+    Log::warn() << "Folder '" << qPrintable(current) << "' not accounted for. Recursing." << std::endl;
     return recurse(key, change, path_from, matchRules, rev_from, changes);
     }
   else
     {
-    Log::warn()
-      << "File '"
-      << qPrintable(current)
-      << "' not accounted for. Putting to fallback."
-      << std::endl
-      ;
+    Log::warn() << "File '" << qPrintable(current) << "' not accounted for. Putting to fallback." << std::endl;
     return exportDispatch(key, change, path_from, rev_from, changes, current, Ruleset::fallback, matchRules);
     }
   return EXIT_SUCCESS;
@@ -590,33 +550,18 @@ int SvnRevision::exportDispatch(
     const Ruleset::Match &rule,
     const MatchRuleList &matchRules)
   {
-  Log::trace()
-    << "rev "
-    << revnum
-    << ' '
-    << qPrintable(current)
-    << " matched rule: '"
-    << rule.svn_path()
-    ;
+  Log::trace() << "rev " << revnum << ' ' << qPrintable(current) << " matched rule: '" << rule.svn_path();
 
   if (change->change_kind == svn_fs_path_change_delete
     && !pathExists(pool, fs, current, revnum - 1))
     {
-    Log::trace() << "but deleted path missing in previous revision."
-                 << std::endl;
+    Log::trace() << "but deleted path missing in previous revision." << std::endl;
     return EXIT_SUCCESS;
     }
   else
     {
-    Log::trace()
-      << "'; exporting to repository "
-      << rule.repo_rule->name
-      << " branch "
-      << rule.branch_rule->name
-      << " path "
-      << rule.prefix()
-      << std::endl
-      ;
+    Log::trace() << "'; exporting to repository " << rule.repo_rule->name << " branch "
+                 << rule.branch_rule->name << " path " << rule.prefix() << std::endl;
     }
   
   if (exportInternal(key, change, path_from, rev_from, current, rule, matchRules, changes) == EXIT_SUCCESS)
@@ -625,26 +570,13 @@ int SvnRevision::exportDispatch(
     }
   if (change->change_kind != svn_fs_path_change_delete)
     {
-    Log::trace()
-      << "rev "
-      << revnum
-      << ' '
-      << qPrintable(current)
-      << " matched rule: '"
-      << rule.svn_path()
-      << "'; Unable to export non path removal."
-      << std::endl
-      ;
+    Log::trace() << "rev " << revnum << ' ' << qPrintable(current) << " matched rule: '" << rule.svn_path()
+                 << "'; Unable to export non path removal." << std::endl;
     return EXIT_FAILURE;
     }
   // we know that the default action inside recurse is to recurse further or to ignore,
   // either of which is reasonably safe for deletion
-  Log::warn()
-    << "deleting unknown path '"
-    << qPrintable(current)
-    << "'; auto-recursing"
-    << std::endl
-    ;
+  Log::warn() << "deleting unknown path '" << qPrintable(current) << "'; auto-recursing" << std::endl;
   return recurse(key, change, path_from, matchRules, rev_from, changes);
   }
 
@@ -674,14 +606,7 @@ int SvnRevision::exportInternal(
 
   if (change->change_kind == svn_fs_path_change_delete && current == svnprefix && path.isEmpty())
     {
-    Log::trace()
-      << "repository "
-      << qPrintable(repository)
-      << " branch "
-      << qPrintable(branch)
-      << " deleted"
-      << std::endl
-      ;
+    Log::trace() << "repository " << qPrintable(repository) << " branch " << qPrintable(branch) << " deleted" << std::endl;
     return repo->deleteBranch(branch, revnum);
     }
 
@@ -707,14 +632,10 @@ int SvnRevision::exportInternal(
       }
     else
       {
-      Log::warn()
-        << '"' << key << '@' << revnum << '"'
-        << " is copied from "
-        << '"' << qPrintable(previous) << '@' << rev_from << '"'
-        << " but no rules match the source of the copy!"
-        << " Ignoring copy; treating as a modification"
-        << std::endl
-        ;
+      Log::warn() << '"' << key << '@' << revnum << '"' << " is copied from " << '"'
+                  << qPrintable(previous) << '@' << rev_from << '"'
+                  << " but no rules match the source of the copy!"
+                  << " Ignoring copy; treating as a modification" << std::endl;
       path_from = NULL;
       }
     }
@@ -725,33 +646,20 @@ int SvnRevision::exportInternal(
     if (previous != prevsvnprefix)
       {
       // source is not the whole of its branch
-      Log::debug()
-        << qPrintable(current) << "is a partial branch of repository "
-        << qPrintable(prevrepository) << " branch "
-        << qPrintable(prevbranch) << " subdir "
-        << qPrintable(prevpath)
-        << std::endl
-        ;
+      Log::debug() << qPrintable(current) << "is a partial branch of repository "
+                   << qPrintable(prevrepository) << " branch " << qPrintable(prevbranch)
+                   << " subdir " << qPrintable(prevpath) << std::endl;
       }
     else if (prevrepository != repository)
       {
-      Log::warn()
-        << qPrintable(current) << " rev " << revnum
-        << " is a cross-repository copy (from repository "
-        << qPrintable(prevrepository) << " branch "
-        << qPrintable(prevbranch) << " path "
-        << qPrintable(prevpath) << " rev " << rev_from << ")"
-        << std::endl
-        ;
+      Log::warn() << qPrintable(current) << " rev " << revnum
+                  << " is a cross-repository copy (from repository "
+                  << qPrintable(prevrepository) << " branch " << qPrintable(prevbranch)
+                  << " path " << qPrintable(prevpath) << " rev " << rev_from << ")" << std::endl;
       }
     else if (path != prevpath)
       {
-      Log::debug()
-        << qPrintable(current)
-        << " is a branch copy which renames base directory of all contents "
-        << qPrintable(prevpath) << " to " << qPrintable(path)
-        << std::endl
-        ;
+      Log::debug() << qPrintable(current) << " is a branch copy which renames base directory of all contents " << qPrintable(prevpath) << " to " << qPrintable(path) << std::endl;
       // FIXME: Handle with fast-import 'file rename' facility
       //        ??? Might need special handling when path == / or prevpath == /
       }
@@ -760,24 +668,16 @@ int SvnRevision::exportInternal(
       if (prevbranch == branch)
         {
         // same branch and same repository
-        Log::debug()
-          << qPrintable(current) << " rev " << revnum
-          << " is reseating branch " << qPrintable(branch)
-          << " to an earlier revision "
-          << qPrintable(previous) << " rev " << rev_from
-          << std::endl
-          ;
+        Log::debug() << qPrintable(current) << " rev " << revnum << " is reseating branch "
+                     << qPrintable(branch) << " to an earlier revision " << qPrintable(previous)
+                     << " rev " << rev_from << std::endl;
         }
       else
         {
         // same repository but not same branch
         // this means this is a plain branch
-        Log::debug()
-          << qPrintable(repository) << ": branch "
-          << qPrintable(branch) << " is branching from "
-          << qPrintable(prevbranch)
-          << std::endl
-          ;
+        Log::debug() << qPrintable(repository) << ": branch " << qPrintable(branch)
+                     << " is branching from " << qPrintable(prevbranch) << std::endl;
         }
  
       if (repo->createBranch(branch, revnum, prevbranch, rev_from) == EXIT_FAILURE)
@@ -797,16 +697,8 @@ int SvnRevision::exportInternal(
             }
           transactions.insert(repository + branch, txn);
           }
-        Log::trace()
-          << "Create a true SVN copy of branch ("
-          << key
-          << "->"
-          << qPrintable(branch)
-          << "/"
-          << qPrintable(path)
-          << ")"
-          << std::endl
-          ;
+        Log::trace() << "Create a true SVN copy of branch (" << key << "->"
+                     << qPrintable(branch) << "/" << qPrintable(path) << ")" << std::endl;
         if (pathExists(pool, fs, current, revnum - 1))
           {
           txn->deleteFile(path);
@@ -814,8 +706,7 @@ int SvnRevision::exportInternal(
           }
         else
           {
-          Log::trace() << "...deleted file missing in previous revision, so skipped"
-                 << std::endl;
+          Log::trace() << "...deleted file missing in previous revision, so skipped" << std::endl;
           }
         }
 //      if (rule.annotate)
@@ -859,21 +750,19 @@ int SvnRevision::exportInternal(
 
   if (change->change_kind == svn_fs_path_change_replace && path_from == NULL)
     {
-    Log::trace() << "replaced with empty path (" << qPrintable(branch) << "/"
-                 << qPrintable(path) << ")" << std::endl;
+    Log::trace() << "replaced with empty path (" << qPrintable(branch)
+                 << "/" << qPrintable(path) << ")" << std::endl;
     txn->deleteFile(path);
     }
   else if (change->change_kind == svn_fs_path_change_delete)
     {
-    Log::trace() << "delete (" << qPrintable(branch) << "/" << qPrintable(path) << ")"
-      << std::endl;
+    Log::trace() << "delete (" << qPrintable(branch) << "/" << qPrintable(path) << ")" << std::endl;
     if (pathExists(pool, fs, current, revnum - 1)) {
       txn->deleteFile(path);
       }
     else
       {
-      Log::trace() << "...deleted file missing in previous revision, so skipped"
-                   << std::endl;
+      Log::trace() << "...deleted file missing in previous revision, so skipped" << std::endl;
       }
     }
   else if (!current.endsWith('/'))
@@ -884,8 +773,8 @@ int SvnRevision::exportInternal(
     }
   else
     {
-    Log::trace() << "add/change dir (" << key << "->" << qPrintable(branch) << "/"
-                 << qPrintable(path) << ")" << std::endl ;
+    Log::trace() << "add/change dir (" << key << "->" << qPrintable(branch)
+                 << "/" << qPrintable(path) << ")" << std::endl ;
 #if 0
     if (pathExists(pool, fs, current, revnum - 1))
       {
@@ -893,8 +782,7 @@ int SvnRevision::exportInternal(
       }
     else
       {
-      Log::trace() << "...deleted file missing in previous revision, so skipped"
-                   << std::endl;
+      Log::trace() << "...deleted file missing in previous revision, so skipped" << std::endl;
       }
 #endif 
     recursiveDumpDir(txn, fs_root, key, path, pool);
@@ -946,11 +834,8 @@ int SvnRevision::recurse(
     svn_fs_path_change2_t *otherchange = (svn_fs_path_change2_t*) apr_hash_get(changes, entry, APR_HASH_KEY_STRING);
     if (otherchange && otherchange->change_kind == svn_fs_path_change_add)
       {
-      Log::debug()
-        << '"' << entry << '@' << revnum << '"'
-        << " is in the change-list, deferring to that one"
-        << std::endl
-        ;
+      Log::debug() << '"' << entry << '@' << revnum << '"'
+                   << " is in the change-list, deferring to that one" << std::endl;
       continue;
       }
 
@@ -971,11 +856,8 @@ int SvnRevision::recurse(
       }
     else if (dirent->kind == svn_node_dir)
       {
-      Log::debug()
-        << '"' << current << '@' << revnum << '"'
-        << " did not match any rules; auto-recursing"
-        << std::endl
-        ;
+      Log::debug() << '"' << current << '@' << revnum << '"'
+                   << " did not match any rules; auto-recursing" << std::endl;
       if (recurse(entry, change, entryFrom, matchRules, rev_from, changes) == EXIT_FAILURE)
         {
         return EXIT_FAILURE;
@@ -983,11 +865,8 @@ int SvnRevision::recurse(
       }
     else
       {
-      Log::warn()
-        << '"' << current << '@' << revnum << '"'
-        << " not accounted for. Putting to fallback."
-        << std::endl
-        ;
+      Log::warn() << '"' << current << '@' << revnum << '"'
+                  << " not accounted for. Putting to fallback." << std::endl;
       if (exportDispatch(entry, change, entryFrom, rev_from, changes, current, Ruleset::fallback, matchRules) == EXIT_FAILURE)
         {
         return EXIT_FAILURE;
