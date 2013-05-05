@@ -275,7 +275,7 @@ Ruleset::Ruleset(std::string const& filename)
           }
       
         std::string const& ref_name = qualify_ref(branch_rule->name, rules_and_prefix.second);
-        repo.branches.insert(ref_name);
+        repo.branches.insert(branch_rule);
 
         std::size_t minrev = std::max(branch_rule->min, repo_rule.minrev);
         std::size_t maxrev = std::min(branch_rule->max, repo_rule.maxrev);
@@ -303,6 +303,6 @@ Ruleset::Ruleset(std::string const& filename)
     }
   Repository repo;
   repo.name = fallback.repo_rule->name;
-  repo.branches.insert(fallback.branch_rule->name);
+  repo.branches.insert(fallback.branch_rule);
   repositories_.push_back(repo);
   }
