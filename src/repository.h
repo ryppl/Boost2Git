@@ -65,7 +65,12 @@ class Repository
         void commitNote(const QByteArray &noteText, bool append,
           const QByteArray &commit = QByteArray());
       };
-    Repository(const Ruleset::Repository &rule, bool incremental);
+    
+    Repository(
+        const Ruleset::Repository &rule,
+        bool incremental,
+        QHash<QString, Repository*> const& repo_index);
+    
     int setupIncremental(int &cutoff);
     void restoreLog();
     ~Repository();
@@ -114,6 +119,8 @@ class Repository
     QHash<QString, AnnotatedTag> annotatedTags;
     QString name;
     QString prefix;
+    Repository* submodule_in_repo;
+    QString submodule_path;
     LoggingQProcess fastImport;
     int commitCount;
     int outstandingTransactions;

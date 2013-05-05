@@ -169,7 +169,7 @@ retry:
     int min_rev = 1;
     BOOST_FOREACH(Ruleset::Repository const& rule, ruleset.repositories())
       {
-      Repository *repo = new Repository(rule, resume_from != 0);
+      Repository *repo = new Repository(rule, resume_from != 0, repositories);
       if (!repo)
         {
         return EXIT_FAILURE;

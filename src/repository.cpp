@@ -65,9 +65,16 @@ static QString marksFileName(QString name)
   return name;
   }
 
-Repository::Repository(const Ruleset::Repository &rule, bool incremental)
+Repository::Repository(
+    const Ruleset::Repository &rule,
+    bool incremental,
+    QHash<QString, Repository*> const& repo_index)
     : name(QString::fromStdString(rule.name))
     , prefix(/*rule.forwardTo*/)
+    , submodule_in_repo(
+        rule.submodule_in_repo.empty()
+        ? 0 : repo_index[QString::fromStdString(rule.submodule_in_repo)] )
+    , submodule_path( QString::fromStdString(rule.submodule_path) )
     , fastImport(name)
     , commitCount(0)
     , outstandingTransactions(0)
