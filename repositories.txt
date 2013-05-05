@@ -356,6 +356,7 @@ abstract repository common_branches
 
 repository accumulators : common_branches
 {
+  submodule of "boost" : "libs/accumulators";
   content
   {
     "boost/accumulators/" : "include/boost/accumulators/";

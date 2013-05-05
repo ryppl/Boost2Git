@@ -67,6 +67,7 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
       > string_
       > -(':' > string_ % ',')
       > '{'
+      > -(qi::lit("submodule") > qi::lit("of") > string_ > ':' > string_ > ';')
       > (("minrev" > qi::uint_ > ';') | qi::attr(0))
       > (("maxrev" > qi::uint_ > ';') | qi::attr(UINT_MAX))
       > -content_
@@ -127,6 +128,7 @@ boost2git::RepoRule fallback_repo(
   0, /* int line */
   "svn2git-fallback", /* std::string name */
   0, /* std::vector<std::string> bases */
+  0, /* std::vector<std::string> submodule_info */
   0, /* std::size_t minrev */
   UINT_MAX, /* std::size_t maxrev */
   0, /* std::vector<boost2git::ContentRule> content */

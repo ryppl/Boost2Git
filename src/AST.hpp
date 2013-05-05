@@ -29,6 +29,7 @@ BOOST_FUSION_DEFINE_STRUCT((boost2git), RepoRule,
   (int, line)
   (std::string, name)
   (std::vector<std::string>, bases)
+  (std::vector<std::string>, submodule_info)
   (std::size_t, minrev)
   (std::size_t, maxrev)
   (std::vector<boost2git::ContentRule>, content_rules)
