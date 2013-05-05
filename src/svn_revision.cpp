@@ -835,7 +835,7 @@ int SvnRevision::recurse(
       current = apr_pstrcat(pool, current, "/", NULL);
       }
 
-    // find the first rule that matches this pathname
+    // find the longest match for this pathname
     Rule const* match = find_match(matchRules, current, revnum);
     if (match)
       {
