@@ -50,7 +50,10 @@ static void get_line(int& line, PosIterator const& iterator)
   {
   line = iterator.get_position().line;
   }
-
+static void set_git_ref_qualifier(boost2git::BranchRule& branch, char const* qualifier)
+  {
+  branch.git_ref_qualifier = qualifier;
+  }
 } // namespace boost2git
 
 using namespace boost2git;
@@ -84,13 +87,13 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
     branches_
      %= qi::lit("branches")
       > '{'
-      > +branch_
+      > +(branch_[phoenix::bind(set_git_ref_qualifier, qi::_1, "refs/heads/")])
       > '}'
       ;
     tags_
      %= qi::lit("tags")
       > '{'
-      > +branch_
+      > +branch_[phoenix::bind(set_git_ref_qualifier, qi::_1, "refs/tags/")]
       > '}'
       ;
     branch_
@@ -264,6 +267,8 @@ Ruleset::Ruleset(std::string const& filename)
       {
       BOOST_FOREACH(BranchRule const* branch_rule, *rules_and_prefix.first)
         {
+        assert(std::strcmp(branch_rule->git_ref_qualifier, "refs/heads/") == 0
+              || std::strcmp(branch_rule->git_ref_qualifier, "refs/tags/") == 0);
         if (branch_rule->max < repo_rule.minrev)
           {
           continue;
