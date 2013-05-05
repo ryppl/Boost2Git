@@ -265,19 +265,15 @@ Ruleset::Ruleset(std::string const& filename)
         {
         assert(std::strcmp(branch_rule->git_ref_qualifier, "refs/heads/") == 0
               || std::strcmp(branch_rule->git_ref_qualifier, "refs/tags/") == 0);
-        if (branch_rule->max < repo_rule.minrev)
-          {
-          continue;
-          }
-      
-        repo.branches.insert(branch_rule);
-
+        
         std::size_t minrev = std::max(branch_rule->min, repo_rule.minrev);
         std::size_t maxrev = std::min(branch_rule->max, repo_rule.maxrev);
         if (minrev > maxrev)
           {
           continue;
           }
+      
+        repo.branches.insert(branch_rule);
 
         if (repo_rule.content_rules.empty())
           {
