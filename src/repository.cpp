@@ -94,11 +94,7 @@ Repository::Repository(
   fastImport.setWorkingDirectory(name);
   if (!options.dry_run) {
     if (!QDir(name).exists()) { // repo doesn't exist yet.
-      Log::trace()
-        << "Creating new repository "
-        << qPrintable(name)
-        << std::endl
-        ;
+      Log::trace() << "Creating new repository " << qPrintable(name) << std::endl;
       QDir::current().mkpath(name);
       QProcess init;
       init.setWorkingDirectory(name);
@@ -215,21 +211,14 @@ int Repository::setupIncremental(int &cutoff)
 
     if (revnum < last_revnum)
       {
-      Log::warn()
-        << qPrintable(name) << " revision numbers are not monotonic:"
-        << " got " << last_revnum
-        << " and then " << revnum
-        << std::endl
-        ;
+      Log::warn() << qPrintable(name) << " revision numbers are not monotonic: "
+                  << " got " << last_revnum << " and then " << revnum << std::endl;
       }
 
     if (mark > last_valid_mark)
       {
-      Log::warn()
-        << qPrintable(name) << " unknown commit mark found:"
-        << " rewinding -- did you hit Ctrl-C?"
-        << std::endl
-        ;
+      Log::warn() << qPrintable(name) << " unknown commit mark found:"
+                  << " rewinding -- did you hit Ctrl-C?" << std::endl;
       cutoff = revnum;
       goto beyond_cutoff;
       }
@@ -262,12 +251,8 @@ beyond_cutoff:
   logfile.copy(bkup);
 
   // truncate, so that we ignore the rest of the revisions
-  Log::debug()
-    << qPrintable(name)
-    << " truncating history to revision "
-    << cutoff
-    << std::endl
-    ;
+  Log::debug() << qPrintable(name) << " truncating history to revision "
+               << cutoff << std::endl;
   logfile.resize(pos);
   return cutoff;
   }
@@ -300,12 +285,8 @@ void Repository::closeFastImport()
       fastImport.terminate();
       if (!fastImport.waitForFinished(200))
         {
-        Log::warn()
-          << "git-fast-import for repository "
-          << qPrintable(name)
-          << " did not die"
-          << std::endl
-          ;
+        Log::warn() << "git-fast-import for repository "
+                    << qPrintable(name) << " did not die" << std::endl;
         }
       }
     }
@@ -385,44 +366,24 @@ int Repository::createBranch(
   if (mark == -1)
     {
     std::stringstream message;
-    message
-      << qPrintable(branch)
-      << " in repository "
-      << qPrintable(name)
-      << " is branching from branch "
-      << qPrintable(branchFrom)
-      << " but the latter doesn't exist. Can't continue."
-      ;
+    message << qPrintable(branch) << " in repository " << qPrintable(name)
+            << " is branching from branch " << qPrintable(branchFrom)
+            << " but the latter doesn't exist. Can't continue.";
     throw std::runtime_error(message.str());
     }
   QByteArray branchFromRef = ":" + QByteArray::number(mark);
   if (!mark)
     {
-    Log::warn()
-      << qPrintable(branch)
-      << " in repository "
-      << qPrintable(name)
-      << " is branching but no exported commits exist in repository."
-      << " creating an empty branch."
-      << std::endl
-      ;
+    Log::warn() << qPrintable(branch) << " in repository "
+                << qPrintable(name) << " is branching but no exported commits exist in repository."
+                << " creating an empty branch." << std::endl;
     branchFromRef = branchFrom.toUtf8();
     branchFromDesc += ", deleted/unknown";
     }
-  Log::debug()
-    << "Creating branch: "
-    << qPrintable(branch)
-    << " from "
-    << qPrintable(branchFrom)
-    << " (r"
-    << branchRevNum
-    << ' '
-    << qPrintable(branchFromDesc)
-    << ')'
-    << " in repository "
-    << qPrintable(name)
-    << std::endl
-    ;
+  Log::debug() << "Creating branch: " << qPrintable(branch) << " from "
+               << qPrintable(branchFrom) << " (r" << branchRevNum << ' '
+               << qPrintable(branchFromDesc) << ')' << " in repository "
+               << qPrintable(name) << std::endl;
   // Preserve note
   branches[branch].note = branches.value(branchFrom).note;
   return resetBranch(branch, revnum, mark, branchFromRef, branchFromDesc);
@@ -461,15 +422,9 @@ int Repository::resetBranch(
       {
       backupBranch = "refs/backups/r" + QByteArray::number(revnum) + branchRef.mid(4);
       }
-    Log::debug()
-      << "backing up branch "
-      << qPrintable(branch)
-      << " to "
-      << qPrintable(backupBranch)
-      << " in repository "
-      << qPrintable(name)
-      << std::endl
-      ;
+    Log::debug() << "backing up branch " << qPrintable(branch) << " to "
+                 << qPrintable(backupBranch) << " in repository " << qPrintable(name)
+                 << std::endl;
     backupCmd = "reset " + backupBranch + "\nfrom " + branchRef + "\n\n";
     }
 
@@ -523,14 +478,8 @@ Repository::Transaction *Repository::newTransaction(
   Q_ASSERT(branch.startsWith("refs/"));
   if (!branches.contains(branch))
     {
-    Log::debug()
-      << "Creating branch '"
-      << qPrintable(branch)
-      << "' in repository '"
-      <<  qPrintable(name)
-      << "'."
-      << std::endl
-      ;
+    Log::debug() << "Creating branch '" << qPrintable(branch) << "' in repository '"
+                 <<  qPrintable(name) << "'." << std::endl;
     }
 
   Transaction *txn = new Transaction;
@@ -574,24 +523,14 @@ void Repository::createAnnotatedTag(
     }
   if (!annotatedTags.contains(tagName))
     {
-    Log::debug()
-      << "Creating annotated tag "
-      << qPrintable(tagName)
-      << " (" << qPrintable(ref) << ')'
-      << " in repository "
-      << qPrintable(name)
-      << std::endl
-      ;
+    Log::debug() << "Creating annotated tag " << qPrintable(tagName)
+                 << " (" << qPrintable(ref) << ')' << " in repository "
+                 << qPrintable(name) << std::endl;
     }
   else
     {
-    Log::debug()
-      << "Re-creating annotated tag "
-      << qPrintable(tagName)
-      << " in repository "
-      << qPrintable(name)
-      << std::endl
-      ;
+    Log::debug() << "Re-creating annotated tag " << qPrintable(tagName)
+                 << " in repository " << qPrintable(name) << std::endl;
     }
   AnnotatedTag &tag = annotatedTags[tagName];
   tag.supportingRef = ref;
@@ -608,11 +547,7 @@ void Repository::finalizeTags()
     {
     return;
     }
-  std::ostream& output = Log::debug()
-    << "Finalising tags for "
-    << qPrintable(name)
-    << "..."
-    ;
+  std::ostream& output = Log::debug() << "Finalising tags for " << qPrintable(name) << "...";
   startFastImport();
 
   QHash<QString, AnnotatedTag>::ConstIterator it = annotatedTags.constBegin();
@@ -747,10 +682,7 @@ void Repository::Transaction::noteCopyFromBranch(
   Q_ASSERT(branchFrom.startsWith("refs/"));
   if (branch == branchFrom)
     {
-    Log::warn() << "Cannot merge inside a branch"
-                << " in repository "
-                << qPrintable(repository->name)
-                << std::endl;
+    Log::warn() << "Cannot merge inside a branch" << " in repository " << qPrintable(repository->name) << std::endl;
     return;
     }
 
@@ -760,62 +692,29 @@ void Repository::Transaction::noteCopyFromBranch(
 
   if (mark == -1)
     {
-    Log::warn()
-      << qPrintable(branch)
-      << " is copying from branch "
-      << qPrintable(branchFrom)
-      << " but the latter doesn't exist. Continuing, assuming the files exist"
-      << " in repository "
-      << qPrintable(repository->name)
-      << std::endl
-      ;
+    Log::warn() << qPrintable(branch) << " is copying from branch " << qPrintable(branchFrom)
+                << " but the latter doesn't exist. Continuing, assuming the files exist"
+                << " in repository " << qPrintable(repository->name) << std::endl;
     }
   else if (mark == 0)
     {
-    Log::warn()
-      << "Unknown revision r"
-      << branchRevNum
-      << ". Continuing, assuming the files exist"
-      << " in repository "
-      << qPrintable(repository->name)
-      << std::endl
-      ;
+    Log::warn() << "Unknown revision r" << branchRevNum << ". Continuing, assuming the files exist"
+                << " in repository " << qPrintable(repository->name) << std::endl;
     }
   else
     {
-    Log::debug()
-      << "repository "
-      << qPrintable(repository->name)
-      << " branch "
-      << qPrintable(branch)
-      << " has some files copied from "
-      << qPrintable(branchFrom)
-      << "@"
-      << branchRevNum
-      << std::endl
-      ;
+    Log::debug() << "repository " << qPrintable(repository->name) << " branch " << qPrintable(branch)
+                 << " has some files copied from " << qPrintable(branchFrom) << "@" << branchRevNum << std::endl;
     if (!merges.contains(mark))
       {
       merges.append(mark);
-      Log::debug()
-        << "adding "
-        << qPrintable(branchFrom)
-        << "@"
-        << branchRevNum
-        << " : "
-        << mark
-        << " as a merge point"
-        << " in repository "
-        << qPrintable(repository->name)
-        << std::endl
-        ;
+      Log::debug() << "adding " << qPrintable(branchFrom) << "@" << branchRevNum << " : " << mark
+                   << " as a merge point" << " in repository " << qPrintable(repository->name) << std::endl;
       }
     else
       {
-      Log::debug() << "merge point already recorded"
-                   << " in repository "
-                   << qPrintable(repository->name)
-                   << std::endl;
+      Log::debug() << "merge point already recorded" << " in repository "
+                   << qPrintable(repository->name) << std::endl;
       }
     }
   }
@@ -917,15 +816,9 @@ void Repository::Transaction::commit()
   } else {
     if (repository->incremental)
       {
-      Log::warn()
-        << "Branch "
-        << qPrintable(branch)
-        << " in repository "
-        << qPrintable(repository->name)
-        << " doesn't exist at revision "
-        << revnum << " -- did you resume from the wrong revision?"
-        << std::endl
-        ;
+      Log::warn() << "Branch " << qPrintable(branch) << " in repository "
+                  << qPrintable(repository->name) << " doesn't exist at revision "
+                  << revnum << " -- did you resume from the wrong revision?" << std::endl;
       }
     br.created = revnum;
   }
@@ -951,22 +844,15 @@ void Repository::Transaction::commit()
     qSort(merges);
     repository->fastImport.write("merge :" + QByteArray::number(merges.last()) + "\n");
     merges.pop_back();
-    Log::debug()
-      << "Discarding all but the highest merge point "
-      << "as a workaround for cvs2svn created branch/tag. "
+    Log::debug() << "Discarding all but the highest merge point "
+                 << "as a workaround for cvs2svn created branch/tag. "
       //<< "Discarded marks: " << merges
       ;
   } else {
     foreach (const int merge, merges) {
       if (merge == parentmark) {
-        Log::debug()
-          << "Skipping marking "
-          << merge
-          << " as a merge point as it matches the parent"
-          << " in repository "
-          << qPrintable(repository->name)
-          << std::endl
-          ;
+        Log::debug() << "Skipping marking " << merge << " as a merge point as it matches the parent"
+                     << " in repository " << qPrintable(repository->name) << std::endl;
         continue;
       }
 
@@ -977,10 +863,8 @@ void Repository::Transaction::commit()
         //   (3) create another commit on branch to soak up additional parents
         // we've chosen option (2) for now, since only artificial commits
         // created by cvs2svn seem to have this issue
-        Log::warn() << "too many merge parents"
-                    << " in repository "
-                    << qPrintable(repository->name)
-                    << std::endl;
+        Log::warn() << "too many merge parents" << " in repository "
+                    << qPrintable(repository->name) << std::endl;
         break;
       }
 
@@ -1003,16 +887,9 @@ void Repository::Transaction::commit()
     + " branch " + branch + " = :" + QByteArray::number(mark)
     + (desc.isEmpty() ? "" : " # merge from") + desc
     + "\n\n");
-  Log::trace()
-    << deletedFiles.count() + modifiedFiles.count('\n')
-    << " modifications from SVN "
-    << svnprefix.data()
-    << " to "
-    << qPrintable(repository->name)
-    << '/'
-    << branch.data()
-    << std::endl
-    ;
+  Log::trace() << deletedFiles.count() + modifiedFiles.count('\n')
+               << " modifications from SVN " << svnprefix.data() << " to " << qPrintable(repository->name)
+               << '/' << branch.data() << std::endl;
 
   // Commit metadata note if requested
   if (options.add_metadata_notes)
@@ -1020,5 +897,6 @@ void Repository::Transaction::commit()
 
   while (repository->fastImport.bytesToWrite())
       if (!repository->fastImport.waitForBytesWritten(-1))
-          qFatal("Failed to write to process: %s for repository %s", qPrintable(repository->fastImport.errorString()), qPrintable(repository->name));
+          qFatal("Failed to write to process: %s for repository %s",
+            qPrintable(repository->fastImport.errorString()), qPrintable(repository->name));
   }
