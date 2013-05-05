@@ -22,6 +22,7 @@ BOOST_FUSION_DEFINE_STRUCT((boost2git), BranchRule,
   (std::string, prefix)
   (std::string, name)
   (int, line)
+  (char const*, git_ref_qualifier)
   )
 
 BOOST_FUSION_DEFINE_STRUCT((boost2git), RepoRule,

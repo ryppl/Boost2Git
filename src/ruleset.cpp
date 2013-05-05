@@ -142,7 +142,8 @@ boost2git::BranchRule fallback_branch(
       std::size_t(-1), /* std::size_t max */
       "", /* std::string prefix */
       "master", /* std::string name */
-      0 /* int line */
+      0, /* int line */
+      "refs/heads/"
     ));
 
 boost2git::ContentRule fallback_content(
