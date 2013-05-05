@@ -366,6 +366,7 @@ repository accumulators : common_branches
 
 repository algorithm : common_branches
 {
+  submodule of "boost" : "libs/algorithm";
   content
   {
     "boost/minmax.hpp" : "include/boost/minmax.hpp";
@@ -377,6 +378,7 @@ repository algorithm : common_branches
 
 repository any : common_branches
 {
+  submodule of "boost" : "libs/any";
   content
   {
     "boost/any.hpp" : "include/boost/any.hpp";
@@ -386,6 +388,7 @@ repository any : common_branches
 
 repository atomic : common_branches
 {
+  submodule of "boost" : "libs/atomic";
   content
   {
     "boost/atomic.hpp" : "include/boost/atomic.hpp";
@@ -396,6 +399,7 @@ repository atomic : common_branches
 
 repository array : common_branches
 {
+  submodule of "boost" : "libs/array";
   content
   {
     "boost/array.hpp" : "include/boost/array.hpp";
@@ -405,6 +409,7 @@ repository array : common_branches
 
 repository asio : common_branches
 {
+  submodule of "boost" : "libs/asio";
   content
   {
     "boost/asio.hpp" : "include/boost/asio.hpp";
@@ -415,6 +420,7 @@ repository asio : common_branches
 
 repository assign : common_branches
 {
+  submodule of "boost" : "libs/assign";
   content
   {
     "boost/assign.hpp" : "include/boost/assign.hpp";
@@ -425,6 +431,7 @@ repository assign : common_branches
 
 repository bimap : common_branches
 {
+  submodule of "boost" : "libs/bimap";
   content
   {
     "boost/bimap.hpp" : "include/boost/bimap.hpp";
@@ -435,6 +442,7 @@ repository bimap : common_branches
 
 repository bind : common_branches
 {
+  submodule of "boost" : "libs/bind";
   content
   {
     "boost/is_placeholder.hpp" : "include/boost/is_placeholder.hpp";
@@ -453,6 +461,7 @@ repository bind : common_branches
 
 repository chrono : common_branches
 {
+  submodule of "boost" : "libs/chrono";
   content
   {
     "boost/chrono.hpp" : "include/boost/chrono.hpp";
@@ -463,6 +472,7 @@ repository chrono : common_branches
 
 repository circular_buffer : common_branches
 {
+  submodule of "boost" : "libs/circular_buffer";
   content
   {
     "boost/circular_buffer.hpp" : "include/boost/circular_buffer.hpp";
@@ -474,6 +484,7 @@ repository circular_buffer : common_branches
 
 repository compatibility : common_branches
 {
+  submodule of "boost" : "libs/compatibility";
   content
   {
     "boost/compatibility/" : "include/boost/compatibility/";
@@ -483,6 +494,7 @@ repository compatibility : common_branches
 
 repository compose : common_branches
 {
+  submodule of "boost" : "libs/compose";
   content
   {
     "boost/compose.hpp" : "include/boost/compose.hpp";
@@ -492,6 +504,7 @@ repository compose : common_branches
 
 repository concept_check : common_branches
 {
+  submodule of "boost" : "libs/concept_check";
   content
   {
     "boost/pending/concept_checks.hpp" : "include/boost/pending/concept_checks.hpp";
@@ -508,6 +521,7 @@ repository concept_check : common_branches
 
 repository config : common_branches
 {
+  submodule of "boost" : "libs/config";
   content
   {
     "boost/config.hpp" : "include/boost/config.hpp";
@@ -523,6 +537,7 @@ repository config : common_branches
 
 repository container : common_branches
 {
+  submodule of "boost" : "libs/container";
   content
   {
     "boost/container/" : "include/boost/container/";
@@ -532,6 +547,7 @@ repository container : common_branches
 
 repository context : common_branches
 {
+  submodule of "boost" : "libs/context";
   content
   {
     "[libs/context]";
@@ -542,6 +558,7 @@ repository context : common_branches
 
 repository conversion : common_branches
 {
+  submodule of "boost" : "libs/conversion";
   content
   {
     "boost/implicit_cast.hpp" : "include/boost/implicit_cast.hpp";
@@ -626,6 +643,7 @@ repository core : common_branches, unordered_foreign_branches
 
 repository coroutine : common_branches
 {
+  submodule of "boost" : "libs/coroutine";
   content
   {
     "boost/coroutine/" : "include/boost/coroutine/";
@@ -635,6 +653,7 @@ repository coroutine : common_branches
 
 repository crc : common_branches
 {
+  submodule of "boost" : "libs/crc";
   content
   {
     "boost/crc.hpp" : "include/boost/crc.hpp";
@@ -644,6 +663,7 @@ repository crc : common_branches
 
 repository date_time : common_branches
 {
+  submodule of "boost" : "libs/date_time";
   content
   {
     "boost/date_time.hpp" : "include/boost/date_time.hpp";
@@ -660,6 +680,7 @@ repository date_time : common_branches
 
 repository disjoint_sets : common_branches
 {
+  submodule of "boost" : "libs/disjoint_sets";
   content
   {
     "boost/pending/disjoint_sets.hpp" : "include/boost/pending/disjoint_sets.hpp";
@@ -670,6 +691,7 @@ repository disjoint_sets : common_branches
 
 repository dynamic_bitset : common_branches
 {
+  submodule of "boost" : "libs/dynamic_bitset";
   content
   {
     "boost/dynamic_bitset.hpp" : "include/boost/dynamic_bitset.hpp";
@@ -683,6 +705,7 @@ repository dynamic_bitset : common_branches
 
 repository exception : common_branches
 {
+  submodule of "boost" : "libs/exception";
   content
   {
     "boost/exception_ptr.hpp" : "include/boost/exception_ptr.hpp";
@@ -694,6 +717,7 @@ repository exception : common_branches
 
 repository filesystem : common_branches
 {
+  submodule of "boost" : "libs/filesystem";
   content
   {
     "boost/delimit_string.hpp" : "include/boost/delimit_string.hpp";
@@ -729,6 +753,7 @@ repository filesystem
 
 repository flyweight : common_branches
 {
+  submodule of "boost" : "libs/flyweight";
   content
   {
     "boost/flyweight.hpp" : "include/boost/flyweight.hpp";
@@ -739,6 +764,7 @@ repository flyweight : common_branches
 
 repository foreach : common_branches
 {
+  submodule of "boost" : "libs/foreach";
   content
   {
     "boost/foreach.hpp" : "include/boost/foreach.hpp";
@@ -749,6 +775,7 @@ repository foreach : common_branches
 
 repository format : common_branches
 {
+  submodule of "boost" : "libs/format";
   content
   {
     "boost/format.hpp" : "include/boost/format.hpp";
@@ -763,6 +790,7 @@ repository format : common_branches
 
 repository function : common_branches
 {
+  submodule of "boost" : "libs/function";
   content
   {
     "boost/function.hpp" : "include/boost/function.hpp";
@@ -778,6 +806,7 @@ repository function : common_branches
 
 repository functional : common_branches
 {
+  submodule of "boost" : "libs/functional";
   content
   {
     "boost/functional/overloaded_function/" : "include/boost/functional/overloaded_function/";
@@ -817,6 +846,7 @@ repository functional_hash : common_branches, unordered_foreign_branches
 
 repository function_types : common_branches
 {
+  submodule of "boost" : "libs/function_types";
   content
   {
     "boost/function_types/" : "include/boost/function_types/";
@@ -826,6 +856,7 @@ repository function_types : common_branches
 
 repository fusion : common_branches
 {
+  submodule of "boost" : "libs/fusion";
   content
   {
     "boost/fusion/" : "include/boost/fusion/";
@@ -835,6 +866,7 @@ repository fusion : common_branches
 
 repository geometry : common_branches
 {
+  submodule of "boost" : "libs/geometry";
   content
   {
     "boost/geometry.hpp" : " include/boost/geometry.hpp";
@@ -858,6 +890,7 @@ repository geometry : common_branches
 
 repository gil : common_branches
 {
+  submodule of "boost" : "libs/gil";
   content
   {
     "boost/gil/" : "include/boost/gil/";
@@ -873,6 +906,7 @@ repository gil : common_branches
 
 repository graph_parallel : common_branches
 {
+  submodule of "boost" : "libs/graph_parallel";
   content
   {
     "boost/graph/distributed/"                : "include/boost/graph/distributed/";
@@ -885,6 +919,7 @@ repository graph_parallel : common_branches
 
 repository graph : common_branches
 {
+  submodule of "boost" : "libs/graph";
   content
   {
     "boost/detail/algorithm.hpp"              : "include/boost/detail/algorithm.hpp";
@@ -924,6 +959,7 @@ repository graph : common_branches
 
 repository heap : common_branches
 {
+  submodule of "boost" : "libs/heap";
   content
   {
     "boost/heap/" : "include/boost/heap/";
@@ -933,6 +969,7 @@ repository heap : common_branches
 
 repository icl : common_branches
 {
+  submodule of "boost" : "libs/icl";
   content
   {
     "boost/icl/" : "include/boost/icl/";
@@ -942,6 +979,7 @@ repository icl : common_branches
 
 repository integer : common_branches
 {
+  submodule of "boost" : "libs/integer";
   content
   {
     "boost/cstdint.hpp" : "include/boost/cstdint.hpp";
@@ -957,6 +995,7 @@ repository integer : common_branches
 
 repository interprocess : common_branches
 {
+  submodule of "boost" : "libs/interprocess";
   content
   {
     "boost/interprocess/" : "include/boost/interprocess/";
@@ -966,6 +1005,7 @@ repository interprocess : common_branches
 
 repository intrusive : common_branches
 {
+  submodule of "boost" : "libs/intrusive";
   content
   {
     "boost/intrusive/" : "include/boost/intrusive/";
@@ -975,6 +1015,7 @@ repository intrusive : common_branches
 
 repository io : common_branches
 {
+  submodule of "boost" : "libs/io";
   content
   {
     "boost/io/" : "include/boost/io/";
@@ -993,6 +1034,7 @@ repository io : common_branches
 
 repository iostreams : common_branches
 {
+  submodule of "boost" : "libs/iostreams";
   content
   {
     "boost/iostreams/" : "include/boost/iostreams/";
@@ -1010,6 +1052,7 @@ repository iostreams : common_branches
 
 repository iterator : common_branches
 {
+  submodule of "boost" : "libs/iterator";
   content
   {
     "boost/counting_iterator.hpp" : "include/boost/counting_iterator.hpp";
@@ -1050,6 +1093,7 @@ repository iterator : common_branches
 
 repository lambda : common_branches
 {
+  submodule of "boost" : "libs/lambda";
   content
   {
     "boost/lambda/" : "include/boost/lambda/";
@@ -1068,6 +1112,7 @@ repository lambda : common_branches
 
 repository locale : common_branches
 {
+  submodule of "boost" : "libs/locale";
   content
   {
     "boost/locale.hpp" : "include/boost/locale.hpp";
@@ -1078,6 +1123,7 @@ repository locale : common_branches
 
 repository local_function : common_branches
 {
+  submodule of "boost" : "libs/local_function";
   content
   {
     "boost/local_function.hpp" : "include/boost/local_function.hpp";
@@ -1088,6 +1134,7 @@ repository local_function : common_branches
 
 repository lockfree : common_branches
 {
+  submodule of "boost" : "libs/lockfree";
   content
   {
     "boost/lockfree/" : "include/boost/lockfree/";
@@ -1097,6 +1144,7 @@ repository lockfree : common_branches
 
 repository logic : common_branches
 {
+  submodule of "boost" : "libs/logic";
   content
   {
     "boost/logic/" : "include/boost/logic/";
@@ -1106,6 +1154,7 @@ repository logic : common_branches
 
 repository log : common_branches
 {
+  submodule of "boost" : "libs/log";
   minrev 83860;
   content
   {
@@ -1116,6 +1165,7 @@ repository log : common_branches
 
 repository math : common_branches
 {
+  submodule of "boost" : "libs/math";
   content
   {
     "boost/math/" : "include/boost/math/";
@@ -1130,6 +1180,7 @@ repository math : common_branches
 
 repository move : common_branches
 {
+  submodule of "boost" : "libs/move";
   content
   {
     "boost/move/" : "include/boost/move/";
@@ -1139,6 +1190,7 @@ repository move : common_branches
 
 repository mpi : common_branches
 {
+  submodule of "boost" : "libs/mpi";
   content
   {
     "boost/mpi.hpp" : "include/boost/mpi.hpp";
@@ -1152,6 +1204,7 @@ repository mpi : common_branches
 
 repository mpl : common_branches
 {
+  submodule of "boost" : "libs/mpl";
   content
   {
     "boost/mpl/" : "include/boost/mpl/";
@@ -1170,6 +1223,7 @@ repository mpl : common_branches
 
 repository msm : common_branches
 {
+  submodule of "boost" : "libs/msm";
   content
   {
     "boost/msm/" : "include/boost/msm/";
@@ -1186,6 +1240,7 @@ repository msm : common_branches
 
 repository multi_array : common_branches
 {
+  submodule of "boost" : "libs/multi_array";
   content
   {
     "boost/multi_array.hpp" : "include/boost/multi_array.hpp";
@@ -1201,6 +1256,7 @@ repository multi_array : common_branches
 
 repository multi_index : common_branches
 {
+  submodule of "boost" : "libs/multi_index";
   content
   {
     "boost/multi_index_container.hpp" : "include/boost/multi_index_container.hpp";
@@ -1212,6 +1268,7 @@ repository multi_index : common_branches
 
 repository multiprecision : common_branches
 {
+  submodule of "boost" : "libs/multiprecision";
   content
   {
     "boost/multiprecision/" : "include/boost/multiprecision/";
@@ -1221,6 +1278,7 @@ repository multiprecision : common_branches
 
 repository numeric_conversion : common_branches
 {
+  submodule of "boost" : "libs/numeric_conversion";
   content
   {
     "[libs/numeric/conversion]";
@@ -1231,6 +1289,7 @@ repository numeric_conversion : common_branches
 
 repository interval : common_branches
 {
+  submodule of "boost" : "libs/interval";
   content
   {
     "boost/numeric/interval/" : "include/boost/numeric/interval/";
@@ -1241,6 +1300,7 @@ repository interval : common_branches
 
 repository odeint : common_branches
 {
+  submodule of "boost" : "libs/odeint";
   content
   {
     "boost/numeric/odeint/" : "include/boost/numeric/odeint/";
@@ -1251,6 +1311,7 @@ repository odeint : common_branches
 
 repository ublas : common_branches
 {
+  submodule of "boost" : "libs/ublas";
   content
   {
     "boost/numeric/ublas/" : "include/boost/numeric/ublas/";
@@ -1279,6 +1340,7 @@ repository ublas
 
 repository optional : common_branches
 {
+  submodule of "boost" : "libs/optional";
   content
   {
     "boost/detail/in_place_factory.hpp" : "include/boost/detail/in_place_factory.hpp";
@@ -1296,6 +1358,7 @@ repository optional : common_branches
 
 repository parameter : common_branches
 {
+  submodule of "boost" : "libs/parameter";
   content
   {
     "boost/parameter.hpp" : "include/boost/parameter.hpp";
@@ -1317,6 +1380,7 @@ repository parameter : common_branches
 
 repository phoenix : common_branches
 {
+  submodule of "boost" : "libs/phoenix";
   content
   {
     "boost/phoenix.hpp" : "include/boost/phoenix.hpp";
@@ -1327,6 +1391,7 @@ repository phoenix : common_branches
 
 repository polygon : common_branches
 {
+  submodule of "boost" : "libs/polygon";
   content
   {
     "boost/polygon/" : "include/boost/polygon/";
@@ -1336,6 +1401,7 @@ repository polygon : common_branches
 
 repository pool : common_branches
 {
+  submodule of "boost" : "libs/pool";
   content
   {
     "boost/pool/" : "include/boost/pool/";
@@ -1345,6 +1411,7 @@ repository pool : common_branches
 
 repository preprocessor : common_branches
 {
+  submodule of "boost" : "libs/preprocessor";
   content
   {
     "boost/preprocessor.hpp" : "include/boost/preprocessor.hpp";
@@ -1386,6 +1453,7 @@ repository preprocessor
 
 repository program_options : common_branches
 {
+  submodule of "boost" : "libs/program_options";
   content
   {
     "boost/program_options.hpp" : "include/boost/program_options.hpp";
@@ -1396,6 +1464,7 @@ repository program_options : common_branches
 
 repository property_map : common_branches
 {
+  submodule of "boost" : "libs/property_map";
   content
   {
     "boost/pending/plugin.hpp" : "include/boost/pending/plugin.hpp";
@@ -1415,6 +1484,7 @@ repository property_map : common_branches
 
 repository property_tree : common_branches
 {
+  submodule of "boost" : "libs/property_tree";
   content
   {
     "boost/property_tree/" : "include/boost/property_tree/";
@@ -1424,6 +1494,7 @@ repository property_tree : common_branches
 
 repository proto : common_branches
 {
+  submodule of "boost" : "libs/proto";
   content
   {
     "boost/proto/" : "include/boost/proto/";
@@ -1433,6 +1504,7 @@ repository proto : common_branches
 
 repository ptr_container : common_branches
 {
+  submodule of "boost" : "libs/ptr_container";
   content
   {
     "boost/ptr_container/" : "include/boost/ptr_container/";
@@ -1442,6 +1514,7 @@ repository ptr_container : common_branches
 
 repository python : common_branches
 {
+  submodule of "boost" : "libs/python";
   content
   {
     "boost/python.hpp" : "include/boost/python.hpp";
@@ -1583,6 +1656,7 @@ repository python
 
 repository random : common_branches
 {
+  submodule of "boost" : "libs/random";
   content
   {
     "boost/nondet_random.hpp" : "include/boost/nondet_random.hpp";
@@ -1602,6 +1676,7 @@ repository random : common_branches
 
 repository range : common_branches
 {
+  submodule of "boost" : "libs/range";
   content
   {
     "boost/range.hpp" : "include/boost/range.hpp";
@@ -1612,6 +1687,7 @@ repository range : common_branches
 
 repository ratio : common_branches
 {
+  submodule of "boost" : "libs/ratio";
   content
   {
     "boost/ratio.hpp" : "include/boost/ratio.hpp";
@@ -1622,6 +1698,7 @@ repository ratio : common_branches
 
 repository rational : common_branches
 {
+  submodule of "boost" : "libs/rational";
   content
   {
     "boost/rational.hpp" : "include/boost/rational.hpp";
@@ -1631,6 +1708,7 @@ repository rational : common_branches
 
 repository regex : common_branches
 {
+  submodule of "boost" : "libs/regex";
   content
   {
     "boost/pattern_except.hpp" : "include/boost/pattern_except.hpp";
@@ -1653,6 +1731,7 @@ repository regex : common_branches
 
 repository scope_exit : common_branches
 {
+  submodule of "boost" : "libs/scope_exit";
   content
   {
     "boost/scope_exit.hpp" : "include/boost/scope_exit.hpp";
@@ -1662,6 +1741,7 @@ repository scope_exit : common_branches
 
 repository serialization : common_branches
 {
+  submodule of "boost" : "libs/serialization";
   content
   {
     "boost/archive/" : "include/boost/archive/";
@@ -1685,6 +1765,7 @@ repository serialization : common_branches
 
 repository signals : common_branches
 {
+  submodule of "boost" : "libs/signals";
   content
   {
     "boost/last_value.hpp" : "include/boost/last_value.hpp";
@@ -1697,6 +1778,7 @@ repository signals : common_branches
 
 repository signals2 : common_branches
 {
+  submodule of "boost" : "libs/signals2";
   content
   {
     "boost/signals2.hpp" : "include/boost/signals2.hpp";
@@ -1707,6 +1789,7 @@ repository signals2 : common_branches
 
 repository smart_ptr : common_branches
 {
+  submodule of "boost" : "libs/smart_ptr";
   minrev 7620;
   content
   {
@@ -1777,6 +1860,7 @@ repository smart_ptr : common_branches
 
 repository spirit : common_branches
 {
+  submodule of "boost" : "libs/spirit";
   content
   {
     "boost/spirit.hpp" : "include/boost/spirit.hpp";
@@ -1814,6 +1898,7 @@ repository spirit
 
 repository statechart : common_branches
 {
+  submodule of "boost" : "libs/statechart";
   content
   {
     "boost/statechart/" : "include/boost/statechart/";
@@ -1823,6 +1908,7 @@ repository statechart : common_branches
 
 repository static_assert : common_branches
 {
+  submodule of "boost" : "libs/static_assert";
   content
   {
     "boost/static_assert.hpp" : "include/boost/static_assert.hpp";
@@ -1832,6 +1918,7 @@ repository static_assert : common_branches
 
 repository system : common_branches
 {
+  submodule of "boost" : "libs/system";
   content
   {
     "boost/cerrno.hpp" : "include/boost/cerrno.hpp";
@@ -1860,6 +1947,7 @@ repository system
 
 repository test : common_branches
 {
+  submodule of "boost" : "libs/test";
   content
   {
     "boost/test/" : "include/boost/test/";
@@ -1877,6 +1965,7 @@ repository test : common_branches
 
 repository thread : common_branches
 {
+  submodule of "boost" : "libs/thread";
   content
   {
     "boost/detail/atomic_redef_macros.hpp" : "include/boost/detail/atomic_redef_macros.hpp";
@@ -1900,6 +1989,7 @@ repository thread : common_branches
 
 repository timer : common_branches
 {
+  submodule of "boost" : "libs/timer";
   content
   {
     "boost/progress.hpp" : "include/boost/progress.hpp";
@@ -1911,6 +2001,7 @@ repository timer : common_branches
 
 repository tokenizer : common_branches
 {
+  submodule of "boost" : "libs/tokenizer";
   content
   {
     "boost/token_functions.hpp" : "include/boost/token_functions.hpp";
@@ -1922,6 +2013,7 @@ repository tokenizer : common_branches
 
 repository tr1 : common_branches
 {
+  submodule of "boost" : "libs/tr1";
   content
   {
     "boost/tr1/" : "include/boost/tr1/";
@@ -1931,6 +2023,7 @@ repository tr1 : common_branches
 
 repository tti : common_branches
 {
+  submodule of "boost" : "libs/tti";
   content
   {
     "boost/tti/" : "include/boost/tti/";
@@ -1940,6 +2033,7 @@ repository tti : common_branches
 
 repository tuple : common_branches
 {
+  submodule of "boost" : "libs/tuple";
   content
   {
     "boost/tuple/" : "include/boost/tuple/";
@@ -1954,6 +2048,7 @@ repository tuple : common_branches
 
 repository typeof : common_branches
 {
+  submodule of "boost" : "libs/typeof";
   content
   {
     "boost/typeof/" : "include/boost/typeof/";
@@ -1963,6 +2058,7 @@ repository typeof : common_branches
 
 repository type_erasure : common_branches
 {
+  submodule of "boost" : "libs/type_erasure";
   content
   {
     "boost/type_erasure/" : "include/boost/type_erasure/";
@@ -1972,6 +2068,7 @@ repository type_erasure : common_branches
 
 repository type_traits : common_branches
 {
+  submodule of "boost" : "libs/type_traits";
   content
   {
     "boost/aligned_storage.hpp" : "include/boost/aligned_storage.hpp";
@@ -1993,6 +2090,7 @@ repository type_traits : common_branches
 
 repository units : common_branches
 {
+  submodule of "boost" : "libs/units";
   content
   {
     "boost/units/" : "include/boost/units/";
@@ -2047,6 +2145,7 @@ repository unordered : unordered_branches
 
 repository utility : common_branches
 {
+  submodule of "boost" : "libs/utility";
   content
   {
     "boost/binary.hpp" : "include/boost/binary.hpp";
@@ -2080,6 +2179,7 @@ repository utility : common_branches
 
 repository uuid : common_branches
 {
+  submodule of "boost" : "libs/uuid";
   content
   {
     "boost/uuid/" : "include/boost/uuid/";
@@ -2089,6 +2189,7 @@ repository uuid : common_branches
 
 repository variant : common_branches
 {
+  submodule of "boost" : "libs/variant";
   content
   {
     "boost/empty.hpp" : "include/boost/empty.hpp";
@@ -2103,6 +2204,7 @@ repository variant : common_branches
 
 repository wave : common_branches
 {
+  submodule of "boost" : "libs/wave";
   content
   {
     "boost/wave.hpp" : "include/boost/wave.hpp";
@@ -2114,6 +2216,7 @@ repository wave : common_branches
 
 repository xpressive : common_branches
 {
+  submodule of "boost" : "libs/xpressive";
   content
   {
     "boost/xpressive/" : "include/boost/xpressive/";
@@ -2128,6 +2231,7 @@ repository xpressive : common_branches
 
 repository auto_index : common_branches
 {
+  submodule of "boost" : "tools/auto_index";
   content
   {
     "tools/auto_index/";
@@ -2136,6 +2240,7 @@ repository auto_index : common_branches
 
 repository bcp : common_branches
 {
+  submodule of "boost" : "tools/bcp";
   content
   {
     "tools/bcp/";
@@ -2144,6 +2249,7 @@ repository bcp : common_branches
 
 repository boostbook : common_branches
 {
+  submodule of "boost" : "tools/boostbook";
   content
   {
     "tools/boostbook/";
@@ -2161,6 +2267,7 @@ repository boostbook : common_branches
 
 repository build : common_branches
 {
+  submodule of "boost" : "tools/build";
   content
   {
     "tools/build/" : "build";
@@ -2292,6 +2399,7 @@ repository build
 
 repository inspect : common_branches
 {
+  submodule of "boost" : "tools/inspect";
   content
   {
     "tools/inspect/";
@@ -2300,6 +2408,7 @@ repository inspect : common_branches
 
 repository litre : common_branches
 {
+  submodule of "boost" : "tools/litre";
   content
   {
     "tools/litre/";
@@ -2308,6 +2417,7 @@ repository litre : common_branches
 
 repository quickbook : common_branches
 {
+  submodule of "boost" : "tools/quickbook";
   content
   {
     "tools/quickbook/";
@@ -2360,6 +2470,7 @@ repository sandbox
 
 repository sandbox : common_branches
 {
+  submodule of "boost" : "libs/sandbox";
   content
   {
     "boost/array_traits.hpp" : "boost/array_traits.hpp";
@@ -2388,6 +2499,7 @@ repository website
 
 repository boost : common_branches
 {
+  submodule of "boost" : "libs/boost";
   content
   {
     "build/"                   : "build/";
