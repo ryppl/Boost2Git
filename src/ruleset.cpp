@@ -235,6 +235,10 @@ Ruleset::Ruleset(std::string const& filename)
     {  
     if (repo_rule.abstract)
       {
+      BOOST_FOREACH(BranchRule const& branch_rule, repo_rule.branch_rules)
+        shared_branch_rules.insert(&branch_rule);
+      BOOST_FOREACH(BranchRule const& branch_rule, repo_rule.tag_rules)
+        shared_branch_rules.insert(&branch_rule);
       continue;
       }
 

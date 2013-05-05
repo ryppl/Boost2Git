@@ -66,10 +66,15 @@ class Ruleset
       {
       return ast_;
       }
+    bool is_shared(boost2git::BranchRule const* p)
+      {
+      return shared_branch_rules.find(p) != shared_branch_rules.end();
+      }
   private:
     patrie matches_;
     std::vector<Repository> repositories_;
     boost2git::AST ast_;
+    std::set<boost2git::BranchRule const*> shared_branch_rules;
   };
 
 #endif /* RULESET_HPP */
