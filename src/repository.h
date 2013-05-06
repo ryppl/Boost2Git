@@ -25,6 +25,7 @@
 
 #include "logging_process.hpp"
 #include "ruleset.hpp"
+#include <map>
 
 class Repository
   {
@@ -99,9 +100,11 @@ class Repository
     struct Branch
       {
       Branch(int created = 0)
-          : created(created) {}
+          : created(created), last_submodule_update_rev(0) {}
       
       int created;
+      int last_submodule_update_rev; // which SVN revision contributed the last change to the submodule list
+      std::map<std::string, Repository const*> submodules;
       QVector<int> commits;
       QVector<int> marks;
       QByteArray note;
