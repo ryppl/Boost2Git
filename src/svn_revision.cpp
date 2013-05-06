@@ -115,7 +115,7 @@ void splitPathName(
     }
   if (branch_p)
     {
-    *branch_p = QString::fromStdString(rule.branch_rule->git_ref_qualifier + rule.branch_rule->name);
+    *branch_p = QString::fromStdString(git_ref_name(rule.branch_rule));
     }
   if (path_p)
     {
