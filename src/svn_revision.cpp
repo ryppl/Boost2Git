@@ -591,8 +591,9 @@ int SvnRevision::exportInternal(
     apr_hash_t *cc)
   {
   needCommit = true;
-  QString svnprefix, repository, branch, path;
-  splitPathName(rule, current, &svnprefix, &repository, &branch, &path);
+  QString svnprefix, repository, path;
+  boost2git::BranchRule const* branch = rule.branch_rule;
+  splitPathName(rule, current, &svnprefix, &repository, 0, &path);
 
   Repository *repo = svn.repositories.value(repository, 0);
   if (!repo)
@@ -604,14 +605,17 @@ int SvnRevision::exportInternal(
     return EXIT_FAILURE;
     }
 
+  std::string const branch_ref_name = git_ref_name(branch);
+  
   if (change->change_kind == svn_fs_path_change_delete && current == svnprefix && path.isEmpty())
     {
-    Log::trace() << "repository " << qPrintable(repository) << " branch " << qPrintable(branch) << " deleted" << std::endl;
+    Log::trace() << "repository " << qPrintable(repository) << " branch " << branch_ref_name << " deleted" << std::endl;
     return repo->deleteBranch(branch, revnum);
     }
 
   QString previous;
-  QString prevsvnprefix, prevrepository, prevbranch, prevpath;
+  QString prevsvnprefix, prevrepository, prevpath;
+  std::string prevbranch;
 
   if (path_from != NULL)
     {
@@ -624,7 +628,8 @@ int SvnRevision::exportInternal(
     Rule const* prevmatch = find_match(matchRules, previous, rev_from);
     if (prevmatch)
       {
-      splitPathName(*prevmatch, previous, &prevsvnprefix, &prevrepository, &prevbranch, &prevpath);
+      prevbranch = git_ref_name(prevmatch->branch_rule);
+      splitPathName(*prevmatch, previous, &prevsvnprefix, &prevrepository, /*branch*/0, &prevpath);
       }
     else if (was_dir)
       {
@@ -639,6 +644,7 @@ int SvnRevision::exportInternal(
       path_from = NULL;
       }
     }
+    QString const qbranch_ref_name = QString::fromStdString(branch_ref_name);
 
   // current == svnprefix => we're dealing with the contents of the whole branch here
   if (path_from != NULL && current == svnprefix && path.isEmpty())
@@ -647,14 +653,14 @@ int SvnRevision::exportInternal(
       {
       // source is not the whole of its branch
       Log::debug() << qPrintable(current) << "is a partial branch of repository "
-                   << qPrintable(prevrepository) << " branch " << qPrintable(prevbranch)
+                   << qPrintable(prevrepository) << " branch " << prevbranch
                    << " subdir " << qPrintable(prevpath) << std::endl;
       }
     else if (prevrepository != repository)
       {
       Log::warn() << qPrintable(current) << " rev " << revnum
                   << " is a cross-repository copy (from repository "
-                  << qPrintable(prevrepository) << " branch " << qPrintable(prevbranch)
+                  << qPrintable(prevrepository) << " branch " << prevbranch
                   << " path " << qPrintable(prevpath) << " rev " << rev_from << ")" << std::endl;
       }
     else if (path != prevpath)
@@ -665,29 +671,29 @@ int SvnRevision::exportInternal(
       }
     else
       {
-      if (prevbranch == branch)
+      if (prevbranch == branch_ref_name)
         {
         // same branch and same repository
         Log::debug() << qPrintable(current) << " rev " << revnum << " is reseating branch "
-                     << qPrintable(branch) << " to an earlier revision " << qPrintable(previous)
+                     << branch_ref_name << " to an earlier revision " << qPrintable(previous)
                      << " rev " << rev_from << std::endl;
         }
       else
         {
         // same repository but not same branch
         // this means this is a plain branch
-        Log::debug() << qPrintable(repository) << ": branch " << qPrintable(branch)
-                     << " is branching from " << qPrintable(prevbranch) << std::endl;
+        Log::debug() << qPrintable(repository) << ": branch " << branch_ref_name
+                     << " is branching from " << prevbranch << std::endl;
         }
  
-      if (repo->createBranch(branch, revnum, prevbranch, rev_from) == EXIT_FAILURE)
+      if (repo->createBranch(branch, revnum, QString::fromStdString(prevbranch), rev_from) == EXIT_FAILURE)
         {
         return EXIT_FAILURE;
         }
 
       if (options.svn_branches)
         {
-        Repository::Transaction *txn = transactions.value(repository + branch, 0);
+        Repository::Transaction *txn = transactions.value(repository + qbranch_ref_name, 0);
         if (!txn)
           {
           txn = repo->newTransaction(branch, svnprefix, revnum);
@@ -695,10 +701,10 @@ int SvnRevision::exportInternal(
             {
             return EXIT_FAILURE;
             }
-          transactions.insert(repository + branch, txn);
+          transactions.insert(repository + qbranch_ref_name, txn);
           }
         Log::trace() << "Create a true SVN copy of branch (" << key << "->"
-                     << qPrintable(branch) << "/" << qPrintable(path) << ")" << std::endl;
+                     << branch_ref_name << "/" << qPrintable(path) << ")" << std::endl;
         if (pathExists(pool, fs, current, revnum - 1))
           {
           txn->deleteFile(path);
@@ -724,7 +730,7 @@ int SvnRevision::exportInternal(
       return EXIT_SUCCESS;
       }
     }
-  Repository::Transaction *txn = transactions.value(repository + branch, 0);
+  Repository::Transaction *txn = transactions.value(repository + qbranch_ref_name, 0);
   if (!txn)
     {
     txn = repo->newTransaction(branch, svnprefix, revnum);
@@ -732,7 +738,7 @@ int SvnRevision::exportInternal(
       {
       return EXIT_FAILURE;
       }
-    transactions.insert(repository + branch, txn);
+    transactions.insert(repository + qbranch_ref_name, txn);
     }
 
   //
@@ -741,22 +747,22 @@ int SvnRevision::exportInternal(
   // changes across directory re-organizations and wholesale branch
   // imports.
   //
-  if (path_from != NULL && prevrepository == repository && prevbranch != branch)
+  if (path_from != NULL && prevrepository == repository && prevbranch != branch_ref_name)
     {
-    Log::trace() << "copy from branch " << qPrintable(prevbranch) << " to branch "
-                 << qPrintable(branch) << "@rev" << rev_from << std::endl;
-    txn->noteCopyFromBranch (prevbranch, rev_from);
+    Log::trace() << "copy from branch " << prevbranch << " to branch "
+                 << branch_ref_name << "@rev" << rev_from << std::endl;
+    txn->noteCopyFromBranch (QString::fromStdString(prevbranch), rev_from);
     }
 
   if (change->change_kind == svn_fs_path_change_replace && path_from == NULL)
     {
-    Log::trace() << "replaced with empty path (" << qPrintable(branch)
+    Log::trace() << "replaced with empty path (" << branch_ref_name
                  << "/" << qPrintable(path) << ")" << std::endl;
     txn->deleteFile(path);
     }
   else if (change->change_kind == svn_fs_path_change_delete)
     {
-    Log::trace() << "delete (" << qPrintable(branch) << "/" << qPrintable(path) << ")" << std::endl;
+    Log::trace() << "delete (" << branch_ref_name << "/" << qPrintable(path) << ")" << std::endl;
     if (pathExists(pool, fs, current, revnum - 1)) {
       txn->deleteFile(path);
       }
@@ -767,13 +773,13 @@ int SvnRevision::exportInternal(
     }
   else if (!current.endsWith('/'))
     {
-    Log::trace() << "add/change file (" << key << "->" << qPrintable(branch)
+    Log::trace() << "add/change file (" << key << "->" << branch_ref_name
                  << "/" << qPrintable(path) << ")" << std::endl;
     dumpBlob(txn, fs_root, key, path, pool);
     }
   else
     {
-    Log::trace() << "add/change dir (" << key << "->" << qPrintable(branch)
+    Log::trace() << "add/change dir (" << key << "->" << branch_ref_name
                  << "/" << qPrintable(path) << ")" << std::endl ;
     recursiveDumpDir(txn, fs_root, key, path, pool);
     }

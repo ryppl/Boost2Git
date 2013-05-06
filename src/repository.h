@@ -28,6 +28,7 @@
 
 class Repository
   {
+    typedef boost2git::BranchRule BranchRule;
   public:
     class Transaction
       {
@@ -76,12 +77,12 @@ class Repository
     ~Repository();
 
     void reloadBranches();
-    int createBranch(const QString &branch, int revnum,
+    int createBranch(BranchRule const* branch, int revnum,
       const QString &branchFrom, int revFrom);
-    int deleteBranch(const QString &branch, int revnum);
-    Repository::Transaction *newTransaction(const QString &branch, const QString &svnprefix, int revnum);
+    Repository::Transaction *newTransaction(BranchRule const* branch, const QString &svnprefix, int revnum);
+    int deleteBranch(BranchRule const* branch, int revnum);
 
-    void createAnnotatedTag(const QString &name, const QString &svnprefix, int revnum,
+    void createAnnotatedTag(BranchRule const* branch, const QString &svnprefix, int revnum,
       const QByteArray &author, uint dt,
       const QByteArray &log);
     void finalizeTags();
@@ -144,6 +145,7 @@ class Repository
 
     int resetBranch(const QString &branch, int revnum, int mark, const QByteArray &resetTo, const QByteArray &comment);
     int markFrom(const QString &branchFrom, int branchRevNum, QByteArray &desc);
+    Repository::Transaction *newTransaction(const QString &branch, const QString &svnprefix, int revnum);
 
     friend class ProcessCache;
     Q_DISABLE_COPY(Repository)

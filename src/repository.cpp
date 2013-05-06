@@ -353,11 +353,13 @@ int Repository::markFrom(const QString &branchFrom, int branchRevNum, QByteArray
   }
 
 int Repository::createBranch(
-    const QString &branch,
+    BranchRule const* branch_rule,
     int revnum,
     const QString &branchFrom,
     int branchRevNum)
   {
+  QString branch = QString::fromStdString(git_ref_name(branch_rule));
+  
   Q_ASSERT(branch.startsWith("refs/"));
   Q_ASSERT(branchFrom.startsWith("refs/"));
   QByteArray branchFromDesc = "from branch " + branchFrom.toUtf8();
@@ -389,8 +391,9 @@ int Repository::createBranch(
   return resetBranch(branch, revnum, mark, branchFromRef, branchFromDesc);
   }
 
-int Repository::deleteBranch(const QString &branch, int revnum)
+int Repository::deleteBranch(BranchRule const* branch_rule, int revnum)
   {
+  QString branch = QString::fromStdString(git_ref_name(branch_rule));
   Q_ASSERT(branch.startsWith("refs/"));
 
   if (branch == "refs/heads/master")
@@ -471,6 +474,14 @@ void Repository::commit()
   }
 
 Repository::Transaction *Repository::newTransaction(
+    BranchRule const* branch,
+    const QString &svnprefix,
+    int revnum)
+  {
+  return newTransaction(QString::fromStdString(git_ref_name(branch)), svnprefix, revnum);
+  }
+
+Repository::Transaction *Repository::newTransaction(
     const QString &branch,
     const QString &svnprefix,
     int revnum)
@@ -509,13 +520,14 @@ void Repository::forgetTransaction(Transaction *)
   }
 
 void Repository::createAnnotatedTag(
-    const QString &ref,
+    BranchRule const* branch_rule,
     const QString &svnprefix,
     int revnum,
     const QByteArray &author,
     uint dt,
     const QByteArray &log)
   {
+  QString ref = QString::fromStdString(git_ref_name(branch_rule));
   QString tagName = ref;
   if (tagName.startsWith("refs/tags/"))
     {
