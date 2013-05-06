@@ -40,6 +40,10 @@ BOOST_FUSION_DEFINE_STRUCT((boost2git), RepoRule,
 
 namespace boost2git
 {
+inline std::string git_ref_name(BranchRule const* b)
+  {
+  return b->git_ref_qualifier + b->name;
+  }
 
 struct RepoRuleByName
   {
