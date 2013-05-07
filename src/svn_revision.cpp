@@ -610,7 +610,7 @@ int SvnRevision::exportInternal(
   if (change->change_kind == svn_fs_path_change_delete && current == svnprefix && path.isEmpty())
     {
     Log::trace() << "repository " << qPrintable(repository) << " branch " << branch_ref_name << " deleted" << std::endl;
-    return repo->deleteBranch(branch, revnum);
+    return repo->deleteBranch(branch, this);
     }
 
   QString previous;
@@ -686,7 +686,7 @@ int SvnRevision::exportInternal(
                      << " is branching from " << prevbranch << std::endl;
         }
  
-      if (repo->createBranch(branch, revnum, QString::fromStdString(prevbranch), rev_from) == EXIT_FAILURE)
+      if (repo->createBranch(branch, this, QString::fromStdString(prevbranch), rev_from) == EXIT_FAILURE)
         {
         return EXIT_FAILURE;
         }
@@ -696,7 +696,7 @@ int SvnRevision::exportInternal(
         Repository::Transaction *txn = transactions.value(repository + qbranch_ref_name, 0);
         if (!txn)
           {
-          txn = repo->newTransaction(branch, svnprefix, revnum);
+          txn = repo->newTransaction(branch, svnprefix, this);
           if (!txn)
             {
             return EXIT_FAILURE;
@@ -733,7 +733,7 @@ int SvnRevision::exportInternal(
   Repository::Transaction *txn = transactions.value(repository + qbranch_ref_name, 0);
   if (!txn)
     {
-    txn = repo->newTransaction(branch, svnprefix, revnum);
+    txn = repo->newTransaction(branch, svnprefix, this);
     if (!txn)
       {
       return EXIT_FAILURE;

@@ -47,6 +47,7 @@ class SvnRevision
       }
     int prepareTransactions();
     void commit();
+    int id() { return revnum; }
   private:
     void fetchRevProps();
     int exportEntry(
@@ -78,6 +79,7 @@ class SvnRevision
         const MatchRuleList &matchRules,
         svn_revnum_t rev_from,
         apr_hash_t *changes);
+    
   private:
     Svn const& svn;
     AprPool pool;

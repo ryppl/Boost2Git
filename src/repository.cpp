@@ -28,6 +28,8 @@
 #include <sstream>
 #include <stdexcept>
 
+#include "svn_revision.hpp"
+
 static const int maxSimultaneousProcesses = 100;
 
 static const int maxMark = (1 << 20) - 2; // some versions of git-fast-import are buggy for larger values of maxMark
@@ -354,7 +356,7 @@ int Repository::markFrom(const QString &branchFrom, int branchRevNum, QByteArray
 
 int Repository::createBranch(
     BranchRule const* branch_rule,
-    int revnum,
+    SvnRevision* svn_revision,
     const QString &branchFrom,
     int branchRevNum)
   {
@@ -388,10 +390,10 @@ int Repository::createBranch(
                << qPrintable(name) << std::endl;
   // Preserve note
   branches[branch].note = branches.value(branchFrom).note;
-  return resetBranch(branch_rule, branch, revnum, mark, branchFromRef, branchFromDesc);
+  return resetBranch(branch_rule, branch, svn_revision, mark, branchFromRef, branchFromDesc);
   }
 
-int Repository::deleteBranch(BranchRule const* branch_rule, int revnum)
+int Repository::deleteBranch(BranchRule const* branch_rule, SvnRevision* svn_revision)
   {
   QString branch = QString::fromStdString(git_ref_name(branch_rule));
   Q_ASSERT(branch.startsWith("refs/"));
@@ -400,13 +402,13 @@ int Repository::deleteBranch(BranchRule const* branch_rule, int revnum)
       return EXIT_SUCCESS;
 
   static QByteArray null_sha(40, '0');
-  return resetBranch(branch_rule, branch, revnum, 0, null_sha, "delete");
+  return resetBranch(branch_rule, branch, svn_revision, 0, null_sha, "delete");
   }
 
 int Repository::resetBranch(
     BranchRule const* branch_rule,
     const QString &branch,  // This is redundant with the above, but we've already computed it
-    int revnum,
+    SvnRevision* svn_revision,
     int mark,
     const QByteArray &resetTo,
     const QByteArray &comment)
@@ -418,6 +420,7 @@ int Repository::resetBranch(
   QByteArray branchRef = branch.toUtf8();
   Branch &br = branches[branch];
   QByteArray backupCmd;
+  int const revnum = svn_revision->id();
   if (br.created && br.created != revnum && !br.marks.isEmpty() && br.marks.last())
     {
     QByteArray backupBranch;
@@ -480,9 +483,9 @@ void Repository::commit()
 Repository::Transaction *Repository::newTransaction(
     BranchRule const* branch,
     const QString &svnprefix,
-    int revnum)
+    SvnRevision* svn_revision)
   {
-  return newTransaction(QString::fromStdString(git_ref_name(branch)), svnprefix, revnum);
+  return newTransaction(QString::fromStdString(git_ref_name(branch)), svnprefix, svn_revision->id());
   }
 
 Repository::Transaction *Repository::newTransaction(
@@ -526,7 +529,7 @@ void Repository::forgetTransaction(Transaction *)
 void Repository::createAnnotatedTag(
     BranchRule const* branch_rule,
     const QString &svnprefix,
-    int revnum,
+    SvnRevision* svn_revision,
     const QByteArray &author,
     uint dt,
     const QByteArray &log)
@@ -551,7 +554,7 @@ void Repository::createAnnotatedTag(
   AnnotatedTag &tag = annotatedTags[tagName];
   tag.supportingRef = ref;
   tag.svnprefix = svnprefix.toUtf8();
-  tag.revnum = revnum;
+  tag.revnum = svn_revision->id();
   tag.author = author;
   tag.log = log;
   tag.dt = dt;

@@ -27,6 +27,8 @@
 #include "ruleset.hpp"
 #include <map>
 
+class SvnRevision;
+
 class Repository
   {
     typedef boost2git::BranchRule BranchRule;
@@ -78,12 +80,12 @@ class Repository
     ~Repository();
 
     void reloadBranches();
-    int createBranch(BranchRule const* branch, int revnum,
+    int createBranch(BranchRule const* branch, SvnRevision* rev,
       const QString &branchFrom, int revFrom);
-    Repository::Transaction *newTransaction(BranchRule const* branch, const QString &svnprefix, int revnum);
-    int deleteBranch(BranchRule const* branch, int revnum);
+    Repository::Transaction *newTransaction(BranchRule const* branch, const QString &svnprefix, SvnRevision* rev);
+    int deleteBranch(BranchRule const* branch, SvnRevision* rev);
 
-    void createAnnotatedTag(BranchRule const* branch, const QString &svnprefix, int revnum,
+    void createAnnotatedTag(BranchRule const* branch, const QString &svnprefix, SvnRevision* rev,
       const QByteArray &author, uint dt,
       const QByteArray &log);
     void finalizeTags();
@@ -146,7 +148,7 @@ class Repository
     // called when a transaction is deleted
     void forgetTransaction(Transaction *t);
 
-    int resetBranch(BranchRule const*, const QString &branch, int revnum, int mark, const QByteArray &resetTo, const QByteArray &comment);
+    int resetBranch(BranchRule const*, const QString &branch, SvnRevision* rev, int mark, const QByteArray &resetTo, const QByteArray &comment);
     int markFrom(const QString &branchFrom, int branchRevNum, QByteArray &desc);
     Repository::Transaction *newTransaction(const QString &branch, const QString &svnprefix, int revnum);
     void submoduleChanged(Repository const* submodule, BranchRule const* branch_rule);
