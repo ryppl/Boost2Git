@@ -146,9 +146,10 @@ class Repository
     // called when a transaction is deleted
     void forgetTransaction(Transaction *t);
 
-    int resetBranch(const QString &branch, int revnum, int mark, const QByteArray &resetTo, const QByteArray &comment);
+    int resetBranch(BranchRule const*, const QString &branch, int revnum, int mark, const QByteArray &resetTo, const QByteArray &comment);
     int markFrom(const QString &branchFrom, int branchRevNum, QByteArray &desc);
     Repository::Transaction *newTransaction(const QString &branch, const QString &svnprefix, int revnum);
+    void submoduleChanged(Repository const* submodule, BranchRule const* branch_rule);
 
     friend class ProcessCache;
     Q_DISABLE_COPY(Repository)

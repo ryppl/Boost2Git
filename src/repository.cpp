@@ -388,7 +388,7 @@ int Repository::createBranch(
                << qPrintable(name) << std::endl;
   // Preserve note
   branches[branch].note = branches.value(branchFrom).note;
-  return resetBranch(branch, revnum, mark, branchFromRef, branchFromDesc);
+  return resetBranch(branch_rule, branch, revnum, mark, branchFromRef, branchFromDesc);
   }
 
 int Repository::deleteBranch(BranchRule const* branch_rule, int revnum)
@@ -400,16 +400,20 @@ int Repository::deleteBranch(BranchRule const* branch_rule, int revnum)
       return EXIT_SUCCESS;
 
   static QByteArray null_sha(40, '0');
-  return resetBranch(branch, revnum, 0, null_sha, "delete");
+  return resetBranch(branch_rule, branch, revnum, 0, null_sha, "delete");
   }
 
 int Repository::resetBranch(
-    const QString &branch,
+    BranchRule const* branch_rule,
+    const QString &branch,  // This is redundant with the above, but we've already computed it
     int revnum,
     int mark,
     const QByteArray &resetTo,
     const QByteArray &comment)
   {
+  if (submodule_in_repo)
+      submodule_in_repo->submoduleChanged(this, branch_rule);
+  
   Q_ASSERT(branch.startsWith("refs/"));
   QByteArray branchRef = branch.toUtf8();
   Branch &br = branches[branch];
@@ -911,4 +915,8 @@ void Repository::Transaction::commit()
       if (!repository->fastImport.waitForBytesWritten(-1))
           qFatal("Failed to write to process: %s for repository %s",
             qPrintable(repository->fastImport.errorString()), qPrintable(repository->name));
+  }
+
+void Repository::submoduleChanged(Repository const* submodule, BranchRule const* branch_rule)
+  {
   }
