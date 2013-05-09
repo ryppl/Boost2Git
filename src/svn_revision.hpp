@@ -49,6 +49,11 @@ class SvnRevision
     void commit();
     int id() { return revnum; }
   private:
+    Repository::Transaction* demandTransaction(
+        Repository* repo,
+        boost2git::BranchRule const* branch,
+        std::string const& svnprefix);
+    
     void fetchRevProps();
     int exportEntry(
         const char *path,

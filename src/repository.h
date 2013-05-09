@@ -40,9 +40,9 @@ class Repository
 
         Repository *repository;
         QByteArray branch;
-        QByteArray svnprefix;
+        std::string svnprefix;
         QByteArray author;
-        QByteArray log;
+        std::string log;
         uint datetime;
         int revnum;
 
@@ -59,14 +59,14 @@ class Repository
 
         void setAuthor(const QByteArray &author);
         void setDateTime(uint dt);
-        void setLog(const QByteArray &log);
+        void setLog(const std::string &log);
 
         void noteCopyFromBranch (const QString &prevbranch, int revFrom);
 
         void deleteFile(const QString &path);
         QIODevice *addFile(const QString &path, int mode, qint64 length);
 
-        void commitNote(const QByteArray &noteText, bool append,
+        void commitNote(const std::string &noteText, bool append,
           const QByteArray &commit = QByteArray());
       };
     
@@ -82,22 +82,23 @@ class Repository
     void reloadBranches();
     int createBranch(BranchRule const* branch, SvnRevision* rev,
       const QString &branchFrom, int revFrom);
-    Repository::Transaction *newTransaction(BranchRule const* branch, const QString &svnprefix, SvnRevision* rev);
+    Repository::Transaction *newTransaction(BranchRule const* branch, const std::string &svnprefix, SvnRevision* rev);
     int deleteBranch(BranchRule const* branch, SvnRevision* rev);
 
-    void createAnnotatedTag(BranchRule const* branch, const QString &svnprefix, SvnRevision* rev,
+    void createAnnotatedTag(BranchRule const* branch, const std::string &svnprefix, SvnRevision* rev,
       const QByteArray &author, uint dt,
-      const QByteArray &log);
+      const std::string &log);
     void finalizeTags();
     void commit();
 
-    static QByteArray formatMetadataMessage(const QByteArray &svnprefix, int revnum,
+    static std::string formatMetadataMessage(const std::string &svnprefix, int revnum,
       const QByteArray &tag = QByteArray());
 
     bool branchExists(const QString& branch) const;
     const QByteArray branchNote(const QString& branch) const;
     void setBranchNote(const QString& branch, const QByteArray& noteText);
 
+    QString get_name() const { return name; }
   private:
     struct Branch
       {
@@ -114,9 +115,9 @@ class Repository
     struct AnnotatedTag
       {
       QString supportingRef;
-      QByteArray svnprefix;
+      std::string svnprefix;
       QByteArray author;
-      QByteArray log;
+      std::string log;
       uint dt;
       int revnum;
       };
@@ -150,7 +151,7 @@ class Repository
 
     int resetBranch(BranchRule const*, const QString &branch, SvnRevision* rev, int mark, const QByteArray &resetTo, const QByteArray &comment);
     int markFrom(const QString &branchFrom, int branchRevNum, QByteArray &desc);
-    Repository::Transaction *newTransaction(const QString &branch, const QString &svnprefix, int revnum);
+    Repository::Transaction *newTransaction(const QString &branch, const std::string &svnprefix, int revnum);
     void submoduleChanged(Repository const* submodule, BranchRule const* branch_rule);
 
     friend class ProcessCache;

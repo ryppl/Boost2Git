@@ -482,7 +482,7 @@ void Repository::commit()
 
 Repository::Transaction *Repository::newTransaction(
     BranchRule const* branch,
-    const QString &svnprefix,
+    const std::string &svnprefix,
     SvnRevision* svn_revision)
   {
   return newTransaction(QString::fromStdString(git_ref_name(branch)), svnprefix, svn_revision->id());
@@ -490,7 +490,7 @@ Repository::Transaction *Repository::newTransaction(
 
 Repository::Transaction *Repository::newTransaction(
     const QString &branch,
-    const QString &svnprefix,
+    const std::string &svnprefix,
     int revnum)
   {
   Q_ASSERT(branch.startsWith("refs/"));
@@ -503,7 +503,7 @@ Repository::Transaction *Repository::newTransaction(
   Transaction *txn = new Transaction;
   txn->repository = this;
   txn->branch = branch.toUtf8();
-  txn->svnprefix = svnprefix.toUtf8();
+  txn->svnprefix = svnprefix;
   txn->datetime = 0;
   txn->revnum = revnum;
 
@@ -528,11 +528,11 @@ void Repository::forgetTransaction(Transaction *)
 
 void Repository::createAnnotatedTag(
     BranchRule const* branch_rule,
-    const QString &svnprefix,
+    const std::string &svnprefix,
     SvnRevision* svn_revision,
     const QByteArray &author,
     uint dt,
-    const QByteArray &log)
+    const std::string &log)
   {
   QString ref = QString::fromStdString(git_ref_name(branch_rule));
   QString tagName = ref;
@@ -553,7 +553,7 @@ void Repository::createAnnotatedTag(
     }
   AnnotatedTag &tag = annotatedTags[tagName];
   tag.supportingRef = ref;
-  tag.svnprefix = svnprefix.toUtf8();
+  tag.svnprefix = svnprefix;
   tag.revnum = svn_revision->id();
   tag.author = author;
   tag.log = log;
@@ -575,8 +575,8 @@ void Repository::finalizeTags()
     const AnnotatedTag &tag = it.value();
 
     Q_ASSERT(tag.supportingRef.startsWith("refs/"));
-    QByteArray message = tag.log;
-    if (!message.endsWith('\n'))
+    std::string message = tag.log;
+    if (!boost::ends_with(message, "\n"))
         message += '\n';
     if (options.add_metadata)
         message += "\n" + formatMetadataMessage(tag.svnprefix, tag.revnum, tagName.toUtf8());
@@ -584,15 +584,16 @@ void Repository::finalizeTags()
     {
     QByteArray branchRef = tag.supportingRef.toUtf8();
 
+    uint msg_len = message.size();
     QByteArray s = "progress Creating annotated tag " + tagName.toUtf8() + " from ref " + branchRef + "\n"
       + "tag " + tagName.toUtf8() + "\n"
       + "from " + branchRef + "\n"
       + "tagger " + tag.author + ' ' + QByteArray::number(tag.dt) + " +0000" + "\n"
-      + "data " + QByteArray::number( message.length() ) + "\n";
+      + "data " + QByteArray::number( msg_len ) + "\n";
     fastImport.write(s);
     }
 
-    fastImport.write(message);
+    fastImport.write(message.c_str());
     fastImport.putChar('\n');
     if (!fastImport.waitForBytesWritten(-1))
         qFatal("Failed to write to process: %s", qPrintable(fastImport.errorString()));
@@ -649,11 +650,11 @@ void Repository::startFastImport()
   }
   }
 
-QByteArray Repository::formatMetadataMessage(const QByteArray &svnprefix, int revnum, const QByteArray &tag)
+std::string Repository::formatMetadataMessage(const std::string &svnprefix, int revnum, const QByteArray &tag)
   {
-  QByteArray msg = "svn path=" + svnprefix + "; revision=" + QByteArray::number(revnum);
+  std::string msg = "svn path=" + svnprefix + "; revision=" + to_string(revnum);
   if (!tag.isEmpty())
-      msg += "; tag=" + tag;
+      msg += "; tag=" + std::string(tag.data(), tag.length());
   msg += "\n";
   return msg;
   }
@@ -689,7 +690,7 @@ void Repository::Transaction::setDateTime(uint dt)
   datetime = dt;
   }
 
-void Repository::Transaction::setLog(const QByteArray &l)
+void Repository::Transaction::setLog(const std::string &l)
   {
   log = l;
   }
@@ -777,13 +778,13 @@ QIODevice *Repository::Transaction::addFile(const QString &path, int mode, qint6
   return &repository->fastImport;
   }
 
-void Repository::Transaction::commitNote(const QByteArray &noteText, bool append, const QByteArray &commit)
+void Repository::Transaction::commitNote(const std::string &noteText, bool append, const QByteArray &commit)
   {
   Q_ASSERT(branch.startsWith("refs/"));
   QByteArray branchRef = branch;
   const QByteArray &commitRef = commit.isNull() ? branchRef : commit;
   QByteArray message = "Adding Git note for current " + commitRef + "\n";
-  QByteArray text = noteText;
+  QByteArray text(noteText.data(), noteText.length());
 
   if (append && commit.isNull() &&
     repository->branchExists(branch) &&
@@ -822,8 +823,8 @@ void Repository::Transaction::commit()
   Q_ASSERT(mark < repository->next_file_mark - 1);
 
   // create the commit message
-  QByteArray message = log;
-  if (!message.endsWith('\n'))
+  std::string message = log;
+  if (!boost::ends_with(message, "\n"))
       message += '\n';
   if (options.add_metadata)
       message += "\n" + Repository::formatMetadataMessage(svnprefix, revnum);
@@ -852,14 +853,14 @@ void Repository::Transaction::commit()
   s.append("mark :" + QByteArray::number(mark) + "\n");
   s.append("committer " + QString::fromUtf8(author) + " " + QString::number(datetime) + " +0000" + "\n");
   s.append("data " + QString::number(message.length()) + "\n");
-  s.append(message + "\n");
+  s.append(QByteArray(message.c_str()) + "\n");
   repository->fastImport.write(s);
 
   // note some of the inferred merges
   QByteArray desc = "";
   int i = !!parentmark;	// if parentmark != 0, there's at least one parent
 
-  if(log.contains("This commit was manufactured by cvs2svn") && merges.count() > 1) {
+  if(log.find("This commit was manufactured by cvs2svn") != std::string::npos && merges.count() > 1) {
     qSort(merges);
     repository->fastImport.write("merge :" + QByteArray::number(merges.last()) + "\n");
     merges.pop_back();

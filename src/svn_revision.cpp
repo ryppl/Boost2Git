@@ -397,7 +397,7 @@ void SvnRevision::commit()
     {
     txn->setAuthor(QByteArray(author.c_str(), author.length()));
     txn->setDateTime(epoch);
-    txn->setLog(QByteArray(log.c_str(), log.length()));
+    txn->setLog(log);
     txn->commit();
     delete txn;
     }
@@ -693,16 +693,7 @@ int SvnRevision::exportInternal(
 
       if (options.svn_branches)
         {
-        Repository::Transaction *txn = transactions.value(repository + qbranch_ref_name, 0);
-        if (!txn)
-          {
-          txn = repo->newTransaction(branch, svnprefix, this);
-          if (!txn)
-            {
-            return EXIT_FAILURE;
-            }
-          transactions.insert(repository + qbranch_ref_name, txn);
-          }
+        Repository::Transaction *txn = demandTransaction(repo, rule.branch_rule, svnprefix.toStdString());
         Log::trace() << "Create a true SVN copy of branch (" << key << "->"
                      << branch_ref_name << "/" << qPrintable(path) << ")" << std::endl;
         if (pathExists(pool, fs, current, revnum - 1))
@@ -730,16 +721,7 @@ int SvnRevision::exportInternal(
       return EXIT_SUCCESS;
       }
     }
-  Repository::Transaction *txn = transactions.value(repository + qbranch_ref_name, 0);
-  if (!txn)
-    {
-    txn = repo->newTransaction(branch, svnprefix, this);
-    if (!txn)
-      {
-      return EXIT_FAILURE;
-      }
-    transactions.insert(repository + qbranch_ref_name, txn);
-    }
+  Repository::Transaction *txn = demandTransaction(repo, rule.branch_rule, svnprefix.toStdString()); 
 
   //
   // If this path was copied from elsewhere, use it to infer _some_
@@ -871,3 +853,17 @@ int SvnRevision::recurse(
     }
   return EXIT_SUCCESS;
   }
+
+Repository::Transaction* SvnRevision::demandTransaction(
+    Repository* repo, boost2git::BranchRule const* branch, std::string const& svnprefix)
+  {
+  QString key = repo->get_name() + QString::fromStdString(git_ref_name(branch));
+  Repository::Transaction *txn = transactions.value(key, 0);
+  if (!txn)
+    {
+    txn = repo->newTransaction(branch, svnprefix, this);
+    transactions.insert(key, txn);
+    }
+  return txn;
+  }
+
