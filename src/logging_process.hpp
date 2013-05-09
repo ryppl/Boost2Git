@@ -22,6 +22,7 @@
 #include <QProcess>
 #include "options.hpp"
 #include <stdexcept>
+#include <string>
 
 class LoggingQProcess: public QProcess
   {
@@ -55,6 +56,15 @@ class LoggingQProcess: public QProcess
         {
         log.close();
         }
+      }
+    qint64 write(std::string const& data)
+      {
+      Q_ASSERT(state() == QProcess::Running);
+      if (logging)
+        {
+        log.write(data.c_str(), data.size());
+        }
+      return QProcess::write(data.c_str(), data.size());
       }
     qint64 write(const char *data)
       {
