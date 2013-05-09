@@ -621,6 +621,8 @@ void Repository::finalizeTags()
       txn->setDateTime(tag.dt);
       txn->commitNote(formatMetadataMessage(tag.svnprefix, tag.revnum, tagName), true);
       transactions.erase(tag.supportingRef);
+      if (transactions.size() == 0)
+          next_file_mark = maxMark;
 
       if (!fastImport.waitForBytesWritten(-1))
           qFatal("Failed to write to process: %s", qPrintable(fastImport.errorString()));
