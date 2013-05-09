@@ -42,7 +42,6 @@ class Repository
   public:
     class Transaction
       {
-        Q_DISABLE_COPY(Transaction)
         friend class Repository;
 
         Repository *repository;
@@ -58,12 +57,12 @@ class Repository
         QVector<std::string> deletedFiles;
         std::string modifiedFiles;
 
-        inline Transaction()
-            : repository(0), datetime(0), revnum(0) {}
       public:
-        ~Transaction();
+        inline Transaction()
+            : repository(0), datetime(0), revnum(0)
+          {}
         void commit();
-
+        
         void setAuthor(const std::string &author);
         void setDateTime(uint dt);
         void setLog(const std::string &log);
@@ -89,14 +88,17 @@ class Repository
     void reloadBranches();
     int createBranch(BranchRule const* branch, int revnum,
       const std::string &branchFrom, int revFrom);
-    Repository::Transaction *newTransaction(BranchRule const* branch, const std::string &svnprefix, int revnum);
+    Repository::Transaction *demandTransaction(BranchRule const* branch, const std::string &svnprefix, int revnum);
     int deleteBranch(BranchRule const* branch, int revnum);
 
     void createAnnotatedTag(BranchRule const* branch, const std::string &svnprefix, int revnum,
       const std::string &author, uint dt,
       const std::string &log);
     void finalizeTags();
-    void commit();
+    void prepare_commit();
+    void commit(
+        std::string const& author, uint epoch, std::string const& log);
+
 
     static std::string formatMetadataMessage(const std::string &svnprefix, int revnum,
       const std::string &tag = std::string());
@@ -119,6 +121,7 @@ class Repository
       QVector<int> marks;
       std::string note;
       };
+    
     struct AnnotatedTag
       {
       std::string supportingRef;
@@ -137,10 +140,12 @@ class Repository
     std::string submodule_path;
     LoggingQProcess fastImport;
     int commitCount;
-    int outstandingTransactions;
     QHash<std::string, std::string> deletedBranches;
     QHash<std::string, std::string> resetBranches;
-
+    
+    typedef std::map<std::string, Transaction> TransactionMap;
+    TransactionMap transactions;
+    
     /* starts at 0, and counts up.  */
     int last_commit_mark;
 
@@ -153,12 +158,9 @@ class Repository
     void startFastImport();
     void closeFastImport();
 
-    // called when a transaction is deleted
-    void forgetTransaction(Transaction *t);
-
     int resetBranch(BranchRule const*, const std::string &branch, int revnum, int mark, const std::string &resetTo, const std::string &comment);
     int markFrom(const std::string &branchFrom, int branchRevNum, std::string &desc);
-    Repository::Transaction *newTransaction(const std::string &branch, const std::string &svnprefix, int revnum);
+    Repository::Transaction *demandTransaction(const std::string &branch, const std::string &svnprefix, int revnum);
     void submoduleChanged(Repository const* submodule, BranchRule const* branch_rule);
 
     friend class ProcessCache;

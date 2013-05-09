@@ -80,7 +80,6 @@ Repository::Repository(
     , submodule_path( rule.submodule_path )
     , fastImport(name)
     , commitCount(0)
-    , outstandingTransactions(0)
     , last_commit_mark(0)
     , next_file_mark(maxMark)
     , processHasStarted(false)
@@ -92,7 +91,7 @@ Repository::Repository(
     }
 
   // create the default branch
-  branches[std::string("refs/heads/master")].created = 1;
+  branches["refs/heads/master"].created = 1;
 
   QString qname = QString::fromStdString(name);
   fastImport.setWorkingDirectory(qname);
@@ -275,7 +274,7 @@ void Repository::restoreLog()
 
 Repository::~Repository()
   {
-  Q_ASSERT(outstandingTransactions == 0);
+  Q_ASSERT(transactions.size() == 0);
   closeFastImport();
   }
 
@@ -468,7 +467,7 @@ int Repository::resetBranch(
   return EXIT_SUCCESS;
   }
 
-void Repository::commit()
+void Repository::prepare_commit()
   {
   if (deletedBranches.isEmpty() && resetBranches.isEmpty())
     {
@@ -483,19 +482,42 @@ void Repository::commit()
   resetBranches.clear();
   }
 
-Repository::Transaction *Repository::newTransaction(
+void Repository::commit(
+    std::string const& author, uint epoch, std::string const& log)
+  {
+  BOOST_FOREACH(TransactionMap::reference t, transactions)
+    {
+    Transaction* txn = &t.second;
+    txn->setAuthor(author);
+    txn->setDateTime(epoch);
+    txn->setLog(log);
+    txn->commit();
+    }
+  transactions.clear();
+  next_file_mark = maxMark;
+  }
+
+Repository::Transaction *Repository::demandTransaction(
     BranchRule const* branch,
     const std::string &svnprefix,
     int revnum)
   {
-  return newTransaction(git_ref_name(branch), svnprefix, revnum);
+  return demandTransaction(git_ref_name(branch), svnprefix, revnum);
   }
 
-Repository::Transaction *Repository::newTransaction(
+Repository::Transaction *Repository::demandTransaction(
     const std::string &branch,
     const std::string &svnprefix,
     int revnum)
   {
+  std::map<std::string,Transaction>::iterator
+    p = transactions.find(branch);
+  
+  if (p != transactions.end())
+    return &p->second;
+
+  Transaction *txn = &transactions[branch];
+  
   Q_ASSERT(boost::starts_with(branch, "refs/"));
   if (!branches.contains(branch))
     {
@@ -503,7 +525,6 @@ Repository::Transaction *Repository::newTransaction(
                  <<  name << "'." << std::endl;
     }
 
-  Transaction *txn = new Transaction;
   txn->repository = this;
   txn->branch = branch;
   txn->svnprefix = svnprefix;
@@ -517,16 +538,7 @@ Repository::Transaction *Repository::newTransaction(
     fastImport.write("checkpoint\n");
     Log::debug() << "checkpoint!, marks file trunkated" << std::endl;
     }
-  outstandingTransactions++;
   return txn;
-  }
-
-void Repository::forgetTransaction(Transaction *)
-  {
-  if (!--outstandingTransactions)
-    {
-    next_file_mark = maxMark;
-    }
   }
 
 void Repository::createAnnotatedTag(
@@ -585,7 +597,7 @@ void Repository::finalizeTags()
         message += "\n" + formatMetadataMessage(tag.svnprefix, tag.revnum, tagName);
 
     {
-    std::string branchRef = tag.supportingRef;
+    std::string const& branchRef = tag.supportingRef;
 
     uint msg_len = message.size();
     std::string s = "progress Creating annotated tag " + tagName + " from ref " + branchRef + "\n"
@@ -596,7 +608,7 @@ void Repository::finalizeTags()
     fastImport.write(s);
     }
 
-    fastImport.write(message.c_str());
+    fastImport.write(message.c_str(), message.size());
     fastImport.putChar('\n');
     if (!fastImport.waitForBytesWritten(-1))
         qFatal("Failed to write to process: %s", qPrintable(fastImport.errorString()));
@@ -604,11 +616,11 @@ void Repository::finalizeTags()
     // Append note to the tip commit of the supporting ref. There is no
     // easy way to attach a note to the tag itself with fast-import.
     if (options.add_metadata_notes) {
-      Repository::Transaction *txn = newTransaction(tag.supportingRef, tag.svnprefix, tag.revnum);
+      Repository::Transaction *txn = demandTransaction(tag.supportingRef, tag.svnprefix, tag.revnum);
       txn->setAuthor(tag.author);
       txn->setDateTime(tag.dt);
       txn->commitNote(formatMetadataMessage(tag.svnprefix, tag.revnum, tagName), true);
-      delete txn;
+      transactions.erase(tag.supportingRef);
 
       if (!fastImport.waitForBytesWritten(-1))
           qFatal("Failed to write to process: %s", qPrintable(fastImport.errorString()));
@@ -676,11 +688,6 @@ void Repository::setBranchNote(const std::string& branch, const std::string& not
   {
   if (branches.contains(branch))
       branches[branch].note = noteText;
-  }
-
-Repository::Transaction::~Transaction()
-  {
-  repository->forgetTransaction(this);
   }
 
 void Repository::Transaction::setAuthor(const std::string &a)

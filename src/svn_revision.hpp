@@ -87,7 +87,6 @@ class SvnRevision
   private:
     Svn const& svn;
     AprPool pool;
-    QHash<std::string, Repository::Transaction*> transactions;
 
     svn_fs_t *fs;
     svn_fs_root_t *fs_root;

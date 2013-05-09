@@ -390,15 +390,11 @@ void SvnRevision::commit()
   fetchRevProps();
   foreach(Repository *repo, svn.repositories.values())
     {
-    repo->commit();
+    repo->prepare_commit();
     }
-  foreach(Repository::Transaction *txn, transactions)
+  foreach(Repository *repo, svn.repositories.values())
     {
-    txn->setAuthor(std::string(author.c_str(), author.length()));
-    txn->setDateTime(epoch);
-    txn->setLog(log);
-    txn->commit();
-    delete txn;
+    repo->commit(author, epoch, log);
     }
   }
 
@@ -855,13 +851,6 @@ int SvnRevision::recurse(
 Repository::Transaction* SvnRevision::demandTransaction(
     Repository* repo, boost2git::BranchRule const* branch, std::string const& svnprefix)
   {
-  std::string key = repo->get_name() + git_ref_name(branch);
-  Repository::Transaction *txn = transactions.value(key, 0);
-  if (!txn)
-    {
-    txn = repo->newTransaction(branch, svnprefix, revnum);
-    transactions.insert(key, txn);
-    }
-  return txn;
+  return repo->demandTransaction(branch, svnprefix, revnum);
   }
 
