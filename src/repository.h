@@ -27,6 +27,15 @@
 #include "ruleset.hpp"
 #include <map>
 
+namespace std
+{
+// This is totally ILL, but it's expedient.
+inline uint qHash(std::string const& s)
+  {
+  return qHash(QByteArray(s.c_str(), s.size()));
+  }
+}
+
 class SvnRevision;
 
 class Repository
@@ -39,17 +48,17 @@ class Repository
         friend class Repository;
 
         Repository *repository;
-        QByteArray branch;
+        std::string branch;
         std::string svnprefix;
-        QByteArray author;
+        std::string author;
         std::string log;
         uint datetime;
         int revnum;
 
         QVector<int> merges;
 
-        QStringList deletedFiles;
-        QByteArray modifiedFiles;
+        QVector<std::string> deletedFiles;
+        std::string modifiedFiles;
 
         inline Transaction()
             : repository(0), datetime(0), revnum(0) {}
@@ -57,17 +66,17 @@ class Repository
         ~Transaction();
         void commit();
 
-        void setAuthor(const QByteArray &author);
+        void setAuthor(const std::string &author);
         void setDateTime(uint dt);
         void setLog(const std::string &log);
 
-        void noteCopyFromBranch (const QString &prevbranch, int revFrom);
+        void noteCopyFromBranch (const std::string &prevbranch, int revFrom);
 
-        void deleteFile(const QString &path);
-        QIODevice *addFile(const QString &path, int mode, qint64 length);
+        void deleteFile(const std::string &path);
+        QIODevice *addFile(const std::string &path, int mode, qint64 length);
 
         void commitNote(const std::string &noteText, bool append,
-          const QByteArray &commit = QByteArray());
+          const std::string &commit = std::string());
       };
     
     Repository(
@@ -81,24 +90,24 @@ class Repository
 
     void reloadBranches();
     int createBranch(BranchRule const* branch, SvnRevision* rev,
-      const QString &branchFrom, int revFrom);
+      const std::string &branchFrom, int revFrom);
     Repository::Transaction *newTransaction(BranchRule const* branch, const std::string &svnprefix, SvnRevision* rev);
     int deleteBranch(BranchRule const* branch, SvnRevision* rev);
 
     void createAnnotatedTag(BranchRule const* branch, const std::string &svnprefix, SvnRevision* rev,
-      const QByteArray &author, uint dt,
+      const std::string &author, uint dt,
       const std::string &log);
     void finalizeTags();
     void commit();
 
     static std::string formatMetadataMessage(const std::string &svnprefix, int revnum,
-      const QByteArray &tag = QByteArray());
+      const std::string &tag = std::string());
 
-    bool branchExists(const QString& branch) const;
-    const QByteArray branchNote(const QString& branch) const;
-    void setBranchNote(const QString& branch, const QByteArray& noteText);
+    bool branchExists(const std::string& branch) const;
+    const std::string branchNote(const std::string& branch) const;
+    void setBranchNote(const std::string& branch, const std::string& noteText);
 
-    QString get_name() const { return name; }
+    std::string get_name() const { return name; }
   private:
     struct Branch
       {
@@ -110,29 +119,29 @@ class Repository
       std::map<std::string, Repository const*> submodules;
       QVector<int> commits;
       QVector<int> marks;
-      QByteArray note;
+      std::string note;
       };
     struct AnnotatedTag
       {
-      QString supportingRef;
+      std::string supportingRef;
       std::string svnprefix;
-      QByteArray author;
+      std::string author;
       std::string log;
       uint dt;
       int revnum;
       };
 
-    QHash<QString, Branch> branches;
-    QHash<QString, AnnotatedTag> annotatedTags;
-    QString name;
-    QString prefix;
+    QHash<std::string, Branch> branches;
+    QHash<std::string, AnnotatedTag> annotatedTags;
+    std::string name;
+    std::string prefix;
     Repository* submodule_in_repo;
-    QString submodule_path;
+    std::string submodule_path;
     LoggingQProcess fastImport;
     int commitCount;
     int outstandingTransactions;
-    QHash<QString, QByteArray> deletedBranches;
-    QHash<QString, QByteArray> resetBranches;
+    QHash<std::string, std::string> deletedBranches;
+    QHash<std::string, std::string> resetBranches;
 
     /* starts at 0, and counts up.  */
     int last_commit_mark;
@@ -149,9 +158,9 @@ class Repository
     // called when a transaction is deleted
     void forgetTransaction(Transaction *t);
 
-    int resetBranch(BranchRule const*, const QString &branch, SvnRevision* rev, int mark, const QByteArray &resetTo, const QByteArray &comment);
-    int markFrom(const QString &branchFrom, int branchRevNum, QByteArray &desc);
-    Repository::Transaction *newTransaction(const QString &branch, const std::string &svnprefix, int revnum);
+    int resetBranch(BranchRule const*, const std::string &branch, SvnRevision* rev, int mark, const std::string &resetTo, const std::string &comment);
+    int markFrom(const std::string &branchFrom, int branchRevNum, std::string &desc);
+    Repository::Transaction *newTransaction(const std::string &branch, const std::string &svnprefix, int revnum);
     void submoduleChanged(Repository const* submodule, BranchRule const* branch_rule);
 
     friend class ProcessCache;

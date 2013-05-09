@@ -28,13 +28,13 @@ class LoggingQProcess: public QProcess
   {
     Q_OBJECT
   public:
-    LoggingQProcess(const QString filename)
+    LoggingQProcess(std::string const& filename)
         : id(filename)
       {
       if (options.debug_rules)
         {
         logging = true;
-        QString name = filename;
+        QString name = QString::fromStdString(filename);
         name.replace('/', '_');
         name.prepend("gitlog-");
         log.setFileName(name);
@@ -59,12 +59,7 @@ class LoggingQProcess: public QProcess
       }
     qint64 write(std::string const& data)
       {
-      Q_ASSERT(state() == QProcess::Running);
-      if (logging)
-        {
-        log.write(data.c_str(), data.size());
-        }
-      return QProcess::write(data.c_str(), data.size());
+      return write(data.c_str(), data.size());
       }
     qint64 write(const char *data)
       {
@@ -93,6 +88,10 @@ class LoggingQProcess: public QProcess
         }
       return QProcess::write(data);
       }
+    qint64 writeNoLog(std::string const& data)
+      {
+      return writeNoLog(data.c_str(), data.size());
+      }
     qint64 writeNoLog(const char *data)
       {
       Q_ASSERT(state() == QProcess::Running);
@@ -117,6 +116,7 @@ class LoggingQProcess: public QProcess
         }
       return QProcess::putChar(c);
       }
+
   private slots:
     void processError(QProcess::ProcessError x) const
       {
@@ -136,10 +136,10 @@ class LoggingQProcess: public QProcess
   private:
     void report_error(char const* const msg) const
       {
-      throw std::runtime_error( std::string(id.toUtf8().constData()) + ": " + msg );
+      throw std::runtime_error( id + ": " + msg );
       }
   private:
-    QString id;
+    std::string id;
     QFile log;
     bool logging;
   };

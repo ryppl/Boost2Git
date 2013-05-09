@@ -20,7 +20,7 @@
 
 #include <svn_fs.h>
 
-#include <QByteArray>
+#include <string>
 #include <QHash>
 
 #include "apr_pool.hpp"
@@ -30,7 +30,7 @@
 #include "patrie.hpp"
 
 typedef patrie MatchRuleList;
-typedef QHash<QString, Repository*> RepositoryHash;
+typedef QHash<std::string, Repository*> RepositoryHash;
 
 class Svn;
 
@@ -65,7 +65,7 @@ class SvnRevision
         const char *path_from,
         svn_revnum_t rev_from,
         apr_hash_t *changes,
-        const QString &current,
+        const std::string &current,
         const Ruleset::Match &rule,
         const MatchRuleList &matchRules);
     int exportInternal(
@@ -73,7 +73,7 @@ class SvnRevision
         const svn_fs_path_change2_t *change,
         const char *path_from,
         svn_revnum_t rev_from,
-        const QString &current,
+        const std::string &current,
         const Ruleset::Match &rule,
         const MatchRuleList &matchRules,
         apr_hash_t *changes);
@@ -88,7 +88,7 @@ class SvnRevision
   private:
     Svn const& svn;
     AprPool pool;
-    QHash<QString, Repository::Transaction*> transactions;
+    QHash<std::string, Repository::Transaction*> transactions;
 
     svn_fs_t *fs;
     svn_fs_root_t *fs_root;
