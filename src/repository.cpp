@@ -30,8 +30,6 @@
 #include <stdexcept>
 #include <string>
 
-#include "svn_revision.hpp"
-
 static const int maxSimultaneousProcesses = 100;
 
 static const int maxMark = (1 << 20) - 2; // some versions of git-fast-import are buggy for larger values of maxMark
@@ -362,7 +360,7 @@ int Repository::markFrom(const std::string &branchFrom, int branchRevNum, std::s
 
 int Repository::createBranch(
     BranchRule const* branch_rule,
-    SvnRevision* svn_revision,
+    int revnum,
     const std::string &branchFrom,
     int branchRevNum)
   {
@@ -396,10 +394,10 @@ int Repository::createBranch(
                << name << std::endl;
   // Preserve note
   branches[branch].note = branches.value(branchFrom).note;
-  return resetBranch(branch_rule, branch, svn_revision, mark, branchFromRef, branchFromDesc);
+  return resetBranch(branch_rule, branch, revnum, mark, branchFromRef, branchFromDesc);
   }
 
-int Repository::deleteBranch(BranchRule const* branch_rule, SvnRevision* svn_revision)
+int Repository::deleteBranch(BranchRule const* branch_rule, int revnum)
   {
   std::string branch = git_ref_name(branch_rule);
   Q_ASSERT(boost::starts_with(branch, "refs/"));
@@ -408,13 +406,13 @@ int Repository::deleteBranch(BranchRule const* branch_rule, SvnRevision* svn_rev
       return EXIT_SUCCESS;
 
   static std::string null_sha(40, '0');
-  return resetBranch(branch_rule, branch, svn_revision, 0, null_sha, "delete");
+  return resetBranch(branch_rule, branch, revnum, 0, null_sha, "delete");
   }
 
 int Repository::resetBranch(
     BranchRule const* branch_rule,
     const std::string &branch,  // This is redundant with the above, but we've already computed it
-    SvnRevision* svn_revision,
+    int revnum,
     int mark,
     const std::string &resetTo,
     const std::string &comment)
@@ -426,7 +424,6 @@ int Repository::resetBranch(
   std::string branchRef = branch;
   Branch &br = branches[branch];
   std::string backupCmd;
-  int const revnum = svn_revision->id();
   if (br.created && br.created != revnum && !br.marks.isEmpty() && br.marks.last())
     {
     std::string backupBranch;
@@ -489,9 +486,9 @@ void Repository::commit()
 Repository::Transaction *Repository::newTransaction(
     BranchRule const* branch,
     const std::string &svnprefix,
-    SvnRevision* svn_revision)
+    int revnum)
   {
-  return newTransaction(git_ref_name(branch), svnprefix, svn_revision->id());
+  return newTransaction(git_ref_name(branch), svnprefix, revnum);
   }
 
 Repository::Transaction *Repository::newTransaction(
@@ -535,7 +532,7 @@ void Repository::forgetTransaction(Transaction *)
 void Repository::createAnnotatedTag(
     BranchRule const* branch_rule,
     const std::string &svnprefix,
-    SvnRevision* svn_revision,
+    int revnum,
     const std::string &author,
     uint dt,
     const std::string &log)
@@ -560,7 +557,7 @@ void Repository::createAnnotatedTag(
   AnnotatedTag &tag = annotatedTags[tagName];
   tag.supportingRef = ref;
   tag.svnprefix = svnprefix;
-  tag.revnum = svn_revision->id();
+  tag.revnum = revnum;
   tag.author = author;
   tag.log = log;
   tag.dt = dt;

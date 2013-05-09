@@ -47,7 +47,6 @@ class SvnRevision
       }
     int prepareTransactions();
     void commit();
-    int id() { return revnum; }
   private:
     Repository::Transaction* demandTransaction(
         Repository* repo,

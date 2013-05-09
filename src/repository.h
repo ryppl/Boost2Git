@@ -36,8 +36,6 @@ inline uint qHash(std::string const& s)
   }
 }
 
-class SvnRevision;
-
 class Repository
   {
     typedef boost2git::BranchRule BranchRule;
@@ -89,12 +87,12 @@ class Repository
     ~Repository();
 
     void reloadBranches();
-    int createBranch(BranchRule const* branch, SvnRevision* rev,
+    int createBranch(BranchRule const* branch, int revnum,
       const std::string &branchFrom, int revFrom);
-    Repository::Transaction *newTransaction(BranchRule const* branch, const std::string &svnprefix, SvnRevision* rev);
-    int deleteBranch(BranchRule const* branch, SvnRevision* rev);
+    Repository::Transaction *newTransaction(BranchRule const* branch, const std::string &svnprefix, int revnum);
+    int deleteBranch(BranchRule const* branch, int revnum);
 
-    void createAnnotatedTag(BranchRule const* branch, const std::string &svnprefix, SvnRevision* rev,
+    void createAnnotatedTag(BranchRule const* branch, const std::string &svnprefix, int revnum,
       const std::string &author, uint dt,
       const std::string &log);
     void finalizeTags();
@@ -158,7 +156,7 @@ class Repository
     // called when a transaction is deleted
     void forgetTransaction(Transaction *t);
 
-    int resetBranch(BranchRule const*, const std::string &branch, SvnRevision* rev, int mark, const std::string &resetTo, const std::string &comment);
+    int resetBranch(BranchRule const*, const std::string &branch, int revnum, int mark, const std::string &resetTo, const std::string &comment);
     int markFrom(const std::string &branchFrom, int branchRevNum, std::string &desc);
     Repository::Transaction *newTransaction(const std::string &branch, const std::string &svnprefix, int revnum);
     void submoduleChanged(Repository const* submodule, BranchRule const* branch_rule);

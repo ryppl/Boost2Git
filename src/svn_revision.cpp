@@ -609,7 +609,7 @@ int SvnRevision::exportInternal(
   if (change->change_kind == svn_fs_path_change_delete && current == svnprefix && path.empty())
     {
     Log::trace() << "repository " << repository << " branch " << branch_ref_name << " deleted" << std::endl;
-    return repo->deleteBranch(branch, this);
+    return repo->deleteBranch(branch, revnum);
     }
 
   std::string previous;
@@ -684,7 +684,7 @@ int SvnRevision::exportInternal(
                      << " is branching from " << prevbranch << std::endl;
         }
  
-      if (repo->createBranch(branch, this, prevbranch, rev_from) == EXIT_FAILURE)
+      if (repo->createBranch(branch, revnum, prevbranch, rev_from) == EXIT_FAILURE)
         {
         return EXIT_FAILURE;
         }
@@ -859,7 +859,7 @@ Repository::Transaction* SvnRevision::demandTransaction(
   Repository::Transaction *txn = transactions.value(key, 0);
   if (!txn)
     {
-    txn = repo->newTransaction(branch, svnprefix, this);
+    txn = repo->newTransaction(branch, svnprefix, revnum);
     transactions.insert(key, txn);
     }
   return txn;
