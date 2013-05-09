@@ -1172,6 +1172,10 @@ repository math : common_branches
     "boost/math_fwd.hpp" : "include/boost/math_fwd.hpp";
     "libs/math/";
   }
+  branches
+  {
+    [ 2957:     ] "/sandbox-branches/math_toolkit/" : "sandbox/math_toolkit";
+  }
 }
 
 repository move : common_branches
@@ -2489,6 +2493,7 @@ repository website
     [138:] "/website/public_html/live/" : "master";
     [138:] "/website/public_html/beta/" : "beta";
     [:]    "/website/public_html/dev/"  : "dev";
+    [:139] "/website/"                  : "master";
   }
 }
 
