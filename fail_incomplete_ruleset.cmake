@@ -5,7 +5,7 @@
 #   http://www.boost.org/LICENSE_1_0.txt
 
 file(READ branch_list.txt branch_list)
-
+string(REGEX REPLACE "^[*] master a402f82 Commit the README\n" "" branch_list "${branch_list}")
 if(branch_list)
   message(FATAL_ERROR "
 error: incomplete ruleset (fallback repository has commits)!
