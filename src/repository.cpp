@@ -557,6 +557,7 @@ Repository::Transaction *Repository::demandTransaction(
   txn->svnprefix = svnprefix;
   txn->datetime = 0;
   txn->revnum = revnum;
+  txn->commitMark = ++last_commit_mark;
 
   if ((++commitCount % options.commit_interval) == 0)
     {
@@ -857,13 +858,8 @@ void Repository::Transaction::commit()
   {
   repository->startFastImport();
 
-  // We might be tempted to use the SVN revision number as the fast-import commit mark.
-  // However, a single SVN revision can modify multple branches, and thus lead to multiple
-  // commits in the same repo.  So, we need to maintain a separate commit mark counter.
-  int mark = ++repository->last_commit_mark;
-
   // in case the two mark allocations meet, we might as well just abort
-  Q_ASSERT(mark < repository->next_file_mark - 1);
+  Q_ASSERT(commitMark < repository->next_file_mark - 1);
 
   // create the commit message
   std::string message = log;
@@ -886,14 +882,14 @@ void Repository::Transaction::commit()
   }
   br.lastChangeRev = revnum;
   br.commits.append(revnum);
-  br.marks.append(mark);
+  br.marks.append(commitMark);
 
   Q_ASSERT(boost::starts_with(branch, "refs/"));
   std::string branchRef = branch;
 
   std::string s("");
   s.append("commit " + branchRef + "\n");
-  s.append("mark :" + to_string(mark) + "\n");
+  s.append("mark :" + to_string(commitMark) + "\n");
   s.append("committer " + author + " " + to_string(datetime) + " +0000" + "\n");
   s.append("data " + to_string(message.length()) + "\n");
   s.append(std::string(message.c_str()) + "\n");
@@ -947,7 +943,7 @@ void Repository::Transaction::commit()
   repository->fastImport.write(modifiedFiles);
 
   repository->fastImport.write("\nprogress SVN r" + to_string(revnum)
-    + " branch " + branch + " = :" + to_string(mark)
+    + " branch " + branch + " = :" + to_string(commitMark)
     + (desc.empty() ? "" : " # merge from") + desc
     + "\n\n");
   Log::trace() << deletedFiles.count() + boost::count(modifiedFiles, '\n')

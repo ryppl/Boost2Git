@@ -51,6 +51,7 @@ class Repository
         std::string log;
         uint datetime;
         int revnum;
+        int commitMark;
 
         QVector<int> merges;
 
@@ -59,7 +60,7 @@ class Repository
 
       public:
         inline Transaction()
-            : repository(0), datetime(0), revnum(0)
+            : repository(0), datetime(0), revnum(0), commitMark(0)
           {}
         void commit();
         
@@ -166,6 +167,10 @@ class Repository
     
     typedef std::map<std::string, Transaction> TransactionMap;
     TransactionMap transactions;
+    
+    // We might be tempted to use the SVN revision number as the fast-import commit mark.
+    // However, a single SVN revision can modify multple branches, and thus lead to multiple
+    // commits in the same repo.  So, we need to maintain a separate commit mark counter.
     
     /* starts at 0, and counts up.  */
     int last_commit_mark;
