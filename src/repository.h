@@ -71,6 +71,7 @@ class Repository
 
         void deleteFile(const std::string &path);
         QIODevice *addFile(const std::string &path, int mode, qint64 length);
+        void updateSubmodule(Repository const* submodule, int submoduleMark);
 
         void commitNote(const std::string &noteText, bool append,
           const std::string &commit = std::string());
@@ -116,7 +117,8 @@ class Repository
       
       int created;
       int last_submodule_update_rev; // which SVN revision contributed the last change to the submodule list
-      std::map<std::string, Repository const*> submodules;
+      typedef std::map<std::string, Repository const*> Submodules;
+      Submodules submodules;
       QVector<int> commits;
       QVector<int> marks;
       std::string note;
@@ -161,7 +163,7 @@ class Repository
     int resetBranch(BranchRule const*, const std::string &branch, int revnum, int mark, const std::string &resetTo, const std::string &comment);
     int markFrom(const std::string &branchFrom, int branchRevNum, std::string &desc);
     Repository::Transaction *demandTransaction(const std::string &branch, const std::string &svnprefix, int revnum);
-    void submoduleChanged(Repository const* submodule, BranchRule const* branch_rule);
+    void submoduleChanged(Repository const* submodule, BranchRule const* branchRule, int submoduleMark, int revnum);
 
     friend class ProcessCache;
     Q_DISABLE_COPY(Repository)

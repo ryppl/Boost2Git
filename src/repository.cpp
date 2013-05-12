@@ -29,6 +29,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <iomanip>
 
 static const int maxSimultaneousProcesses = 100;
 
@@ -417,7 +418,7 @@ int Repository::resetBranch(
     const std::string &comment)
   {
   if (submodule_in_repo)
-      submodule_in_repo->submoduleChanged(this, branch_rule);
+      submodule_in_repo->submoduleChanged(this, branch_rule, mark, revnum);
   
   Q_ASSERT(boost::starts_with(branch, "refs/"));
   std::string branchRef = branch;
@@ -780,6 +781,7 @@ QIODevice *Repository::Transaction::addFile(const std::string &path, int mode, q
   modifiedFiles.append(repository->prefix + path);
   modifiedFiles.append("\n");
 
+  // If it's not a submodule change, we have a blob to write.
   if (!options.dry_run) {
     repository->startFastImport();
     repository->fastImport.writeNoLog("blob\nmark :");
@@ -936,6 +938,63 @@ void Repository::Transaction::commit()
             repository->name.c_str());
   }
 
-void Repository::submoduleChanged(Repository const* submodule, BranchRule const* branch_rule)
+void Repository::submoduleChanged(
+    Repository const* submodule, BranchRule const* branchRule, int submoduleMark, int revnum)
   {
+  bool const deletion = submoduleMark == 0;
+  std::string const& submodule_path = submodule->submodule_path;
+  
+  Branch& branch = branches[git_ref_name(branchRule)];
+
+  if (deletion)
+    {
+    Branch::Submodules::iterator pos = branch.submodules.find(submodule_path);
+    if (pos == branch.submodules.end())
+        return; // If there's no submodule there already, don't bother with this change
+    branch.submodules.erase(pos);
+    }
+  else
+    {
+    branch.submodules[submodule_path] = submodule;
+    }
+  
+  std::ostream& debug = Log::debug();
+  debug << "submodule " << submodule_path << " of repository " << this->name;
+  if (deletion)
+      debug << " deleted";
+  else
+      debug << " updated to mark :" << submoduleMark;
+  debug << " in branch " << branchRule->name << " of r" << revnum << std::endl;
+
+  Transaction* txn = demandTransaction(branchRule, std::string(), revnum);
+  if (deletion)
+      txn->deleteFile(submodule->submodule_path);
+  else
+      txn->updateSubmodule(submodule, submoduleMark);
+  
+  branch.last_submodule_update_rev = revnum;
+  }
+
+void Repository::Transaction::updateSubmodule(Repository const* submodule, int submoduleMark)
+  {
+
+  if (modifiedFiles.capacity() == 0)
+      modifiedFiles.reserve(2048);
+  modifiedFiles.append("M 160000 ");
+
+  // Encode the submodule's mark in the place where its SHA belongs,
+  // since we don't have the SHA for that commit at this point in the
+  // process.  We'll take a second pass at this repository and fix up
+  // all the submodule marks later.
+  // 
+  // We could do this in hex but we have enough digits to
+  // transliterate it from decimal, and that will make debugging
+  // easier
+  std::stringstream fake_sha;
+  fake_sha << /*std::hex <<*/ std::setfill('0') << std::setw(40) << submoduleMark;
+  modifiedFiles.append(fake_sha.str());
+  
+  modifiedFiles.append(" ");
+  modifiedFiles.append(submodule->submodule_path);
+  modifiedFiles.append("\n");
   }
