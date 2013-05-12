@@ -87,7 +87,7 @@ Repository::Repository(
   {
   BOOST_FOREACH(boost2git::BranchRule const* branch, rule.branches)
     {
-    branches[qualify_ref(branch->name, branch->git_ref_qualifier)].created = 0;
+    branches[git_ref_name(branch)].created = 0;
     }
 
   // create the default branch

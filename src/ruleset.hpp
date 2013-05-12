@@ -26,18 +26,6 @@
 #include "rule.hpp"
 #include "AST.hpp"
 
-inline std::string qualify_ref(std::string ref_name, char const* prefix)
-  {
-  std::string result;
-  
-  if (boost::starts_with(ref_name, "refs/"))
-        std::swap(result, ref_name);
-  else
-      result = std::string("refs/") + prefix + "/" + ref_name;
-  
-  return result;
-  }
-
 class Ruleset
   {
   public:
