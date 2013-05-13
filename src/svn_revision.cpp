@@ -700,18 +700,18 @@ int SvnRevision::exportInternal(
           Log::trace() << "...deleted file missing in previous revision, so skipped" << std::endl;
           }
         }
-//      if (rule.annotate)
-//        {
-//        // create an annotated tag
-//        fetchRevProps();
-//        repo->createAnnotatedTag(
-//            branch,
-//            svnprefix,
-//            revnum,
-//            std::string(author.c_str(), author.length()),
-//            epoch,
-//            std::string(log.c_str(), log.length()));
-//        }
+        // if (rule.annotate)
+        //   {
+        //   // create an annotated tag
+        //   fetchRevProps();
+        //   repo->createAnnotatedTag(
+        //       branch,
+        //       svnprefix,
+        //       revnum,
+        //       std::string(author.c_str(), author.length()),
+        //       epoch,
+        //       std::string(log.c_str(), log.length()));
+        //   }
       return EXIT_SUCCESS;
       }
     }
