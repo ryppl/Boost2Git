@@ -345,6 +345,9 @@ int Repository::markFrom(const std::string &branchFrom, int branchRevNum, std::s
 
   QVector<int>::const_iterator it = qUpperBound(brFrom.commits, branchRevNum);
   if (it == brFrom.commits.begin()) {
+    // Note: this warning is redundant with others, but it might be important to make sure we find out about this at the point it happened
+    Log::warn() << "No mark found for r" << branchRevNum << " of branch "
+                << branchFrom << " in repository " << name << std::endl;
     return 0;
   }
 
