@@ -390,7 +390,7 @@ void SvnRevision::commit()
   fetchRevProps();
   foreach(Repository *repo, svn.repositories.values())
     {
-    repo->prepare_commit();
+    repo->prepare_commit(revnum);
     }
   foreach(Repository *repo, svn.repositories.values())
     {

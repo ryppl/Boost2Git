@@ -96,7 +96,7 @@ class Repository
       const std::string &author, uint dt,
       const std::string &log);
     void finalizeTags();
-    void prepare_commit();
+    void prepare_commit(int revnum);
     void commit(
         std::string const& author, uint epoch, std::string const& log);
 
@@ -171,7 +171,8 @@ class Repository
     int markFrom(const std::string &branchFrom, int branchRevNum, std::string &desc);
     Repository::Transaction *demandTransaction(const std::string &branch, const std::string &svnprefix, int revnum);
     void submoduleChanged(Repository const* submodule, BranchRule const* branchRule, int submoduleMark, int revnum);
-
+    void update_dot_gitmodules(std::string const& branch_name, Branch const& b, int revnum);
+    
     friend class ProcessCache;
     Q_DISABLE_COPY(Repository)
   };

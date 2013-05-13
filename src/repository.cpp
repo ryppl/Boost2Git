@@ -474,11 +474,20 @@ int Repository::resetBranch(
   return EXIT_SUCCESS;
   }
 
-void Repository::prepare_commit()
+void Repository::prepare_commit(int revnum)
   {
   if (deletedBranches.isEmpty() && resetBranches.isEmpty())
     {
     return;
+    }
+
+  BOOST_FOREACH(std::string const& branch_name, branches.keys())
+    {
+    Branch const& b = branches[branch_name];
+    if (b.last_submodule_update_rev == revnum)
+      {
+      update_dot_gitmodules(branch_name, b, revnum);
+      }
     }
   startFastImport();
   foreach(std::string const& cmd, deletedBranches.values())
@@ -1003,4 +1012,35 @@ void Repository::Transaction::updateSubmodule(Repository const* submodule, int s
   modifiedFiles.append(" ");
   modifiedFiles.append(submodule->submodule_path);
   modifiedFiles.append("\n");
+  }
+
+void Repository::update_dot_gitmodules(std::string const& branch_name, Branch const& b, int revnum)
+  {
+  Transaction* txn = demandTransaction(branch_name, "", revnum);
+  std::stringstream content;
+  
+  for (Branch::Submodules::const_iterator p = b.submodules.begin(); p != b.submodules.end(); ++p)
+    {
+    content << "[submodule \"" << p->first << "\"]\n"
+            << "	path = " << p->first << "\n"
+            << "	url = http://github.com/boostorg/" << p->second->name << "\n"
+      ;
+    }
+
+  QIODevice* device = txn->addFile(".gitmodules", 0100644, content.str().size());
+  if (!options.dry_run)
+    {
+    device->write(content.str().c_str(), content.str().size());
+    while (device->bytesToWrite() > 32 * 1024)
+      {
+      if (!device->waitForBytesWritten(-1))
+        {
+        std::stringstream msg;
+        msg << "Failed to write to process: " << qPrintable(device->errorString());
+        throw std::runtime_error(msg.str());
+        }
+      }
+    // print an ending newline
+    device->putChar('\n');
+    }
   }
