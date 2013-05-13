@@ -871,8 +871,8 @@ void Repository::Transaction::commit()
                   << repository->name << " doesn't exist at revision "
                   << revnum << " -- did you resume from the wrong revision?" << std::endl;
       }
-    br.lastChangeRev = revnum;
   }
+  br.lastChangeRev = revnum;
   br.commits.append(revnum);
   br.marks.append(mark);
 
