@@ -114,8 +114,9 @@ class Repository
   private:
     struct Branch
       {
-      Branch(int lastChangeRev = 0)
-          : lastChangeRev(lastChangeRev), last_submodule_update_rev(0) {}
+      Branch(int lastChangeRev = neverChanged)
+          : lastChangeRev(lastChangeRev)
+          , lastSubmoduleListChangeRev(neverChanged) {}
 
       bool exists() const
         {
@@ -124,8 +125,8 @@ class Repository
 
       static int const neverChanged = 0;
       
-      int lastChangeRev;             // which SVN revision contributed the last change to this branch
-      int last_submodule_update_rev; // which SVN revision contributed the last change to the submodule list
+      int lastChangeRev;              // which SVN revision contributed the last change to this branch
+      int lastSubmoduleListChangeRev; // which SVN revision contributed the last change to the submodule list
       typedef std::map<std::string, Repository const*> Submodules;
       Submodules submodules;
       QVector<int> commits;

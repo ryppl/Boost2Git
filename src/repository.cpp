@@ -484,7 +484,7 @@ void Repository::prepare_commit(int revnum)
   BOOST_FOREACH(std::string const& branch_name, branches.keys())
     {
     Branch const& b = branches[branch_name];
-    if (b.last_submodule_update_rev == revnum)
+    if (b.lastSubmoduleListChangeRev == revnum)
       {
       update_dot_gitmodules(branch_name, b, revnum);
       }
@@ -987,7 +987,7 @@ void Repository::submoduleChanged(
   else
       txn->updateSubmodule(submodule, submoduleMark);
   
-  branch.last_submodule_update_rev = revnum;
+  branch.lastSubmoduleListChangeRev = revnum;
   }
 
 void Repository::Transaction::updateSubmodule(Repository const* submodule, int submoduleMark)
