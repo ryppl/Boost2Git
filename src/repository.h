@@ -104,6 +104,8 @@ class Repository
     static std::string formatMetadataMessage(const std::string &svnprefix, int revnum,
       const std::string &tag = std::string());
 
+    // SUSPICIOUS: Rename this and/or inspect its usage.  It's a very
+    // naive test without the same semantics as Branch::exists().
     bool branchExists(const std::string& branch) const;
     const std::string branchNote(const std::string& branch) const;
     void setBranchNote(const std::string& branch, const std::string& noteText);
@@ -114,6 +116,11 @@ class Repository
       {
       Branch(int created = 0)
           : created(created), last_submodule_update_rev(0) {}
+
+      bool exists() const
+        {
+        return created != 0 && !marks.isEmpty() && marks.last() != 0;
+        }
       
       int created;
       int last_submodule_update_rev; // which SVN revision contributed the last change to the submodule list

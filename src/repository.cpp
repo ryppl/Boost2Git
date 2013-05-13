@@ -235,8 +235,10 @@ int Repository::setupIncremental(int &cutoff)
         last_commit_mark = mark;
 
     Branch &br = branches[qbranch.toStdString()];
-    if (!br.created || !mark || br.marks.isEmpty() || !br.marks.last())
-        br.created = revnum;
+    if (!br.exists() || !mark)
+      {
+      br.created = revnum;
+      }
     br.commits.append(revnum);
     br.marks.append(mark);
   }
@@ -424,7 +426,7 @@ int Repository::resetBranch(
   std::string branchRef = branch;
   Branch &br = branches[branch];
   std::string backupCmd;
-  if (br.created && br.created != revnum && !br.marks.isEmpty() && br.marks.last())
+  if (br.exists() && br.created != revnum)
     {
     std::string backupBranch;
     if ((comment == "delete") && boost::starts_with(branchRef, "refs/heads/"))
@@ -847,7 +849,7 @@ void Repository::Transaction::commit()
 
   int parentmark = 0;
   Branch &br = repository->branches[branch];
-  if (br.created && !br.marks.isEmpty() && br.marks.last()) {
+  if (br.exists()) {
     parentmark = br.marks.last();
   } else {
     if (repository->incremental)
