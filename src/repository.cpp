@@ -88,11 +88,11 @@ Repository::Repository(
   {
   BOOST_FOREACH(boost2git::BranchRule const* branch, rule.branches)
     {
-    branches[git_ref_name(branch)].created = 0;
+    branches[git_ref_name(branch)].lastChangeRev = Branch::neverChanged;
     }
 
   // create the default branch
-  branches["refs/heads/master"].created = 1;
+  branches["refs/heads/master"].lastChangeRev = 1;
 
   QString qname = QString::fromStdString(name);
   fastImport.setWorkingDirectory(qname);
@@ -237,7 +237,7 @@ int Repository::setupIncremental(int &cutoff)
     Branch &br = branches[qbranch.toStdString()];
     if (!br.exists() || !mark)
       {
-      br.created = revnum;
+      br.lastChangeRev = revnum;
       }
     br.commits.append(revnum);
     br.marks.append(mark);
@@ -333,7 +333,7 @@ int Repository::markFrom(const std::string &branchFrom, int branchRevNum, std::s
   Q_ASSERT(boost::starts_with(branchFrom,"refs/"));
 
   Branch &brFrom = branches[branchFrom];
-  if (!brFrom.created)
+  if (brFrom.lastChangeRev == Branch::neverChanged)
       return -1;
 
   if (brFrom.commits.isEmpty()) {
@@ -429,7 +429,7 @@ int Repository::resetBranch(
   std::string branchRef = branch;
   Branch &br = branches[branch];
   std::string backupCmd;
-  if (br.exists() && br.created != revnum)
+  if (br.exists() && br.lastChangeRev != revnum)
     {
     std::string backupBranch;
     if ((comment == "delete") && boost::starts_with(branchRef, "refs/heads/"))
@@ -447,7 +447,7 @@ int Repository::resetBranch(
     }
 
   // When a branch is deleted, it gets a commit mark of zero
-  br.created = revnum;
+  br.lastChangeRev = revnum;
   br.commits.append(revnum);
   br.marks.append(mark);
 
@@ -871,7 +871,7 @@ void Repository::Transaction::commit()
                   << repository->name << " doesn't exist at revision "
                   << revnum << " -- did you resume from the wrong revision?" << std::endl;
       }
-    br.created = revnum;
+    br.lastChangeRev = revnum;
   }
   br.commits.append(revnum);
   br.marks.append(mark);

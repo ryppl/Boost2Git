@@ -114,15 +114,17 @@ class Repository
   private:
     struct Branch
       {
-      Branch(int created = 0)
-          : created(created), last_submodule_update_rev(0) {}
+      Branch(int lastChangeRev = 0)
+          : lastChangeRev(lastChangeRev), last_submodule_update_rev(0) {}
 
       bool exists() const
         {
-        return created != 0 && !marks.isEmpty() && marks.last() != 0;
+        return lastChangeRev != neverChanged && !marks.isEmpty() && marks.last() != 0;
         }
+
+      static int const neverChanged = 0;
       
-      int created;
+      int lastChangeRev;             // which SVN revision contributed the last change to this branch
       int last_submodule_update_rev; // which SVN revision contributed the last change to the submodule list
       typedef std::map<std::string, Repository const*> Submodules;
       Submodules submodules;
