@@ -418,7 +418,7 @@ int Repository::resetBranch(
     BranchRule const* branch_rule,
     const std::string &branch,  // This is redundant with the above, but we've already computed it
     int revnum,
-    int mark,
+    int mark,                   // will be zero when deleting the branch
     const std::string &resetTo,
     const std::string &comment)
   {
@@ -446,6 +446,7 @@ int Repository::resetBranch(
     backupCmd = "reset " + backupBranch + "\nfrom " + branchRef + "\n\n";
     }
 
+  // When a branch is deleted, it gets a commit mark of zero
   br.created = revnum;
   br.commits.append(revnum);
   br.marks.append(mark);
