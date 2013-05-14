@@ -426,13 +426,15 @@ int Repository::resetBranch(
       submodule_in_repo->submoduleChanged(this, branch_rule, mark, revnum);
   
   Q_ASSERT(boost::starts_with(gitRefName, "refs/"));
+  bool deleting = mark == 0;
+  
   std::string branchRef = gitRefName;
   Branch &br = branches[gitRefName];
   std::string backupCmd;
   if (br.exists() && br.lastChangeRev != revnum)
     {
     std::string backupBranch;
-    if ((comment == "delete") && boost::starts_with(branchRef, "refs/heads/"))
+    if (deleting && boost::starts_with(branchRef, "refs/heads/"))
       {
       backupBranch = "refs/tags/backups/" + branchRef.substr(11) + "@" + to_string(revnum);
       }
@@ -456,7 +458,7 @@ int Repository::resetBranch(
     + " branch " + gitRefName + " = :" + to_string(mark)
     + " # " + comment + "\n\n";
 
-  if (comment == "delete")
+  if (deleting)
     {
     // In a single revision, we can create a branch after deleting it,
     // but not vice-versa.  Just ignore both the deletion and the
