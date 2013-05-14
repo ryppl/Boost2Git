@@ -90,7 +90,7 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
       > -(qi::lit("submodule") > qi::lit("of") > string_ > ':' > string_ > ';')
       > (("minrev" > qi::uint_ > ';') | qi::attr(0))
       > (("maxrev" > qi::uint_ > ';') | qi::attr(UINT_MAX))
-      > -content_[beef_up_content]
+      > -content_[phoenix::bind(beef_up_content, qi::_1)]
       > -branches_
       > -tags_
       > '}'
