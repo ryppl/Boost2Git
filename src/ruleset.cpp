@@ -60,6 +60,22 @@ static void set_git_ref_qualifier(boost2git::BranchRule& branch, char const* qua
 using namespace boost2git;
 using boost::spirit::make_default_multi_pass;
 
+// robustness: if prefix of content ends with "/",
+// make sure replace ends with "/" too (unless it is empty).
+void beef_up_content(ContentRule& content)
+  {
+  std::string const& prefix = content.prefix;
+  std::string& replace = content.replace;
+  if (prefix.empty() || replace.empty())
+    {
+    continue;
+    }
+  if (boost::ends_with(prefix, "/") && !boost::ends_with(replace, "/"))
+    {
+    replace += "/";
+    }
+  }
+
 template<typename Iterator, typename Skipper>
 struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
   {
@@ -74,7 +90,7 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
       > -(qi::lit("submodule") > qi::lit("of") > string_ > ':' > string_ > ';')
       > (("minrev" > qi::uint_ > ';') | qi::attr(0))
       > (("maxrev" > qi::uint_ > ';') | qi::attr(UINT_MAX))
-      > -content_
+      > -content_[beef_up_content]
       > -branches_
       > -tags_
       > '}'
@@ -235,25 +251,6 @@ Ruleset::Ruleset(std::string const& filename)
         << std::setw(pos.column) << " " << "^- here"
       ;
     throw std::runtime_error(msg.str());
-    }
-
-  // robustness: if prefix of content ends with "/",
-  // make sure replace ends with "/" too (unless it is empty).
-  BOOST_FOREACH(RepoRule& repo_rule, ast_)
-    {
-    BOOST_FOREACH(ContentRule& content, repo_rule.content_rules)
-      {
-      std::string const& prefix = content.prefix;
-      std::string& replace = content.replace;
-      if (prefix.empty() || replace.empty())
-        {
-        continue;
-        }
-      if (boost::ends_with(prefix, "/") && !boost::ends_with(replace, "/"))
-        {
-        replace += "/";
-        }
-      }
     }
 
   BOOST_FOREACH(RepoRule const& repo_rule, ast_)
