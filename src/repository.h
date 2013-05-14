@@ -38,7 +38,6 @@ inline uint qHash(std::string const& s)
 
 class Repository
   {
-    typedef boost2git::BranchRule BranchRule;
   public:
     class Transaction
       {
@@ -88,15 +87,19 @@ class Repository
     ~Repository();
 
     void reloadBranches();
-    int createBranch(BranchRule const* branch, int revnum,
-      const std::string &branchFrom, int revFrom);
+    
+    int createBranch(
+        std::string const& newBranch, int revnum, const std::string &branchFrom, int revFrom);
+    
     Repository::Transaction *demandTransaction(
         const std::string &branch, const std::string &svnprefix, int revnum);
-    int deleteBranch(BranchRule const* branch, int revnum);
+    
+    int deleteBranch(std::string const& gitRefName, int revnum);
 
-    void createAnnotatedTag(BranchRule const* branch, const std::string &svnprefix, int revnum,
-      const std::string &author, uint dt,
-      const std::string &log);
+    void createAnnotatedTag(
+        std::string const& gitRefName, const std::string &svnprefix,
+        int revnum, const std::string &author, uint dt, const std::string &log);
+    
     void finalizeTags();
     void prepare_commit(int revnum);
     void commit(
@@ -184,7 +187,7 @@ class Repository
     void startFastImport();
     void closeFastImport();
 
-    int resetBranch(BranchRule const*, const std::string &branch, int revnum, int mark, const std::string &resetTo, const std::string &comment);
+    int resetBranch(const std::string &branch, int revnum, int mark, const std::string &resetTo, const std::string &comment);
     int markFrom(const std::string &branchFrom, int branchRevNum, std::string &desc);
     void submoduleChanged(Repository const* submodule, std::string const& gitRefName, int submoduleMark, int revnum);
     void update_dot_gitmodules(std::string const& branch_name, Branch const& b, int revnum);

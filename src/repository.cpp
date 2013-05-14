@@ -365,13 +365,11 @@ int Repository::markFrom(const std::string &branchFrom, int branchRevNum, std::s
   }
 
 int Repository::createBranch(
-    BranchRule const* branch_rule,
+    std::string const& branch,
     int revnum,
     const std::string &branchFrom,
     int branchRevNum)
   {
-  std::string branch = git_ref_name(branch_rule);
-  
   Q_ASSERT(boost::starts_with(branch, "refs/"));
   Q_ASSERT(boost::starts_with(branchFrom, "refs/"));
   std::string branchFromDesc = "from branch " + branchFrom;
@@ -401,23 +399,21 @@ int Repository::createBranch(
   // Preserve note
   assert(branches.find(branchFrom) != branches.end());
   branches[branch].note = branches[branchFrom].note;
-  return resetBranch(branch_rule, branch, revnum, mark, branchFromRef, branchFromDesc);
+  return resetBranch(branch, revnum, mark, branchFromRef, branchFromDesc);
   }
 
-int Repository::deleteBranch(BranchRule const* branch_rule, int revnum)
+int Repository::deleteBranch(std::string const& branch, int revnum)
   {
-  std::string branch = git_ref_name(branch_rule);
   Q_ASSERT(boost::starts_with(branch, "refs/"));
 
   if (branch == "refs/heads/master")
       return EXIT_SUCCESS;
 
   static std::string null_sha(40, '0');
-  return resetBranch(branch_rule, branch, revnum, 0, null_sha, "delete");
+  return resetBranch(branch, revnum, 0, null_sha, "delete");
   }
 
 int Repository::resetBranch(
-    BranchRule const* branch_rule,
     const std::string &gitRefName,  // Redundant with the above, but we've already computed it
     int revnum,
     int mark,                   // will be zero when deleting the branch
@@ -574,14 +570,13 @@ Repository::Transaction *Repository::demandTransaction(
   }
 
 void Repository::createAnnotatedTag(
-    BranchRule const* branch_rule,
+    std::string const& ref,
     const std::string &svnprefix,
     int revnum,
     const std::string &author,
     uint dt,
     const std::string &log)
   {
-  std::string ref = git_ref_name(branch_rule);
   std::string tagName = ref;
   if (boost::starts_with(tagName, "refs/tags/"))
     {
