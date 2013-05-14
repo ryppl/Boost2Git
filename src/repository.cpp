@@ -425,7 +425,7 @@ int Repository::resetBranch(
     const std::string &comment)
   {
   if (submodule_in_repo)
-      submodule_in_repo->submoduleChanged(this, branch_rule, mark, revnum);
+      submodule_in_repo->submoduleChanged(this, gitRefName, mark, revnum);
 
   Q_ASSERT(boost::starts_with(gitRefName, "refs/"));
   bool deleting = mark == 0;
@@ -962,11 +962,10 @@ void Repository::Transaction::commit()
   }
 
 void Repository::submoduleChanged(
-    Repository const* submodule, BranchRule const* branchRule, int submoduleMark, int revnum)
+    Repository const* submodule, std::string const& branchName, int submoduleMark, int revnum)
   {
   bool const deletion = submoduleMark == 0;
   std::string const& submodule_path = submodule->submodule_path;
-  std::string branchName = git_ref_name(branchRule);
   Branch& branch = branches[branchName];
 
   if (deletion)
@@ -987,7 +986,7 @@ void Repository::submoduleChanged(
       debug << " deleted";
   else
       debug << " updated to mark :" << submoduleMark;
-  debug << " in branch " << branchRule->name << " of r" << revnum << std::endl;
+  debug << " in branch " << branchName << " of r" << revnum << std::endl;
 
   Transaction* txn = demandTransaction(branchName, std::string(), revnum);
   if (deletion)

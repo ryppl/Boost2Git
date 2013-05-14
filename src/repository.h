@@ -186,7 +186,7 @@ class Repository
 
     int resetBranch(BranchRule const*, const std::string &branch, int revnum, int mark, const std::string &resetTo, const std::string &comment);
     int markFrom(const std::string &branchFrom, int branchRevNum, std::string &desc);
-    void submoduleChanged(Repository const* submodule, BranchRule const* branchRule, int submoduleMark, int revnum);
+    void submoduleChanged(Repository const* submodule, std::string const& gitRefName, int submoduleMark, int revnum);
     void update_dot_gitmodules(std::string const& branch_name, Branch const& b, int revnum);
     
     friend class ProcessCache;
