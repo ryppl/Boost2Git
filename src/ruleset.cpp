@@ -25,6 +25,7 @@
 #include <fstream>
 #include <iomanip>
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/support_multi_pass.hpp>
 #include <boost/spirit/include/classic_position_iterator.hpp>
@@ -235,6 +236,26 @@ Ruleset::Ruleset(std::string const& filename)
       ;
     throw std::runtime_error(msg.str());
     }
+
+  // robustness: if prefix of content ends with "/",
+  // make sure replace ends with "/" too (unless it is empty).
+  BOOST_FOREACH(RepoRule& repo_rule, ast_)
+    {
+    BOOST_FOREACH(ContentRule& content, repo_rule.content_rules)
+      {
+      std::string const& prefix = content.prefix;
+      std::string& replace = content.replace;
+      if (prefix.empty() || replace.empty())
+        {
+        continue;
+        }
+      if (boost::ends_with(prefix, "/") && !boost::ends_with(replace, "/"))
+        {
+        replace += "/";
+        }
+      }
+    }
+
   BOOST_FOREACH(RepoRule const& repo_rule, ast_)
     {  
     if (repo_rule.abstract)
