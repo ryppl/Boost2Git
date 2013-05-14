@@ -116,7 +116,8 @@ class Repository
       {
       Branch(int lastChangeRev = neverChanged)
           : lastChangeRev(lastChangeRev)
-          , lastSubmoduleListChangeRev(neverChanged) {}
+          , lastSubmoduleListChangeRev(neverChanged)
+          , reset(false), deleted(false), modified(false) {}
 
       bool exists() const
         {
@@ -132,6 +133,11 @@ class Repository
       QVector<int> commits;
       QVector<int> marks;
       std::string note;
+      
+      bool reset;
+      bool deleted;
+      bool modified;
+      std::string resetCmds;
       };
     
     struct AnnotatedTag
@@ -144,7 +150,10 @@ class Repository
       int revnum;
       };
 
-    QHash<std::string, Branch> branches;
+    typedef std::map<std::string,Branch> NamedBranches;
+    typedef NamedBranches::value_type NamedBranch;
+    
+    NamedBranches branches;
     QHash<std::string, AnnotatedTag> annotatedTags;
     std::string name;
     std::string prefix;
@@ -152,8 +161,7 @@ class Repository
     std::string submodule_path;
     LoggingQProcess fastImport;
     int commitCount;
-    QHash<std::string, std::string> deletedBranches;
-    QHash<std::string, std::string> resetBranches;
+    std::set<NamedBranch*> modifiedBranches;
     
     typedef std::map<std::string, Transaction> TransactionMap;
     TransactionMap transactions;

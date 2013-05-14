@@ -20,6 +20,7 @@
 #include "options.hpp"
 #include "log.hpp"
 #include <boost/range/algorithm/count.hpp>
+#include <boost/range/adaptor/map.hpp>
 #include <QTextStream>
 #include <QDebug>
 #include <QDir>
@@ -305,7 +306,7 @@ void Repository::closeFastImport()
 void Repository::reloadBranches()
   {
   bool reset_notes = false;
-  foreach (std::string branch, branches.keys()) {
+  BOOST_FOREACH(std::string const& branch, branches | boost::adaptors::map_keys) {
     Q_ASSERT(boost::starts_with(branch, "refs/"));
     Branch &br = branches[branch];
 
@@ -398,7 +399,8 @@ int Repository::createBranch(
                << branchFromDesc << ')' << " in repository "
                << name << std::endl;
   // Preserve note
-  branches[branch].note = branches.value(branchFrom).note;
+  assert(branches.find(branchFrom) != branches.end());
+  branches[branch].note = branches[branchFrom].note;
   return resetBranch(branch_rule, branch, revnum, mark, branchFromRef, branchFromDesc);
   }
 
@@ -424,11 +426,14 @@ int Repository::resetBranch(
   {
   if (submodule_in_repo)
       submodule_in_repo->submoduleChanged(this, branch_rule, mark, revnum);
-  
+
   Q_ASSERT(boost::starts_with(gitRefName, "refs/"));
   bool deleting = mark == 0;
   
-  Branch &br = branches[gitRefName];
+  NamedBranches::iterator refBranch = branches.find(gitRefName);
+  assert(refBranch != branches.end());
+  Branch &br = refBranch->second;
+  
   std::string backupCmd;
   if (br.exists() && br.lastChangeRev != revnum)
     {
@@ -439,12 +444,27 @@ int Repository::resetBranch(
       }
     else
       {
+      // SUSPICIOUS: why are we backing up a branch that isn't being deleted?
+      // I'm guessing that this branch also should only be taken if deleting == true.
       backupBranch = "refs/backups/r" + to_string(revnum) + gitRefName.substr(4);
       }
     Log::debug() << "backing up branch " << gitRefName << " to "
                  << backupBranch << " in repository " << name
                  << std::endl;
     backupCmd = "reset " + backupBranch + "\nfrom " + gitRefName + "\n\n";
+    }
+
+  // In a single revision, we can create a branch after deleting it,
+  // but if we delete after creating in one revision, just ignore both
+  // the deletion and the original creation.
+  //
+  // SUSPICIOUS: what happens to file changes that were made in this
+  // revision?
+  if (br.reset && deleting)
+    {
+      br.reset = br.deleted = false;
+      br.resetCmds.clear();
+      return EXIT_SUCCESS;
     }
 
   // When a branch is deleted, it gets a commit mark of zero
@@ -458,45 +478,42 @@ int Repository::resetBranch(
     + " # " + comment + "\n\n";
 
   if (deleting)
-    {
-    // In a single revision, we can create a branch after deleting it,
-    // but not vice-versa.  Just ignore both the deletion and the
-    // original creation if they occur in the same revision.
-    if (resetBranches.contains(gitRefName))
-        resetBranches.remove(gitRefName);
-    else
-        deletedBranches[gitRefName].append(backupCmd).append(cmd);
-    }
+      br.deleted = true;
   else
-    {
-    resetBranches[gitRefName].append(backupCmd).append(cmd);
-    }
+      br.reset = true;
+  
+  br.resetCmds.append(backupCmd).append(cmd);
+  modifiedBranches.insert(&*refBranch);
   
   return EXIT_SUCCESS;
   }
 
 void Repository::prepare_commit(int revnum)
   {
-  if (deletedBranches.isEmpty() && resetBranches.isEmpty())
+  if (modifiedBranches.empty()) return;
+  
+  BOOST_FOREACH(NamedBranch* b, modifiedBranches)
     {
-    return;
-    }
-
-  BOOST_FOREACH(std::string const& branch_name, branches.keys())
-    {
-    Branch const& b = branches[branch_name];
-    if (b.lastSubmoduleListChangeRev == revnum)
+    if (b->second.lastSubmoduleListChangeRev == revnum)
       {
-      update_dot_gitmodules(branch_name, b, revnum);
+      update_dot_gitmodules(b->first, b->second, revnum);
       }
     }
+  
   startFastImport();
-  foreach(std::string const& cmd, deletedBranches.values())
-    fastImport.write(cmd);
-  foreach(std::string const& cmd, resetBranches.values())
-    fastImport.write(cmd);
-  deletedBranches.clear();
-  resetBranches.clear();
+  
+  BOOST_FOREACH(NamedBranch* b, modifiedBranches)
+    {
+    std::string& resetCmds = b->second.resetCmds;
+    if (!resetCmds.empty())
+      {
+      fastImport.write(resetCmds);
+      resetCmds.clear();
+      b->second.deleted = b->second.reset = false;
+      }
+    }
+  
+  modifiedBranches.clear();
   }
 
 void Repository::commit(
@@ -536,7 +553,7 @@ Repository::Transaction *Repository::demandTransaction(
   Transaction *txn = &transactions[branch];
   
   Q_ASSERT(boost::starts_with(branch, "refs/"));
-  if (!branches.contains(branch))
+  if (branches.find(branch) == branches.end())
     {
     Log::debug() << "Creating branch '" << branch << "' in repository '"
                  <<  name << "'." << std::endl;
@@ -695,17 +712,18 @@ std::string Repository::formatMetadataMessage(const std::string &svnprefix, int 
 
 bool Repository::branchExists(const std::string& branch) const
   {
-  return branches.contains(branch);
+  return branches.find(branch) != branches.end();
   }
 
 const std::string Repository::branchNote(const std::string& branch) const
   {
-  return branches.value(branch).note;
+  assert(branchExists(branch));
+  return branches.find(branch)->second.note;
   }
 
 void Repository::setBranchNote(const std::string& branch, const std::string& noteText)
   {
-  if (branches.contains(branch))
+  if (branchExists(branch))
       branches[branch].note = noteText;
   }
 
