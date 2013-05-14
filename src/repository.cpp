@@ -566,6 +566,10 @@ Repository::Transaction *Repository::demandTransaction(
     fastImport.write("checkpoint\n");
     Log::debug() << "checkpoint!, marks file trunkated" << std::endl;
     }
+
+  if (submodule_in_repo)
+      submodule_in_repo->submoduleChanged(this, branch, txn->commitMark, revnum);
+  
   return txn;
   }
 
