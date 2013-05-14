@@ -428,24 +428,23 @@ int Repository::resetBranch(
   Q_ASSERT(boost::starts_with(gitRefName, "refs/"));
   bool deleting = mark == 0;
   
-  std::string branchRef = gitRefName;
   Branch &br = branches[gitRefName];
   std::string backupCmd;
   if (br.exists() && br.lastChangeRev != revnum)
     {
     std::string backupBranch;
-    if (deleting && boost::starts_with(branchRef, "refs/heads/"))
+    if (deleting && boost::starts_with(gitRefName, "refs/heads/"))
       {
-      backupBranch = "refs/tags/backups/" + branchRef.substr(11) + "@" + to_string(revnum);
+      backupBranch = "refs/tags/backups/" + gitRefName.substr(11) + "@" + to_string(revnum);
       }
     else
       {
-      backupBranch = "refs/backups/r" + to_string(revnum) + branchRef.substr(4);
+      backupBranch = "refs/backups/r" + to_string(revnum) + gitRefName.substr(4);
       }
     Log::debug() << "backing up branch " << gitRefName << " to "
                  << backupBranch << " in repository " << name
                  << std::endl;
-    backupCmd = "reset " + backupBranch + "\nfrom " + branchRef + "\n\n";
+    backupCmd = "reset " + backupBranch + "\nfrom " + gitRefName + "\n\n";
     }
 
   // When a branch is deleted, it gets a commit mark of zero
@@ -453,7 +452,7 @@ int Repository::resetBranch(
   br.commits.append(revnum);
   br.marks.append(mark);
 
-  std::string cmd = "reset " + branchRef + "\nfrom " + resetTo + "\n\n"
+  std::string cmd = "reset " + gitRefName + "\nfrom " + resetTo + "\n\n"
     "progress SVN r" + to_string(revnum)
     + " branch " + gitRefName + " = :" + to_string(mark)
     + " # " + comment + "\n\n";
