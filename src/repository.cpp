@@ -416,7 +416,7 @@ int Repository::deleteBranch(BranchRule const* branch_rule, int revnum)
 
 int Repository::resetBranch(
     BranchRule const* branch_rule,
-    const std::string &branch,  // This is redundant with the above, but we've already computed it
+    const std::string &gitRefName,  // Redundant with the above, but we've already computed it
     int revnum,
     int mark,                   // will be zero when deleting the branch
     const std::string &resetTo,
@@ -425,9 +425,9 @@ int Repository::resetBranch(
   if (submodule_in_repo)
       submodule_in_repo->submoduleChanged(this, branch_rule, mark, revnum);
   
-  Q_ASSERT(boost::starts_with(branch, "refs/"));
-  std::string branchRef = branch;
-  Branch &br = branches[branch];
+  Q_ASSERT(boost::starts_with(gitRefName, "refs/"));
+  std::string branchRef = gitRefName;
+  Branch &br = branches[gitRefName];
   std::string backupCmd;
   if (br.exists() && br.lastChangeRev != revnum)
     {
@@ -440,7 +440,7 @@ int Repository::resetBranch(
       {
       backupBranch = "refs/backups/r" + to_string(revnum) + branchRef.substr(4);
       }
-    Log::debug() << "backing up branch " << branch << " to "
+    Log::debug() << "backing up branch " << gitRefName << " to "
                  << backupBranch << " in repository " << name
                  << std::endl;
     backupCmd = "reset " + backupBranch + "\nfrom " + branchRef + "\n\n";
@@ -453,7 +453,7 @@ int Repository::resetBranch(
 
   std::string cmd = "reset " + branchRef + "\nfrom " + resetTo + "\n\n"
     "progress SVN r" + to_string(revnum)
-    + " branch " + branch + " = :" + to_string(mark)
+    + " branch " + gitRefName + " = :" + to_string(mark)
     + " # " + comment + "\n\n";
 
   if (comment == "delete")
@@ -461,14 +461,14 @@ int Repository::resetBranch(
     // In a single revision, we can create a branch after deleting it,
     // but not vice-versa.  Just ignore both the deletion and the
     // original creation if they occur in the same revision.
-    if (resetBranches.contains(branch))
-        resetBranches.remove(branch);
+    if (resetBranches.contains(gitRefName))
+        resetBranches.remove(gitRefName);
     else
-        deletedBranches[branch].append(backupCmd).append(cmd);
+        deletedBranches[gitRefName].append(backupCmd).append(cmd);
     }
   else
     {
-    resetBranches[branch].append(backupCmd).append(cmd);
+    resetBranches[gitRefName].append(backupCmd).append(cmd);
     }
   
   return EXIT_SUCCESS;
