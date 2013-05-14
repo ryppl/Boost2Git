@@ -68,7 +68,7 @@ void beef_up_content(ContentRule& content)
   std::string& replace = content.replace;
   if (prefix.empty() || replace.empty())
     {
-    continue;
+    return;
     }
   if (boost::ends_with(prefix, "/") && !boost::ends_with(replace, "/"))
     {
