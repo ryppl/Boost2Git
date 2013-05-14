@@ -89,7 +89,8 @@ class Repository
     void reloadBranches();
     int createBranch(BranchRule const* branch, int revnum,
       const std::string &branchFrom, int revFrom);
-    Repository::Transaction *demandTransaction(BranchRule const* branch, const std::string &svnprefix, int revnum);
+    Repository::Transaction *demandTransaction(
+        const std::string &branch, const std::string &svnprefix, int revnum);
     int deleteBranch(BranchRule const* branch, int revnum);
 
     void createAnnotatedTag(BranchRule const* branch, const std::string &svnprefix, int revnum,
@@ -180,7 +181,6 @@ class Repository
 
     int resetBranch(BranchRule const*, const std::string &branch, int revnum, int mark, const std::string &resetTo, const std::string &comment);
     int markFrom(const std::string &branchFrom, int branchRevNum, std::string &desc);
-    Repository::Transaction *demandTransaction(const std::string &branch, const std::string &svnprefix, int revnum);
     void submoduleChanged(Repository const* submodule, BranchRule const* branchRule, int submoduleMark, int revnum);
     void update_dot_gitmodules(std::string const& branch_name, Branch const& b, int revnum);
     

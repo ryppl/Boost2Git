@@ -531,13 +531,6 @@ void Repository::commit(
   next_file_mark = maxMark;
   }
 
-Repository::Transaction *Repository::demandTransaction(
-    BranchRule const* branch,
-    const std::string &svnprefix,
-    int revnum)
-  {
-  return demandTransaction(git_ref_name(branch), svnprefix, revnum);
-  }
 
 Repository::Transaction *Repository::demandTransaction(
     const std::string &branch,
@@ -977,8 +970,8 @@ void Repository::submoduleChanged(
   {
   bool const deletion = submoduleMark == 0;
   std::string const& submodule_path = submodule->submodule_path;
-  
-  Branch& branch = branches[git_ref_name(branchRule)];
+  std::string branchName = git_ref_name(branchRule);
+  Branch& branch = branches[branchName];
 
   if (deletion)
     {
@@ -1000,7 +993,7 @@ void Repository::submoduleChanged(
       debug << " updated to mark :" << submoduleMark;
   debug << " in branch " << branchRule->name << " of r" << revnum << std::endl;
 
-  Transaction* txn = demandTransaction(branchRule, std::string(), revnum);
+  Transaction* txn = demandTransaction(branchName, std::string(), revnum);
   if (deletion)
       txn->deleteFile(submodule->submodule_path);
   else

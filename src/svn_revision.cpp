@@ -851,6 +851,6 @@ int SvnRevision::recurse(
 Repository::Transaction* SvnRevision::demandTransaction(
     Repository* repo, boost2git::BranchRule const* branch, std::string const& svnprefix)
   {
-  return repo->demandTransaction(branch, svnprefix, revnum);
+  return repo->demandTransaction(git_ref_name(branch), svnprefix, revnum);
   }
 
