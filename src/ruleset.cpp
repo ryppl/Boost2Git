@@ -62,17 +62,20 @@ using boost::spirit::make_default_multi_pass;
 
 // robustness: if prefix of content ends with "/",
 // make sure replace ends with "/" too (unless it is empty).
-void beef_up_content(ContentRule& content)
+void beef_up_content(std::vector<ContentRule> &content_vector)
   {
-  std::string const& prefix = content.prefix;
-  std::string& replace = content.replace;
-  if (prefix.empty() || replace.empty())
+  BOOST_FOREACH(ContentRule &content, content_vector)
     {
-    return;
-    }
-  if (boost::ends_with(prefix, "/") && !boost::ends_with(replace, "/"))
-    {
-    replace += "/";
+    std::string const& prefix = content.prefix;
+    std::string& replace = content.replace;
+    if (prefix.empty() || replace.empty())
+      {
+      continue;
+      }
+    if (boost::ends_with(prefix, "/") && !boost::ends_with(replace, "/"))
+      {
+      replace += "/";
+      }
     }
   }
 
