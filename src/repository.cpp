@@ -970,7 +970,11 @@ void Repository::submoduleChanged(
   {
   bool const deletion = submoduleMark == 0;
   std::string const& submodule_path = submodule->submodule_path;
-  Branch& branch = branches[branchName];
+  
+  NamedBranches::iterator b = branches.find(branchName);
+  assert(b != branches.end());
+  
+  Branch& branch = b->second;
 
   if (deletion)
     {
@@ -997,7 +1001,8 @@ void Repository::submoduleChanged(
       txn->deleteFile(submodule->submodule_path);
   else
       txn->updateSubmodule(submodule, submoduleMark);
-  
+
+  modifiedBranches.insert(&*b);
   branch.lastSubmoduleListChangeRev = revnum;
   }
 
