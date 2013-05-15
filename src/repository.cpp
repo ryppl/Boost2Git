@@ -32,7 +32,7 @@
 #include <string>
 #include <iomanip>
 
-static const int maxSimultaneousProcesses = 100;
+static const int maxSimultaneousProcesses = 200;
 
 static const int maxMark = (1 << 20) - 2; // some versions of git-fast-import are buggy for larger values of maxMark
 
