@@ -32,6 +32,7 @@ set(svn2git_SOURCES
   coverage.cpp
   log.cpp
   repository.cpp
+  rewrite_super_modules.cpp
   ruleset.cpp
   svn_revision.cpp
   svn.cpp
@@ -44,6 +45,7 @@ set(svn2git_HEADERS
   log.hpp
   logging_process.hpp
   repository.h
+  rewrite_super_modules.h
   ruleset.hpp
   svn_revision.hpp
   svn.h)
