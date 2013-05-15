@@ -372,6 +372,10 @@ int Repository::createBranch(
   {
   Q_ASSERT(boost::starts_with(branch, "refs/"));
   Q_ASSERT(boost::starts_with(branchFrom, "refs/"));
+
+  if (submodule_in_repo)
+      submodule_in_repo->createBranch(branch, revnum, branchFrom, branchRevNum);
+        
   std::string branchFromDesc = "from branch " + branchFrom;
   int mark = markFrom(branchFrom, branchRevNum, branchFromDesc);
 
@@ -967,7 +971,8 @@ void Repository::submoduleChanged(
   std::string const& submodule_path = submodule->submodule_path;
   
   NamedBranches::iterator b = branches.find(branchName);
-  assert(b != branches.end());
+  if (b == branches.end())
+      b = branches.insert(std::make_pair(branchName, Branch())).first;
   
   Branch& branch = b->second;
 
