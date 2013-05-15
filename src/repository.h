@@ -84,6 +84,8 @@ class Repository
     
     int setupIncremental(int &cutoff);
     void restoreLog();
+    
+    void clear();
     ~Repository();
 
     void reloadBranches();

@@ -70,6 +70,15 @@ static QString marksFileName(std::string name_)
   return name;
   }
 
+// Clear any heavy storage associated with this repository
+void Repository::clear()
+  {
+  closeFastImport();
+  branches.clear();
+  modifiedBranches.clear();
+  transactions.clear();
+  }
+
 Repository::Repository(
     const Ruleset::Repository &rule,
     bool incremental,

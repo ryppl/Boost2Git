@@ -252,8 +252,12 @@ retry:
     foreach(Repository *repo, repositories)
       {
       repo->finalizeTags();
-      delete repo;
+      repo->clear();
       }
+    
+    foreach(Repository *repo, repositories)
+      delete repo;
+    
     return errors ? EXIT_FAILURE : EXIT_SUCCESS;
     }
   catch (std::exception const& error)
