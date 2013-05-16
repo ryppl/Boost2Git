@@ -4,6 +4,7 @@
 #ifndef MARK_SHA_MAP_DWA2013515_HPP
 # define MARK_SHA_MAP_DWA2013515_HPP
 
+# include <algorithm>
 # include <vector>
 # include <string>
 
