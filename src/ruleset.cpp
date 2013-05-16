@@ -25,6 +25,7 @@
 #include <fstream>
 #include <iomanip>
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/support_multi_pass.hpp>
 #include <boost/spirit/include/classic_position_iterator.hpp>
@@ -59,6 +60,25 @@ static void set_git_ref_qualifier(boost2git::BranchRule& branch, char const* qua
 using namespace boost2git;
 using boost::spirit::make_default_multi_pass;
 
+// robustness: if prefix of content ends with "/",
+// make sure replace ends with "/" too (unless it is empty).
+void beef_up_content(std::vector<ContentRule> &content_vector)
+  {
+  BOOST_FOREACH(ContentRule &content, content_vector)
+    {
+    std::string const& prefix = content.prefix;
+    std::string& replace = content.replace;
+    if (prefix.empty() || replace.empty())
+      {
+      continue;
+      }
+    if (boost::ends_with(prefix, "/") && !boost::ends_with(replace, "/"))
+      {
+      replace += "/";
+      }
+    }
+  }
+
 template<typename Iterator, typename Skipper>
 struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
   {
@@ -73,7 +93,7 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
       > -(qi::lit("submodule") > qi::lit("of") > string_ > ':' > string_ > ';')
       > (("minrev" > qi::uint_ > ';') | qi::attr(0))
       > (("maxrev" > qi::uint_ > ';') | qi::attr(UINT_MAX))
-      > -content_
+      > -content_[phoenix::bind(beef_up_content, qi::_1)]
       > -branches_
       > -tags_
       > '}'
@@ -235,6 +255,7 @@ Ruleset::Ruleset(std::string const& filename)
       ;
     throw std::runtime_error(msg.str());
     }
+
   BOOST_FOREACH(RepoRule const& repo_rule, ast_)
     {  
     if (repo_rule.abstract)
