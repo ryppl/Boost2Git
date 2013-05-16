@@ -35,7 +35,6 @@ set(svn2git_SOURCES
   log.cpp
   parse_rules.cpp
   repository.cpp
-  rewrite_super_modules.cpp
   ruleset.cpp
   svn_revision.cpp
   svn.cpp
@@ -49,7 +48,6 @@ set(svn2git_HEADERS
   logging_process.hpp
   parse_rules.hpp
   repository.h
-  rewrite_super_modules.hpp
   ruleset.hpp
   svn_revision.hpp
   svn.h)

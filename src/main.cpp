@@ -15,7 +15,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "rewrite_super_modules.hpp"
 #include <boost/program_options.hpp>
 #include <boost/foreach.hpp>
 
@@ -255,9 +254,6 @@ retry:
       repo->finalizeTags();
       repo->clear();
       }
-    std::vector<Repository*> repos(repositories.begin(), repositories.end());
-    rewrite_super_modules(repos);
-    
     foreach(Repository *repo, repositories)
       delete repo;
     

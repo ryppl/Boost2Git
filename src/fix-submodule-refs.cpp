@@ -1,6 +1,8 @@
 // Copyright Dave Abrahams 2013. Distributed under the Boost
 // Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+#include "options.hpp"
+
 #include "rewrite_super_modules.hpp"
 #include "mark_sha_map.hpp"
 #include <boost/fusion/adapted/struct/define_struct.hpp>
@@ -225,3 +227,9 @@ void rewrite_super_modules(std::vector<Repository*> const& repositories)
     }
   }
 
+#if 0
+int main(int argc, char **argv)
+  {
+  Ruleset ruleset(options.rules_file);
+  }
+#endif 
