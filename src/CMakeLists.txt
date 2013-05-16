@@ -7,7 +7,7 @@ project(Svn2Git CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
-find_package(Boost REQUIRED date_time program_options regex)
+find_package(Boost REQUIRED date_time program_options regex filesystem iostreams system)
 include_directories(${BoostINCLUDE_DIRS})
 
 find_package(APR REQUIRED)
@@ -18,6 +18,8 @@ include_directories(${SVN_INCLUDE_DIRS})
 
 find_package(Qt4 REQUIRED QtCore)
 include(${QT_USE_FILE})
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/boost_process)
 
 add_definitions(
   -D_XOPEN_SOURCE
@@ -45,7 +47,7 @@ set(svn2git_HEADERS
   log.hpp
   logging_process.hpp
   repository.h
-  rewrite_super_modules.h
+  rewrite_super_modules.hpp
   ruleset.hpp
   svn_revision.hpp
   svn.h)

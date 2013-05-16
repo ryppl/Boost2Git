@@ -62,7 +62,7 @@ class ProcessCache: QLinkedList<Repository *>
   };
 static ProcessCache processCache;
 
-static QString marksFileName(std::string name_)
+QString marksFileName(std::string name_)
   {
   QString name = QString::fromStdString(name_);
   name.replace('/', '_');

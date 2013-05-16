@@ -15,7 +15,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "rewrite_super_modules.h"
+#include "rewrite_super_modules.hpp"
 #include <boost/program_options.hpp>
 #include <boost/foreach.hpp>
 
