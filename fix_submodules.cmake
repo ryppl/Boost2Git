@@ -19,7 +19,7 @@ if(NOT result EQUAL 0)
   message(FATAL_ERROR "Failed to initialize repository ${DST_REPO}: ${message}")
 endif()
 
-execute_process(COMMAND sh -e -o pipefail -c
+execute_process(COMMAND bash -e -o pipefail -c
   "( cd '${SRC_REPO}' && '${GIT}' fast-export --all ) | (
     '${FIX_SUBMODULE_REFS}' --rules '${RULES_FILE}' --repo-name '${SRC_REPO}' ) | (
     cd '${DST_REPO}' && '${GIT}' fast-import --quiet --force )"
