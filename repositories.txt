@@ -2498,7 +2498,6 @@ repository website
 
 repository boost : common_branches
 {
-  submodule of "boost" : "libs/boost";
   content
   {
     "build/"                   : "build/";

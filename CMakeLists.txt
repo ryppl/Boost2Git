@@ -107,6 +107,7 @@ foreach(line IN LISTS repo_lines)
   if(NOT TARGET push_${name})
     list(APPEND push_targets push_${name})
     add_custom_target(push_${name} ALL
+      COMMAND ${Boost2Git_SOURCE_DIR}/post-conversion-cleanup
       COMMAND ${CMAKE_COMMAND}
         -D "GIT=${GIT_EXECUTABLE}"
         -D "NAME=${name}"
