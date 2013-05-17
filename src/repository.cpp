@@ -19,6 +19,7 @@
 #include "repository.h"
 #include "options.hpp"
 #include "log.hpp"
+#include "marks_file_name.hpp"
 #include <boost/range/algorithm/count.hpp>
 #include <boost/range/adaptor/map.hpp>
 #include <QTextStream>
@@ -31,6 +32,11 @@
 #include <stdexcept>
 #include <string>
 #include <iomanip>
+
+QString marksFilePath(std::string s)
+  {
+  return QString::fromStdString(marks_file_path(s));
+  }
 
 static const int maxSimultaneousProcesses = 200;
 
@@ -61,14 +67,6 @@ class ProcessCache: QLinkedList<Repository *>
       }
   };
 static ProcessCache processCache;
-
-QString marksFileName(std::string name_)
-  {
-  QString name = QString::fromStdString(name_);
-  name.replace('/', '_');
-  name.prepend("marks-");
-  return name;
-  }
 
 // Clear any heavy storage associated with this repository
 void Repository::clear()
@@ -124,7 +122,7 @@ Repository::Repository(
 //                }
 //            }
       {
-      QFile marks(qname + "/" + marksFileName(name));
+      QFile marks(marksFilePath(name));
       marks.open(QIODevice::WriteOnly);
       marks.close();
       }
@@ -143,7 +141,7 @@ static QString logFileName(std::string name_)
 static int lastValidMark(std::string name)
   {
   QString qname = QString::fromStdString(name);
-  QFile marksfile(qname + "/" + marksFileName(name));
+  QFile marksfile(marksFilePath(name));
   if (!marksfile.open(QIODevice::ReadOnly))
       return 0;
 
@@ -687,7 +685,7 @@ void Repository::startFastImport()
     processHasStarted = true;
 
     // start the process
-    QString marksFile = marksFileName(name);
+    QString marksFile = QString::fromStdString(marksFileName(name));
     QStringList marksOptions;
     marksOptions << "--import-marks=" + marksFile;
     marksOptions << "--export-marks=" + marksFile;
