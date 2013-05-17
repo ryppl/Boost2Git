@@ -99,6 +99,11 @@ file(STRINGS "${repositories}" repo_lines REGEX "^repository")
 foreach(line IN LISTS repo_lines)
   string(REGEX MATCH "^repository ([^ :]+)" match "${line}")
   string(REPLACE "\"" "" name "${CMAKE_MATCH_1}")
+  if(name == boost)
+    set(repo_name boost-fixup)
+  else()
+    set(repo_name ${name})
+  endif()
   if(NOT TARGET push_${name})
     list(APPEND push_targets push_${name})
     add_custom_target(push_${name} ALL
@@ -107,7 +112,7 @@ foreach(line IN LISTS repo_lines)
         -D "NAME=${name}"
         -P "${Boost2Git_SOURCE_DIR}/git_push.cmake"
       DEPENDS submodules
-      WORKING_DIRECTORY "${git_repository}/${name}"
+      WORKING_DIRECTORY "${git_repository}/${repo_name}"
       )
   endif()
 endforeach()
