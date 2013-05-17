@@ -79,3 +79,12 @@ target_link_libraries(validate_branch
   ${APR_LIBRARIES}
   ${SVN_LIBRARIES}
   )
+
+add_executable(fix-submodule-refs
+  fix-submodule-refs.cpp
+  parse_rules.cpp
+  )
+
+target_link_libraries(fix-submodule-refs
+  ${Boost_LIBRARIES}
+)

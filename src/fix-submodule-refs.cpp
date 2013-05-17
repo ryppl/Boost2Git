@@ -1,52 +1,45 @@
 // Copyright Dave Abrahams 2013. Distributed under the Boost
 // Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-#include "options.hpp"
-
-#include "rewrite_super_modules.hpp"
 #include "mark_sha_map.hpp"
-#include <boost/fusion/adapted/struct/define_struct.hpp>
-#include "repository.h"
-#include "log.hpp"
+#include "to_string.hpp"
+#include "AST.hpp"
+#include "ruleset.hpp"
+#include "marks_file_name.hpp"
+#include <boost/program_options.hpp>
 #include <boost/foreach.hpp>
 #include <set>
 #include <map>
-#include <QString>
 #include <fstream>
-#include <boost/process.hpp>
-#include <boost/iostreams/device/file_descriptor.hpp>
-#include <boost/iostreams/stream.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
 #include <iostream>
-#include <QProcess>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/range/adaptor/map.hpp>
 
-QString marksFileName(std::string name);
+namespace fix_submodule {
 
-static void close(QProcess& fastImport)
+struct Repository
   {
-  if (fastImport.state() != QProcess::NotRunning)
-    {
-    fastImport.write("checkpoint\n");
-    fastImport.waitForBytesWritten(-1);
-    fastImport.closeWriteChannel();
-    if (!fastImport.waitForFinished())
-      {
-      fastImport.terminate();
-      if (!fastImport.waitForFinished(200))
-        {
-        Log::warn() << "git-fast-import did not die" << std::endl;
-        }
-      }
-    }
-  }
+  std::string name;
+  Repository* submodule_in_repo;
+  std::string submodule_path;
+  mark_sha_map mark2sha;
+  };
 
-mark_sha_map Repository::readMarksFile() const
+typedef std::map<std::string, Repository> RepoStore;
+typedef std::map<std::string, Repository const*> SubmoduleMap;
+
+struct Options
   {
-  mark_sha_map ret;
-  std::string marks_file_name = this->name + "/" + marksFileName(this->name).toStdString();
-  
-  std::ifstream marks(marks_file_name.c_str());
+  std::string rules_file;
+  std::string repo_name;
+  };
+
+Options options;
+
+void read_marks_file(Repository& repo)
+  {
+  std::ifstream marks(marks_file_path(repo.name).c_str());
   marks.exceptions( std::ifstream::badbit );
   char colon, newline;
   std::pair<unsigned long, std::string> mark_sha;
@@ -60,176 +53,144 @@ mark_sha_map Repository::readMarksFile() const
 
     // Insert the mapping.  All kinds of efficiencies are possible
     // here, but I was more interested in getting the logic right.
-    mark_sha_map::iterator where = find_sha_pos(ret, mark_sha.first);
+    mark_sha_map::iterator where = find_sha_pos(repo.mark2sha, mark_sha.first);
     
     // Make sure we're not mapping the same mark twice.
-    if (where != ret.end() && where->first == mark_sha.first)
+    if (where != repo.mark2sha.end() && where->first == mark_sha.first)
         throw std::runtime_error("Duplicate mark mapping!");
     
-    ret.insert(where, mark_sha);
+    repo.mark2sha.insert(where, mark_sha);
     }
-  return ret;
   }
 
-void rewrite_super_modules(std::vector<Repository*> const& repositories)
+void transform_import_stream(
+    Repository const& super_module,
+    SubmoduleMap const& submodules
+  )
   {
-
-  Log::info() << "rewriting super-modules in " << boost::filesystem::current_path() << std::endl;
-  //
-  // Setup: Locate all super/sub-modules, index and read all submodule
-  // mark files
-  //
-  std::set<Repository*> super_modules;
-  
-  // Map from (super-module, path) to submodule
-  std::map<std::pair<Repository*, std::string>, Repository*> submodules;
-
-  // Map from repository to a mark/sha map.
-  std::map<Repository*, mark_sha_map> mark2sha;
+  std::istream& in = std::cin;
+  std::ostream& out = std::cout;
     
-  BOOST_FOREACH(Repository* r, repositories)
+  char const submodule_prefix[] = "M 160000 ";
+  std::size_t const submodule_prefix_length = std::strlen(submodule_prefix);
+  std::size_t const sha_length = 40;
+
+  char const data_prefix[] = "data ";
+  std::size_t const data_prefix_length = std::strlen(data_prefix);
+
+  in.exceptions( std::istream::badbit );
+  out.exceptions( std::ostream::failbit | std::ostream::badbit );
+  
+  std::string line;
+  while (getline(in, line))
     {
-    if (r->submodule_in_repo)
+    if (boost::starts_with(line, submodule_prefix))
       {
-      submodules[make_pair(r->submodule_in_repo, r->submodule_path)] = r;
-      super_modules.insert(r->submodule_in_repo);
-      mark2sha[r] = r->readMarksFile();
+      unsigned long mark = boost::lexical_cast<unsigned long>(
+          line.substr(submodule_prefix_length, sha_length));
+      std::string submodule_path = line.substr(submodule_prefix_length + sha_length + 1);
+
+      SubmoduleMap::const_iterator sub_repo = submodules.find(submodule_path);
+      assert(sub_repo != submodules.end());
+        
+      mark_sha_map::const_iterator const mark_sha = find_sha_pos(sub_repo->second->mark2sha, mark);
+      if (mark_sha->first != mark)
+        {
+        throw std::runtime_error(
+            "unmapped mark " + to_string(mark) + "in " + marks_file_path(sub_repo->second->name)
+          );
+        }
+      out << submodule_prefix << mark_sha->second << " " << submodule_path << "\n";
       }
-    }
-
-  std::string git_exe = boost::process::search_path("git");
-  std::vector<std::string> git_args(3);
-  git_args[0] = "git";
-
-  BOOST_FOREACH(Repository* super, super_modules)
-    {
-    using namespace boost::process;
-    using boost::process::pipe;
-    using namespace boost::process::initializers;
-    using namespace boost::iostreams;
-    namespace fs = boost::filesystem;
-    
-    // Rename the source repository
-    std::string const import_repo_name = super->name + "-rewrite";
-    fs::rename(super->name, import_repo_name);
-
-    // Create the new repository
-    fs::create_directory(super->name);
-    git_args[1] = "init";
-    git_args[2] = "--bare";
-    child git_init = execute(
-        run_exe(git_exe),
-        set_args(git_args), start_in_dir(super->name), throw_on_error());
-    wait_for_exit(git_init);
-
-    pipe inp = create_pipe();
-    git_args[1] = "fast-export";
-    git_args[2] = "--all";
-    child git_fast_export = execute(
-        run_exe(git_exe),
-        set_args(git_args),
-        start_in_dir(import_repo_name),
-        bind_stdout(file_descriptor_sink(inp.sink, close_handle)),
-        throw_on_error());
-    
-    stream<file_descriptor_source> in(
-        file_descriptor_source(inp.source, close_handle));
-    in.exceptions( std::istream::badbit );
-
-
-#ifdef USE_BOOST_PROCESS
-    pipe outp = create_pipe();
-    git_args[1] = "fast-import";
-    git_args[2] = "--quiet";
-    child git_fast_import = execute(
-        run_exe(git_exe),
-        set_args(git_args),
-        start_in_dir(super->name),
-        bind_stdin(file_descriptor_source(outp.source, close_handle)),
-        throw_on_error());
-
-    stream<file_descriptor_sink> out(
-        file_descriptor_sink(outp.sink, close_handle));
-    out.exceptions( std::istream::failbit | std::istream::badbit );
-#else
-    QProcess git_fast_import;
-    git_fast_import.setWorkingDirectory(QString::fromStdString(super->name));
-    git_fast_import.setProcessChannelMode(QProcess::MergedChannels);
-
-    git_fast_import.start("git", QStringList() << "fast-import" << "--quiet");
-#endif
-    
-    char const submodule_prefix[] = "M 160000 ";
-    std::size_t const submodule_prefix_length = std::strlen(submodule_prefix);
-    std::size_t const sha_length = 40;
-
-    char const data_prefix[] = "data ";
-    std::size_t const data_prefix_length = std::strlen(data_prefix);
-
-    std::string line;
-
-#if defined(BOOST_POSIX_API)
-      // signal(SIGCHLD, SIG_IGN);
-#endif
-  
-    while (getline(in, line))
+    else
       {
-#ifndef USE_BOOST_PROCESS
-      std::stringstream out;
-#endif 
-      if (boost::starts_with(line, submodule_prefix))
-        {
-        unsigned long mark = boost::lexical_cast<unsigned long>(
-            line.substr(submodule_prefix_length, sha_length));
-        std::string submodule_path = line.substr(submodule_prefix_length + sha_length + 1);
+      out << line << "\n";
+      }
 
-        Repository* sub_repo = submodules[make_pair(super,submodule_path)];
-        assert(sub_repo);
+    if (boost::starts_with(line, data_prefix))
+      {
+      std::size_t length = boost::lexical_cast<std::size_t>(
+          line.substr(data_prefix_length));
         
-        mark_sha_map::iterator const p = find_sha_pos(mark2sha[sub_repo], mark);
-        assert(p->first == mark);
-        out << submodule_prefix << p->second << " " << submodule_path << "\n";
-        }
-      else
+      while (length > 0)
         {
-        out << line << "\n";
-        }
-
-#ifndef USE_BOOST_PROCESS
-      git_fast_import.write(out.str().c_str(), out.str().size());
-#endif 
-      if (boost::starts_with(line, data_prefix))
-        {
-        std::size_t length = boost::lexical_cast<std::size_t>(
-            line.substr(data_prefix_length));
-        
-        while (length > 0)
-          {
-          char buf[2048];
-          std::size_t num_to_read = std::min(length, sizeof(buf));
-          in.read(buf, num_to_read);
-#ifdef USE_BOOST_PROCESS
-          out.write(buf, num_to_read);
-#else
-          git_fast_import.write(buf, num_to_read);
-#endif 
-          length -= num_to_read;
-          }
+        char buf[2048];
+        std::size_t num_to_read = std::min(length, sizeof(buf));
+        in.read(buf, num_to_read);
+        out.write(buf, num_to_read);
+        length -= num_to_read;
         }
       }
-    std::cout << "finishing supermodule..." << std::flush;
-#ifdef USE_BOOST_PROCESS
-    wait_for_exit(git_fast_import);
-#else
-    close(git_fast_import);
-#endif 
-    std::cout << "done." << std::endl << std::flush;
     }
   }
 
-#if 0
+void run()
+  {
+  using boost2git::AST;
+  
+  AST const ast = parse_rules_file(options.rules_file);
+  
+  RepoStore repo_store;
+  BOOST_FOREACH(AST::const_reference repo_rule, ast)
+    {
+    Repository& repo = repo_store[repo_rule.name];
+    repo.name = repo_rule.name;
+    if (!repo_rule.submodule_info.empty())
+      {
+      assert(repo_rule.submodule_info.size() == 2);
+      repo.submodule_in_repo = &repo_store[repo_rule.submodule_info[0]];
+      repo.submodule_path = repo_rule.submodule_info[1];
+      }
+    }
+
+  // Verify that the specified repository actually exists in the map
+  RepoStore::iterator const p = repo_store.find(options.repo_name);
+  if (p == repo_store.end())
+      throw std::runtime_error("repository " + options.repo_name + " not found in ruleset");
+
+  SubmoduleMap submodules;
+  // Read all relevant marks files
+  BOOST_FOREACH(Repository& repo, repo_store | boost::adaptors::map_values)
+    {
+    if (repo.submodule_in_repo == &p->second)
+      {
+        read_marks_file(repo);
+        submodules[repo.submodule_path] = &repo;
+      }
+    }
+  transform_import_stream(p->second, submodules);
+  }
+} // namespace fix_submodule
+
 int main(int argc, char **argv)
   {
-  Ruleset ruleset(options.rules_file);
+  using fix_submodule::options;
+  namespace po = boost::program_options;
+  po::options_description program_options("Allowed options");
+  program_options.add_options()
+    ("help,h", "produce help message")
+    ("rules", po::value(&options.rules_file)->value_name("FILENAME")->required(),
+      "file with the conversion rules")
+    ("repo-name", po::value(&options.repo_name)->value_name("IDENTIFIER")->required(),
+      "name of the repository to rewrite")
+    ;
+  po::variables_map variables;
+  store(po::command_line_parser(argc, argv)
+    .options(program_options)
+    .run(), variables);
+  if (variables.count("help"))
+    {
+    std::cout << program_options << std::endl;
+    return 0;
+    }
+
+  try
+    {
+    fix_submodule::run();
+    }
+  catch (std::exception& error)
+    {
+    std::cout << error.what() << std::endl;
+    return -1;
+    }
   }
-#endif 
