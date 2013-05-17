@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # remove redundant parents in merge commits
-git filter-branch --force --parent-filter 'read commit; test -z "$commit" || git show-branch --independent `echo -n "$commit" | sed -e "s/-p / /g"` | sed -e "s/.*/-p &/" | tr "\n" " "; echo' -- --all
+git filter-branch --force --parent-filter 'read commit; test -z "$commit" || git show-branch --independent `echo -n "$commit" | sed -e "s/-p / /g"` | sed -e "s/.*/-p &/" | tr "\n" " "; echo' -- --all 1>/dev/null
 
 #TODO:
 # remove branches that have descendents?
