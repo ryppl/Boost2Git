@@ -178,6 +178,7 @@ int main(int argc, char **argv)
   store(po::command_line_parser(argc, argv)
     .options(program_options)
     .run(), variables);
+  notify(variables);
   if (variables.count("help"))
     {
     std::cout << program_options << std::endl;
