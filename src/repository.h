@@ -25,7 +25,6 @@
 
 #include "logging_process.hpp"
 #include "ruleset.hpp"
-#include "mark_sha_map.hpp"
 #include <map>
 
 namespace std
@@ -118,8 +117,6 @@ class Repository
     const std::string branchNote(const std::string& branch) const;
     void setBranchNote(const std::string& branch, const std::string& noteText);
 
-    mark_sha_map readMarksFile() const;
-
     std::string get_name() const { return name; }
   private:
     struct Branch
@@ -165,14 +162,10 @@ class Repository
     
     NamedBranches branches;
     QHash<std::string, AnnotatedTag> annotatedTags;
-  public:
-    std::string const name;
-  private:
+    std::string name;
     std::string prefix;
-  public:
-    Repository* const submodule_in_repo;
-    std::string const submodule_path;
-  private:
+    Repository* submodule_in_repo;
+    std::string submodule_path;
     LoggingQProcess fastImport;
     int commitCount;
     std::set<NamedBranch*> modifiedBranches;
