@@ -65,6 +65,8 @@ add_custom_target(analysis
     --ignore  "${ignore_rev}"
     --rules   "${repositories}"
     --svnrepo "${svn_repository}"
+  DEPENDS
+    svn2git
   COMMENT
     "Performing analysis."
   WORKING_DIRECTORY
@@ -87,7 +89,7 @@ foreach(line IN LISTS repo_lines)
         -D "GIT=${GIT_EXECUTABLE}"
         -D "NAME=${name}"
         -P "${Boost2Git_SOURCE_DIR}/git_push.cmake"
-      DEPENDS conversion
+      DEPENDS submodules
       WORKING_DIRECTORY "${git_repository}/${name}"
       )
   endif()
