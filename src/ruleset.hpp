@@ -26,6 +26,8 @@
 #include "rule.hpp"
 #include "AST.hpp"
 
+boost2git::AST parse_rules_file(std::string filename);
+
 class Ruleset
   {
   public:
