@@ -112,7 +112,9 @@ foreach(line IN LISTS repo_lines)
         -D "GIT=${GIT_EXECUTABLE}"
         -D "NAME=${name}"
         -P "${Boost2Git_SOURCE_DIR}/git_push.cmake"
-      DEPENDS submodules
+      DEPENDS
+        submodules
+        ${Boost2Git_SOURCE_DIR}/post-conversion-cleanup
       WORKING_DIRECTORY "${git_repository}/${repo_name}"
       )
   endif()
