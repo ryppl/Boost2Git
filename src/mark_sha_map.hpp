@@ -24,4 +24,10 @@ find_sha_pos(mark_sha_map& m, unsigned long mark)
   return std::lower_bound(m.begin(), m.end(), mark, compare_marks());
   }
 
+inline mark_sha_map::const_iterator
+find_sha_pos(mark_sha_map const& m, unsigned long mark)
+  {
+  return std::lower_bound(m.begin(), m.end(), mark, compare_marks());
+  }
+
 #endif // MARK_SHA_MAP_DWA2013515_HPP
