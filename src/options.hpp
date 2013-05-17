@@ -18,6 +18,8 @@
 #ifndef OPTIONS_HPP
 #define OPTIONS_HPP
 
+#include <string>
+
 struct Options
   {
   bool add_metadata;
