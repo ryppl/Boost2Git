@@ -10,7 +10,7 @@ git filter-branch --force --parent-filter 'read commit; test -z "$commit" || git
 # remove empty commits that don't have a parent?
 
 # cleanup garbage, if required
-git cg --auto --quiet
+git gc --auto --quiet
 
 # allow pushing bigger files
 git config http.postBuffer 524288000
