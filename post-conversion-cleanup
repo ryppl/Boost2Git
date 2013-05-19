@@ -6,8 +6,8 @@ then
   exit 0
 fi
 
-# remove redundant parents in merge commits
-git filter-branch --force --parent-filter 'read commit; test -z "$commit" || git show-branch --independent `echo -n "$commit" | sed -e "s/-p / /g"` | sed -e "s/.*/-p &/" | tr "\n" " "; echo' -- --all 1>/dev/null 2>&1
+# remove redundant parents in merge commits; remove commits with a single parent and that makes no change to the tree
+git filter-branch --force --parent-filter 'read commit; test -z "$commit" || git show-branch --independent `echo -n "$commit" | sed -e "s/-p / /g"` | sed -e "s/.*/-p &/" | tr "\n" " "; echo' --commit-filter='git_commit_non_empty_tree "$@"' -- --all 1>/dev/null 2>&1
 
 # remove merged branches
 git branch --merged | grep -v "\*" | xargs -n 1 git branch -d
