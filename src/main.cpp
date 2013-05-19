@@ -175,7 +175,10 @@ retry:
         return EXIT_FAILURE;
         }
       repositories.insert(QString::fromStdString(rule.name), repo);
+      }
 
+    BOOST_FOREACH(Repository *repo, repositories)
+      {
       int repo_next = repo->setupIncremental(cutoff);
       if (cutoff < resume_from && repo_next == cutoff)
         {
