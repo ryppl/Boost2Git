@@ -983,15 +983,23 @@ void Repository::submoduleChanged(
   
   Branch& branch = b->second;
 
+  Branch::Submodules::iterator pos = branch.submodules.find(submodule_path);
+  bool submodule_found = pos != branch.submodules.end();
+  
   if (deletion)
     {
-    Branch::Submodules::iterator pos = branch.submodules.find(submodule_path);
-    if (pos == branch.submodules.end())
-        return; // If there's no submodule there already, don't bother with this change
+    // If there's no submodule there already, don't bother with this change
+    if (!submodule_found) return;
+    
     branch.submodules.erase(pos);
+    branch.lastSubmoduleListChangeRev = revnum;
     }
   else
     {
+    // If this is the first appearance of that submodule in this
+    // branch, mark it for a .gitmodules update
+    if (!submodule_found)
+        branch.lastSubmoduleListChangeRev = revnum;
     branch.submodules[submodule_path] = submodule;
     }
   
@@ -1010,7 +1018,6 @@ void Repository::submoduleChanged(
       txn->updateSubmodule(submodule, submoduleMark);
 
   modifiedBranches.insert(&*b);
-  branch.lastSubmoduleListChangeRev = revnum;
   }
 
 void Repository::Transaction::updateSubmodule(Repository const* submodule, int submoduleMark)
