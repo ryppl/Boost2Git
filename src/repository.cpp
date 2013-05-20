@@ -1059,7 +1059,7 @@ void Repository::update_dot_gitmodules(std::string const& branch_name, Branch co
     {
     content << "[submodule \"" << p->first << "\"]\n"
             << "	path = " << p->first << "\n"
-            << "	url = http://github.com/boostorg/" << p->second->name << "\n"
+            << "	url = https://github.com/boostorg/" << p->second->name << ".git\n"
       ;
     fastImport.write(" ");
     fastImport.write(p->second->name);
