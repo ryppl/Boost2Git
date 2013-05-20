@@ -195,7 +195,7 @@ int Repository::setupIncremental(int &cutoff, RepoIndex const& all_repositories)
 
   logfile.open(QIODevice::ReadWrite);
 
-  QRegExp progress("progress SVN r(\\d+) branch (.*) = :(\\d+)");
+  QRegExp progress("progress SVN r(\\d+) branch (.*) (?:= :(\\d+)|submodules = (.*))");
 
   int last_valid_mark = lastValidMark(name);
 
@@ -218,6 +218,13 @@ int Repository::setupIncremental(int &cutoff, RepoIndex const& all_repositories)
 
     int revnum = progress.cap(1).toInt();
     QString qbranch = progress.cap(2);
+    QString submodules = progress.cap(4);
+    if (!submodules.isEmpty())
+      {
+      setBranchSubmodules(qbranch.toStdString(), submodules.toStdString(), all_repositories);
+      continue;
+      }
+    
     int mark = progress.cap(3).toInt();
 
     if (revnum >= cutoff)
@@ -271,6 +278,24 @@ beyond_cutoff:
                << cutoff << std::endl;
   logfile.resize(pos);
   return cutoff;
+  }
+
+void Repository::setBranchSubmodules(
+    std::string branchName,
+    std::string submoduleNames,
+    RepoIndex const& all_repositories)
+  {
+  Branch& br = branches[branchName];
+  br.submodules.clear();
+  
+  std::stringstream s(submoduleNames);
+  std::string submoduleName;
+  while (s >> submoduleName)
+    {
+    Repository* submodule = all_repositories.value(QString::fromStdString(submoduleName));
+    assert(submodule != 0); // This repo should be in the index already
+    br.submodules.insert(make_pair(submodule->submodule_path, submodule));
+    }
   }
 
 void Repository::restoreLog()

@@ -196,7 +196,9 @@ class Repository
     int markFrom(const std::string &branchFrom, int branchRevNum, std::string &desc);
     void submoduleChanged(Repository const* submodule, std::string const& gitRefName, int submoduleMark, int revnum);
     void update_dot_gitmodules(std::string const& branch_name, Branch const& b, int revnum);
-    
+    void setBranchSubmodules(
+        std::string branchName, std::string submoduleNames, RepoIndex const& all_repositories);
+
     friend class ProcessCache;
     Q_DISABLE_COPY(Repository)
   };
