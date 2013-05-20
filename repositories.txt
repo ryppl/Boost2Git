@@ -1278,7 +1278,7 @@ repository multiprecision : common_branches
 
 repository numeric_conversion : common_branches
 {
-  submodule of "boost" : "libs/numeric_conversion";
+  submodule of "boost" : "libs/numeric/conversion";
   content
   {
     "[libs/numeric/conversion]";
@@ -1289,7 +1289,7 @@ repository numeric_conversion : common_branches
 
 repository interval : common_branches
 {
-  submodule of "boost" : "libs/interval";
+  submodule of "boost" : "libs/numeric/interval";
   content
   {
     "boost/numeric/interval/" : "include/boost/numeric/interval/";
@@ -1300,7 +1300,7 @@ repository interval : common_branches
 
 repository odeint : common_branches
 {
-  submodule of "boost" : "libs/odeint";
+  submodule of "boost" : "libs/numeric/odeint";
   content
   {
     "boost/numeric/odeint/" : "include/boost/numeric/odeint/";
@@ -1311,7 +1311,7 @@ repository odeint : common_branches
 
 repository ublas : common_branches
 {
-  submodule of "boost" : "libs/ublas";
+  submodule of "boost" : "libs/numeric/ublas";
   content
   {
     "boost/numeric/ublas/" : "include/boost/numeric/ublas/";
@@ -2470,7 +2470,6 @@ repository sandbox
 
 repository sandbox : common_branches
 {
-  submodule of "boost" : "libs/sandbox";
   content
   {
     "boost/array_traits.hpp" : "boost/array_traits.hpp";

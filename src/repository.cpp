@@ -934,38 +934,15 @@ void Repository::Transaction::commit()
   std::string desc = "";
   int i = !!parentmark;	// if parentmark != 0, there's at least one parent
 
-  if(log.find("This commit was manufactured by cvs2svn") != std::string::npos && merges.count() > 1) {
-    qSort(merges);
-    repository->fastImport.write("merge :" + to_string(merges.last()) + "\n");
-    merges.pop_back();
-    Log::debug() << "Discarding all but the highest merge point "
-                 << "as a workaround for cvs2svn created branch/tag. "
-      //<< "Discarded marks: " << merges
-      ;
-  } else {
-    foreach (const int merge, merges) {
-      if (merge == parentmark) {
-        Log::debug() << "Skipping marking " << merge << " as a merge point as it matches the parent"
-                     << " in repository " << repository->name << std::endl;
-        continue;
-      }
-
-      if (++i > 16) {
-        // FIXME: options:
-        //   (1) ignore the 16 parent limit
-        //   (2) don't emit more than 16 parents
-        //   (3) create another commit on branch to soak up additional parents
-        // we've chosen option (2) for now, since only artificial commits
-        // created by cvs2svn seem to have this issue
-        Log::warn() << "too many merge parents" << " in repository "
-                    << repository->name << std::endl;
-        break;
-      }
-
-      std::string m = " :" + to_string(merge);
-      desc += m;
-      repository->fastImport.write("merge" + m + "\n");
+  foreach (const int merge, merges) {
+    if (merge == parentmark) {
+      Log::debug() << "Skipping marking " << merge << " as a merge point as it matches the parent"
+                   << " in repository " << repository->name << std::endl;
+      continue;
     }
+    std::string m = " :" + to_string(merge);
+    desc += m;
+    repository->fastImport.write("merge" + m + "\n");
   }
   // write the file deletions
   if (deletedFiles.contains(""))

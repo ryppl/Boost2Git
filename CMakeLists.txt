@@ -59,8 +59,8 @@ add_custom_target(submodules
   COMMAND ${CMAKE_COMMAND} 
   -D "GIT=${GIT_EXECUTABLE}"
   -D "RULES_FILE=${repositories}"
-  -D "SRC_REPO=boost"
-  -D "DST_REPO=boost-fixup"
+  -D "SRC_REPO=${git_repository}/boost"
+  -D "DST_REPO=${git_repository}/boost-fixup"
   -D "FIX_SUBMODULE_REFS=$<TARGET_FILE:fix-submodule-refs>"
   -P "${Boost2Git_SOURCE_DIR}/fix_submodules.cmake"
   COMMENT
@@ -107,11 +107,14 @@ foreach(line IN LISTS repo_lines)
   if(NOT TARGET push_${name})
     list(APPEND push_targets push_${name})
     add_custom_target(push_${name} ALL
+      COMMAND ${Boost2Git_SOURCE_DIR}/post-conversion-cleanup
       COMMAND ${CMAKE_COMMAND}
         -D "GIT=${GIT_EXECUTABLE}"
         -D "NAME=${name}"
         -P "${Boost2Git_SOURCE_DIR}/git_push.cmake"
-      DEPENDS submodules
+      DEPENDS
+        submodules
+        ${Boost2Git_SOURCE_DIR}/post-conversion-cleanup
       WORKING_DIRECTORY "${git_repository}/${repo_name}"
       )
   endif()
