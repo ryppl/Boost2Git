@@ -825,7 +825,7 @@ void Repository::Transaction::noteCopyFromBranch(
   sub_dst.insert(sub_src.begin(), sub_src.end());
   if (sub_dst.size() != prev_size)
     {
-    dst_branch.lastSubmoduleListChangeRev = revnum;
+    //dst_branch.lastSubmoduleListChangeRev = revnum;
     }
   }
 
