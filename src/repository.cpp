@@ -791,27 +791,41 @@ void Repository::Transaction::noteCopyFromBranch(
     Log::warn() << branch << " is copying from branch " << branchFrom
                 << " but the latter doesn't exist. Continuing, assuming the files exist"
                 << " in repository " << repository->name << std::endl;
+    return;
     }
-  else if (mark == 0)
+
+  if (mark == 0)
     {
     Log::warn() << "Unknown revision r" << branchRevNum << ". Continuing, assuming the files exist"
                 << " in repository " << repository->name << std::endl;
+    return;
     }
-  else
+
+  Log::debug() << "repository " << repository->name << " branch " << branch
+               << " has some files copied from " << branchFrom << "@" << branchRevNum << std::endl;
+
+  if (merges.contains(mark))
     {
-    Log::debug() << "repository " << repository->name << " branch " << branch
-                 << " has some files copied from " << branchFrom << "@" << branchRevNum << std::endl;
-    if (!merges.contains(mark))
-      {
-      merges.append(mark);
-      Log::debug() << "adding " << branchFrom << "@" << branchRevNum << " : " << mark
-                   << " as a merge point" << " in repository " << repository->name << std::endl;
-      }
-    else
-      {
-      Log::debug() << "merge point already recorded" << " in repository "
-                   << repository->name << std::endl;
-      }
+    Log::debug() << "merge point already recorded" << " in repository "
+                 << repository->name << std::endl;
+    return;
+    }
+
+  merges.append(mark);
+  Log::debug() << "adding " << branchFrom << "@" << branchRevNum << " : " << mark
+               << " as a merge point" << " in repository " << repository->name << std::endl;
+
+  // merge submodules; HACK: This only adds !!
+
+  NamedBranches branches = repository->branches;
+  Branch& dst_branch = branches[branch];
+  Branch::Submodules& sub_dst = dst_branch.submodules;
+  Branch::Submodules& sub_src = branches[branchFrom].submodules;
+  std::size_t prev_size = sub_dst.size();
+  sub_dst.insert(sub_src.begin(), sub_src.end());
+  if (sub_dst.size() != prev_size)
+    {
+    dst_branch.lastSubmoduleListChangeRev = revnum;
     }
   }
 
