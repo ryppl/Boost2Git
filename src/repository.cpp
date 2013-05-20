@@ -1049,13 +1049,20 @@ void Repository::update_dot_gitmodules(std::string const& branch_name, Branch co
   Transaction* txn = demandTransaction(branch_name, "", revnum);
   std::stringstream content;
   
+  startFastImport();
+  fastImport.write(
+      "progress SVN r" + to_string(revnum) + " branch " + branch_name + " submodules =");
+  
   for (Branch::Submodules::const_iterator p = b.submodules.begin(); p != b.submodules.end(); ++p)
     {
     content << "[submodule \"" << p->first << "\"]\n"
             << "	path = " << p->first << "\n"
             << "	url = http://github.com/boostorg/" << p->second->name << "\n"
       ;
+    fastImport.write(" ");
+    fastImport.write(p->second->name);
     }
+  fastImport.write("\n");
 
   QIODevice* device = txn->addFile(".gitmodules", 0100644, content.str().size());
   if (!options.dry_run)
