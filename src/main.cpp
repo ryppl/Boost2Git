@@ -179,7 +179,7 @@ retry:
 
     BOOST_FOREACH(Repository *repo, repositories)
       {
-      int repo_next = repo->setupIncremental(cutoff);
+      int repo_next = repo->setupIncremental(cutoff, repositories);
       if (cutoff < resume_from && repo_next == cutoff)
         {
         /*

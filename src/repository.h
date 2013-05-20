@@ -85,7 +85,7 @@ class Repository
         bool incremental,
         RepoIndex const& repo_index);
     
-    int setupIncremental(int &cutoff);
+    int setupIncremental(int &cutoff, RepoIndex const& all_repositories);
     void restoreLog();
     
     void clear();

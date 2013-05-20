@@ -187,7 +187,7 @@ static int lastValidMark(std::string name)
   return prev_mark;
   }
 
-int Repository::setupIncremental(int &cutoff)
+int Repository::setupIncremental(int &cutoff, RepoIndex const& all_repositories)
   {
   QFile logfile(logFileName(name));
   if (!logfile.exists())
