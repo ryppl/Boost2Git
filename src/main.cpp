@@ -161,7 +161,7 @@ int main(int argc, char **argv)
       exit(r ? 0 : 1);
       }
     
-    QHash<QString, Repository*> repositories;
+    RepoIndex repositories;
 
     int cutoff = resume_from ? resume_from : INT_MAX;
 

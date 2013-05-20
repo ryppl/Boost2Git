@@ -36,6 +36,9 @@ inline uint qHash(std::string const& s)
   }
 }
 
+class Repository;
+typedef QHash<QString, Repository*> RepoIndex;
+
 class Repository
   {
   public:
@@ -80,7 +83,7 @@ class Repository
     Repository(
         const Ruleset::Repository &rule,
         bool incremental,
-        QHash<QString, Repository*> const& repo_index);
+        RepoIndex const& repo_index);
     
     int setupIncremental(int &cutoff);
     void restoreLog();

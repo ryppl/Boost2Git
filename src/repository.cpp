@@ -80,7 +80,7 @@ void Repository::clear()
 Repository::Repository(
     const Ruleset::Repository &rule,
     bool incremental,
-    QHash<QString, Repository*> const& repo_index)
+    RepoIndex const& repo_index)
     : name(rule.name)
     , prefix(/*rule.forwardTo*/)
     , submodule_in_repo(

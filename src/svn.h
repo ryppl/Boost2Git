@@ -25,10 +25,10 @@
 #include <svn_repos.h>
 
 #include "apr_pool.hpp"
+#include "repository.h"
 
 class Authors;
 class Ruleset;
-class Repository;
 
 class Svn
   {
@@ -39,7 +39,7 @@ class Svn
         Ruleset const& ruleset);
     ~Svn();
 
-    void setRepositories(const QHash<QString, Repository*> &repositories);
+    void setRepositories(const RepoIndex &repositories);
 
     int youngestRevision();
     bool exportRevision(int revnum);
@@ -50,7 +50,7 @@ class Svn
     svn_revnum_t youngest_rev;
 
   public:
-    QHash<QString, Repository*> repositories;
+    RepoIndex repositories;
     Authors const& authors;
     Ruleset const& ruleset;
   };

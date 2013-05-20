@@ -55,7 +55,7 @@ Svn::~Svn()
   svn_pool_destroy(global_pool);
   }
 
-void Svn::setRepositories(const QHash<QString, Repository*> &repositories)
+void Svn::setRepositories(const RepoIndex &repositories)
   {
   this->repositories = repositories;
   }
