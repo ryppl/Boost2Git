@@ -82,7 +82,6 @@ Repository::Repository(
     bool incremental,
     RepoIndex const& repo_index)
     : name(rule.name)
-    , prefix(/*rule.forwardTo*/)
     , submodule_in_repo(
         rule.submodule_in_repo.empty()
         ? 0 : repo_index[QString::fromStdString(rule.submodule_in_repo)] )
@@ -832,7 +831,7 @@ void Repository::Transaction::noteCopyFromBranch(
 
 void Repository::Transaction::deleteFile(const std::string &path)
   {
-  std::string pathNoSlash = repository->prefix + path;
+  std::string pathNoSlash = path;
   if(boost::ends_with(pathNoSlash, "/"))
       pathNoSlash.erase(pathNoSlash.size() - 1);
   deletedFiles.append(pathNoSlash);
@@ -845,7 +844,7 @@ QIODevice *Repository::Transaction::addFile(const std::string &path, int mode, q
   // in case the two mark allocations meet, we might as well just abort
   Q_ASSERT(mark > repository->last_commit_mark + 1);
   
-  Q_ASSERT(!(repository->prefix + path).empty());
+  Q_ASSERT(!path.empty());
 
   if (modifiedFiles.capacity() == 0)
       modifiedFiles.reserve(2048);
@@ -856,7 +855,7 @@ QIODevice *Repository::Transaction::addFile(const std::string &path, int mode, q
   modifiedFiles.append(" :");
   modifiedFiles.append(to_string(mark));
   modifiedFiles.append(" ");
-  modifiedFiles.append(repository->prefix + path);
+  modifiedFiles.append(path);
   modifiedFiles.append("\n");
 
   // If it's not a submodule change, we have a blob to write.

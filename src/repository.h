@@ -166,7 +166,6 @@ class Repository
     NamedBranches branches;
     QHash<std::string, AnnotatedTag> annotatedTags;
     std::string name;
-    std::string prefix;
     Repository* submodule_in_repo;
     std::string submodule_path;
     LoggingQProcess fastImport;
