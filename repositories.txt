@@ -2463,11 +2463,11 @@ repository sandbox
     "branches/matrix_development/" : "branches/matrix_development/";
     "branches/perforce_jam_2_4/" : "branches/perforce_jam_2_4/";
     "branches/persistence-initial/" : "branches/persistence-initial/";
-    "daniel_frey/" : "/libs/smart_ptr/daniel_frey/";
+  //  "daniel_frey/" : "/libs/smart_ptr/daniel_frey/";
   }
   branches
   {
-    [:] "/sandbox/libs/smart_ptr/" : "trunk";
+  //  [:] "/sandbox/libs/smart_ptr/" : "trunk";
     [:] "/" : "trunk";
   }
 }
