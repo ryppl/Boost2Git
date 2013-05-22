@@ -167,14 +167,28 @@ int main(int argc, char **argv)
 
 retry:
     int min_rev = 1;
+    
+    // Establish a Repository for each unique repository rule name
     BOOST_FOREACH(Ruleset::Repository const& rule, ruleset.repositories())
       {
-      Repository *repo = new Repository(rule, resume_from != 0, repositories);
-      if (!repo)
+      QString qname = QString::fromStdString(rule.name);
+      if (!repositories.contains(qname))
         {
-        return EXIT_FAILURE;
+        Repository *repo = new Repository(rule, resume_from != 0);
+        repositories.insert(qname, repo);
         }
-      repositories.insert(QString::fromStdString(rule.name), repo);
+      }
+
+    // Set up submodule references
+    BOOST_FOREACH(Ruleset::Repository const& rule, ruleset.repositories())
+      {
+      if (!rule.submodule_in_repo.empty())
+        {
+        QString qname = QString::fromStdString(rule.name);
+        repositories[qname]->submodule_in_repo
+          = repositories[QString::fromStdString(rule.submodule_in_repo)];
+        repositories[qname]->submodule_path = rule.submodule_path;
+        }
       }
 
     BOOST_FOREACH(Repository *repo, repositories)

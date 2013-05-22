@@ -82,8 +82,7 @@ class Repository
     
     Repository(
         const Ruleset::Repository &rule,
-        bool incremental,
-        RepoIndex const& repo_index);
+        bool incremental);
     
     int setupIncremental(int &cutoff, RepoIndex const& all_repositories);
     void restoreLog();
@@ -166,8 +165,10 @@ class Repository
     NamedBranches branches;
     QHash<std::string, AnnotatedTag> annotatedTags;
     std::string name;
+  public:
     Repository* submodule_in_repo;
     std::string submodule_path;
+  private:
     LoggingQProcess fastImport;
     int commitCount;
     std::set<NamedBranch*> modifiedBranches;

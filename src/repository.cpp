@@ -79,13 +79,9 @@ void Repository::clear()
 
 Repository::Repository(
     const Ruleset::Repository &rule,
-    bool incremental,
-    RepoIndex const& repo_index)
+    bool incremental)
     : name(rule.name)
-    , submodule_in_repo(
-        rule.submodule_in_repo.empty()
-        ? 0 : repo_index[QString::fromStdString(rule.submodule_in_repo)] )
-    , submodule_path( rule.submodule_path )
+    , submodule_in_repo(0)
     , fastImport(name)
     , commitCount(0)
     , last_commit_mark(0)
