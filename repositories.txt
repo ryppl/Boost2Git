@@ -2474,7 +2474,7 @@ repository sandbox
 {
   content
   {
-    "daniel_frey/" : "/libs/smart_ptr/daniel_frey/";
+    "daniel_frey/" : "libs/smart_ptr/daniel_frey/";
   }
   branches
   {
