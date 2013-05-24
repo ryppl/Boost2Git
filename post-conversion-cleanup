@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/bin/bash -e
 
 # don't bother with these two
 if [ ${PWD##*/} = 'sandbox' ] || [ ${PWD##*/} = 'boost-fixup' ]
