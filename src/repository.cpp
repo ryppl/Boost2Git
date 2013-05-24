@@ -445,7 +445,7 @@ int Repository::deleteBranch(std::string const& branch, int revnum)
   }
 
 int Repository::resetBranch(
-    const std::string &gitRefName,  // Redundant with the above, but we've already computed it
+    const std::string &gitRefName,
     int revnum,
     int mark,                   // will be zero when deleting the branch
     const std::string &resetTo,
@@ -854,7 +854,6 @@ QIODevice *Repository::Transaction::addFile(const std::string &path, int mode, q
   modifiedFiles.append(path);
   modifiedFiles.append("\n");
 
-  // If it's not a submodule change, we have a blob to write.
   if (!options.dry_run) {
     repository->startFastImport();
     repository->fastImport.writeNoLog("blob\nmark :");
