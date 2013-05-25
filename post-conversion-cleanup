@@ -1,5 +1,11 @@
 #!/bin/bash -e
 
+# 'tools/build/v2' is located at 'tools/build' now!
+if [ ${PWD##*/} = 'boost-fixup' ]
+then
+  git filter-branch --tree-filter "find . -type f -maxdepth 1 -exec sed -i -e 's|build[/\\]v2|build|g' {} \;"
+fi
+
 # don't bother with these two
 if [ ${PWD##*/} = 'sandbox' ] || [ ${PWD##*/} = 'boost-fixup' ]
 then
