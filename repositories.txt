@@ -330,22 +330,15 @@ abstract repository common_branches
     [18834:     ] "/tags/Milestone_4/boost/" : "Milestone_4";
     [19259:     ] "/tags/Milestone_6/boost/" : "Milestone_6";
     [20021:     ] "/tags/Milestone_7/boost/" : "Milestone_7";
-    [20264:     ] "/tags/Boost_Jam_3_1_7/boost/" : "Boost_Jam_3_1_7";
     [20339:     ] "/tags/Milestone_8/boost/" : "Milestone_8";
     [20700:     ] "/tags/Milestone_9/boost/" : "Milestone_9";
     [20710:     ] "/tags/Milestone_9_1/boost/" : "Milestone_9_1";
     [20751:     ] "/tags/Milestone_10_dev/boost/" : "Milestone_10_dev";
     [21220:     ] "/tags/Milestone_10_dev2/boost/" : "Milestone_10_dev2";
-    [21943:     ] "/tags/Boost_Jam_3_1_9/boost/" : "Boost_Jam_3_1_9";
-    [22988:     ] "/tags/Boost_Jam_3_1_10/boost/" : "Boost_Jam_3_1_10";
-    [30215:     ] "/tags/Boost_Jam_3_1_11/boost/" : "Boost_Jam_3_1_11";
-    [32868:     ] "/tags/Boost_Jam_3_1_12/boost/" : "Boost_Jam_3_1_12";
     [33814:     ] "/tags/M11_rc2/boost/" : "M11_rc2";
-    [34217:     ] "/tags/Boost_Jam_3_1_13/boost/" : "Boost_Jam_3_1_13";
     [34617:     ] "/tags/Milestone_11/boost/" : "Milestone_11";
     [35069:     ] "/tags/dwa-postlicense/boost/" : "dwa-postlicense";
     [35306:     ] "/tags/BOOST_BUILD_V1/boost/" : "BOOST_BUILD_V1";
-    [36695:     ] "/tags/Boost_Jam_3_1_14/boost/" : "Boost_Jam_3_1_14";
     [13112:     ] "/tags/perforce_2_4_merge_1/boost/" : "perforce_2_4_merge_1";
     [44232:     ] "/tags/start/Version_1_18_3/boost/" : "start-tags/Version_1_18_3";
     [38383:     ] "/tags/jam/perforce_2_4_merge_1/boost/" : "jam/perforce_2_4_merge_1";
@@ -2284,21 +2277,40 @@ repository build : common_branches
   }
   tags
   {
+    [:] "/tags/Boost_Jam_3_1_7/boost/" : "Boost_Jam_3_1_7";
+    [:] "/tags/Boost_Jam_3_1_9/boost/" : "Boost_Jam_3_1_9";
+    [:] "/tags/Boost_Jam_3_1_10/boost/" : "Boost_Jam_3_1_10";
+    [:] "/tags/Boost_Jam_3_1_11/boost/" : "Boost_Jam_3_1_11";
+    [:] "/tags/Boost_Jam_3_1_12/boost/" : "Boost_Jam_3_1_12";
+    [:] "/tags/Boost_Jam_3_1_13/boost/" : "Boost_Jam_3_1_13";
+    [:] "/tags/Boost_Jam_3_1_14/boost/" : "Boost_Jam_3_1_14";
+
+    [:] "/tags/jam/Boost_Jam_3_1_2/boost/" : "jam/Boost_Jam_3_1_2";
+    [:] "/tags/jam/Boost_Jam_3_1_5/boost/" : "jam/Boost_Jam_3_1_5";
+    [:] "/tags/jam/Boost_Jam_3_1_7/boost/" : "jam/Boost_Jam_3_1_7";
+    [:] "/tags/jam/Boost_Jam_3_1_9/boost/" : "jam/Boost_Jam_3_1_9";
+    [:] "/tags/jam/Boost_Jam_3_1_10/boost/" : "jam/Boost_Jam_3_1_10";
+    [:] "/tags/jam/Boost_Jam_3_1_11/boost/" : "jam/Boost_Jam_3_1_11";
+    [:] "/tags/jam/Boost_Jam_3_1_12/boost/" : "jam/Boost_Jam_3_1_12";
+    [:] "/tags/jam/Boost_Jam_3_1_13/boost/" : "jam/Boost_Jam_3_1_13";
+    [:] "/tags/jam/Boost_Jam_3_1_14/boost/" : "jam/Boost_Jam_3_1_14";
+
+    [:] "/tags/tools/jam/Boost_Jam_3_1_2/boost/" : "Boost_Jam_3_1_2";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_5/boost/" : "Boost_Jam_3_1_5";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_7/boost/" : "Boost_Jam_3_1_7";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_9/boost/" : "Boost_Jam_3_1_9";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_10/boost/" : "Boost_Jam_3_1_10";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_11/boost/" : "Boost_Jam_3_1_11";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_12/boost/" : "Boost_Jam_3_1_12";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_13/boost/" : "Boost_Jam_3_1_13";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_14/boost/" : "Boost_Jam_3_1_14";
+
     [:] "/tags/bjam_3_1_5/boost/" : "bjam_3_1_5";
     [:] "/tags/boost-initial/boost/" : "boost-initial";
     [:] "/tags/ftjam_2_3_5/boost/" : "ftjam_2_3_5";
     [:] "/tags/jam_2_3_2/boost/" : "jam_2_3_2";
     [:] "/tags/jam/bjam_3_1_2/boost/" : "jam/bjam_3_1_2";
     [:] "/tags/jam/bjam_3_1_5/boost/" : "jam/bjam_3_1_5";
-    [:] "/tags/jam/Boost_Jam_3_1_10/boost/" : "jam/Boost_Jam_3_1_10";
-    [:] "/tags/jam/Boost_Jam_3_1_11/boost/" : "jam/Boost_Jam_3_1_11";
-    [:] "/tags/jam/Boost_Jam_3_1_12/boost/" : "jam/Boost_Jam_3_1_12";
-    [:] "/tags/jam/Boost_Jam_3_1_13/boost/" : "jam/Boost_Jam_3_1_13";
-    [:] "/tags/jam/Boost_Jam_3_1_14/boost/" : "jam/Boost_Jam_3_1_14";
-    [:] "/tags/jam/Boost_Jam_3_1_2/boost/" : "jam/Boost_Jam_3_1_2";
-    [:] "/tags/jam/Boost_Jam_3_1_5/boost/" : "jam/Boost_Jam_3_1_5";
-    [:] "/tags/jam/Boost_Jam_3_1_7/boost/" : "jam/Boost_Jam_3_1_7";
-    [:] "/tags/jam/Boost_Jam_3_1_9/boost/" : "jam/Boost_Jam_3_1_9";
     [:] "/tags/jam/FreeType_Jam_2_3_5/boost/" : "jam/FreeType_Jam_2_3_5";
     [:] "/tags/jam/ftjam_2_3_5/boost/" : "jam/ftjam_2_3_5";
     [:] "/tags/jam/jam_2_3_2/boost/" : "jam/jam_2_3_2";
@@ -2322,15 +2334,6 @@ repository build : common_branches
     [:] "/tags/tools/build/Milestone_8/boost/" : "Milestone_8";
     [:] "/tags/tools/build/Milestone_9_1/boost/" : "Milestone_9_1";
     [:] "/tags/tools/build/Milestone_9/boost/" : "Milestone_9";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_10/boost/" : "Boost_Jam_3_1_10";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_11/boost/" : "Boost_Jam_3_1_11";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_12/boost/" : "Boost_Jam_3_1_12";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_13/boost/" : "Boost_Jam_3_1_13";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_14/boost/" : "Boost_Jam_3_1_14";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_2/boost/" : "Boost_Jam_3_1_2";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_5/boost/" : "Boost_Jam_3_1_5";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_7/boost/" : "Boost_Jam_3_1_7";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_9/boost/" : "Boost_Jam_3_1_9";
     [:] "/tags/tools/jam/FreeType_Jam_2_3_5/boost/" : "FreeType_Jam_2_3_5";
     [:] "/tags/tools/jam/Perforce_Jam_2_4_beta_1/boost/" : "Perforce_Jam_2_4_beta_1";
     [:] "/tags/tools/jam/Perfroce_Jam_2_3_2/boost/" : "Perfroce_Jam_2_3_2";
