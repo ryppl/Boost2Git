@@ -49,7 +49,7 @@ abstract repository common_branches
     [ 7623:     ] "/branches/unlabeled-1.1.1.1.10/boost/" : "old-branches/unlabeled-1.1.1.1.10";
     [10453:     ] "/branches/iter-adaptor-and-categories/boost/" : "old-branches/iter-adaptor-and-categories";
     [10742:     ] "/branches/split-config/boost/" : "old-branches/split-config";
-    [     :     ] "/branches/jam/jam-src/boost/" : "old-branches/jam-src";
+    [     :     ] "/branches/jam/jam-src/boost/" : "old-branches/jam/jam-src";
     [11225:     ] "/branches/jam_src/boost/" : "old-branches/jam_src";
     [11341:     ] "/branches/iterator_adaptor_update/boost/" : "old-branches/iterator_adaptor_update";
     [12739:     ] "/branches/RC_1_27_0/boost/" : "old-branches/RC_1_27_0";
@@ -2279,7 +2279,7 @@ repository build : common_branches
   branches
   {
     [38357:     ] "/branches/quickbook/include/boost/" : "quickbook/include";
-    [     :     ] "/branches/build/jam-src/boost/" : "old-branches/jam-src";
+    [     :     ] "/branches/build/jam-src/boost/" : "old-branches/build/jam-src";
   }
   tags
   {
