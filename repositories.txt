@@ -2273,8 +2273,7 @@ repository build : common_branches
   submodule of "boost" : "tools/build";
   content
   {
-    "tools/build/v2/";
-    "tools/build/" : "historic/build/";
+    "tools/build/";
     "tools/jam/" : "historic/jam/";
   }
   branches
@@ -2341,7 +2340,7 @@ repository build
 {
   content
   {
-    "boost-build.jam" : "historic/boost-build.jam";
+    "boost-build.jam" : "boost-build.jam";
   }
   tags
   {
@@ -2354,8 +2353,8 @@ repository build : tools_branches
 {
   content
   {
+    "build/";
     "jam/" : "historic/jam/";
-    "build/" : "historic/build/";
   }
   tags
   {
@@ -2370,6 +2369,7 @@ repository build
 {
   content
   {
+    "build/";
     "/" : "historic/";
   }
   branches
