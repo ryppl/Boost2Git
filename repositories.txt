@@ -582,8 +582,9 @@ abstract repository unordered_foreign_branches
   }
 }
 
-repository core : common_branches, unordered_foreign_branches
+repository detail : common_branches, unordered_foreign_branches
 {
+  submodule of "boost" : "libs/detail";
   content
   {
     "boost/detail/win/" : "include/boost/detail/win/";
