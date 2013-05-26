@@ -325,18 +325,7 @@ abstract repository common_branches
     [44271:     ] "/tags/release/RC_1_30_2/boost/" : "release/RC_1_30_2";
     [14038:     ] "/tags/header-cache/boost/" : "header-cache";
     [14832:     ] "/tags/bjam_3_1_2/boost/" : "bjam_3_1_2";
-    [14920:     ] "/tags/milestone_1/boost/" : "milestone_1";
-    [18478:     ] "/tags/Milestone_3/boost/" : "Milestone_3";
-    [18834:     ] "/tags/Milestone_4/boost/" : "Milestone_4";
-    [19259:     ] "/tags/Milestone_6/boost/" : "Milestone_6";
-    [20021:     ] "/tags/Milestone_7/boost/" : "Milestone_7";
-    [20339:     ] "/tags/Milestone_8/boost/" : "Milestone_8";
-    [20700:     ] "/tags/Milestone_9/boost/" : "Milestone_9";
     [20710:     ] "/tags/Milestone_9_1/boost/" : "Milestone_9_1";
-    [20751:     ] "/tags/Milestone_10_dev/boost/" : "Milestone_10_dev";
-    [21220:     ] "/tags/Milestone_10_dev2/boost/" : "Milestone_10_dev2";
-    [33814:     ] "/tags/M11_rc2/boost/" : "M11_rc2";
-    [34617:     ] "/tags/Milestone_11/boost/" : "Milestone_11";
     [35069:     ] "/tags/dwa-postlicense/boost/" : "dwa-postlicense";
     [35306:     ] "/tags/BOOST_BUILD_V1/boost/" : "BOOST_BUILD_V1";
     [13112:     ] "/tags/perforce_2_4_merge_1/boost/" : "perforce_2_4_merge_1";
@@ -2277,6 +2266,7 @@ repository build : common_branches
   }
   tags
   {
+    [:] "/tags/bjam_3_1_5/boost/" : "bjam_3_1_5";
     [:] "/tags/Boost_Jam_3_1_7/boost/" : "Boost_Jam_3_1_7";
     [:] "/tags/Boost_Jam_3_1_9/boost/" : "Boost_Jam_3_1_9";
     [:] "/tags/Boost_Jam_3_1_10/boost/" : "Boost_Jam_3_1_10";
@@ -2305,7 +2295,33 @@ repository build : common_branches
     [:] "/tags/tools/jam/Boost_Jam_3_1_13/boost/" : "Boost_Jam_3_1_13";
     [:] "/tags/tools/jam/Boost_Jam_3_1_14/boost/" : "Boost_Jam_3_1_14";
 
-    [:] "/tags/bjam_3_1_5/boost/" : "bjam_3_1_5";
+    [:] "/tags/milestone_1/boost/" : "Milestone_1";
+    [:] "/tags/Milestone_3/boost/" : "Milestone_3";
+    [:] "/tags/Milestone_4/boost/" : "Milestone_4";
+    [:] "/tags/Milestone_6/boost/" : "Milestone_6";
+    [:] "/tags/Milestone_7/boost/" : "Milestone_7";
+    [:] "/tags/Milestone_8/boost/" : "Milestone_8";
+    [:] "/tags/Milestone_9/boost/" : "Milestone_9";
+    [:] "/tags/Milestone_10/boost/" : "Milestone_10";
+    [:] "/tags/Milestone_10_dev/boost/" : "Milestone_10_dev";
+    [:] "/tags/Milestone_10_dev2/boost/" : "Milestone_10_dev2";
+    [:] "/tags/Milestone_11/boost/" : "Milestone_11";
+    [:] "/tags/M11_rc2/boost/" : "M11_rc2";
+
+    [:] "/tags/tools/build/milestone_1/boost/" : "Milestone_1";
+    [:] "/tags/tools/build/Milestone_3/boost/" : "Milestone_3";
+    [:] "/tags/tools/build/Milestone_4/boost/" : "Milestone_4";
+    [:] "/tags/tools/build/Milestone_6/boost/" : "Milestone_6";
+    [:] "/tags/tools/build/Milestone_7/boost/" : "Milestone_7";
+    [:] "/tags/tools/build/Milestone_8/boost/" : "Milestone_8";
+    [:] "/tags/tools/build/Milestone_9/boost/" : "Milestone_9";
+    [:] "/tags/tools/build/Milestone_9_1/boost/" : "Milestone_9_1";
+    [:] "/tags/tools/build/Milestone_10/boost/" : "Milestone_10";
+    [:] "/tags/tools/build/Milestone_10_dev/boost/" : "Milestone_10_dev";
+    [:] "/tags/tools/build/Milestone_10_dev2/boost/" : "Milestone_10_dev2";
+    [:] "/tags/tools/build/Milestone_11/boost/" : "Milestone_11";
+    [:] "/tags/tools/build/M11_rc2/boost/" : "M11_rc2";
+
     [:] "/tags/boost-initial/boost/" : "boost-initial";
     [:] "/tags/ftjam_2_3_5/boost/" : "ftjam_2_3_5";
     [:] "/tags/jam_2_3_2/boost/" : "jam_2_3_2";
@@ -2321,23 +2337,9 @@ repository build : common_branches
     [:] "/tags/state-perforce_2_4_merge-1/boost/" : "state-perforce_2_4_merge-1";
     [:] "/tags/state-update_rule-1/boost/" : "state-update_rule-1";
     [:] "/tags/tools/build/BOOST_BUILD_V1/boost/" : "tools/build/BOOST_BUILD_V1";
-    [:] "/tags/tools/build/M11_rc2/boost/" : "M11_rc2";
-    [:] "/tags/tools/build/Milestone_10/boost/" : "Milestone_10";
-    [:] "/tags/tools/build/Milestone_10_dev2/boost/" : "Milestone_10_dev2";
-    [:] "/tags/tools/build/Milestone_10_dev/boost/" : "Milestone_10_dev";
-    [:] "/tags/tools/build/Milestone_11/boost/" : "Milestone_11";
-    [:] "/tags/tools/build/milestone_1/boost/" : "milestone_1";
-    [:] "/tags/tools/build/Milestone_3/boost/" : "Milestone_3";
-    [:] "/tags/tools/build/Milestone_4/boost/" : "Milestone_4";
-    [:] "/tags/tools/build/Milestone_6/boost/" : "Milestone_6";
-    [:] "/tags/tools/build/Milestone_7/boost/" : "Milestone_7";
-    [:] "/tags/tools/build/Milestone_8/boost/" : "Milestone_8";
-    [:] "/tags/tools/build/Milestone_9_1/boost/" : "Milestone_9_1";
-    [:] "/tags/tools/build/Milestone_9/boost/" : "Milestone_9";
     [:] "/tags/tools/jam/FreeType_Jam_2_3_5/boost/" : "FreeType_Jam_2_3_5";
     [:] "/tags/tools/jam/Perforce_Jam_2_4_beta_1/boost/" : "Perforce_Jam_2_4_beta_1";
     [:] "/tags/tools/jam/Perfroce_Jam_2_3_2/boost/" : "Perfroce_Jam_2_3_2";
-    [25937:     ] "/tags/Milestone_10/boost/" : "Milestone_10";
   }
 }
 
