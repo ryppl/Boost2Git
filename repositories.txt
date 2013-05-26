@@ -49,8 +49,6 @@ abstract repository common_branches
     [ 7623:     ] "/branches/unlabeled-1.1.1.1.10/boost/" : "old-branches/unlabeled-1.1.1.1.10";
     [10453:     ] "/branches/iter-adaptor-and-categories/boost/" : "old-branches/iter-adaptor-and-categories";
     [10742:     ] "/branches/split-config/boost/" : "old-branches/split-config";
-    [     :     ] "/branches/jam/jam-src/boost/" : "old-branches/jam/jam-src";
-    [11225:     ] "/branches/jam_src/boost/" : "old-branches/jam_src";
     [11341:     ] "/branches/iterator_adaptor_update/boost/" : "old-branches/iterator_adaptor_update";
     [12739:     ] "/branches/RC_1_27_0/boost/" : "old-branches/RC_1_27_0";
     [12504:     ] "/branches/perforce_2_4_merge/boost/" : "old-branches/perforce_2_4_merge";
@@ -2278,8 +2276,12 @@ repository build : common_branches
   }
   branches
   {
+    [     :     ] "/branches/jam_src/boost/" : "old-branches/jam_src";
+    [     :     ] "/branches/jam-src/boost/" : "old-branches/jam-src";
+    [     :     ] "/branches/jam/jam_src/boost/" : "old-branches/jam_src";
+    [     :     ] "/branches/jam/jam-src/boost/" : "old-branches/jam-src";
+    [     :     ] "/branches/build/jam-src/boost/" : "old-branches/jam-src";
     [38357:     ] "/branches/quickbook/include/boost/" : "quickbook/include";
-    [     :     ] "/branches/build/jam-src/boost/" : "old-branches/build/jam-src";
   }
   tags
   {
@@ -2355,6 +2357,10 @@ repository build : tools_branches
   {
     "build/";
     "jam/" : "historic/jam/";
+  }
+  branches
+  {
+    [:] "/branches/build-development-2/boost/" : "old-branches/build-development-2";
   }
   tags
   {
@@ -2597,11 +2603,9 @@ repository boost : common_branches
   {
     [20039:     ] "/branches/alternative_regression/boost/" : "old-branches/alternative_regression";
     [12509:     ] "/branches/test-development/boost/" : "old-branches/test-development";
-    [     :     ] "/branches/jam/jam_src/boost/" : "old-branches/jam_src";
     [     :     ] "/branches/jam/version_2_3_2/boost/" : "old-branches/jam/version_2_3_2";
     [28262:     ] "/branches/logo_contest_images/boost/" : "old-branches/logo_contest_images";
     [33250:     ] "/branches/unlabeled-1.32.2/boost/" : "old-branches/unlabeled-1.32.2";
-    [10303:     ] "/branches/build-development-2/boost/" : "old-branches/build-development-2";
     [     :     ] "/branches/jam/pipe_rule/boost/" : "old-branches/pipe_rule";
     [     :     ] "/branches/jam/Boost_Jam_994/boost/" : "old-branches/Boost_Jam_994";
     [     :     ] "/branches/quickbook/QUICKBOOK_PREPROCESSOR/boost/" : "old-branches/QUICKBOOK_PREPROCESSOR";
@@ -2614,7 +2618,6 @@ repository boost : common_branches
     [50979:     ] "/sandbox-branches/guigl-wmbuild/" : "sandbox/guigl-wmbuild";
     [51204:     ] "/sandbox-branches/andreo/guigl/" : "sandbox/andreo/guigl";
     [10399:     ] "/branches/coding_guidelines/boost/" : "old-branches/coding_guidelines";
-    [11224:     ] "/branches/jam-src/boost/" : "old-branches/jam-src";
   }
   tags
   {
