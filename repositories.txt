@@ -326,7 +326,6 @@ abstract repository common_branches
     [14038:     ] "/tags/header-cache/boost/" : "header-cache";
     [14832:     ] "/tags/bjam_3_1_2/boost/" : "bjam_3_1_2";
     [14920:     ] "/tags/milestone_1/boost/" : "milestone_1";
-    [18438:     ] "/tags/bjam_3_1_5/boost/" : "bjam_3_1_5";
     [18478:     ] "/tags/Milestone_3/boost/" : "Milestone_3";
     [18834:     ] "/tags/Milestone_4/boost/" : "Milestone_4";
     [19259:     ] "/tags/Milestone_6/boost/" : "Milestone_6";
@@ -2285,6 +2284,7 @@ repository build : common_branches
   }
   tags
   {
+    [:] "/tags/bjam_3_1_5/boost/" : "bjam_3_1_5";
     [:] "/tags/boost-initial/boost/" : "boost-initial";
     [:] "/tags/ftjam_2_3_5/boost/" : "ftjam_2_3_5";
     [:] "/tags/jam_2_3_2/boost/" : "jam_2_3_2";
