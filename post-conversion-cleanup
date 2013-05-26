@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 # don't bother with these two
-if [ ${PWD##*/} = 'sandbox' ] || [ ${PWD##*/} = 'boost-fixup' ]
+if [ ${PWD##*/} = 'sandbox' ]
 then
   exit 0
 fi
