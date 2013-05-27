@@ -777,8 +777,7 @@ int SvnRevision::recurse(
     const char *entryFrom = path_from ? apr_pstrcat(pool, path_from, "/", dirent->name, NULL) : NULL;
 
     // check if this entry is in the changelist for this revision already
-    svn_fs_path_change2_t *otherchange = (svn_fs_path_change2_t*) apr_hash_get(changes, entry, APR_HASH_KEY_STRING);
-    if (otherchange && otherchange->change_kind == svn_fs_path_change_add)
+    if (apr_hash_get(changes, entry, APR_HASH_KEY_STRING))
       {
       Log::debug() << '"' << entry << '@' << revnum << '"'
                    << " is in the change-list, deferring to that one" << std::endl;
