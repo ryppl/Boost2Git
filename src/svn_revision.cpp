@@ -300,38 +300,12 @@ int SvnRevision::prepareTransactions()
   // find out what was changed in this revision:
   apr_hash_t *changes;
   check_svn(svn_fs_paths_changed2(&changes, fs_root, pool));
-
-  QMap<std::string, svn_fs_path_change2_t*> map;
   for (apr_hash_index_t *i = apr_hash_first(pool, changes); i; i = apr_hash_next(i))
     {
-    const void *vkey;
-    void *value;
-    apr_hash_this(i, &vkey, NULL, &value);
-    const char *key = static_cast<const char *>(vkey);
-    svn_fs_path_change2_t *change = static_cast<svn_fs_path_change2_t *>(value);
-    // If we mix path deletions with path adds/replaces we might erase a
-    // branch after that it has been reset -> history truncated
-    if (map.contains(std::string(key)))
-      {
-      // If the same path is deleted and added, we need to put the
-      // deletions into the map first, then the addition.
-      if (change->change_kind == svn_fs_path_change_delete)
-        {
-        // XXX
-        }
-      std::stringstream msg;
-      msg << "Duplicate key found in rev " << revnum << ": " << key << '\n';
-      msg << "This needs more code to be handled, file a bug report!";
-      throw std::runtime_error(msg.str());
-      }
-    map.insertMulti(std::string(key), change);
-    }
-
-  QMapIterator<std::string, svn_fs_path_change2_t*> i(map);
-  while (i.hasNext())
-    {
-    i.next();
-    if (exportEntry(i.key().c_str(), i.value(), changes) == EXIT_FAILURE)
+    const char *key = NULL;
+    svn_fs_path_change2_t *change = NULL;
+    apr_hash_this(i, (const void**) &key, NULL, (void**) &change);
+    if (exportEntry(key, change, changes) == EXIT_FAILURE)
       {
       return EXIT_FAILURE;
       }
