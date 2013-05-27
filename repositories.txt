@@ -2076,6 +2076,7 @@ abstract repository unordered_branches
 
 repository unordered : common_branches, unordered_branches
 {
+  submodule of "boost" : "libs/unordered";
   content
   {
     "boost/unordered_map.hpp" : "include/boost/unordered_map.hpp";
