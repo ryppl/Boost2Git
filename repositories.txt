@@ -788,43 +788,14 @@ repository function : common_branches
   }
 }
 
-repository functional : common_branches
+repository functional : common_branches, unordered_foreign_branches
 {
   submodule of "boost" : "libs/functional";
   content
   {
-    "boost/functional/overloaded_function/" : "include/boost/functional/overloaded_function/";
-    "boost/functional/factory.hpp" : "include/boost/functional/factory.hpp";
-    "boost/functional/forward_adapter.hpp" : "include/boost/functional/forward_adapter.hpp";
-    "boost/functional/lightweight_forward_adapter.hpp" : "include/boost/functional/lightweight_forward_adapter.hpp";
-    "boost/functional/overloaded_function.hpp" : "include/boost/functional/overloaded_function.hpp";
-    "boost/functional/value_factory.hpp" : "include/boost/functional/value_factory.hpp";
     "boost/functional.hpp" : "include/boost/functional.hpp";
-    "libs/functional/factory/" : "factory/";
-    "libs/functional/forward/" : "forward/";
-    "libs/functional/overloaded_function/" : "overloaded_function/";
-    "libs/functional/test/" : "test/";
-    "libs/functional/binders.html" : "binders.html";
-    "libs/functional/function_test.cpp" : "function_test.cpp";
-    "libs/functional/function_traits.html" : "function_traits.html";
-    "libs/functional/index.html" : "index.html";
-    "libs/functional/mem_fun.html" : "mem_fun.html";
-    "libs/functional/negators.html" : "negators.html";
-    "libs/functional/ptr_fun.html" : "ptr_fun.html";
-    "libs/functional/sublibs" : "sublibs";
-  }
-}
-
-repository functional_hash : common_branches, unordered_foreign_branches
-{
-  content
-  {
-    "boost/functional/detail/float_functions.hpp" : "include/boost/functional/detail/float_functions.hpp";
-    "boost/functional/detail/hash_float.hpp" : "include/boost/functional/detail/hash_float.hpp";
-    "boost/functional/hash/" : "include/boost/functional/hash/";
-    "boost/functional/hash.hpp" : "include/boost/functional/hash.hpp";
-    "boost/functional/hash_fwd.hpp" : "include/boost/functional/hash_fwd.hpp";
-    "libs/functional/hash/";
+    "boost/functional/" : "include/boost/functional/";
+    "libs/functional/";
   }
 }
 
@@ -2538,8 +2509,6 @@ repository boost : common_branches
     "libs/CMakeLists.txt"       : "libs/CMakeLists.txt";
     "libs/concept/CMakeLists.txt" : "libs/concept/CMakeLists.txt";
     "libs/concept/module.cmake" : "libs/concept/module.cmake";
-    "libs/functional/CMakeLists.txt" : "libs/functional/CMakeLists.txt";
-    "libs/functional/module.cmake" : "libs/functional/module.cmake";
     "libs/numeric/CMakeLists.txt" : "libs/numeric/CMakeLists.txt";
     "libs/numeric/module.cmake" : "libs/numeric/module.cmake";
     "libs/numeric/index.html"  : "libs/numeric/index.html";
