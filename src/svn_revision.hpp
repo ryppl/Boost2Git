@@ -38,7 +38,7 @@ class SvnRevision
   {
   public:
     SvnRevision(Svn const& svn, int revision, svn_fs_t *f, apr_pool_t *parent_pool) :
-        svn(svn), pool(parent_pool), fs(f), fs_root(0), revnum(revision), propsFetched(false)
+        svn(svn), pool(parent_pool), fs(f), fs_root(0), revnum(revision)
       {
       }
     void open()
@@ -53,7 +53,6 @@ class SvnRevision
         boost2git::BranchRule const* branch,
         std::string const& svnprefix);
     
-    void fetchRevProps();
     int exportEntry(
         const char *path,
         const svn_fs_path_change2_t *change,
@@ -92,12 +91,6 @@ class SvnRevision
     svn_fs_root_t *fs_root;
     int revnum;
 
-    // must call fetchRevProps first:
-    std::string author;
-    std::string log;
-    uint epoch;
-
-    bool propsFetched;
     bool needCommit;
   };
 

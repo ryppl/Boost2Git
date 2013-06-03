@@ -324,20 +324,24 @@ static std::string get_string(apr_hash_t *revprops, char const *key)
   return result;
   }
 
-void SvnRevision::fetchRevProps()
+void SvnRevision::commit()
   {
-  if (propsFetched)
+  if (!needCommit)
     {
     return;
     }
+  foreach(Repository *repo, svn.repositories.values())
+    {
+    repo->prepare_commit(revnum);
+    }
   apr_hash_t *revprops;
   check_svn(svn_fs_revision_proplist(&revprops, fs, revnum, pool));
-  author = svn.authors[get_string(revprops, "svn:author")];
+  std::string author = svn.authors[get_string(revprops, "svn:author")];
   if (author.empty())
     {
     author = "nobody <nobody@localhost>";
     }
-  epoch = 0;
+  uint epoch = 0;
   std::string svndate = get_string(revprops, "svn:date");
   if (!svndate.empty())
     {
@@ -347,24 +351,10 @@ void SvnRevision::fetchRevProps()
     static pt::ptime epoch_(boost::gregorian::date(1970, 1, 1));
     epoch = (ptime - epoch_).total_seconds();
     }
-  log = get_string(revprops, "svn:log");
+  std::string log = get_string(revprops, "svn:log");
   if (log.empty())
     {
     log = "** empty log message **";
-    }
-  propsFetched = true;
-  }
-
-void SvnRevision::commit()
-  {
-  if (!needCommit)
-    {
-    return;
-    }
-  fetchRevProps();
-  foreach(Repository *repo, svn.repositories.values())
-    {
-    repo->prepare_commit(revnum);
     }
   foreach(Repository *repo, svn.repositories.values())
     {
