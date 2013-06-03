@@ -371,132 +371,57 @@ int SvnRevision::exportEntry(
     {
     return EXIT_SUCCESS;
     }
-  std::string current = key;
 
-  // was this copied from somewhere?
-  svn_revnum_t rev_from;
-  const char *path_from;
-  check_svn(svn_fs_copied_from(&rev_from, &path_from, fs_root, key, pool));
-
-  // is this a directory?
-  svn_boolean_t is_dir;
-  if (path_from)
+  // if it did not exist in the previous revision, we ignore the deletion
+  // this happens if a folder is copied and part of its contents are removed
+  if (change->change_kind == svn_fs_path_change_delete)
     {
-    is_dir = wasDir(fs, rev_from, path_from, pool);
-    }
-  else
-    {
-    check_svn(svn_fs_is_dir(&is_dir, fs_root, key, pool));
-    }
-
-  if (is_dir)
-    {
-    if (change->change_kind == svn_fs_path_change_modify || change->change_kind == svn_fs_path_change_add)
-      {
-      if (path_from == NULL)
-        {
-        // freshly added directory, or modified properties
-        // Git doesn't handle directories, so we don't either
-        //qDebug() << "   mkdir ignored:" << key;
-        return EXIT_SUCCESS;
-        }
-      Log::debug() << key << " was copied from " << path_from << " rev " << rev_from << std::endl;
-      }
-    else if (change->change_kind == svn_fs_path_change_replace)
-      {
-      if (path_from == NULL)
-        {
-        Log::debug() << key << " was replaced" << std::endl;
-        }
-      else
-        {
-        Log::debug() << key << " was replaced from " << path_from << " rev " << rev_from << std::endl;
-        }
-      }
-    else if (change->change_kind == svn_fs_path_change_reset)
-      {
-      throw std::runtime_error(std::string(key) + " was reset, panic!");
-      }
-    else
-      {
-      // if change_kind == delete, it shouldn't come into this arm of the 'is_dir' test
-      std::stringstream error;
-      error << key << " has unhandled change kind " << change->change_kind << ", panic!";
-      throw std::runtime_error(error.str());
-      }
-    }
-  else if (change->change_kind == svn_fs_path_change_delete)
-    {
-    // if it did not exist in the previous revision, we ignore the deletion
-    // this happens if a folder is copied and part of its contents are removed
     if (!existed(fs, revnum - 1, key, pool))
       {
       Log::debug() << "Ignoring deletion of non-existing path: " << key << std::endl;
       return EXIT_SUCCESS;
       }
-    is_dir = wasDir(fs, revnum - 1, key, pool);
     }
 
+  // TODO: remove this; path and rev can be accessed from change where needed!
+  svn_revnum_t rev_from = 0;
+  const char *path_from = NULL;
+  if (change->copyfrom_known)
+    {
+    rev_from = change->copyfrom_rev;
+    path_from = change->copyfrom_path;
+    }
+
+  std::string current = key;
+  bool is_dir = change->node_kind == svn_node_dir;
   if (is_dir)
     {
-    current += '/';
+    current += "/";
     }
 
-  //MultiRule: loop start
-  //Replace all returns with continue,
-  bool isHandled = false;
   MatchRuleList const& matchRules = svn.ruleset.matches();
-  // find the first rule that matches this pathname
   Rule const* match = find_match(matchRules, current, revnum);
+
+  // special case: "fallback" or "catch all" rules are for files that are not
+  // matched elsewhere. These rules shall be ignored when matched by directories
+  if (is_dir && match && match->is_fallback())
+    {
+    match = 0;
+    }
+
   if (match)
     {
-    const Ruleset::Match &rule = *match;
-    if (is_dir && rule.is_fallback())
-      {
-      if (recurse(key, change, path_from, matchRules, rev_from, changes) == EXIT_FAILURE)
-        {
-        return EXIT_FAILURE;
-        }
-      }
-    else if (exportDispatch(key, change, path_from, rev_from, changes, current, rule, matchRules) == EXIT_FAILURE)
-      {
-      return EXIT_FAILURE;
-      }
-    isHandled = true;
+    return exportDispatch(key, change, path_from, rev_from, changes, current, *match, matchRules);
     }
-  else if (is_dir && path_from != NULL)
-    {
-    Log::debug() << current << " is a copy-with-history, auto-recursing" << std::endl;
-    if ( recurse(key, change, path_from, matchRules, rev_from, changes) == EXIT_FAILURE )
-      {
-      return EXIT_FAILURE;
-      }
-    isHandled = true;
-    }
-  else if (is_dir && change->change_kind == svn_fs_path_change_delete)
-    {
-    Log::debug() << current << " deleted, auto-recursing" << std::endl;
-    if ( recurse(key, change, path_from, matchRules, rev_from, changes) == EXIT_FAILURE )
-      {
-      return EXIT_FAILURE;
-      }
-    isHandled = true;
-    }
-  if (isHandled)
-    {
-    return EXIT_SUCCESS;
-    }
+
   if (is_dir)
     {
-    Log::warn() << "Folder '" << current << "' not accounted for. Recursing." << std::endl;
+    Log::debug() << "'" << key << '@' << revnum << "' did not match any rules; recursing" << std::endl;
     return recurse(key, change, path_from, matchRules, rev_from, changes);
     }
-  else
-    {
-    Log::warn() << "File '" << current << "' not accounted for. Putting to fallback." << std::endl;
-    return exportDispatch(key, change, path_from, rev_from, changes, current, Ruleset::fallback, matchRules);
-    }
-  return EXIT_SUCCESS;
+
+  Log::warn() << "File '" << key << "' not accounted for. Putting to fallback." << std::endl;
+  return exportDispatch(key, change, path_from, rev_from, changes, current, Ruleset::fallback, matchRules);
   }
 
 int SvnRevision::exportDispatch(
