@@ -89,12 +89,6 @@ bool pathExists(apr_pool_t* pool, svn_fs_t *fs, std::string const& path, int rev
   return true;
   }
 
-
-Rule const* find_match(patrie const& rules, std::string const& path, std::size_t revnum)
-  {
-  return rules.longest_match(path, revnum);
-  }
-
 void splitPathName(
     const Ruleset::Match &rule,
     const std::string &pathName,
@@ -399,8 +393,7 @@ int SvnRevision::exportEntry(
     current += "/";
     }
 
-  MatchRuleList const& matchRules = svn.ruleset.matches();
-  Rule const* match = find_match(matchRules, current, revnum);
+  Rule const* match = find_match(current, revnum);
 
   // special case: "fallback" or "catch all" rules are for files that are not
   // matched elsewhere. These rules shall be ignored when matched by directories
@@ -409,19 +402,36 @@ int SvnRevision::exportEntry(
     match = 0;
     }
 
+  if (is_dir && match && path_from)
+    {
+    const char* dir_from = apr_pstrcat(pool, path_from, "/", NULL);
+    Rule const* match_from = find_match(dir_from, rev_from);
+    if (!match_from)
+      {
+      Log::debug()
+        << "'" << key << '@' << revnum << "'"
+        << " (" << match->repo_rule->name << ") has source "
+        << "'" << path_from << '@' << rev_from << "'"
+        << " (UNKNOWN REPOSITORY)"
+        << std::endl
+        ;
+      match = 0;
+      }
+    }
+
   if (match)
     {
-    return exportDispatch(key, change, path_from, rev_from, changes, current, *match, matchRules);
+    return exportDispatch(key, change, path_from, rev_from, changes, current, *match);
     }
 
   if (is_dir)
     {
     Log::debug() << "'" << key << '@' << revnum << "' did not match any rules; recursing" << std::endl;
-    return recurse(key, change, path_from, matchRules, rev_from, changes);
+    return recurse(key, change, path_from, rev_from, changes);
     }
 
   Log::warn() << "File '" << key << "' not accounted for. Putting to fallback." << std::endl;
-  return exportDispatch(key, change, path_from, rev_from, changes, current, Ruleset::fallback, matchRules);
+  return exportDispatch(key, change, path_from, rev_from, changes, current, Ruleset::fallback);
   }
 
 int SvnRevision::exportDispatch(
@@ -431,8 +441,7 @@ int SvnRevision::exportDispatch(
     svn_revnum_t rev_from,
     apr_hash_t *changes,
     const std::string &current,
-    const Ruleset::Match &rule,
-    const MatchRuleList &matchRules)
+    const Ruleset::Match &rule)
   {
   Log::trace() << "rev " << revnum << ' ' << current << " matched rule: '" << rule.svn_path();
 
@@ -447,33 +456,7 @@ int SvnRevision::exportDispatch(
     Log::trace() << "'; exporting to repository " << rule.repo_rule->name << " branch "
                  << rule.branch_rule->name << " path " << rule.prefix() << std::endl;
     }
-  
-  if (exportInternal(key, change, path_from, rev_from, current, rule, matchRules, changes) == EXIT_SUCCESS)
-    {
-    return EXIT_SUCCESS;
-    }
-  if (change->change_kind != svn_fs_path_change_delete)
-    {
-    Log::trace() << "rev " << revnum << ' ' << current << " matched rule: '" << rule.svn_path()
-                 << "'; Unable to export non path removal." << std::endl;
-    return EXIT_FAILURE;
-    }
-  // we know that the default action inside recurse is to recurse further or to ignore,
-  // either of which is reasonably safe for deletion
-  Log::warn() << "deleting unknown path '" << current << "'; auto-recursing" << std::endl;
-  return recurse(key, change, path_from, matchRules, rev_from, changes);
-  }
 
-int SvnRevision::exportInternal(
-    const char *key,
-    const svn_fs_path_change2_t *change,
-    const char *path_from,
-    svn_revnum_t rev_from,
-    const std::string &current,
-    const Ruleset::Match &rule,
-    const MatchRuleList &matchRules,
-    apr_hash_t *cc)
-  {
   needCommit = true;
   std::string svnprefix, repository, path;
   boost2git::BranchRule const* branch = rule.branch_rule;
@@ -509,15 +492,11 @@ int SvnRevision::exportInternal(
       {
       previous += '/';
       }
-    Rule const* prevmatch = find_match(matchRules, previous, rev_from);
+    Rule const* prevmatch = find_match(previous, rev_from);
     if (prevmatch)
       {
       prevbranch = git_ref_name(prevmatch->branch_rule);
       splitPathName(*prevmatch, previous, &prevsvnprefix, &prevrepository, /*branch*/0, &prevpath);
-      }
-    else if (was_dir)
-      {
-      return recurse(key, change, path_from, matchRules, rev_from, cc);
       }
     else
       {
@@ -655,7 +634,6 @@ int SvnRevision::recurse(
     const char *path,
     const svn_fs_path_change2_t *change,
     const char *path_from,
-    const MatchRuleList &matchRules,
     svn_revnum_t rev_from,
     apr_hash_t *changes)
   {
@@ -683,11 +661,6 @@ int SvnRevision::recurse(
     svn_fs_dirent_t *dirent;
     apr_hash_this(i, NULL, NULL, (void**) &dirent);
 
-    if (strstr(dirent->name, "CVSROOT"))
-      {
-      continue;
-      }
-
     const char *entry = apr_pstrcat(pool, path, "/", dirent->name, NULL);
     const char *entryFrom = path_from ? apr_pstrcat(pool, path_from, "/", dirent->name, NULL) : NULL;
 
@@ -699,38 +672,14 @@ int SvnRevision::recurse(
       continue;
       }
 
-    const char *current = entry;
-    if (dirent->kind == svn_node_dir)
-      {
-      current = apr_pstrcat(pool, current, "/", NULL);
-      }
+    svn_fs_path_change2_t child_change = *change;
+    child_change.node_rev_id = dirent->id;
+    child_change.node_kind = dirent->kind;
+    child_change.copyfrom_path = entryFrom;
 
-    // find the longest match for this pathname
-    Rule const* match = find_match(matchRules, current, revnum);
-    if (match)
+    if (exportEntry(entry, &child_change, changes) == EXIT_FAILURE)
       {
-      if (exportDispatch(entry, change, entryFrom, rev_from, changes, current, *match, matchRules) == EXIT_FAILURE)
-        {
-        return EXIT_FAILURE;
-        }
-      }
-    else if (dirent->kind == svn_node_dir)
-      {
-      Log::debug() << '"' << current << '@' << revnum << '"'
-                   << " did not match any rules; auto-recursing" << std::endl;
-      if (recurse(entry, change, entryFrom, matchRules, rev_from, changes) == EXIT_FAILURE)
-        {
-        return EXIT_FAILURE;
-        }
-      }
-    else
-      {
-      Log::warn() << '"' << current << '@' << revnum << '"'
-                  << " not accounted for. Putting to fallback." << std::endl;
-      if (exportDispatch(entry, change, entryFrom, rev_from, changes, current, Ruleset::fallback, matchRules) == EXIT_FAILURE)
-        {
-        return EXIT_FAILURE;
-        }
+      return EXIT_FAILURE;
       }
     }
   return EXIT_SUCCESS;
@@ -742,3 +691,7 @@ Repository::Transaction* SvnRevision::demandTransaction(
   return repo->demandTransaction(git_ref_name(branch), svnprefix, revnum);
   }
 
+Rule const* SvnRevision::find_match(std::string const& path, std::size_t revnum) const
+  {
+  return svn.ruleset.matches().longest_match(path, revnum);
+  }

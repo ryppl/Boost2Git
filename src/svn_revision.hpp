@@ -64,25 +64,14 @@ class SvnRevision
         svn_revnum_t rev_from,
         apr_hash_t *changes,
         const std::string &current,
-        const Ruleset::Match &rule,
-        const MatchRuleList &matchRules);
-    int exportInternal(
-        const char *path,
-        const svn_fs_path_change2_t *change,
-        const char *path_from,
-        svn_revnum_t rev_from,
-        const std::string &current,
-        const Ruleset::Match &rule,
-        const MatchRuleList &matchRules,
-        apr_hash_t *changes);
+        const Ruleset::Match &rule);
     int recurse(
         const char *path,
         const svn_fs_path_change2_t *change,
         const char *path_from,
-        const MatchRuleList &matchRules,
         svn_revnum_t rev_from,
         apr_hash_t *changes);
-    
+    Rule const* find_match(std::string const& path, std::size_t revnum) const;
   private:
     Svn const& svn;
     AprPool pool;
