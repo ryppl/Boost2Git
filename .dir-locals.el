@@ -114,6 +114,8 @@
                         (substatement-label . 2)
                         (template-args-cont c-lineup-template-args +))))))
  (c++-mode
-  (c-file-style . "boost2git"))
+;  (c-file-style . "boost2git")
+  )
  (c-mode
-  (c-file-style . "boost2git")))
+;  (c-file-style . "boost2git")
+))
