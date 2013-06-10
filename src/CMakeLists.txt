@@ -8,7 +8,7 @@ project(Svn2Git CXX)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
 find_package(Boost REQUIRED date_time program_options regex filesystem iostreams system)
-include_directories(${BoostINCLUDE_DIRS})
+include_directories(${Boost_INCLUDE_DIRS})
 
 find_package(APR REQUIRED)
 include_directories(${APR_INCLUDE_DIRS})
