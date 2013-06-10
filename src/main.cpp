@@ -18,12 +18,6 @@
 #include <boost/program_options.hpp>
 #include <boost/foreach.hpp>
 
-#include <QCoreApplication>
-#include <QFile>
-#include <QStringList>
-#include <QTextStream>
-#include <QDebug>
-
 #include <fstream>
 #include <limits.h>
 #include <stdio.h>
@@ -31,8 +25,6 @@
 #include "apr_init.hpp"
 #include "authors.hpp"
 #include "ruleset.hpp"
-#include "repository.h"
-#include "svn.h"
 #include "log.hpp"
 
 Options options;
@@ -130,17 +122,8 @@ int main(int argc, char **argv)
     options.debug_rules = variables.count("debug-rules");
     options.svn_branches = variables.count("svn-branches");
     notify(variables);
-    }
-  catch (std::exception& error)
-    {
-    std::cout << error.what() << std::endl;
-    return -1;
-    }
 
-  AprInit apr_init;
-  QCoreApplication app(argc, argv);
-
-  try {
+    AprInit apr_init;
 
     Authors authors(authors_file);
 
@@ -160,126 +143,11 @@ int main(int argc, char **argv)
       std::cout <<  "The path " << (r ? "was" : "wasn't") << " matched" << std::endl;
       exit(r ? 0 : 1);
       }
-    
-    RepoIndex repositories;
-
-    int cutoff = resume_from ? resume_from : INT_MAX;
-
-retry:
-    int min_rev = 1;
-    
-    // Establish a Repository for each unique repository rule name
-    BOOST_FOREACH(Ruleset::Repository const& rule, ruleset.repositories())
-      {
-      QString qname = QString::fromStdString(rule.name);
-      if (!repositories.contains(qname))
-        {
-        Repository *repo = new Repository(rule, resume_from != 0);
-        repositories.insert(qname, repo);
-        }
-      }
-
-    // Set up submodule references
-    BOOST_FOREACH(Ruleset::Repository const& rule, ruleset.repositories())
-      {
-      if (!rule.submodule_in_repo.empty())
-        {
-        QString qname = QString::fromStdString(rule.name);
-        repositories[qname]->submodule_in_repo
-          = repositories[QString::fromStdString(rule.submodule_in_repo)];
-        repositories[qname]->submodule_path = rule.submodule_path;
-        }
-      }
-
-    BOOST_FOREACH(Repository *repo, repositories)
-      {
-      int repo_next = repo->setupIncremental(cutoff, repositories);
-      if (cutoff < resume_from && repo_next == cutoff)
-        {
-        /*
-         * Restore the log file so we fail the next time
-         * svn2git is invoked with the same arguments
-         */
-        repo->restoreLog();
-        }
-
-      if (cutoff < min_rev)
-        { /*
-           * We've rewound before the last revision of some
-           * repository that we've already seen.  Start over
-           * from the beginning.  (since cutoff is decreasing,
-           * we're sure we'll make forward progress eventually)
-           */
-        goto retry;
-        }
-      if (min_rev < repo_next)
-        {
-        min_rev = repo_next;
-        }
-      }
-
-    if (cutoff < resume_from)
-      {
-      std::cerr
-        << "Cannot resume from"
-        << resume_from
-        << "as there are errors in revision"
-        << cutoff
-        ;
-      return EXIT_FAILURE;
-      }
-
-    if (min_rev < resume_from)
-      {
-      std::cout
-        << "skipping revisions"
-        << min_rev
-        << "to"
-        << resume_from - 1
-        << "as requested"
-        ;
-      }
-    if (resume_from)
-      {
-      min_rev = resume_from;
-      }
-
-    Svn svn(svn_path, authors, ruleset);
-    svn.setRepositories(repositories);
-
-    if (max_rev < 1)
-      {
-      max_rev = svn.youngestRevision();
-      }
-    bool errors = false;
-    for (int i = min_rev; i <= max_rev; ++i)
-      {
-      Log::set_revision(i);
-      if (ignore_revisions.find(i) != ignore_revisions.end())
-        {
-        continue;
-        }
-      if (!svn.exportRevision(i))
-        {
-        errors = true;
-        break;
-        }
-      }
-    coverage::report();
-    foreach(Repository *repo, repositories)
-      {
-      repo->finalizeTags();
-      repo->clear();
-      }
-    foreach(Repository *repo, repositories)
-      delete repo;
-    
-    return errors ? EXIT_FAILURE : EXIT_SUCCESS;
     }
   catch (std::exception const& error)
     {
     Log::error() << error.what() << "\n\n";
-    return -1;
+    return EXIT_FAILURE;
     }
   int result = Log::result();
   return exit_success ? EXIT_SUCCESS : result;

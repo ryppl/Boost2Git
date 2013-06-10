@@ -19,16 +19,12 @@ include_directories(${APR_INCLUDE_DIRS})
 find_package(SVN REQUIRED fs repos subr)
 include_directories(${SVN_INCLUDE_DIRS})
 
-find_package(Qt4 REQUIRED QtCore)
-include(${QT_USE_FILE})
-
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/boost_process)
 
 add_definitions(
   -D_XOPEN_SOURCE
   -D_LARGEFILE_SUPPORT
   -D_LARGEFILE64_SUPPORT
-  -DQT_FATAL_ASSERT
   -DFUSION_MAX_VECTOR_SIZE=20
   )
 
@@ -37,10 +33,7 @@ set(svn2git_SOURCES
   coverage.cpp
   log.cpp
   parse_rules.cpp
-  repository.cpp
   ruleset.cpp
-  svn_revision.cpp
-  svn.cpp
   main.cpp)
 
 set(svn2git_HEADERS
@@ -55,15 +48,14 @@ set(svn2git_HEADERS
   svn_revision.hpp
   svn.h)
 
-qt4_wrap_cpp(svn2git_HEADERS_MOC ${svn2git_HEADERS})
+# qt4_wrap_cpp(svn2git_HEADERS_MOC ${svn2git_HEADERS})
 
-add_executable(svn2git ${svn2git_SOURCES} ${svn2git_HEADERS_MOC})
+add_executable(svn2git ${svn2git_SOURCES})
 
 target_link_libraries(svn2git
   ${Boost_LIBRARIES}
   ${APR_LIBRARIES}
   ${SVN_LIBRARIES}
-  ${QT_LIBRARIES}
   )
 
 ADD_TEST(update-svn2git "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target svn2git)
