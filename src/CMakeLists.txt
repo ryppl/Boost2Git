@@ -7,6 +7,9 @@ project(Svn2Git CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
+# Workaround for https://svn.boost.org/trac/boost/ticket/3999#comment:6
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/override_headers)
+
 find_package(Boost REQUIRED date_time program_options regex filesystem iostreams system)
 include_directories(${Boost_INCLUDE_DIRS})
 
