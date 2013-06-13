@@ -54,7 +54,7 @@ struct patrie
     Rule const* longest_match(Iterator start, Iterator finish, std::size_t revision) const
     {
         search_visitor v(revision);
-        this->traverse(start, finish, v);
+        traverse(&this->trie, start, finish, v);
         if (v.found_rule)
             coverage.match(*v.found_rule, revision);
         return v.found_rule;
@@ -216,18 +216,6 @@ struct patrie
         }
     };
   
-    template <class Iterator, class Visitor>
-    void traverse(Iterator start, Iterator finish, Visitor& visitor)
-    {
-        traverse(&this->trie, start, finish, visitor);
-    }
-  
-    template <class Iterator, class Visitor>
-    void traverse(Iterator start, Iterator finish, Visitor& visitor) const
-    {
-        traverse(&this->trie, start, finish, visitor);
-    }
-
     friend std::ostream& operator<<(std::ostream& os, patrie const& data)
     {
         return print_indented(os, data.trie, "[");
