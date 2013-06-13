@@ -59,6 +59,8 @@ add_custom_command(OUTPUT "${repositories_setup}"
 # perform conversion
 add_custom_target(conversion
   COMMAND
+    "DYLD_LIBRARY_PATH=${Boost_LIBRARY_DIRS}"
+    "LD_LIBRARY_PATH=${Boost_LIBRARY_DIRS}"
     $<TARGET_FILE:svn2git>
     --add-metadata
     --authors "${authors}"
@@ -93,6 +95,8 @@ add_custom_target(submodules
 # perform conversion
 add_custom_target(analysis
   COMMAND
+    "DYLD_LIBRARY_PATH=${Boost_LIBRARY_DIRS}"
+    "LD_LIBRARY_PATH=${Boost_LIBRARY_DIRS}"
     $<TARGET_FILE:svn2git>
     --dry-run
     --coverage
