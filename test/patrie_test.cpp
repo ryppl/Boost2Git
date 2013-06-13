@@ -3,13 +3,34 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "patrie.hpp"
+#include <boost/fusion/adapted/struct/define_struct.hpp>
 #include <boost/foreach.hpp>
 #undef NDEBUG
 #include <cassert>
 
+namespace patrie_test {
+
+struct Rule
+{
+    std::string match;
+    int min;
+    int max;
+
+    std::string svn_path() const { return match; }
+    void report_overlap() const {}
+};
+
+bool operator==(Rule const& lhs, Rule const& rhs)
+{
+    return lhs.match == rhs.match && lhs.min == rhs.min && lhs.max == rhs.max;
+}
+
+void report_overlap(Rule const* rule0, Rule const* rule1) {}
+}
+
 int main()
   {
-      /*
+  using patrie_test::Rule;
   Rule rules[5];
   rules[0].match = "abrasives";
   rules[0].min = 1; rules[0].max = 3;
@@ -22,7 +43,7 @@ int main()
   rules[4].match = "abracadabra";
   rules[4].min = 4; rules[4].max = 5;
 
-  patrie p;
+  patrie<Rule> p;
   BOOST_FOREACH(Rule const& m, rules)
     p.insert(m);
 
@@ -51,5 +72,4 @@ int main()
   assert(*p.longest_match(test, test+sizeof(test)-1, 2) == rules[2]);
   assert(p.longest_match(test, test+sizeof(test)-1, 5) == 0);
   }
-      */
   };

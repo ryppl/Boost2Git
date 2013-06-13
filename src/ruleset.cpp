@@ -165,3 +165,22 @@ Ruleset::Ruleset(std::string const& filename)
   repo.branches.insert(fallback.branch_rule);
   repositories_.push_back(repo);
   }
+
+void report_overlap(Rule const* rule0, Rule const* rule1)
+{
+    throw std::runtime_error(
+        "found duplicate rule: " + rule1->svn_path()
+        + "\n"
+        + options.rules_file + ":" + to_string(rule1->branch_rule->line)
+        + ": error: duplicate rule branch fragment\n"
+          
+        + options.rules_file + ":" + to_string(rule1->content_rule->line)
+        + ": error: duplicate rule content fragment\nerror: see earlier definition:\n"
+          
+        + options.rules_file + ":" + to_string(rule0->branch_rule->line)
+        + ": error: previous branch fragment\n"
+          
+        + options.rules_file + ":" + to_string(rule0->content_rule->line)
+        + ": error: previous content fragment");
+}
+

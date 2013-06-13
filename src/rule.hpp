@@ -75,6 +75,8 @@ struct Rule
     }
   };
 
+void report_overlap(Rule const* rule0, Rule const* rule1);
+
 inline std::ostream& operator<<(std::ostream& os, Rule const& r)
   {
   if (r.min != 0 || r.max != UINT_MAX)

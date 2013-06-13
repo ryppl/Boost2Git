@@ -25,6 +25,7 @@
 #include "patrie.hpp"
 #include "rule.hpp"
 #include "AST.hpp"
+#include "coverage.hpp"
 
 boost2git::AST parse_rules_file(std::string filename);
 
@@ -44,7 +45,7 @@ class Ruleset
   public:
     Ruleset(std::string const& filename);
   public:
-    patrie const& matches() const
+    patrie<Rule,coverage> const& matches() const
       {
       return matches_;
       }
@@ -57,7 +58,7 @@ class Ruleset
       return ast_;
       }
   private:
-    patrie matches_;
+    patrie<Rule,coverage> matches_;
     std::vector<Repository> repositories_;
     boost2git::AST ast_;
   };

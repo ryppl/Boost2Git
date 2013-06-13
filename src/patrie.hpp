@@ -4,13 +4,10 @@
 #ifndef TRIE_MAP_DWA201332_HPP
 # define TRIE_MAP_DWA201332_HPP
 
-# include "rule.hpp"
 # include "to_string.hpp"
 # include "options.hpp"
-# include "coverage.hpp"
 # include <deque>
 # include <boost/variant.hpp>
-//# include <boost/container/vector.hpp>
 # include <vector>
 # include <deque>
 # include <stdexcept>
@@ -22,14 +19,21 @@ namespace patrie_ {
 //using boost::container::vector;
 using std::vector;
 
+template <class Rule>
+struct DummyCoverage
+{
+    void declare(Rule const& r) {}
+    void match(Rule const& r, std::size_t revision) {}
+};
+
+template <class Rule, class Coverage = DummyCoverage<Rule> >
 struct patrie
 {
  public:
     void insert(Rule const& rule)
     {
         rules.push_back(rule);
-        if (options.coverage)
-            coverage::declare(rules.back());
+        coverage.declare(rules.back());
         insert_visitor v(&rules.back());
         std::string svn_path = rule.svn_path();
         this->traverse(svn_path.begin(), svn_path.end(), v);
@@ -46,8 +50,8 @@ struct patrie
     {
         search_visitor v(revision);
         this->traverse(start, finish, v);
-        if (v.found_rule && options.coverage)
-            coverage::match(*v.found_rule, revision);
+        if (v.found_rule)
+            coverage.match(*v.found_rule, revision);
         return v.found_rule;
     }
   
@@ -78,7 +82,7 @@ struct patrie
             if (!n.rules.empty())
             {
                 os << indent << n.text << "]: ";
-                for (vector<Rule const*>::const_iterator p = n.rules.begin(); p != n.rules.end(); ++p)
+                for (typename vector<Rule const*>::const_iterator p = n.rules.begin(); p != n.rules.end(); ++p)
                 {
                     os << "{ " << **p << "} ";
                 }
@@ -103,7 +107,7 @@ struct patrie
 
         // No match for *start was found in nodes
         template <class Iterator>
-        void nomatch(vector<node>& nodes, vector<node>::iterator pos, Iterator start, Iterator finish)
+        void nomatch(vector<node>& nodes, typename vector<node>::iterator pos, Iterator start, Iterator finish)
         {
             nodes.insert(pos, node(start, finish, this->new_rule));
         }
@@ -150,25 +154,12 @@ struct patrie
             if (start != finish)
                 return;
 
-            vector<Rule const*>::iterator p
+            typename vector<Rule const*>::iterator p
                 = std::lower_bound(n.rules.begin(), n.rules.end(), new_rule->max, rule_rev_comparator());
 
             if (!(p == n.rules.end() || (*p)->min > new_rule->max))
             {
-                throw std::runtime_error(
-                    "found duplicate rule: " + new_rule->svn_path()
-                    + "\n"
-                    + options.rules_file + ":" + to_string(new_rule->branch_rule->line)
-                    + ": error: duplicate rule branch fragment\n"
-          
-                    + options.rules_file + ":" + to_string(new_rule->content_rule->line)
-                    + ": error: duplicate rule content fragment\nerror: see earlier definition:\n"
-          
-                    + options.rules_file + ":" + to_string((*p)->branch_rule->line)
-                    + ": error: previous branch fragment\n"
-          
-                    + options.rules_file + ":" + to_string((*p)->content_rule->line)
-                    + ": error: previous content fragment");
+                report_overlap(*p, new_rule);
             }
             n.rules.insert(p, this->new_rule);
         }
@@ -184,7 +175,7 @@ struct patrie
         // No match for *start was found in nodes
         template <class Iterator>
         void nomatch(
-            vector<node> const& nodes, vector<node>::const_iterator pos,
+            vector<node> const& nodes, typename vector<node>::const_iterator pos,
             Iterator start, Iterator finish)
         {
         }
@@ -199,7 +190,7 @@ struct patrie
         template <class Iterator>
         void full_match(node const& n, Iterator start, Iterator finish)
         {
-            vector<Rule const*>::const_iterator p
+            typename vector<Rule const*>::const_iterator p
                 = std::lower_bound(n.rules.begin(), n.rules.end(), revision, rule_rev_comparator());
       
             if (p != n.rules.end() && (*p)->min <= revision)
@@ -239,7 +230,7 @@ struct patrie
   
     friend std::ostream& print_indented(std::ostream& os, vector<node> const& data, std::string const& indent)
     {
-        for(vector<node>::const_iterator p = data.begin(); p != data.end(); ++p)
+        for(typename vector<node>::const_iterator p = data.begin(); p != data.end(); ++p)
         {
             print_indented(os, *p, indent);
         }
@@ -285,6 +276,7 @@ struct patrie
     }
     std::deque<Rule> rules;
     vector<node> trie;
+    mutable Coverage coverage;
 };
 }
 using patrie_::patrie;
