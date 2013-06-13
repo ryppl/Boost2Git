@@ -34,9 +34,14 @@ struct patrie
     {
         rules.push_back(rule);
         coverage.declare(rules.back());
+
         insert_visitor v(&rules.back());
+
         std::string svn_path = rule.svn_path();
-        this->traverse(svn_path.begin(), svn_path.end(), v);
+        traverse(&this->trie, svn_path.begin(), svn_path.end(), v);
+
+        std::string git_address = rule.git_address();
+        traverse(&this->rtrie, git_address.begin(), git_address.end(), v);
     }
 
     template <class Range>
@@ -276,6 +281,7 @@ struct patrie
     }
     std::deque<Rule> rules;
     vector<node> trie;
+    vector<node> rtrie;
     mutable Coverage coverage;
 };
 }
