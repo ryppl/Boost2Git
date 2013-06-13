@@ -65,6 +65,12 @@ struct Rule
             ? path_append(branch_rule->prefix, content_rule->prefix)
             : branch_rule->prefix;
     }
+
+    std::string git_address() const
+    {
+        return repo_rule->name + ":" + r.branch_rule->name + ":" + r.prefix();
+    }
+
     std::string prefix() const
     {
         return content_rule ? content_rule->replace : std::string();
