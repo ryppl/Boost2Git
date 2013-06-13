@@ -68,7 +68,7 @@ struct Rule
 
     std::string git_address() const
     {
-        return repo_rule->name + ":" + r.branch_rule->name + ":" + r.prefix();
+        return repo_rule->name + ":" + branch_rule->name + ":" + prefix();
     }
 
     std::string prefix() const
