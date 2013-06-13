@@ -12,8 +12,6 @@
 #include <iostream>
 #include <cassert>
 
-namespace coverage {
-
 typedef std::map<
   boost2git::BranchRule const*,
   std::set<boost2git::RepoRule const*>
@@ -22,13 +20,17 @@ typedef std::map<
 static branch_repositories declared;
 static branch_repositories matched;
 
-void declare(Rule const& r)
+void coverage::declare(Rule const& r)
   {
+  if (!options.coverage)
+    return;
   declared[r.branch_rule].insert(r.repo_rule);
   }
 
-void match(Rule const& r, std::size_t revision)
+void coverage::match(Rule const& r, std::size_t revision)
   {
+  if (!options.coverage)
+    return;
   // std::cout << "** Matching: " << r << " in " << declared.size() << " declared rules" << std::endl;
   assert(declared.find(r.branch_rule) != declared.end());
   matched[r.branch_rule].insert(r.repo_rule);
@@ -44,7 +46,7 @@ struct project1st
     }
   };
 
-double utilization(boost2git::BranchRule const* r)
+static double utilization(boost2git::BranchRule const* r)
   {
     std::set<boost2git::RepoRule const*> const& matches = matched[r];
     double nmatched = matches.size();
@@ -59,7 +61,7 @@ struct less_utilized
     }
   };
 
-void report()
+void coverage::report()
   {
   std::vector<boost2git::BranchRule const*> by_utilization;
   
@@ -88,4 +90,3 @@ void report()
       std::cout << std::endl;
     }
   }
-}

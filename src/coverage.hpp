@@ -8,12 +8,11 @@
 
 struct Rule;
 
-namespace coverage {
-
-void declare(Rule const& r);
-void match(Rule const& r, std::size_t revision);
-void report();
-
-}
+struct coverage
+{
+    static void declare(Rule const& r);
+    static void match(Rule const& r, std::size_t revision);
+    static void report();
+};
 
 #endif // COVERAGE_DWA2013428_HPP
