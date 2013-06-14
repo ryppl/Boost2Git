@@ -34,20 +34,25 @@ int main()
 {
     using patrie_test::Rule;
     Rule rules[5];
+
     rules[0].match = "abrasives";
     rules[0].git_address_ = "a:b:foo/bar";
     rules[0].min = 1; rules[0].max = 3;
+
     rules[1].match = "abracadabra";
     rules[1].git_address_ = "a:b:baz";
     rules[1].min = 1; rules[1].max = 3;
+
     rules[2].match = "abra";
-    rules[1].git_address_ = "a:b:fubar";
+    rules[2].git_address_ = "a:b:fubar";
     rules[2].min = 1; rules[2].max = 3;
+
     rules[3].match = "abrahams";
-    rules[1].git_address_ = "a:b:fu/bar";
+    rules[3].git_address_ = "a:b:fu/bar";
     rules[3].min = rules[3].max = 1;
+
     rules[4].match = "abracadabra";
-    rules[1].git_address_ = "a:b:foobar";
+    rules[4].git_address_ = "a:b:foobar";
     rules[4].min = 4; rules[4].max = 5;
 
     patrie<Rule> p;
