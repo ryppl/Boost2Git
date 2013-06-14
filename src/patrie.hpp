@@ -64,6 +64,13 @@ struct patrie
         return v.found_rule;
     }
   
+    template <class Range, class OutputIterator>
+    void reverse_matches(Range const& git_address, std::size_t revision, OutputIterator out) const
+    {
+        reverse_search_visitor<OutputIterator> v(revision, out);
+        traverse(&this->rtrie, boost::begin(git_address), boost::end(git_address), v);
+    }
+  
  private:
     struct node
     {
@@ -180,10 +187,10 @@ struct patrie
         bool allow_overlap;
     };
 
-    struct search_visitor
+    struct search_visitor_base
     {
-        search_visitor(std::size_t revision)
-            : revision(revision), found_rule(0) {}
+        search_visitor_base(std::size_t revision)
+            : revision(revision) {}
 
         // No match for *start was found in nodes
         template <class Iterator>
@@ -199,21 +206,56 @@ struct patrie
         {
         }
 
+        std::size_t revision;
+    };
+  
+    struct search_visitor : search_visitor_base
+    {
+        search_visitor(std::size_t revision)
+            : search_visitor_base(revision), found_rule(0) {}
+
         // We matched all of node n
         template <class Iterator>
         void full_match(node const& n, Iterator start, Iterator finish)
         {
             typename vector<Rule const*>::const_iterator p
-                = std::lower_bound(n.rules.begin(), n.rules.end(), revision, rule_rev_comparator());
+                = std::lower_bound(n.rules.begin(), n.rules.end(), this->revision, rule_rev_comparator());
       
-            if (p != n.rules.end() && (*p)->min <= revision)
+            if (p != n.rules.end() && (*p)->min <= this->revision)
             {
                 found_rule = *p;
             }
         }
 
-        std::size_t revision;
         Rule const* found_rule;
+    };
+  
+    template <class OutputIterator>
+    struct reverse_search_visitor : search_visitor_base
+    {
+        reverse_search_visitor(std::size_t revision, OutputIterator out)
+            : search_visitor_base(revision), out(out) {}
+
+        // We matched all of node n
+        template <class Iterator>
+        void full_match(node const& n, Iterator start, Iterator finish)
+        {
+            for (auto r : n.rules) 
+            {
+                if (r->min <= this->revision && this->revision <= r->max)
+                    *out++ = r;
+            }
+
+            // If we used up the entire input, continue to explore
+            // rules to find anything that maps into a subtree
+            if (start == finish)
+            {
+                for (auto const& n1 : n.next)
+                    full_match(n1, start, finish);
+            }
+        }
+
+        OutputIterator out;
     };
   
     struct node_comparator
