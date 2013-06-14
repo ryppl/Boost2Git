@@ -26,7 +26,11 @@ bool operator==(Rule const& lhs, Rule const& rhs)
     return lhs.match == rhs.match && lhs.min == rhs.min && lhs.max == rhs.max;
 }
 
-void report_overlap(Rule const* rule0, Rule const* rule1) {}
+void report_overlap(Rule const* rule0, Rule const* rule1) 
+{
+    assert(!"should never get here");
+}
+
 }
 
 int main()
