@@ -81,7 +81,7 @@ add_test(NAME conversion
 #   git log --all --pretty=format:"%s %d" --graph
 
 set_tests_properties(conversion PROPERTIES 
-  DEPENDS prepare
+  DEPENDS prepare_conversion
   FAIL_REGULAR_EXPRESSION "(^|
 )[+][+] WARNING: "
   )
