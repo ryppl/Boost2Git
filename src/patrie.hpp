@@ -35,13 +35,17 @@ struct patrie
         rules.push_back(rule);
         coverage.declare(rules.back());
 
-        insert_visitor v(&rules.back());
+        {
+            insert_visitor v(&rules.back());
+            std::string svn_path = rule.svn_path();
+            traverse(&this->trie, svn_path.begin(), svn_path.end(), v);
+        }
 
-        std::string svn_path = rule.svn_path();
-        traverse(&this->trie, svn_path.begin(), svn_path.end(), v);
-
-        std::string git_address = rule.git_address();
-        traverse(&this->rtrie, git_address.begin(), git_address.end(), v);
+        {
+            insert_visitor v(&rules.back(), true);
+            std::string git_address = rule.git_address();
+            traverse(&this->rtrie, git_address.begin(), git_address.end(), v);
+        }
     }
 
     template <class Range>
@@ -108,7 +112,9 @@ struct patrie
   
     struct insert_visitor
     {
-        insert_visitor(Rule const* rule) : new_rule(rule) {}
+        insert_visitor(Rule const* rule, bool allow_overlap = false) 
+          : new_rule(rule), allow_overlap(allow_overlap) 
+        {}
 
         // No match for *start was found in nodes
         template <class Iterator>
@@ -164,12 +170,14 @@ struct patrie
 
             if (!(p == n.rules.end() || (*p)->min > new_rule->max))
             {
-                report_overlap(*p, new_rule);
+                if (!allow_overlap)
+                    report_overlap(*p, new_rule);
             }
             n.rules.insert(p, this->new_rule);
         }
 
         Rule const* new_rule;
+        bool allow_overlap;
     };
 
     struct search_visitor
