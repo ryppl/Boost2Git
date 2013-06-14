@@ -4,7 +4,6 @@
 
 #include "patrie.hpp"
 #include <boost/fusion/adapted/struct/define_struct.hpp>
-#include <boost/foreach.hpp>
 #undef NDEBUG
 #include <cassert>
 
@@ -33,30 +32,17 @@ void report_overlap(Rule const* rule0, Rule const* rule1) {}
 int main()
 {
     using patrie_test::Rule;
-    Rule rules[5];
-
-    rules[0].match = "abrasives";
-    rules[0].git_address_ = "a:b:foo/bar";
-    rules[0].min = 1; rules[0].max = 3;
-
-    rules[1].match = "abracadabra";
-    rules[1].git_address_ = "a:b:baz";
-    rules[1].min = 1; rules[1].max = 3;
-
-    rules[2].match = "abra";
-    rules[2].git_address_ = "a:b:fubar";
-    rules[2].min = 1; rules[2].max = 3;
-
-    rules[3].match = "abrahams";
-    rules[3].git_address_ = "a:b:fu/bar";
-    rules[3].min = rules[3].max = 1;
-
-    rules[4].match = "abracadabra";
-    rules[4].git_address_ = "a:b:foobar";
-    rules[4].min = 4; rules[4].max = 5;
+    Rule rules[5]
+    = {
+        {"abrasives",   "a:b:foo/bar", 1, 3}, // 0
+        {"abracadabra", "a:b:baz",     1, 3}, // 1
+        {"abra",        "a:b:fubar",   1, 3}, // 2
+        {"abrahams",    "a:b:fu/bar",  1, 1}, // 3
+        {"abracadabra", "a:b:fu/bar",  4, 5}  // 4
+    };
 
     patrie<Rule> p;
-    BOOST_FOREACH(Rule const& m, rules)
+    for(auto const& m: rules)
         p.insert(m);
 
     {
