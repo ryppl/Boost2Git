@@ -8,7 +8,7 @@
 
 struct git_repository
 {
-    git_repository(std::string const& git_dir);
+    explicit git_repository(std::string const& git_dir);
 
  private:
     static bool ensure_existence(std::string const& git_dir);
