@@ -15,44 +15,34 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SVN_H
-#define SVN_H
-
-#include <QHash>
-#include <QString>
+#ifndef SVN_DWA2013615_HPP
+# define SVN_DWA2013615_HPP
 
 #include <svn_fs.h>
 #include <svn_repos.h>
 
 #include "apr_pool.hpp"
-#include "repository.h"
+#include "authors.hpp"
+#include <string>
 
 class Authors;
-class Ruleset;
 
-class Svn
-  {
-  public:
-    Svn(
-        std::string const& repo_path,
-        Authors const& authors,
-        Ruleset const& ruleset);
-    ~Svn();
+class svn
+{
+ public:
+    svn(std::string const& repo_path, 
+        std::string const& authors_file_path);
+    ~svn();
 
-    void setRepositories(const RepoIndex &repositories);
+    int latest_revision() const;
 
-    int youngestRevision();
-    bool exportRevision(int revnum);
-
-  private:
+ private:
     AprPool global_pool;
-    svn_fs_t *fs;
-    svn_revnum_t youngest_rev;
 
-  public:
-    RepoIndex repositories;
-    Authors const& authors;
-    Ruleset const& ruleset;
-  };
+ public:
+    svn_repos_t* repos;
+    svn_fs_t* fs;
+    Authors authors;
+};
 
 #endif

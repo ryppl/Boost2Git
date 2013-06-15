@@ -23,10 +23,10 @@
 #include <stdio.h>
 
 #include "apr_init.hpp"
-#include "authors.hpp"
 #include "ruleset.hpp"
-#include "log.hpp"
 #include "git_repository.hpp"
+#include "svn.hpp"
+#include "log.hpp"
 #include "repository_index.hpp"
 
 #include <utility>
@@ -129,8 +129,6 @@ int main(int argc, char **argv)
 
         AprInit apr_init;
 
-        Authors authors(authors_file);
-
         // Load the configuration
         Ruleset ruleset(options.rules_file);
         std::set<int> ignore_revisions = load_ignore(ignore_file);
@@ -148,15 +146,17 @@ int main(int argc, char **argv)
             exit(r ? 0 : 1);
         }
 
-        std::map<std::string, git_repository> git_repositories;
+        repository_index git_repositories(ruleset);
 
-        for(auto const& rule : ruleset.repositories())
-        {
-            git_repository* repo = ensure_repository(git_repositories, rule.name);
-            repo->set_super_module(
-                ensure_repository(git_repositories, rule.submodule_in_repo), 
-                rule.submodule_path);
-        }
+        svn svn_repo(svn_path, authors_file);
+
+        if (max_rev < 1)
+            max_rev = svn_repo.latest_revision();
+
+        for (int i = git_repositories.last_valid_svn_revision(); i <= max_rev; ++i)
+            git_repositories.import_revision(svn_repo, i);
+
+        coverage::report();
     }
     catch (std::exception const& error)
     {

@@ -52,3 +52,4 @@ void git_repository::set_super_module(
         this->submodule_path = submodule_path;
     }
 }
+

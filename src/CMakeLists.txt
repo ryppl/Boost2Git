@@ -38,6 +38,8 @@ set(svn2git_SOURCES
   ruleset.cpp
   git_fast_import.cpp
   git_repository.cpp
+  repository_index.cpp
+  svn.cpp
   main.cpp)
 
 add_executable(svn2git ${svn2git_SOURCES})

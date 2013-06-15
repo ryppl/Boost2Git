@@ -142,146 +142,157 @@ static QString logFileName(std::string name_)
   }
 
 static int lastValidMark(std::string name)
-  {
-  QString qname = QString::fromStdString(name);
-  QFile marksfile(marksFilePath(name));
-  if (!marksfile.open(QIODevice::ReadOnly))
-      return 0;
+{
+    QString qname = QString::fromStdString(name);
+    QFile marksfile(marksFilePath(name));
+    if (!marksfile.open(QIODevice::ReadOnly))
+        return 0;
 
-  int prev_mark = 0;
+    int prev_mark = 0;
 
-  int lineno = 0;
-  while (!marksfile.atEnd()) {
-    QByteArray line = marksfile.readLine();
-    ++lineno;
-    if (line.isEmpty())
-        continue;
+    int lineno = 0;
+    while (!marksfile.atEnd()) 
+    {
+        QByteArray line = marksfile.readLine();
+        ++lineno;
+        if (line.isEmpty())
+            continue;
 
-    int mark = 0;
-    if (line[0] == ':') {
-      int sp = line.indexOf(' ');
-      if (sp != -1) {
-        QByteArray m = line.mid(1, sp-1);
-        mark = m.toInt();
-      }
+        int mark = 0;
+        if (line[0] == ':') 
+        {
+            int sp = line.indexOf(' ');
+            if (sp != -1) 
+            {
+                QByteArray m = line.mid(1, sp-1);
+                mark = m.toInt();
+            }
+        }
+
+        if (!mark) 
+        {
+            qCritical() << marksfile.fileName() << "line" << lineno << "marks file corrupt?";
+            return 0;
+        }
+
+        if (mark == prev_mark) 
+        {
+            qCritical() << marksfile.fileName() << "line" << lineno << "marks file has duplicates";
+            return 0;
+        }
+
+        if (mark < prev_mark) 
+        {
+            qCritical() << marksfile.fileName() << "line" << lineno << "marks file not sorted";
+            return 0;
+        }
+
+        if (mark > prev_mark + 1)
+            break;
+
+        prev_mark = mark;
     }
 
-    if (!mark) {
-      qCritical() << marksfile.fileName() << "line" << lineno << "marks file corrupt?";
-      return 0;
-    }
-
-    if (mark == prev_mark) {
-      qCritical() << marksfile.fileName() << "line" << lineno << "marks file has duplicates";
-      return 0;
-    }
-
-    if (mark < prev_mark) {
-      qCritical() << marksfile.fileName() << "line" << lineno << "marks file not sorted";
-      return 0;
-    }
-
-    if (mark > prev_mark + 1)
-        break;
-
-    prev_mark = mark;
-  }
-
-  return prev_mark;
-  }
+    return prev_mark;
+}
 
 int Repository::setupIncremental(int &cutoff, RepoIndex const& all_repositories)
-  {
-  QFile logfile(logFileName(name));
-  if (!logfile.exists())
-      return 1;
+{
+    QFile logfile(logFileName(name));
+    if (!logfile.exists())
+        return 1;
 
-  logfile.open(QIODevice::ReadWrite);
+    logfile.open(QIODevice::ReadWrite);
 
-  QRegExp progress("progress SVN r(\\d+) branch (.*) (?:= :(\\d+)|submodules = (.*))");
+    QRegExp progress("progress SVN r(\\d+) branch (.*) (?:= :(\\d+)|submodules = (.*))");
 
-  int last_valid_mark = lastValidMark(name);
+    int last_valid_mark = lastValidMark(name);
 
-  int last_revnum = 0;
-  qint64 pos = 0;
-  int retval = 0;
-  QString bkup = logfile.fileName() + ".old";
+    int last_revnum = 0;
+    QString bkup = logfile.fileName() + ".old";
 
-  while (!logfile.atEnd()) {
-    pos = logfile.pos();
-    QByteArray line = logfile.readLine();
-    int hash = line.indexOf('#');
-    if (hash != -1)
-        line.truncate(hash);
-    line = line.trimmed();
-    if (line.isEmpty())
-        continue;
-    if (!progress.exactMatch(line))
-        continue;
+    while (!logfile.atEnd()) 
+    {
+        qint64 line_start = logfile.pos();
+        QByteArray line = logfile.readLine();
+        int hash = line.indexOf('#');
+        if (hash != -1)
+            line.truncate(hash);
+        line = line.trimmed();
+        if (line.isEmpty())
+            continue;
+        if (!progress.exactMatch(line))
+            continue;
 
-    int revnum = progress.cap(1).toInt();
-    QString qbranch = progress.cap(2);
-    QString submodules = progress.cap(4);
-    if (!submodules.isEmpty())
-      {
-      setBranchSubmodules(qbranch.toStdString(), submodules.toStdString(), all_repositories);
-      continue;
-      }
+        int revnum = progress.cap(1).toInt();
+        QString qbranch = progress.cap(2);
+        QString submodules = progress.cap(4);
+        if (!submodules.isEmpty())
+        {
+            setBranchSubmodules(qbranch.toStdString(), submodules.toStdString(), all_repositories);
+            continue;
+        }
     
-    int mark = progress.cap(3).toInt();
+        int mark = progress.cap(3).toInt();
 
-    if (revnum >= cutoff)
-        goto beyond_cutoff;
+        bool beyond_cutoff = false;
 
-    if (revnum < last_revnum)
-      {
-      Log::warn() << name << " revision numbers are not monotonic: "
-                  << " got " << last_revnum << " and then " << revnum << std::endl;
-      }
+        if (revnum >= cutoff)
+        {
+            beyond_cutoff = true;
+        }
+        else
+        {
+            if (revnum < last_revnum)
+                Log::warn() << name << " revision numbers are not monotonic: "
+                            << " got " << last_revnum << " and then " << revnum << std::endl;
 
-    if (mark > last_valid_mark)
-      {
-      Log::warn() << name << " unknown commit mark found:"
-                  << " rewinding -- did you hit Ctrl-C?" << std::endl;
-      cutoff = revnum;
-      goto beyond_cutoff;
-      }
+            if (mark > last_valid_mark)
+            {
+                Log::warn() << name << " unknown commit mark found:"
+                            << " rewinding -- did you hit Ctrl-C?" << std::endl;
+                cutoff = revnum;
+                beyond_cutoff = true;
+            }
+        }
+    
+        if (beyond_cutoff)
+        {
+            // backup file, since we'll truncate
+            QFile::remove(bkup);
+            logfile.copy(bkup);
 
-    last_revnum = revnum;
+            // truncate, so that we ignore the rest of the revisions
+            Log::debug() << name << " truncating history to revision "
+                         << cutoff << std::endl;
+            logfile.resize(line_start);
+            return cutoff;
+        }
 
-    if (last_commit_mark < mark)
-        last_commit_mark = mark;
+        last_revnum = revnum;
 
-    Branch &br = branches[qbranch.toStdString()];
-    if (!br.exists() || !mark)
-      {
-      br.lastChangeRev = revnum;
-      }
-    br.commits.append(revnum);
-    br.marks.append(mark);
-  }
+        if (last_commit_mark < mark)
+            last_commit_mark = mark;
 
-  retval = last_revnum + 1;
-  if (retval == cutoff)
-      /*
-       * If a stale backup file exists already, remove it, so that
-       * we don't confuse ourselves in 'restoreLog()'
-       */
-      QFile::remove(bkup);
+        Branch &br = branches[qbranch.toStdString()];
+        if (!br.exists() || !mark)
+        {
+            br.lastChangeRev = revnum;
+        }
+        br.commits.append(revnum);
+        br.marks.append(mark);
+    }
 
-  return retval;
+    int retval = last_revnum + 1;
+    if (retval == cutoff)
+        /*
+         * If a stale backup file exists already, remove it, so that
+         * we don't confuse ourselves in 'restoreLog()'
+         */
+        QFile::remove(bkup);
 
-beyond_cutoff:
-  // backup file, since we'll truncate
-  QFile::remove(bkup);
-  logfile.copy(bkup);
-
-  // truncate, so that we ignore the rest of the revisions
-  Log::debug() << name << " truncating history to revision "
-               << cutoff << std::endl;
-  logfile.resize(pos);
-  return cutoff;
-  }
+    return retval;
+}
 
 void Repository::setBranchSubmodules(
     std::string branchName,

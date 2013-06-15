@@ -21,60 +21,38 @@
  * URL: git://repo.or.cz/fast-import.git http://repo.or.cz/w/fast-export.git
  */
 
+// Apparently some builds of libsvn_repos/libsvn_ra_local (like the
+// one that comes with MacOS 10.8) don't have svn_repos_open2, so we
+// use the deprecated svn_repos_open instead.
 #define SVN_DEPRECATED
-#include "svn.h"
+
+#include "svn.hpp"
+#include "svn_error.hpp"
 #include "apr_pool.hpp"
-#include "svn_revision.hpp"
 
-#include <svn_fs.h>
-#include <svn_repos.h>
+// Call an svn function with proper error reporting
+template <class R, class...P, class...A>
+R call(svn_error_t* (*f)(R*, P...), A const& ...args)
+{
+    R result;
+    check_svn(f(&result, args...));
+    return result;
+}
 
-#include <iostream>
-
-Svn::Svn(
+svn::svn(
     std::string const& repo_path,
-    Authors const& authors,
-    Ruleset const& ruleset)
-    : global_pool(NULL), authors(authors), ruleset(ruleset)
-  {
-  try
-    {
-    svn_repos_t *repos;
-    check_svn(svn_repos_open(&repos, repo_path.c_str(), global_pool));
-    fs = svn_repos_fs(repos);
-    check_svn(svn_fs_youngest_rev(&youngest_rev, fs, global_pool));
-    }
-  catch (...)
-    {
-    svn_pool_destroy(global_pool);
-    }
-  }
+    std::string const& authors_file_path)
+    : global_pool(NULL), 
+      repos(call(svn_repos_open, repo_path.c_str(), global_pool)),
+      fs(svn_repos_fs(repos)),
+      authors(authors_file_path)
+{
+}
 
-Svn::~Svn()
-  {
-  svn_pool_destroy(global_pool);
-  }
+svn::~svn()
+{}
 
-void Svn::setRepositories(const RepoIndex &repositories)
-  {
-  this->repositories = repositories;
-  }
-
-int Svn::youngestRevision()
-  {
-  return youngest_rev;
-  }
-
-bool Svn::exportRevision(int revnum)
-  {
-  SvnRevision rev(*this, revnum, fs, global_pool);
-
-  rev.open();
-  if (rev.prepareTransactions() == EXIT_FAILURE)
-    {
-    return false;
-    }
-  rev.commit();
-
-  return true;
-  }
+int svn::latest_revision() const
+{
+    return call(svn_fs_youngest_rev, fs, global_pool);
+}

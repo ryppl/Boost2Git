@@ -12,6 +12,8 @@ struct git_repository
     void set_super_module(git_repository* super_module, std::string const& submodule_path);
     
  private:
+    void read_logfile();
+    
     static bool ensure_existence(std::string const& git_dir);
 
     bool created;

@@ -7,22 +7,18 @@
 # include "git_repository.hpp"
 # include <map>
 
-typedef std::map<std::string, git_repository> repository_index;
+struct Ruleset;
+struct svn;
 
-inline git_repository* 
-ensure_repository(repository_index& index, std::string const& name)
+struct repository_index
 {
-    if (name.empty())
-        return 0;
+    repository_index(Ruleset const& rules);
+    int last_valid_svn_revision();
+    void import_revision(svn const& svn_repository, int revnum);
 
-    auto p = index.find(name);
-    if (p == index.end())
-    {
-        p = index.emplace_hint(
-            p, std::piecewise_construct, 
-            std::make_tuple(name), std::make_tuple(name));
-    }
-    return &p->second;
+ private:
+    git_repository* demand_repo(std::string const& name);
+    std::map<std::string, git_repository> repositories;
 };
 
 #endif // REPOSITORY_INDEX_DWA2013614_HPP
