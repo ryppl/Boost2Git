@@ -26,6 +26,9 @@
 #include "authors.hpp"
 #include "ruleset.hpp"
 #include "log.hpp"
+#include "git_repository.hpp"
+
+#include <utility>
 
 Options options;
 
@@ -143,6 +146,13 @@ int main(int argc, char **argv)
             std::cout <<  "The path " << (r ? "was" : "wasn't") << " matched" << std::endl;
             exit(r ? 0 : 1);
         }
+
+        std::map<std::string, git_repository> repositories;
+        for(auto const& rule : ruleset.repositories())
+            repositories.emplace(
+                std::piecewise_construct, 
+                std::make_tuple(rule.name), 
+                std::make_tuple(rule.name));
     }
     catch (std::exception const& error)
     {
