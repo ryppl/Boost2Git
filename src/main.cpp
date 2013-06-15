@@ -27,6 +27,7 @@
 #include "ruleset.hpp"
 #include "log.hpp"
 #include "git_repository.hpp"
+#include "repository_index.hpp"
 
 #include <utility>
 
@@ -147,12 +148,15 @@ int main(int argc, char **argv)
             exit(r ? 0 : 1);
         }
 
-        std::map<std::string, git_repository> repositories;
+        std::map<std::string, git_repository> git_repositories;
+
         for(auto const& rule : ruleset.repositories())
-            repositories.emplace(
-                std::piecewise_construct, 
-                std::make_tuple(rule.name), 
-                std::make_tuple(rule.name));
+        {
+            git_repository* repo = ensure_repository(git_repositories, rule.name);
+            repo->set_super_module(
+                ensure_repository(git_repositories, rule.submodule_in_repo), 
+                rule.submodule_path);
+        }
     }
     catch (std::exception const& error)
     {

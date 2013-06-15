@@ -10,7 +10,8 @@
 
 git_repository::git_repository(std::string const& git_dir)
     : created(ensure_existence(git_dir)),
-      fast_import(git_dir)
+      fast_import(git_dir),
+      super_module(nullptr)
 {
 }
 
@@ -33,4 +34,21 @@ bool git_repository::ensure_existence(std::string const& git_dir)
         throw_on_error());
     wait_for_exit(git_init);
     return true;
+}
+
+void git_repository::set_super_module(
+    git_repository* super_module, std::string const& submodule_path)
+{
+    if (super_module)
+    {
+        if (this->super_module != nullptr)
+        {
+            if (this->super_module != super_module)
+                throw std::runtime_error("Conflicting super-module specifications");
+            if (this->submodule_path != submodule_path)
+                throw std::runtime_error("Conflicting submodule path declarations");
+        }
+        this->super_module = super_module;
+        this->submodule_path = submodule_path;
+    }
 }
