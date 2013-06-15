@@ -149,7 +149,9 @@ int main(int argc, char **argv)
             exit(r ? 0 : 1);
         }
 
+        Log::info() << "preparing repositories and import processes..." << std::endl;
         repository_index git_repositories(ruleset);
+        Log::info() << "done preparing repositories and import processes." << std::endl;
 
         svn svn_repo(svn_path, authors_file);
 
