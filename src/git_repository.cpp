@@ -26,7 +26,7 @@ bool git_repository::ensure_existence(std::string const& git_dir)
 
     // Create the new repository
     fs::create_directories(git_dir);
-    std::array<std::string, 3> git_args = { git_executable(), "init", "--bare" };
+    std::array<std::string, 4> git_args = { git_executable(), "init", "--bare", "--quiet" };
     auto git_init = process::execute(
         run_exe(git_executable()),
         set_args(git_args), 
