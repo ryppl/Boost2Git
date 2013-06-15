@@ -21,6 +21,8 @@ include_directories(${SVN_INCLUDE_DIRS})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/boost_process)
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/boost_process)
+
 add_definitions(
   -D_XOPEN_SOURCE
   -D_LARGEFILE_SUPPORT
