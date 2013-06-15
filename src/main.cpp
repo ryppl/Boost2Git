@@ -130,7 +130,10 @@ int main(int argc, char **argv)
         AprInit apr_init;
 
         // Load the configuration
+        Log::info() << "reading ruleset..." << std::endl;
+
         Ruleset ruleset(options.rules_file);
+        Log::info() << "done reading ruleset." << std::endl;
         std::set<int> ignore_revisions = load_ignore(ignore_file);
 
         if (dump_rules)
