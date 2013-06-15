@@ -14,7 +14,7 @@ struct repository_index
 {
     repository_index(Ruleset const& rules);
     int last_valid_svn_revision();
-    void import_revision(svn const& svn_repository, int revnum);
+    void import_revision(svn const& svn_repository, int revnum, Ruleset const& ruleset);
 
  private:
     git_repository* demand_repo(std::string const& name);

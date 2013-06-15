@@ -41,10 +41,9 @@ int repository_index::last_valid_svn_revision()
     return 0; // pessimization for now.  Later we should read marks files, etc.
 }
 
-void repository_index::import_revision(svn const& svn_repository, int revnum)
+void repository_index::import_revision(svn const& svn_repository, int revnum, Ruleset const& ruleset)
 {
     if (revnum % 1000 == 0) {
         Log::info() << "importing revision " << revnum << std::endl;
     }
-    // no-op for now.
 }

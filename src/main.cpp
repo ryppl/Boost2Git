@@ -159,7 +159,7 @@ int main(int argc, char **argv)
             max_rev = svn_repo.latest_revision();
 
         for (int i = git_repositories.last_valid_svn_revision(); i <= max_rev; ++i)
-            git_repositories.import_revision(svn_repo, i);
+            git_repositories.import_revision(svn_repo, i, ruleset);
 
         coverage::report();
     }
