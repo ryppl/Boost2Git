@@ -36,21 +36,9 @@ set(svn2git_SOURCES
   log.cpp
   parse_rules.cpp
   ruleset.cpp
+  git_fast_import.cpp
+  git_repository.cpp
   main.cpp)
-
-set(svn2git_HEADERS
-  apr_init.hpp
-  apr_pool.hpp
-  authors.hpp
-  log.hpp
-  logging_process.hpp
-  parse_rules.hpp
-  repository.h
-  ruleset.hpp
-  svn_revision.hpp
-  svn.h)
-
-# qt4_wrap_cpp(svn2git_HEADERS_MOC ${svn2git_HEADERS})
 
 add_executable(svn2git ${svn2git_SOURCES})
 
