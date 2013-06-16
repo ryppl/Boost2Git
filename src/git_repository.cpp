@@ -57,9 +57,10 @@ void git_repository::set_super_module(
 void git_repository::write_changes()
 {
     // Now that changes are written, clear all pending information
-    for (auto& r : refs() | boost::adaptors::map_values)
+    for (auto r : modified_refs)
     {
-        r.pending_deletions.clear();
-        r.pending_translations.clear();
+        r->pending_deletions.clear();
+        r->pending_translations.clear();
     }
+    modified_refs.clear();
 }

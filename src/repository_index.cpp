@@ -8,6 +8,7 @@
 #include "path_set.hpp"
 #include <boost/range/adaptor/map.hpp>
 #include <boost/function_output_iterator.hpp>
+#include <boost/container/flat_set.hpp>
 
 using boost::adaptors::map_values;
 
@@ -51,14 +52,17 @@ void repository_index::import_revision(svn const& svn_repository, int revnum, Ru
     // Keep track of which paths in SVN need to be traversed and mapped into Git
     path_set invalid_svn_paths;
 
+    boost::container::flat_set<git_repository*> changed_repositories;
+
     for (Rule const* r: ruleset.matches().rules_in_transition(revnum))
     {
         Log::trace() << *r << " is in transition" << std::endl;
         
         // This rule's Git path prefix will need to be deleted 
-        repositories.find(r->repo_rule->name)->second
-            .refs()[r->branch_rule->name]
+        auto& repo = repositories.find(r->repo_rule->name)->second;
+        repo.modify_ref(r->branch_rule->name)
             .pending_deletions.insert(r->prefix());
+        changed_repositories.insert(&repo);
 
         // Invalidate SVN paths
         int revnum_to_scan = revnum - (r->max < revnum ? 1 : 0);
@@ -68,8 +72,8 @@ void repository_index::import_revision(svn const& svn_repository, int revnum, Ru
                 [&](Rule const* r){ invalid_svn_paths.insert(r->svn_path()); }));
     }
 
-    for (auto& repo : repositories | map_values)
-        repo.write_changes();
+    for (auto repo : changed_repositories)
+        repo->write_changes();
 }
 
 repository_index::~repository_index()
