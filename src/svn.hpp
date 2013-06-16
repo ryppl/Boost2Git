@@ -36,6 +36,14 @@ class svn
 
     int latest_revision() const;
 
+    // Call an SVN function with proper error reporting
+    template <class R, class...P, class...A>
+    static R call(svn_error_t* (*f)(R*, P...), A const& ...args)
+    {
+        R result;
+        check_svn(f(&result, args...));
+        return result;
+    }
 
     static AprPool global_pool;
     svn_repos_t* repos;

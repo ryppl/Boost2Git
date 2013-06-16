@@ -31,14 +31,6 @@
 #include "apr_init.hpp"
 #include "apr_pool.hpp"
 
-// Call an svn function with proper error reporting
-template <class R, class...P, class...A>
-R call(svn_error_t* (*f)(R*, P...), A const& ...args)
-{
-    R result;
-    check_svn(f(&result, args...));
-    return result;
-}
 AprInit apr_init;
 AprPool svn::global_pool;
 
