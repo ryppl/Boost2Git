@@ -19,6 +19,8 @@ class path_set
         : paths(x)
     {}
 
+    void clear() { paths.clear(); }
+
     friend bool operator==(path_set const& lhs, path_set const& rhs)
     { return lhs.paths == rhs.paths; }
 
