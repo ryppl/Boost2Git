@@ -28,6 +28,7 @@
 
 #include "svn.hpp"
 #include "svn_error.hpp"
+#include "apr_init.hpp"
 #include "apr_pool.hpp"
 
 // Call an svn function with proper error reporting
@@ -38,12 +39,13 @@ R call(svn_error_t* (*f)(R*, P...), A const& ...args)
     check_svn(f(&result, args...));
     return result;
 }
+AprInit apr_init;
+AprPool svn::global_pool;
 
 svn::svn(
     std::string const& repo_path,
     std::string const& authors_file_path)
-    : global_pool(NULL), 
-      repos(call(svn_repos_open, repo_path.c_str(), global_pool)),
+    : repos(call(svn_repos_open, repo_path.c_str(), global_pool)),
       fs(svn_repos_fs(repos)),
       authors(authors_file_path)
 {

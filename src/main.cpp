@@ -22,7 +22,6 @@
 #include <limits.h>
 #include <stdio.h>
 
-#include "apr_init.hpp"
 #include "ruleset.hpp"
 #include "git_repository.hpp"
 #include "svn.hpp"
@@ -127,7 +126,6 @@ int main(int argc, char **argv)
         options.svn_branches = variables.count("svn-branches");
         notify(variables);
 
-        AprInit apr_init;
 
         // Load the configuration
         Log::info() << "reading ruleset..." << std::endl;

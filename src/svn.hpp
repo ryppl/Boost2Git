@@ -36,10 +36,8 @@ class svn
 
     int latest_revision() const;
 
- private:
-    AprPool global_pool;
 
- public:
+    static AprPool global_pool;
     svn_repos_t* repos;
     svn_fs_t* fs;
     Authors authors;
