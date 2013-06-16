@@ -30,16 +30,33 @@ class AprPool
       }
     ~AprPool()
       {
-      svn_pool_destroy(pool);
+      if (pool)
+          svn_pool_destroy(pool);
       }
-  private:
-    AprPool(AprPool const&);
-    void operator=(AprPool const&);
-  public:
+
+    AprPool(AprPool const&) = delete;
+    void operator=(AprPool const&) = delete;
+
+    AprPool(AprPool&& rhs) 
+      { 
+      pool = rhs.pool; 
+      rhs.pool = 0; 
+      }
+
+    AprPool& operator=(AprPool&& rhs) 
+      { 
+      if (pool) 
+        svn_pool_destroy(pool); 
+      pool = rhs.pool; 
+      rhs.pool = 0; 
+      return *this;
+      }
+
     void clear()
       {
       svn_pool_clear(pool);
       }
+
     operator apr_pool_t*() const
       {
       return pool;
