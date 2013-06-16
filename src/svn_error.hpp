@@ -19,6 +19,7 @@
 #define SVN_ERROR_HPP
 
 #include <exception>
+#include <svn_error.h>
 
 class SvnError: public std::exception
   {
