@@ -238,7 +238,7 @@ struct patrie
 
         // We matched all of node n
         template <class Iterator>
-        void full_match(node const& n, Iterator start, Iterator finish)
+        void full_match(node const& n, Iterator start, Iterator finish, bool slash_required = true)
         {
             for (auto r : n.rules) 
             {
@@ -250,8 +250,15 @@ struct patrie
             // rules to find anything that maps into a subtree
             if (start == finish)
             {
+                // Make sure we're only finding subtrees by requiring
+                // a slash at the boundary between the full match and
+                // everything else.
+                slash_required = slash_required && n.text[n.text.size() - 1] != '/';
                 for (auto const& n1 : n.next)
-                    full_match(n1, start, finish);
+                {
+                    if (!slash_required || n1.text[0] == '/')
+                        full_match(n1, start, finish, false);
+                }
             }
         }
 
