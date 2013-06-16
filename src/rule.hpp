@@ -8,7 +8,7 @@
 # include <ostream>
 # include <climits>
 # include "AST.hpp"
-#include <boost/algorithm/string/predicate.hpp>
+# include <boost/algorithm/string/predicate.hpp>
 
 inline std::string path_append(std::string path, std::string const& append)
 {
