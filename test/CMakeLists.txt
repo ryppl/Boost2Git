@@ -16,14 +16,15 @@ set(WC_PATH "${CMAKE_CURRENT_BINARY_DIR}/test-wc")
 set(IN_WC "${CMAKE_COMMAND}" -E chdir "${WC_PATH}")
 set(LOG_MSG --username test -m)
 
-find_package(Boost)
+find_package(Boost REQUIRED filesystem system)
 include_directories(${Boost_INCLUDE_DIRS} ../src)
 
-add_executable(patrie_test
-  patrie_test.cpp
-  )
-
+add_executable(patrie_test patrie_test.cpp)
 add_test(patrie_test patrie_test)
+
+add_executable(path_set_test path_set_test.cpp)
+target_link_libraries(path_set_test ${Boost_LIBRARIES})
+add_test(path_set_test path_set_test)
 
 add_test(NAME prepare_patrie_test
   COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target patrie_test)
