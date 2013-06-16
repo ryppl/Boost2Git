@@ -51,3 +51,14 @@ void repository_index::import_revision(svn const& svn_repository, int revnum, Ru
         Log::trace() << *r << " is in transition" << std::endl;
     }
 }
+
+repository_index::~repository_index()
+{
+    // Apparently we have to send EOF to all the processes before
+    // waiting for any one to exit, or there's at least some ordering
+    // constraint.  If we don't close all the input streams here, we
+    // hang waiting for the first process to exit after closing its
+    // stream.
+    for (auto& name_repo : repositories)
+        name_repo.second.close_fast_import();
+}

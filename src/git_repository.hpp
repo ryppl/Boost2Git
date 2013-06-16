@@ -11,6 +11,8 @@ struct git_repository
     explicit git_repository(std::string const& git_dir);
     void set_super_module(git_repository* super_module, std::string const& submodule_path);
     
+    void close_fast_import() { fast_import.close(); }
+
  private:
     void read_logfile();
     

@@ -14,6 +14,7 @@ struct git_fast_import
 {
     git_fast_import(std::string const& repo_dir);
     ~git_fast_import();
+    void close() { stdin.close(); }
 
  private:
     static std::vector<std::string> arg_vector(std::string const& git_dir);

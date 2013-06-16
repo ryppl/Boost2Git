@@ -13,6 +13,8 @@ struct svn;
 struct repository_index
 {
     repository_index(Ruleset const& rules);
+    ~repository_index();
+
     int last_valid_svn_revision();
     void import_revision(svn const& svn_repository, int revnum, Ruleset const& ruleset);
 

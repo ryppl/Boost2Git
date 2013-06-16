@@ -27,7 +27,10 @@ git_fast_import::git_fast_import(std::string const& git_dir)
 
 git_fast_import::~git_fast_import()
 {
-    stdin.close();
+    // Note: this might not be enough to avoid waiting forever for
+    // process exit if there are other subprocesses whose input
+    // streams are still open.
+    close();
     wait_for_exit(process);
 }
 
