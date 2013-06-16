@@ -29,11 +29,48 @@ struct DummyCoverage
 template <class Rule, class Coverage = DummyCoverage<Rule> >
 struct patrie
 {
- public:
-    void insert(Rule const& rule)
+ private: // Rule transition support
+    typedef std::vector<Rule const*> rule_vec;
+    typedef std::pair<std::size_t, rule_vec> rev_rules;
+
+    template <class Map>
+    auto find_transitions(Map& map, std::size_t revnum) -> decltype(map.begin())
     {
-        rules.push_back(rule);
-        coverage.declare(rules.back());
+        return std::lower_bound(
+            map.begin(), map.end(), revnum, 
+            [](rev_rules const& lhs, std::size_t rhs)
+            { return lhs.first < rhs; });
+    }
+    
+    rule_vec& transitions(std::size_t revnum)
+    {
+        auto pos = find_transitions(transition_map, revnum);
+        if (pos == transition_map.end() || pos->first != revnum)
+            pos = transition_map.insert(pos, rev_rules(revnum, {}));
+        return pos->second;
+    }
+
+ public:
+    rule_vec* rules_in_transition(std::size_t revnum) const
+    {
+        auto pos = find_transitions(transition_map, revnum);
+        if (pos == transition_map.end() || pos->first != revnum)
+            return nullptr;
+        return &pos->second;
+    }
+
+    void insert(Rule rule_)
+    {
+        rules.push_back(std::move(rule_));
+        Rule const& rule = rules.back();
+
+        if (rule.min > 1)
+            transitions(rule.min).push_back(&rule);
+        if (rule.max < UINT_MAX)
+            transitions(rule.max + 1).push_back(&rule);
+
+
+        coverage.declare(rule);
 
         {
             insert_visitor v(&rules.back());
@@ -324,10 +361,13 @@ struct patrie
             nodes = &n->next;
         }
     }
+
+ private: // data members
     std::deque<Rule> rules;
     vector<node> trie;
     vector<node> rtrie;
     mutable Coverage coverage;
+    std::vector<rev_rules> transition_map;
 };
 }
 using patrie_::patrie;
