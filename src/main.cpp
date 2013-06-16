@@ -98,7 +98,7 @@ int main(int argc, char **argv)
         }
         if (variables.count("version"))
         {
-            std::cout << "Svn2Git 0.1" << std::endl;
+            std::cout << "Svn2Git 0.9" << std::endl;
             return 0;
         }
         if (variables.count("quiet"))
