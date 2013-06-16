@@ -63,5 +63,5 @@ repository_index::~repository_index()
     // here, we hang waiting for the first process to exit after
     // closing its stream.
     for (auto& repo : repositories | map_values)
-        repo.fast_import.close();
+        repo.fast_import().close();
 }

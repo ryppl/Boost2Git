@@ -13,13 +13,15 @@ struct git_repository
     
  private:
     void read_logfile();
-    
+    git_fast_import& fast_import() { return fast_import_; }
+
+ private:
+    void read_logfile();
     static bool ensure_existence(std::string const& git_dir);
 
+ private: // data members
     bool created;
- public:
-    git_fast_import fast_import;
- private:
+    git_fast_import fast_import_;
     git_repository* super_module;
     std::string submodule_path;
 };

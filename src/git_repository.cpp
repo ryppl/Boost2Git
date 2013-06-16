@@ -10,7 +10,7 @@
 
 git_repository::git_repository(std::string const& git_dir)
     : created(ensure_existence(git_dir)),
-      fast_import(git_dir),
+      fast_import_(git_dir),
       super_module(nullptr)
 {
 }
