@@ -6,6 +6,9 @@
 #include "svn.hpp"
 #include "log.hpp"
 #include "path_set.hpp"
+#include <boost/range/adaptor/map.hpp>
+
+using boost::adaptors::map_values;
 
 repository_index::repository_index(Ruleset const& ruleset)
 {
@@ -54,11 +57,11 @@ void repository_index::import_revision(svn const& svn_repository, int revnum, Ru
 
 repository_index::~repository_index()
 {
-    // Apparently we have to send EOF to all the processes before
-    // waiting for any one to exit, or there's at least some ordering
-    // constraint.  If we don't close all the input streams here, we
-    // hang waiting for the first process to exit after closing its
-    // stream.
-    for (auto& name_repo : repositories)
-        name_repo.second.close_fast_import();
+    // Apparently there's at least some ordering constraint that is
+    // violated by simply closing and waiting for the death of each
+    // process, in sequence.  If we don't close all the input streams
+    // here, we hang waiting for the first process to exit after
+    // closing its stream.
+    for (auto& repo : repositories | map_values)
+        repo.fast_import.close();
 }
