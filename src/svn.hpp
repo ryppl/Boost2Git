@@ -18,11 +18,14 @@
 #ifndef SVN_DWA2013615_HPP
 # define SVN_DWA2013615_HPP
 
-#include <svn_fs.h>
-#include <svn_repos.h>
 
 #include "apr_pool.hpp"
 #include "authors.hpp"
+#include "svn_error.hpp"
+
+#include <svn_fs.h>
+#include <svn_repos.h>
+
 #include <string>
 
 class Authors;
