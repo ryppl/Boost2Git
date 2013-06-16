@@ -17,6 +17,9 @@ git_fast_import::git_fast_import(std::string const& git_dir)
               run_exe(git_executable()),
               set_args(arg_vector(git_dir)),
               bind_stdin(iostreams::file_descriptor_source(outp.source, iostreams::close_handle)),
+#if defined(BOOST_POSIX_API)
+              close_fd(outp.sink),
+#endif
               throw_on_error())),
       stdin(iostreams::file_descriptor_sink(outp.sink, iostreams::close_handle))
 {
@@ -24,6 +27,8 @@ git_fast_import::git_fast_import(std::string const& git_dir)
 
 git_fast_import::~git_fast_import()
 {
+    stdin.close();
+    wait_for_exit(process);
 }
 
 std::vector<std::string> 
