@@ -8,34 +8,57 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <algorithm>
 
-typedef std::vector<boost::filesystem::path> path_set;
-
-inline void add_path(path_set& paths, boost::filesystem::path p)
+class path_set
 {
-    auto start = std::lower_bound(paths.begin(), paths.end(), p);
+    typedef std::vector<boost::filesystem::path> storage;
+ public:
 
-    // See if a parent path is already in the set
-    if (start != paths.begin() && boost::starts_with(p, *std::prev(start)))
-        return;  // if so, we're done
+    path_set() {}
 
-    // Find the range of paths in the set that p subsumes
-    auto finish = start;
-    while (finish != paths.end() && boost::algorithm::starts_with(*finish, p))
-        ++finish;
+    path_set(std::initializer_list<boost::filesystem::path> const& x)
+        : paths(x)
+    {}
 
-    if (start == finish)
+    friend bool operator==(path_set const& lhs, path_set const& rhs)
+    { return lhs.paths == rhs.paths; }
+
+    typedef storage::const_iterator const_iterator;
+    typedef const_iterator iterator;
+
+    const_iterator begin() { return paths.begin(); }
+    const_iterator end() { return paths.begin(); }
+
+    const_iterator insert(const_iterator _, boost::filesystem::path p)
     {
-        paths.insert(start, p);
+        return insert(std::move(p));
     }
-    else
-    {
-        // see if we already have the path
-        if (*start == p)
-            return;
-        *start = p;
-        paths.erase(std::next(start), finish);
-    }
-}
 
+    const_iterator insert(boost::filesystem::path p)
+    {
+        auto start = std::lower_bound(paths.begin(), paths.end(), p);
+
+        // See if a parent path is already in the set
+        if (start != paths.begin() && boost::starts_with(p, *std::prev(start)))
+            return start;  // if so, we're done
+
+        // Find the range of paths in the set that p subsumes
+        auto finish = start;
+        while (finish != paths.end() && boost::algorithm::starts_with(*finish, p))
+            ++finish;
+
+        if (start == finish)
+        {
+            return paths.insert(start, p);
+        }
+        else if (*start != p) // don't bother if we already have the path
+        {
+            *start = p;
+            paths.erase(std::next(start), finish);
+        }
+        return start;
+    }
+ private:
+    storage paths;
+};
 
 #endif // PATH_SET_DWA2013615_HPP
