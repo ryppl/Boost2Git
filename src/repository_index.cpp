@@ -67,6 +67,9 @@ void repository_index::import_revision(svn const& svn_repository, int revnum, Ru
             boost::make_function_output_iterator(
                 [&](Rule const* r){ invalid_svn_paths.insert(r->svn_path()); }));
     }
+
+    for (auto& repo : repositories | map_values)
+        repo.write_changes();
 }
 
 repository_index::~repository_index()

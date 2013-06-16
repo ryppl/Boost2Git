@@ -7,6 +7,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/process.hpp>
 #include <array>
+#include <boost/range/adaptor/map.hpp>
 
 git_repository::git_repository(std::string const& git_dir)
     : created(ensure_existence(git_dir)),
@@ -53,3 +54,12 @@ void git_repository::set_super_module(
     }
 }
 
+void git_repository::write_changes()
+{
+    // Now that changes are written, clear all pending information
+    for (auto& r : refs() | boost::adaptors::map_values)
+    {
+        r.pending_deletions.clear();
+        r.pending_translations.clear();
+    }
+}

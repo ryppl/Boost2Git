@@ -28,6 +28,8 @@ struct git_repository
 
     boost::container::flat_map<std::string, ref>& refs() { return refs_; }
 
+    void write_changes();
+
  private:
     void read_logfile();
     static bool ensure_existence(std::string const& git_dir);
