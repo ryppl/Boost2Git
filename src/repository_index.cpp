@@ -38,7 +38,7 @@ repository_index::demand_repo(std::string const& name)
 
 int repository_index::last_valid_svn_revision()
 {
-    return 0; // pessimization for now.  Later we should read marks files, etc.
+    return 1; // pessimization for now.  Later we should read marks files, etc.
 }
 
 void repository_index::import_revision(svn const& svn_repository, int revnum, Ruleset const& ruleset)
