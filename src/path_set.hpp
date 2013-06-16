@@ -22,6 +22,7 @@ class path_set
     friend bool operator==(path_set const& lhs, path_set const& rhs)
     { return lhs.paths == rhs.paths; }
 
+    typedef storage::value_type value_type;
     typedef storage::const_iterator const_iterator;
     typedef const_iterator iterator;
 
