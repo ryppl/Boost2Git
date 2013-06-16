@@ -2,9 +2,9 @@
 // Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#undef NDEBUG
 #include "patrie.hpp"
 #include <boost/fusion/adapted/struct/define_struct.hpp>
-#undef NDEBUG
 #include <cassert>
 
 namespace patrie_test {
