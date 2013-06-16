@@ -52,6 +52,9 @@ class AprPool
       return *this;
       }
 
+    AprPool make_subpool() const
+      { return AprPool(data()); }
+
     void clear()
       {
       svn_pool_clear(pool);
