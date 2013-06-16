@@ -26,7 +26,7 @@
 #include "git_repository.hpp"
 #include "svn.hpp"
 #include "log.hpp"
-#include "repository_index.hpp"
+#include "importer.hpp"
 
 #include <utility>
 
@@ -148,7 +148,7 @@ int main(int argc, char **argv)
         }
 
         Log::info() << "preparing repositories and import processes..." << std::endl;
-        repository_index git_repositories(ruleset);
+        importer imp(ruleset);
         Log::info() << "done preparing repositories and import processes." << std::endl;
 
         svn svn_repo(svn_path, authors_file);
@@ -156,8 +156,8 @@ int main(int argc, char **argv)
         if (max_rev < 1)
             max_rev = svn_repo.latest_revision();
 
-        for (int i = git_repositories.last_valid_svn_revision(); i <= max_rev; ++i)
-            git_repositories.import_revision(svn_repo, i, ruleset);
+        for (int i = imp.last_valid_svn_revision(); i <= max_rev; ++i)
+            imp.import_revision(svn_repo, i, ruleset);
 
         coverage::report();
     }

@@ -38,7 +38,7 @@ set(svn2git_SOURCES
   ruleset.cpp
   git_fast_import.cpp
   git_repository.cpp
-  repository_index.cpp
+  importer.cpp
   svn.cpp
   main.cpp)
 

@@ -1,7 +1,7 @@
 // Copyright Dave Abrahams 2013. Distributed under the Boost
 // Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-#include "repository_index.hpp"
+#include "importer.hpp"
 #include "ruleset.hpp"
 #include "svn.hpp"
 #include "log.hpp"
@@ -12,7 +12,7 @@
 
 using boost::adaptors::map_values;
 
-repository_index::repository_index(Ruleset const& ruleset)
+importer::importer(Ruleset const& ruleset)
 {
     for(auto const& rule : ruleset.repositories())
     {
@@ -24,7 +24,7 @@ repository_index::repository_index(Ruleset const& ruleset)
 }
 
 inline git_repository*
-repository_index::demand_repo(std::string const& name)
+importer::demand_repo(std::string const& name)
 {
     if (name.empty())
         return 0;
@@ -39,12 +39,12 @@ repository_index::demand_repo(std::string const& name)
     return &p->second;
 };
 
-int repository_index::last_valid_svn_revision()
+int importer::last_valid_svn_revision()
 {
     return 1; // pessimization for now.  Later we should read marks files, etc.
 }
 
-void repository_index::import_revision(svn const& svn_repository, int revnum, Ruleset const& ruleset)
+void importer::import_revision(svn const& svn_repository, int revnum, Ruleset const& ruleset)
 {
     ((revnum % 1000) ? Log::trace() : Log::info())
         << "importing revision " << revnum << std::endl;
@@ -91,7 +91,7 @@ void repository_index::import_revision(svn const& svn_repository, int revnum, Ru
         repo->write_changes();
 }
 
-repository_index::~repository_index()
+importer::~importer()
 {
     // Apparently there's at least some ordering constraint that is
     // violated by simply closing and waiting for the death of each
