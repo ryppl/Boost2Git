@@ -147,17 +147,18 @@ int main(int argc, char **argv)
             exit(r ? 0 : 1);
         }
 
-        Log::info() << "preparing repositories and import processes..." << std::endl;
-        importer imp(ruleset);
-        Log::info() << "done preparing repositories and import processes." << std::endl;
-
+        Log::info() << "Opening SVN repository at " << svn_path << std::endl;
         svn svn_repo(svn_path, authors_file);
+
+        Log::info() << "preparing repositories and import processes..." << std::endl;
+        importer imp(svn_repo, ruleset);
+        Log::info() << "done preparing repositories and import processes." << std::endl;
 
         if (max_rev < 1)
             max_rev = svn_repo.latest_revision();
 
         for (int i = imp.last_valid_svn_revision(); i <= max_rev; ++i)
-            imp.import_revision(svn_repo, i, ruleset);
+            imp.import_revision(i);
 
         coverage::report();
     }

@@ -12,7 +12,8 @@
 
 using boost::adaptors::map_values;
 
-importer::importer(Ruleset const& ruleset)
+importer::importer(svn const& svn_repo, Ruleset const& ruleset)
+    : svn_repository(svn_repo), ruleset(ruleset)
 {
     for(auto const& rule : ruleset.repositories())
     {
@@ -44,7 +45,7 @@ int importer::last_valid_svn_revision()
     return 1; // pessimization for now.  Later we should read marks files, etc.
 }
 
-void importer::import_revision(svn const& svn_repository, int revnum, Ruleset const& ruleset)
+void importer::import_revision(int revnum)
 {
     ((revnum % 1000) ? Log::trace() : Log::info())
         << "importing revision " << revnum << std::endl;

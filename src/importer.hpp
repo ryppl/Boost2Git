@@ -12,15 +12,19 @@ struct svn;
 
 struct importer
 {
-    importer(Ruleset const& rules);
+    importer(svn const& svn_repo, Ruleset const& rules);
     ~importer();
 
     int last_valid_svn_revision();
-    void import_revision(svn const& svn_repository, int revnum, Ruleset const& ruleset);
+    void import_revision(int revnum);
 
- private:
+ private: // helpers
     git_repository* demand_repo(std::string const& name);
+
+ private: // members
     std::map<std::string, git_repository> repositories;
+    svn const& svn_repository;
+    Ruleset const& ruleset;
 };
 
 #endif // IMPORTER_DWA2013614_HPP
