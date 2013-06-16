@@ -74,6 +74,19 @@ void repository_index::import_revision(svn const& svn_repository, int revnum, Ru
 
     svn::revision rev = svn_repository[revnum];
 
+    // invalidate all paths changed in this revision
+    apr_hash_t *changes = svn::call(svn_fs_paths_changed2, rev.fs_root, rev.pool);
+    for (apr_hash_index_t *i = apr_hash_first(rev.pool, changes); i; i = apr_hash_next(i))
+    {
+        const char *key = 0;
+        svn_fs_path_change2_t *change = 0;
+        apr_hash_this(i, (const void**) &key, nullptr, (void**) &change);
+        // According to the docs, this means the hash entry was
+        // deleted, so it should never happen
+        assert(change != nullptr); 
+        // change is one of {modify, add, delete, replace}
+    }
+    
     for (auto repo : changed_repositories)
         repo->write_changes();
 }
