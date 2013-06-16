@@ -7,6 +7,7 @@
 # include "git_fast_import.hpp"
 # include <boost/container/flat_map.hpp>
 # include "path_set.hpp"
+# include <unordered_map>
 
 struct git_repository
 {
@@ -26,7 +27,7 @@ struct git_repository
         path_map pending_translations;
     };
 
-    boost::container::flat_map<std::string, ref>& refs() { return refs_; }
+    std::unordered_map<std::string, ref>& refs() { return refs_; }
 
     void write_changes();
 
@@ -39,7 +40,7 @@ struct git_repository
     git_fast_import fast_import_;
     git_repository* super_module;
     std::string submodule_path;
-    boost::container::flat_map<std::string, ref> refs_;
+    std::unordered_map<std::string, ref> refs_;
 };
 
 #endif // GIT_REPOSITORY_DWA2013614_HPP
