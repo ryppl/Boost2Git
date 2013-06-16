@@ -34,5 +34,5 @@ git_fast_import::~git_fast_import()
 std::vector<std::string> 
 git_fast_import::arg_vector(std::string const& git_dir)
 {
-    return { git_executable(), "fast-import" };
+    return { git_executable(), "fast-import", "--quiet" };
 }
