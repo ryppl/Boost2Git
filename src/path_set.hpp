@@ -55,7 +55,9 @@ class path_set
         }
         else if (*start != p) // don't bother if we already have the path
         {
-            *start = p;
+            // p is passed by value, so this is equivalent to, but
+            // more efficient than, assignment
+            swap(*start, p); 
             paths.erase(std::next(start), finish);
         }
         return start;
