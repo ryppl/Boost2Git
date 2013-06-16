@@ -50,3 +50,9 @@ int svn::latest_revision() const
 {
     return call(svn_fs_youngest_rev, fs, global_pool);
 }
+
+svn::revision::revision(svn const& repo, int revnum)
+    : pool(svn::global_pool)
+    , fs_root(call(svn_fs_revision_root, repo.fs, revnum, pool))
+{
+}

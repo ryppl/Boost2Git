@@ -45,6 +45,19 @@ class svn
         return result;
     }
 
+    struct revision
+    {
+        revision(svn const& repo, int revnum);
+
+        AprPool& pool;
+        svn_fs_root_t* fs_root;
+    };
+    
+    revision operator[](int revnum) const
+    {
+        return revision(*this, revnum);
+    }
+    
     static AprPool global_pool;
     svn_repos_t* repos;
     svn_fs_t* fs;

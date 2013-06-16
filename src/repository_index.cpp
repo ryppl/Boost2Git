@@ -72,6 +72,8 @@ void repository_index::import_revision(svn const& svn_repository, int revnum, Ru
                 [&](Rule const* r){ invalid_svn_paths.insert(r->svn_path()); }));
     }
 
+    svn::revision rev = svn_repository[revnum];
+
     for (auto repo : changed_repositories)
         repo->write_changes();
 }
