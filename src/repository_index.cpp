@@ -3,11 +3,9 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 #include "repository_index.hpp"
 #include "ruleset.hpp"
-#include <boost/range/adaptor/map.hpp>
 #include "svn.hpp"
 #include "log.hpp"
-
-using namespace boost::adaptors;
+#include "path_set.hpp"
 
 repository_index::repository_index(Ruleset const& ruleset)
 {
@@ -43,7 +41,13 @@ int repository_index::last_valid_svn_revision()
 
 void repository_index::import_revision(svn const& svn_repository, int revnum, Ruleset const& ruleset)
 {
-    if (revnum % 1000 == 0) {
-        Log::info() << "importing revision " << revnum << std::endl;
+    ((revnum % 1000) ? Log::trace() : Log::info())
+        << "importing revision " << revnum << std::endl;
+
+    // Keep track of which paths in SVN need to be traversed and mapped into Git
+    path_set invalid_svn_paths;
+
+    for (auto r: ruleset.matches().rules_in_transition(revnum)) {
+        Log::trace() << *r << " is in transition" << std::endl;
     }
 }

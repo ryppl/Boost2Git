@@ -13,6 +13,7 @@
 # include <stdexcept>
 # include <boost/swap.hpp>
 # include <boost/range.hpp>
+# include <boost/range/iterator_range.hpp>
 # include <ostream>
 
 namespace patrie_ {
@@ -34,7 +35,7 @@ struct patrie
     typedef std::pair<std::size_t, rule_vec> rev_rules;
 
     template <class Map>
-    auto find_transitions(Map& map, std::size_t revnum) -> decltype(map.begin())
+    static auto find_transitions(Map& map, std::size_t revnum) -> decltype(map.begin())
     {
         return std::lower_bound(
             map.begin(), map.end(), revnum, 
@@ -51,12 +52,16 @@ struct patrie
     }
 
  public:
-    rule_vec* rules_in_transition(std::size_t revnum) const
+    boost::iterator_range<Rule const* const*> 
+    rules_in_transition(std::size_t revnum) const
     {
         auto pos = find_transitions(transition_map, revnum);
+
         if (pos == transition_map.end() || pos->first != revnum)
-            return nullptr;
-        return &pos->second;
+            return boost::iterator_range<Rule const* const*>(nullptr, nullptr);
+
+        return boost::make_iterator_range(
+            pos->second.data(), pos->second.data() + pos->second.size());
     }
 
     void insert(Rule rule_)

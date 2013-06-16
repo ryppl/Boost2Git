@@ -10,12 +10,12 @@ abstract repository common_branches
 {
   branches
   {
-    [:] "/trunk/"       : "master";
-    [:] "/branches/branch1/" : "branch1";
+    [:6] "/trunk/"       : "master";
+    [:4] "/branches/branch1/" : "branch1";
   }   
   tags
   {
-    [:] "/tags/tag1" : "tag1";
+    [2:] "/tags/tag1" : "tag1";
   }
 }
 
