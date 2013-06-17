@@ -19,7 +19,7 @@ BOOST_FUSION_DEFINE_STRUCT((boost2git), ContentRule,
 BOOST_FUSION_DEFINE_STRUCT((boost2git), BranchRule,
   (std::size_t, min)
   (std::size_t, max)
-  (std::string, prefix)
+  (std::string, svn_path)
   (std::string, name)
   (int, line)
   (char const*, git_ref_qualifier)

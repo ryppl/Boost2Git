@@ -62,8 +62,8 @@ struct Rule
     std::string svn_path() const
     {
         return content_rule
-            ? path_append(branch_rule->prefix, content_rule->svn_path)
-            : branch_rule->prefix;
+            ? path_append(branch_rule->svn_path, content_rule->svn_path)
+            : branch_rule->svn_path;
     }
 
     std::string git_address() const

@@ -76,7 +76,7 @@ void coverage::report()
         continue;
     
     std::cout << options.rules_file << ":" << b->line << ": warning:"
-              << b->prefix << " ==> " << b->name 
+              << b->svn_path << " ==> " << b->name 
               << " utilization " << percentage << "% ("
               << nmatches << " repositories)" << std::endl;
 
