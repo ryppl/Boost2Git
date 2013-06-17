@@ -108,7 +108,7 @@ void splitPathName(
     }
   if (branch_p)
     {
-    *branch_p = git_ref_name(rule.branch_rule);
+        *branch_p = rule.git_ref_name();
     }
   if (path_p)
     {

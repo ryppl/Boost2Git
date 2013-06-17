@@ -76,7 +76,7 @@ void coverage::report()
         continue;
     
     std::cout << options.rules_file << ":" << b->line << ": warning:"
-              << b->svn_path << " ==> " << b->name 
+              << b->svn_path << " ==> " << git_ref_name(b) 
               << " utilization " << percentage << "% ("
               << nmatches << " repositories)" << std::endl;
 
@@ -84,7 +84,7 @@ void coverage::report()
       {
       BOOST_FOREACH(boost2git::RepoRule const* r, matched[b])
         {
-        std::cout << options.rules_file << ":" << r->line << ": see " << r->name << std::endl;
+        std::cout << options.rules_file << ":" << r->line << ": see " << r->git_repo_name << std::endl;
         }
       }
       std::cout << std::endl;

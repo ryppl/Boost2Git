@@ -80,7 +80,7 @@ collect_rule_components(
 
   BOOST_FOREACH(std::string const& base_name, repo_rule.bases)
     {
-    search_target.name = base_name;
+    search_target.git_repo_name = base_name;
     std::pair<AST::iterator,AST::iterator> base_range = ast.equal_range(search_target);
 
     if (base_range.first == base_range.second)
@@ -106,7 +106,7 @@ Ruleset::Ruleset(std::string const& filename)
   {
   BOOST_FOREACH(RepoRule const& repo_rule, ast_)
     {  
-    if (repo_rule.abstract)
+    if (repo_rule.is_abstract)
       {
       continue;
       }
@@ -118,7 +118,7 @@ Ruleset::Ruleset(std::string const& filename)
     collect_rule_components(ast_, repo_rule, branches, tags, content);
     
     Repository repo;
-    repo.name = repo_rule.name;
+    repo.name = repo_rule.git_repo_name;
     if (!repo_rule.submodule_info.empty())
       {
       assert(repo_rule.submodule_info.size() == 2);
@@ -161,7 +161,7 @@ Ruleset::Ruleset(std::string const& filename)
     repositories_.push_back(repo);
     }
   Repository repo;
-  repo.name = fallback.repo_rule->name;
+  repo.name = fallback.repo_rule->git_repo_name;
   repo.branches.insert(fallback.branch_rule);
   repositories_.push_back(repo);
   }

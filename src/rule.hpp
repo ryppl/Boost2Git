@@ -68,12 +68,22 @@ struct Rule
 
     std::string git_address() const
     {
-        return repo_rule->name + ":" + branch_rule->name + ":" + git_path();
+        return git_repo_name() +  ":" + git_ref_name() + ":" + git_path();
+    }
+
+    std::string git_repo_name() const
+    {
+        return repo_rule->git_repo_name;
     }
 
     std::string git_path() const
     {
         return content_rule ? content_rule->git_path : std::string();
+    }
+
+    std::string git_ref_name() const
+    {
+        return boost2git::git_ref_name(branch_rule);
     }
 
     bool is_fallback() const
@@ -95,7 +105,7 @@ inline std::ostream& operator<<(std::ostream& os, Rule const& r)
             os << r.max;
         os << "] ";
     }
-    os << r.repo_rule->name << ".git:<" << r.branch_rule->name << ">:/" << r.git_path();
+    os << r.git_address();
     return os;
 }
 

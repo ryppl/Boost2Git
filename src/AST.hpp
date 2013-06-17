@@ -20,15 +20,15 @@ BOOST_FUSION_DEFINE_STRUCT((boost2git), BranchRule,
   (std::size_t, min)
   (std::size_t, max)
   (std::string, svn_path)
-  (std::string, name)
+  (std::string, git_branch_or_tag_name)
   (int, line)
   (char const*, git_ref_qualifier)
   )
 
 BOOST_FUSION_DEFINE_STRUCT((boost2git), RepoRule,
-  (bool, abstract)
+  (bool, is_abstract)
   (int, line)
-  (std::string, name)
+  (std::string, git_repo_name)
   (std::vector<std::string>, bases)
   (std::vector<std::string>, submodule_info)
   (std::size_t, minrev)
@@ -42,14 +42,14 @@ namespace boost2git
 {
 inline std::string git_ref_name(BranchRule const* b)
   {
-  return b->git_ref_qualifier + b->name;
+  return b->git_ref_qualifier + b->git_branch_or_tag_name;
   }
 
 struct RepoRuleByName
   {
   bool operator()(RepoRule const& lhs, RepoRule const& rhs) const
     {
-    return lhs.name < rhs.name;
+    return lhs.git_repo_name < rhs.git_repo_name;
     }
   };
 
