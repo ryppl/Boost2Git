@@ -82,7 +82,7 @@ std::string importer::delete_svn_path(std::string const& svn_path, Rule const* m
     return path_suffix;
 }
 
-void importer::rewrite_svn_tree(std::string const& svn_path, Rule const* match, int revnum)
+void importer::rewrite_svn_tree(std::string const& svn_path, Rule const* match)
 {
     std::string path_suffix = delete_svn_path(svn_path, match);
 
@@ -100,10 +100,8 @@ void importer::rewrite_svn_tree(std::string const& svn_path, Rule const* match, 
     );
 }
 
-void importer::process_svn_changes(int revnum)
+void importer::process_svn_changes(svn::revision const& rev)
 {
-    svn::revision rev = svn_repository[revnum];
-
     apr_hash_t *changes = svn::call(svn_fs_paths_changed2, rev.fs_root, rev.pool);
     for (apr_hash_index_t *i = apr_hash_first(rev.pool, changes); i; i = apr_hash_next(i))
     {
@@ -124,7 +122,7 @@ void importer::process_svn_changes(int revnum)
             if (change->node_kind == svn_node_file)
                 delete_svn_path(svn_path, match);
             else
-                rewrite_svn_tree(svn_path, match, revnum);
+                rewrite_svn_tree(svn_path, match);
         }
         else // all the other change kinds can be treated the same
         {
@@ -140,13 +138,16 @@ void importer::import_revision(int revnum)
     ((revnum % 1000) ? Log::trace() : Log::info())
         << "importing revision " << revnum << std::endl;
 
+    this->revnum = revnum;
     svn_paths_to_rewrite.clear();
     changed_repositories.clear();
 
     for (Rule const* r: ruleset.matches().rules_in_transition(revnum))
-        rewrite_svn_tree(r->svn_path(), r, revnum);
+        rewrite_svn_tree(r->svn_path(), r);
 
-    process_svn_changes(revnum);
+    // Discover SVN paths that are being deleted/modified
+    svn::revision rev = svn_repository[revnum];
+    process_svn_changes(rev);
 
     Log::trace() 
         << svn_paths_to_rewrite.size() 
