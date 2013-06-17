@@ -133,6 +133,10 @@ void importer::process_svn_changes(svn::revision const& rev)
     }
 }
 
+void importer::map_svn_paths_to_git(svn::revision const& rev)
+{
+}
+
 void importer::import_revision(int revnum)
 {
     ((revnum % 1000) ? Log::trace() : Log::info())
@@ -142,6 +146,7 @@ void importer::import_revision(int revnum)
     svn_paths_to_rewrite.clear();
     changed_repositories.clear();
 
+    // Deal with rules becoming active/inactive in this revision
     for (Rule const* r: ruleset.matches().rules_in_transition(revnum))
         rewrite_svn_tree(r->svn_path(), r);
 
@@ -155,6 +160,10 @@ void importer::import_revision(int revnum)
         << (svn_paths_to_rewrite.size() == 1 ? "path" : "paths")
         << " to rewrite" << std::endl;
     
+    // Connect each file path in SVN with a corresponding path in a
+    // Git ref.
+    map_svn_paths_to_git(rev);
+
     for (auto repo : changed_repositories)
         repo->write_changes();
 }
