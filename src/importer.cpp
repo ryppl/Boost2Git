@@ -7,6 +7,8 @@
 #include "log.hpp"
 #include <boost/range/adaptor/map.hpp>
 #include <boost/function_output_iterator.hpp>
+#include <boost/algorithm/string/trim.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 
 using boost::adaptors::map_values;
 
@@ -57,10 +59,7 @@ static inline std::string path_join(std::string p0, std::string const& p1)
     if (!p1.empty()) // optimize a common case
         p0 = path_append(std::move(p0), p1);
 
-    if (boost::ends_with(p0, "/"))
-        p0.pop_back();
-    if (boost::starts_with(p0, "/"))
-        p0.erase(p0.begin());
+    boost::algorithm::trim_if(p0, boost::is_any_of("/"));
 
     return p0;
 }
