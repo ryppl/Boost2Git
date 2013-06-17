@@ -29,7 +29,7 @@ class path_set
     typedef const_iterator iterator;
 
     const_iterator begin() { return paths.begin(); }
-    const_iterator end() { return paths.begin(); }
+    const_iterator end() { return paths.end(); }
 
     const_iterator insert(const_iterator _, boost::filesystem::path p)
     {
