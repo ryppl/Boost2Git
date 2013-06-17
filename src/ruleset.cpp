@@ -54,7 +54,7 @@ ContentRule fallback_content(
   boost::fusion::make_vector(
       "", /* std::string prefix */
       true, /* bool is_fallback */
-      "", /* std::string replace */
+      "", /* std::string git_path */
       0 /* int line */
     ));
 

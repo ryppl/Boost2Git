@@ -73,7 +73,7 @@ struct Rule
 
     std::string prefix() const
     {
-        return content_rule ? content_rule->replace : std::string();
+        return content_rule ? content_rule->git_path : std::string();
     }
     bool is_fallback() const
     {

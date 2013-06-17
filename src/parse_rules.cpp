@@ -41,20 +41,20 @@ using namespace boost2git;
 using boost::spirit::make_default_multi_pass;
 
 // robustness: if prefix of content ends with "/",
-// make sure replace ends with "/" too (unless it is empty).
+// make sure git_path ends with "/" too (unless it is empty).
 static void beef_up_content(std::vector<ContentRule> &content_vector)
   {
   BOOST_FOREACH(ContentRule &content, content_vector)
     {
     std::string const& prefix = content.prefix;
-    std::string& replace = content.replace;
-    if (prefix.empty() || replace.empty())
+    std::string& git_path = content.git_path;
+    if (prefix.empty() || git_path.empty())
       {
       continue;
       }
-    if (boost::ends_with(prefix, "/") && !boost::ends_with(replace, "/"))
+    if (boost::ends_with(prefix, "/") && !boost::ends_with(git_path, "/"))
       {
-      replace += "/";
+      git_path += "/";
       }
     }
   }

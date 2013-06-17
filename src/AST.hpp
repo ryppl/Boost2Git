@@ -12,7 +12,7 @@
 BOOST_FUSION_DEFINE_STRUCT((boost2git), ContentRule,
   (std::string, prefix)
   (bool, is_fallback)
-  (std::string, replace)
+  (std::string, git_path)
   (int, line)
   )
 
