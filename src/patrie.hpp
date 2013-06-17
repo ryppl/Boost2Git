@@ -276,16 +276,13 @@ struct patrie
         template <class Iterator>
         void full_match(node const& n, Iterator start, Iterator finish, bool slash_required = true)
         {
-            for (auto r : n.rules) 
-            {
-                if (r->min <= this->revision && this->revision <= r->max)
-                    *out++ = r;
-            }
-
             // If we used up the entire input, continue to explore
             // rules to find anything that maps into a subtree
             if (start == finish)
             {
+                if (auto r = n.find_rule(this->revision))
+                    *out++ = r;
+                
                 // Make sure we're only finding subtrees by requiring
                 // a slash at the boundary between the full match and
                 // everything else.
