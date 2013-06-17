@@ -135,6 +135,18 @@ void importer::process_svn_changes(svn::revision const& rev)
 
 void importer::map_svn_paths_to_git(svn::revision const& rev)
 {
+    for (auto& svn_path : svn_paths_to_rewrite)
+    {
+        svn_node_kind_t kind
+            = svn::call(svn_fs_check_path, rev.fs_root, svn_path.c_str(), rev.pool);
+
+        if (kind == svn_node_none) 
+            continue;
+
+        // we simply don't know how to deal with this case.  Let's
+        // hope it never happens
+        assert(kind != svn_node_unknown); 
+    }
 }
 
 void importer::import_revision(int revnum)
