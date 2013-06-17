@@ -50,7 +50,7 @@ git_repository& importer::modify_repo(std::string const& name)
     return repo;
 }
 
-// Like path_append in rule.hpp, but never returns a path ending in
+// Like path_append in rule.hpp, but never returns a path starting or ending in
 // '/'.
 static inline std::string path_join(std::string p0, std::string const& p1)
 {
@@ -59,12 +59,15 @@ static inline std::string path_join(std::string p0, std::string const& p1)
 
     if (boost::ends_with(p0, "/"))
         p0.pop_back();
+    if (boost::starts_with(p0, "/"))
+        p0.erase(p0.begin());
 
     return p0;
 }
 
 std::string importer::delete_svn_path(std::string const& svn_path, Rule const* match)
 {
+    assert(match);
     assert(boost::starts_with(svn_path, match->svn_path()));
 
     // Find the unmatched suffix of the path
