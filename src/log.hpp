@@ -31,6 +31,7 @@ enum Level
   Trace
   };
 
+Level get_level();
 void set_level(Level value);
 void set_revision(std::size_t value);
 

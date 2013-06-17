@@ -28,6 +28,11 @@ static std::size_t revision_reported;
 static std::ostream dummy(0);
 static std::size_t num_errors = 0;
 
+Level get_level()
+  {
+  return level;
+  }
+
 void set_level(Level value)
   {
   level = value;
