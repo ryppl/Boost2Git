@@ -96,7 +96,7 @@ void importer::rewrite_svn_tree(std::string const& svn_path, Rule const* match)
         path_join(match->git_address(), path_suffix), 
         revnum,
         boost::make_function_output_iterator(
-            [&](Rule const* r){ svn_paths_to_rewrite.insert(match->svn_path()); })
+            [&](Rule const* r){ svn_paths_to_rewrite.insert(r->svn_path()); })
     );
 }
 
