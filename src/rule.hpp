@@ -68,13 +68,14 @@ struct Rule
 
     std::string git_address() const
     {
-        return repo_rule->name + ":" + branch_rule->name + ":" + prefix();
+        return repo_rule->name + ":" + branch_rule->name + ":" + git_path();
     }
 
-    std::string prefix() const
+    std::string git_path() const
     {
         return content_rule ? content_rule->git_path : std::string();
     }
+
     bool is_fallback() const
     {
         return content_rule != 0 && content_rule->is_fallback;
@@ -94,7 +95,7 @@ inline std::ostream& operator<<(std::ostream& os, Rule const& r)
             os << r.max;
         os << "] ";
     }
-    os << r.repo_rule->name << ".git:<" << r.branch_rule->name << ">:/" << r.prefix();
+    os << r.repo_rule->name << ".git:<" << r.branch_rule->name << ">:/" << r.git_path();
     return os;
 }
 

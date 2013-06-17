@@ -58,7 +58,7 @@ void importer::import_revision(int revnum)
         // This rule's Git path prefix will need to be deleted 
         auto& repo = repositories.find(r->repo_rule->name)->second;
         repo.modify_ref(r->branch_rule->name)
-            .pending_deletions.insert(r->prefix());
+            .pending_deletions.insert(r->git_path());
         changed_repositories.insert(&repo);
 
         // Invalidate SVN paths
