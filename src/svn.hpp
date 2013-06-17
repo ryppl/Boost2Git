@@ -52,7 +52,7 @@ class svn
     {
         revision(svn const& repo, int revnum);
 
-        AprPool& pool;
+        AprPool pool;
         svn_fs_root_t* fs_root;
     };
     

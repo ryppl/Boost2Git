@@ -52,7 +52,7 @@ int svn::latest_revision() const
 }
 
 svn::revision::revision(svn const& repo, int revnum)
-    : pool(svn::global_pool)
+    : pool(svn::global_pool.make_subpool())
     , fs_root(call(svn_fs_revision_root, repo.fs, revnum, pool))
 {
 }
