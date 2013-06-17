@@ -50,28 +50,28 @@ int main()
         p.insert(m);
 
     {
-        char test[] = "abracadaver";
-        assert(*p.longest_match(test, test+sizeof(test)-1, 1) == rules[2]);
-        assert(*p.longest_match(test, test+sizeof(test)-1, 3) == rules[2]);
-        assert(p.longest_match(test, test+sizeof(test)-1, 4) == 0);
+        std::string test = "abracadaver";
+        assert(*p.longest_match(test, 1) == rules[2]);
+        assert(*p.longest_match(test, 3) == rules[2]);
+        assert(p.longest_match(test, 4) == 0);
     }
 
     {
-        char test[] = "abracadabra";
-        assert(*p.longest_match(test, test+sizeof(test)-1, 3) == rules[1]);
-        assert(*p.longest_match(test, test+sizeof(test)-1, 4) == rules[4]);
-        assert(p.longest_match(test, test+sizeof(test)-1, 9) == 0);
+        std::string test = "abracadabra";
+        assert(*p.longest_match(test, 3) == rules[1]);
+        assert(*p.longest_match(test, 4) == rules[4]);
+        assert(p.longest_match(test, 9) == 0);
     }
 
     {
-        char test[] = "quantico";
-        assert(p.longest_match(test, test+sizeof(test)-1, 6) == 0);
+        std::string test = "quantico";
+        assert(p.longest_match(test, 6) == 0);
     }
 
     {
-        char test[] = "abrahamson";
-        assert(*p.longest_match(test, test+sizeof(test)-1, 1) == rules[3]);
-        assert(*p.longest_match(test, test+sizeof(test)-1, 2) == rules[2]);
-        assert(p.longest_match(test, test+sizeof(test)-1, 5) == 0);
+        std::string test = "abrahamson";
+        assert(*p.longest_match(test, 1) == rules[3]);
+        assert(*p.longest_match(test, 2) == rules[2]);
+        assert(p.longest_match(test, 5) == 0);
     }
 };

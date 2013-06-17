@@ -93,14 +93,8 @@ struct patrie
     template <class Range>
     Rule const* longest_match(Range const& r, std::size_t revision) const
     {
-        return this->longest_match(boost::begin(r), boost::end(r), revision);
-    }
-  
-    template <class Iterator>
-    Rule const* longest_match(Iterator start, Iterator finish, std::size_t revision) const
-    {
         search_visitor v(revision);
-        traverse(&this->trie, start, finish, v);
+        traverse(&this->trie, boost::begin(r), boost::end(r), v);
         if (v.found_rule)
             coverage.match(*v.found_rule, revision);
         return v.found_rule;
