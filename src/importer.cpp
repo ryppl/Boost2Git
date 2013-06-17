@@ -148,13 +148,11 @@ void importer::import_revision(int revnum)
 
     process_svn_changes(revnum);
 
-    if (Log::get_level() >= Log::Trace)
-    {
-        auto& log = Log::trace() << "SVN paths to rewrite:";
-        for (auto& p : svn_paths_to_rewrite)
-            log << " " << p;
-        log << std::endl;
-    }
+    Log::trace() 
+        << svn_paths_to_rewrite.size() 
+        << " SVN " 
+        << (svn_paths_to_rewrite.size() == 1 ? "path" : "paths")
+        << " to rewrite" << std::endl;
     
     for (auto repo : changed_repositories)
         repo->write_changes();

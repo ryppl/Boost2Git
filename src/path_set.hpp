@@ -28,8 +28,9 @@ class path_set
     typedef storage::const_iterator const_iterator;
     typedef const_iterator iterator;
 
-    const_iterator begin() { return paths.begin(); }
-    const_iterator end() { return paths.end(); }
+    std::size_t size() const { return paths.size(); }
+    const_iterator begin() const { return paths.begin(); }
+    const_iterator end() const { return paths.end(); }
 
     const_iterator insert(const_iterator _, boost::filesystem::path p)
     {
