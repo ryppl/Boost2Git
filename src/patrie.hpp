@@ -106,6 +106,13 @@ struct patrie
         subtree_search_visitor<OutputIterator> v(revision, out);
         traverse(&this->rtrie, boost::begin(git_address), boost::end(git_address), v);
     }
+
+    template <class Range, class OutputIterator>
+    void svn_subtree_rules(Range const& svn_path, std::size_t revision, OutputIterator out) const
+    {
+        subtree_search_visitor<OutputIterator> v(revision, out);
+        traverse(&this->rtrie, boost::begin(svn_path), boost::end(svn_path), v);
+    }
   
  private:
     struct node
