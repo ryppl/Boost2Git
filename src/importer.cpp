@@ -100,23 +100,10 @@ void importer::rewrite_svn_tree(std::string const& svn_path, Rule const* match, 
     );
 }
 
-void importer::import_revision(int revnum)
+void importer::process_svn_changes(int revnum)
 {
-    ((revnum % 1000) ? Log::trace() : Log::info())
-        << "importing revision " << revnum << std::endl;
-
-    svn_paths_to_rewrite.clear();
-    changed_repositories.clear();
-
-    for (Rule const* r: ruleset.matches().rules_in_transition(revnum))
-    {
-        Log::trace() << *r << " is in transition" << std::endl;
-        rewrite_svn_tree(r->svn_path(), r, revnum);
-    }
-
     svn::revision rev = svn_repository[revnum];
 
-    // invalidate all paths changed in this revision
     apr_hash_t *changes = svn::call(svn_fs_paths_changed2, rev.fs_root, rev.pool);
     for (apr_hash_index_t *i = apr_hash_first(rev.pool, changes); i; i = apr_hash_next(i))
     {
@@ -145,6 +132,28 @@ void importer::import_revision(int revnum)
             if (change->node_kind != svn_node_dir)
                 svn_paths_to_rewrite.insert(svn_path);
         }
+    }
+}
+
+void importer::import_revision(int revnum)
+{
+    ((revnum % 1000) ? Log::trace() : Log::info())
+        << "importing revision " << revnum << std::endl;
+
+    svn_paths_to_rewrite.clear();
+    changed_repositories.clear();
+
+    for (Rule const* r: ruleset.matches().rules_in_transition(revnum))
+        rewrite_svn_tree(r->svn_path(), r, revnum);
+
+    process_svn_changes(revnum);
+
+    if (Log::get_level() >= Log::Trace)
+    {
+        auto& log = Log::trace() << "SVN paths to rewrite:";
+        for (auto& p : svn_paths_to_rewrite)
+            log << " " << p;
+        log << std::endl;
     }
     
     for (auto repo : changed_repositories)
