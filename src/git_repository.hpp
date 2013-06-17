@@ -20,19 +20,23 @@ struct git_repository
     // A branch or tag
     struct ref
     {
+        ref(std::string name) 
+            : name(std::move(name)) {}
+
         typedef boost::container::flat_map<std::size_t, std::size_t> rev_mark_map;
         typedef boost::container::flat_map<std::size_t, std::size_t> path_map;
         
+        std::string name;
         rev_mark_map marks;
         path_set pending_deletions;
         path_map pending_translations;
     };
 
     ref& modify_ref(std::string const& name) 
-    { 
-        ref* r = &refs[name];
-        modified_refs.insert(r);
-        return *r;
+    {
+        auto p = refs.emplace(name, name).first;
+        modified_refs.insert(&p->second);
+        return p->second;
     }
 
     void write_changes();
