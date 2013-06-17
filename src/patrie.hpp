@@ -103,7 +103,7 @@ struct patrie
     template <class Range, class OutputIterator>
     void reverse_matches(Range const& git_address, std::size_t revision, OutputIterator out) const
     {
-        reverse_search_visitor<OutputIterator> v(revision, out);
+        subtree_search_visitor<OutputIterator> v(revision, out);
         traverse(&this->rtrie, boost::begin(git_address), boost::end(git_address), v);
     }
   
@@ -266,10 +266,11 @@ struct patrie
         Rule const* found_rule;
     };
   
+    // Finds all Rules at paths beneath the prefix being sought
     template <class OutputIterator>
-    struct reverse_search_visitor : search_visitor_base
+    struct subtree_search_visitor : search_visitor_base
     {
-        reverse_search_visitor(std::size_t revision, OutputIterator out)
+        subtree_search_visitor(std::size_t revision, OutputIterator out)
             : search_visitor_base(revision), out(out) {}
 
         // We matched all of node n
