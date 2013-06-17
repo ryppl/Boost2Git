@@ -4,6 +4,8 @@
 
 #include "git_repository.hpp"
 #include "git_executable.hpp"
+#include "log.hpp"
+
 #include <boost/filesystem.hpp>
 #include <boost/process.hpp>
 #include <array>
@@ -57,6 +59,18 @@ void git_repository::set_super_module(
 
 void git_repository::write_changes()
 {
+    // Logging
+    if (Log::get_level() >= Log::Trace)
+    {
+        Log::trace() << "Repository " << git_dir << " changed:" << std::endl;
+        for (auto r : modified_refs)
+        {
+            Log::trace() << "  ref " << r->name << " changed:" << std::endl;
+            for (auto& d : r->pending_deletions)
+                Log::trace() << "    delete " << d << std::endl;
+        }
+    }
+
     // Now that changes are written, clear all pending information
     for (auto r : modified_refs)
     {
