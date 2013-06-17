@@ -255,7 +255,9 @@ struct patrie
 
         // We matched up through position c in node n
         template <class Iterator>
-        void partial_match(node const &n, std::string::const_iterator c, Iterator start, Iterator finish)
+        void partial_match(
+            node const &n, std::string::const_iterator c, 
+            Iterator start, Iterator finish)
         {
         }
 
