@@ -10,7 +10,8 @@
 #include <boost/range/adaptor/map.hpp>
 
 git_repository::git_repository(std::string const& git_dir)
-    : created(ensure_existence(git_dir)),
+    : git_dir(git_dir),
+      created(ensure_existence(git_dir)),
       fast_import_(git_dir),
       super_module(nullptr)
 {

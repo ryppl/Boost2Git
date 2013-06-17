@@ -42,6 +42,7 @@ struct git_repository
     static bool ensure_existence(std::string const& git_dir);
 
  private: // data members
+    std::string git_dir;
     bool created;
     git_fast_import fast_import_;
     git_repository* super_module;
