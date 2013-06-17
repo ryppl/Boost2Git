@@ -46,7 +46,7 @@ static void beef_up_content(std::vector<ContentRule> &content_vector)
   {
   BOOST_FOREACH(ContentRule &content, content_vector)
     {
-    std::string const& prefix = content.prefix;
+    std::string const& prefix = content.svn_path;
     std::string& git_path = content.git_path;
     if (prefix.empty() || git_path.empty())
       {

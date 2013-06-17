@@ -62,7 +62,7 @@ struct Rule
     std::string svn_path() const
     {
         return content_rule
-            ? path_append(branch_rule->prefix, content_rule->prefix)
+            ? path_append(branch_rule->prefix, content_rule->svn_path)
             : branch_rule->prefix;
     }
 

@@ -10,7 +10,7 @@
 #include <set>
 
 BOOST_FUSION_DEFINE_STRUCT((boost2git), ContentRule,
-  (std::string, prefix)
+  (std::string, svn_path)
   (bool, is_fallback)
   (std::string, git_path)
   (int, line)
