@@ -95,7 +95,7 @@ void importer::rewrite_svn_tree(std::string const& svn_path, Rule const* match)
 
     // Mark every svn tree that's mapped into this git subtree for
     // rewriting.
-    ruleset.matches().reverse_matches(
+    ruleset.matches().git_subtree_rules(
         path_join(match->git_address(), path_suffix), 
         revnum,
         boost::make_function_output_iterator(

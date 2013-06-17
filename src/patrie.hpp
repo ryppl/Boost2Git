@@ -101,7 +101,7 @@ struct patrie
     }
   
     template <class Range, class OutputIterator>
-    void reverse_matches(Range const& git_address, std::size_t revision, OutputIterator out) const
+    void git_subtree_rules(Range const& git_address, std::size_t revision, OutputIterator out) const
     {
         subtree_search_visitor<OutputIterator> v(revision, out);
         traverse(&this->rtrie, boost::begin(git_address), boost::end(git_address), v);
