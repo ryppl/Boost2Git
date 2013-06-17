@@ -149,6 +149,17 @@ struct patrie
             }
             return print_indented(os, n.next, indent + n.text);
         }
+
+        typename vector<Rule const*>::const_iterator find_revision(std::size_t revnum) const
+        {
+            return std::lower_bound(rules.begin(), rules.end(), revnum, rule_rev_comparator());
+        }
+
+        Rule const* find_rule(std::size_t revnum) const
+        {
+            auto p = find_revision(revnum);
+            return (p != rules.end() && (*p)->min <= revnum) ? *p : 0;
+        }
     };
 
     struct rule_rev_comparator
@@ -215,8 +226,7 @@ struct patrie
             if (start != finish)
                 return;
 
-            typename vector<Rule const*>::iterator p
-                = std::lower_bound(n.rules.begin(), n.rules.end(), new_rule->max, rule_rev_comparator());
+            auto p = n.find_revision(new_rule->max);
 
             if (!(p == n.rules.end() || (*p)->min > new_rule->max))
             {
@@ -261,13 +271,8 @@ struct patrie
         template <class Iterator>
         void full_match(node const& n, Iterator start, Iterator finish)
         {
-            typename vector<Rule const*>::const_iterator p
-                = std::lower_bound(n.rules.begin(), n.rules.end(), this->revision, rule_rev_comparator());
-      
-            if (p != n.rules.end() && (*p)->min <= this->revision)
-            {
-                found_rule = *p;
-            }
+            if (auto p = n.find_rule(this->revision))
+                found_rule = p;
         }
 
         Rule const* found_rule;
