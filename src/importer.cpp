@@ -108,30 +108,40 @@ void importer::process_svn_changes(svn::revision const& rev)
     apr_hash_t *changes = svn::call(svn_fs_paths_changed2, rev.fs_root, rev.pool);
     for (apr_hash_index_t *i = apr_hash_first(rev.pool, changes); i; i = apr_hash_next(i))
     {
-        const char *svn_path = 0;
+        const char *svn_path_ = 0;
         svn_fs_path_change2_t *change = 0;
-        apr_hash_this(i, (const void**) &svn_path, nullptr, (void**) &change);
+        apr_hash_this(i, (const void**) &svn_path_, nullptr, (void**) &change);
         // According to the APR docs, this means the hash entry was
         // deleted, so it should never happen
         assert(change != nullptr); 
+        std::string const svn_path(svn_path_);
 
         // kind is one of {modify, add, delete, replace}
         if (change->change_kind == svn_fs_path_change_delete)
         {
-            Rule const* match
-                = ruleset.matches().longest_match(
-                    boost::as_literal(svn_path), revnum);
-
-            if (change->node_kind == svn_node_file)
+            Rule const* const match = ruleset.matches().longest_match(svn_path, revnum);
+            // It's perfectly fine if an SVN path being deleted isn't
+            // mapped anywhere in this revision; if the path ever
+            // *was* mapped, the ruleset transition would have
+            // handled its deletion anyway.
+            if (match)
                 delete_svn_path(svn_path, match);
-            else
-                rewrite_svn_tree(svn_path, match);
+
+            if (change->node_kind != svn_node_file)
+            {
+                // Rewrite everything that maps from a subtree of the
+                // path in question.
+                 ruleset.matches().svn_subtree_rules(
+                     svn_path, revnum,
+                     boost::make_function_output_iterator(
+                         [&](Rule const* r){ delete_svn_path(r->svn_path(), r); }));
+            }
         }
         else // all the other change kinds can be treated the same
         {
             // Git doesn't care about directory changes
             if (change->node_kind != svn_node_dir)
-                svn_paths_to_rewrite.insert(svn_path);
+                svn_paths_to_rewrite.insert(std::move(svn_path));
         }
     }
 }
