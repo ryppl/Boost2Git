@@ -23,10 +23,10 @@ struct importer
 
  private: // helpers
     git_repository* demand_repo(std::string const& name);
+    git_repository& modify_repo(std::string const& name);
     void process_svn_changes(int revnum);
     std::string delete_svn_path(std::string const& svn_path, Rule const* match);
     void rewrite_svn_tree(std::string const& svn_path, Rule const* match, int revnum);
-    git_repository& modify_repo(std::string const& name);
 
  private: // persistent members
     std::map<std::string, git_repository> repositories;
