@@ -5,10 +5,8 @@
 #include "ruleset.hpp"
 #include "svn.hpp"
 #include "log.hpp"
-#include "path_set.hpp"
 #include <boost/range/adaptor/map.hpp>
 #include <boost/function_output_iterator.hpp>
-#include <boost/container/flat_set.hpp>
 
 using boost::adaptors::map_values;
 
@@ -50,10 +48,8 @@ void importer::import_revision(int revnum)
     ((revnum % 1000) ? Log::trace() : Log::info())
         << "importing revision " << revnum << std::endl;
 
-    // Keep track of which paths in SVN need to be traversed and mapped into Git
-    path_set invalid_svn_paths;
-
-    boost::container::flat_set<git_repository*> changed_repositories;
+    invalid_svn_paths.clear();
+    changed_repositories.clear();
 
     for (Rule const* r: ruleset.matches().rules_in_transition(revnum))
     {

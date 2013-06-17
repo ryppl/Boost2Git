@@ -5,6 +5,8 @@
 # define IMPORTER_DWA2013614_HPP
 
 # include "git_repository.hpp"
+# include "path_set.hpp"
+# include <boost/container/flat_set.hpp>
 # include <map>
 
 struct Ruleset;
@@ -21,10 +23,14 @@ struct importer
  private: // helpers
     git_repository* demand_repo(std::string const& name);
 
- private: // members
+ private: // persistent members
     std::map<std::string, git_repository> repositories;
     svn const& svn_repository;
     Ruleset const& ruleset;
+
+ private: // members used per SVN revision
+    path_set invalid_svn_paths;
+    boost::container::flat_set<git_repository*> changed_repositories;
 };
 
 #endif // IMPORTER_DWA2013614_HPP
