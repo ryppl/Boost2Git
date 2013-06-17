@@ -141,10 +141,9 @@ void importer::import_revision(int revnum)
         }
         else // all the other change kinds can be treated the same
         {
-            if (change->node_kind == svn_node_file)
-            {
+            // Git doesn't care about directory changes
+            if (change->node_kind != svn_node_dir)
                 svn_paths_to_rewrite.insert(svn_path);
-            }
         }
     }
     
