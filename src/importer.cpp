@@ -128,12 +128,14 @@ void importer::process_svn_changes(svn::revision const& rev)
 
             if (change->node_kind != svn_node_file)
             {
-                // Rewrite everything that maps from a subtree of the
-                // path in question.
+                // Handle rules that map SVN subtrees of the deleted path
                  ruleset.matches().svn_subtree_rules(
                      svn_path, revnum,
+                     // Mark the target Git tree for deletion, but
+                     // also rewrite all SVN trees being mapped into a
+                     // subtree of the Git tree.
                      boost::make_function_output_iterator(
-                         [&](Rule const* r){ delete_svn_path(r->svn_path(), r); }));
+                         [&](Rule const* r){ rewrite_svn_tree(r->svn_path(), r); }));
             }
         }
         else // all the other change kinds can be treated the same
