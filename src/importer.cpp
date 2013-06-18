@@ -9,8 +9,12 @@
 #include <boost/function_output_iterator.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/range/as_literal.hpp>
+#include <svn_fs.h>
+#include <apr_hash.h>
 
 using boost::adaptors::map_values;
+using boost::as_literal;
 
 importer::importer(svn const& svn_repo, Ruleset const& ruleset)
     : svn_repository(svn_repo), ruleset(ruleset)
@@ -194,10 +198,13 @@ void importer::import_revision(int revnum)
     do
     {
         for (auto& svn_path : svn_paths_to_rewrite)
-            rewrite_svn_tree(svn_path.generic_string());
+            rewrite_svn_tree(rev, svn_path.generic_string().c_str());
 
         for (auto r : changed_repositories)
-            r->close_commit();
+        {
+            if (r->close_commit())
+                changed_repositories.erase(r);
+        }
     }
     while(!changed_repositories.empty());
 }
@@ -213,7 +220,38 @@ importer::~importer()
         repo.fast_import().close();
 }
 
-void importer::rewrite_svn_tree(std::string const& svn_path)
+void importer::rewrite_svn_tree(
+    svn::revision const& rev, char const* svn_path)
 {
-    assert(!"writeme");
+    auto& log = Log::trace() << "rewriting " << svn_path << "... ";
+    switch( svn::call(svn_fs_check_path, rev.fs_root, svn_path, rev.pool) )
+    {
+    case svn_node_none: // If it turns out there's nothing here, there's nothing to do.
+        log << "which doesn't exist (this is expected)" << std::endl;
+        return;
+    case svn_node_unknown:
+        assert(!"SVN should know the type of every node in its filesystem?!");
+        log << std::endl;
+        Log::error() << svn_path << " has unknown type!" << std::endl;
+        return;
+    case svn_node_file:
+    {
+        log << "(a file)" << std::endl;
+        Rule const* const match = ruleset.matcher().longest_match(as_literal(svn_path), revnum);
+        assert(match); // At worst the path should get caught by a fallback rule, right?
+    }
+    break;
+
+    case svn_node_dir:
+        log << "(a directory)" << std::endl;
+        apr_hash_t *entries = svn::call(svn_fs_dir_entries, rev.fs_root, svn_path, rev.pool);
+        for (apr_hash_index_t *i = apr_hash_first(rev.pool, entries); i; i = apr_hash_next(i))
+        {
+            char const* subpath;
+            void* value;
+            apr_hash_this(i, (void const **)&subpath, nullptr, nullptr);
+            rewrite_svn_tree(rev, subpath);
+        }
+        break;
+    };
 }

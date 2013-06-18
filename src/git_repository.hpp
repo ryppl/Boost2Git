@@ -55,6 +55,7 @@ struct git_repository
     std::string submodule_path;
     std::unordered_map<std::string, ref> refs;
     boost::container::flat_set<ref*> modified_refs;
+    ref* in_progress; // The fast-import process is currently writing to this ref
 };
 
 #endif // GIT_REPOSITORY_DWA2013614_HPP

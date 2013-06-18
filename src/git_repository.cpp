@@ -15,7 +15,8 @@ git_repository::git_repository(std::string const& git_dir)
     : git_dir(git_dir),
       created(ensure_existence(git_dir)),
       fast_import_(git_dir),
-      super_module(nullptr)
+      super_module(nullptr),
+      in_progress(nullptr)
 {
 }
 
@@ -71,9 +72,6 @@ bool git_repository::close_commit()
         }
     }
 
-    assert(!"FIXME");
-    return true;
-
     // Now that changes are written, clear all pending information
     for (auto r : modified_refs)
     {
@@ -81,4 +79,7 @@ bool git_repository::close_commit()
         r->pending_translations.clear();
     }
     modified_refs.clear();
+    return true;
+
+    assert(!"FIXME");
 }
