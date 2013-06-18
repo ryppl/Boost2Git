@@ -15,6 +15,7 @@
 # include <boost/range.hpp>
 # include <boost/range/iterator_range.hpp>
 # include <ostream>
+# include <climits>
 
 namespace patrie_ {
 //using boost::container::vector;
