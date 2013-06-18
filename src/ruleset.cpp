@@ -146,13 +146,13 @@ Ruleset::Ruleset(std::string const& filename)
 
         if (repo_rule.content_rules.empty())
           {
-          matches_.insert(Match(&repo_rule, branch_rule, 0));
+          matcher_.insert(Match(&repo_rule, branch_rule, 0));
           }
         else
           {
           BOOST_FOREACH(ContentRule const* content_rule, content)
             {
-            matches_.insert(
+            matcher_.insert(
                 Match(&repo_rule, branch_rule, content_rule));
             }
           }

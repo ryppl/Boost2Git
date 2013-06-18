@@ -45,9 +45,9 @@ class Ruleset
   public:
     Ruleset(std::string const& filename);
   public:
-    patrie<Rule,coverage> const& matches() const
+    patrie<Rule,coverage> const& matcher() const
       {
-      return matches_;
+      return matcher_;
       }
     std::vector<Repository> const& repositories() const
       {
@@ -58,7 +58,7 @@ class Ruleset
       return ast_;
       }
   private:
-    patrie<Rule,coverage> matches_;
+    patrie<Rule,coverage> matcher_;
     std::vector<Repository> repositories_;
     boost2git::AST ast_;
   };

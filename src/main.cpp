@@ -136,13 +136,13 @@ int main(int argc, char **argv)
 
         if (dump_rules)
         {
-            std::cout << ruleset.matches();
+            std::cout << ruleset.matcher();
             exit(0);
         }
 
         if (match_path.size() > 0)
         {
-            Rule const* r = ruleset.matches().longest_match(match_path, match_rev);
+            Rule const* r = ruleset.matcher().longest_match(match_path, match_rev);
             std::cout <<  "The path " << (r ? "was" : "wasn't") << " matched" << std::endl;
             exit(r ? 0 : 1);
         }

@@ -94,7 +94,7 @@ void importer::rewrite_svn_tree(std::string const& svn_path, Rule const* match)
 
     // Mark every svn tree that's mapped into this git subtree for
     // rewriting.
-    ruleset.matches().git_subtree_rules(
+    ruleset.matcher().git_subtree_rules(
         path_join(match->git_address(), path_suffix), 
         revnum,
         boost::make_function_output_iterator(
@@ -118,7 +118,7 @@ void importer::process_svn_changes(svn::revision const& rev)
         // kind is one of {modify, add, delete, replace}
         if (change->change_kind == svn_fs_path_change_delete)
         {
-            Rule const* const match = ruleset.matches().longest_match(svn_path, revnum);
+            Rule const* const match = ruleset.matcher().longest_match(svn_path, revnum);
             // It's perfectly fine if an SVN path being deleted isn't
             // mapped anywhere in this revision; if the path ever
             // *was* mapped, the ruleset transition would have
@@ -129,7 +129,7 @@ void importer::process_svn_changes(svn::revision const& rev)
             if (change->node_kind != svn_node_file)
             {
                 // Handle rules that map SVN subtrees of the deleted path
-                 ruleset.matches().svn_subtree_rules(
+                 ruleset.matcher().svn_subtree_rules(
                      svn_path, revnum,
                      // Mark the target Git tree for deletion, but
                      // also rewrite all SVN trees being mapped into a
@@ -173,7 +173,7 @@ void importer::import_revision(int revnum)
     changed_repositories.clear();
 
     // Deal with rules becoming active/inactive in this revision
-    for (Rule const* r: ruleset.matches().rules_in_transition(revnum))
+    for (Rule const* r: ruleset.matcher().rules_in_transition(revnum))
         rewrite_svn_tree(r->svn_path(), r);
 
     // Discover SVN paths that are being deleted/modified

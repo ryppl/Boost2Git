@@ -693,5 +693,5 @@ Repository::Transaction* SvnRevision::demandTransaction(
 
 Rule const* SvnRevision::find_match(std::string const& path, std::size_t revnum) const
   {
-  return svn.ruleset.matches().longest_match(path, revnum);
+  return svn.ruleset.matcher().longest_match(path, revnum);
   }
