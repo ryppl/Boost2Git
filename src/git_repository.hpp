@@ -39,7 +39,9 @@ struct git_repository
         return p->second;
     }
 
-    void write_changes();
+    // Returns true iff there are no further commits to make in this
+    // repository for this SVN revision.
+    bool close_commit(); 
 
  private:
     void read_logfile();

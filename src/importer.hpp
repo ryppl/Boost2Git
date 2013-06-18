@@ -29,6 +29,7 @@ struct importer
     void map_svn_paths_to_git(svn::revision const& rev);
     std::string add_svn_tree_to_delete(std::string const& svn_path, Rule const* match);
     void add_svn_tree_to_rewrite(std::string const& svn_path, Rule const* match);
+    void rewrite_svn_tree(std::string const& svn_path);
 
  private: // persistent members
     std::map<std::string, git_repository> repositories;

@@ -185,13 +185,21 @@ void importer::import_revision(int revnum)
         << " SVN " 
         << (svn_paths_to_rewrite.size() == 1 ? "path" : "paths")
         << " to rewrite" << std::endl;
-    
-    // Connect each file path in SVN with a corresponding path in a
-    // Git ref.
-    map_svn_paths_to_git(rev);
 
-    for (auto repo : changed_repositories)
-        repo->write_changes();
+    // A single SVN commit can generate commits in multiple branches
+    // of the same Git repo, but the changes in a single Git branch's
+    // commit must all be sent contiguously to the fast-import
+    // process.  Therefore, multiple passes through the rewritten SVN
+    // paths may be required.
+    do
+    {
+        for (auto& svn_path : svn_paths_to_rewrite)
+            rewrite_svn_tree(svn_path.generic_string());
+
+        for (auto r : changed_repositories)
+            r->close_commit();
+    }
+    while(!changed_repositories.empty());
 }
 
 importer::~importer()
@@ -203,4 +211,9 @@ importer::~importer()
     // closing its stream.
     for (auto& repo : repositories | map_values)
         repo.fast_import().close();
+}
+
+void importer::rewrite_svn_tree(std::string const& svn_path)
+{
+    assert(!"writeme");
 }

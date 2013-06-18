@@ -57,7 +57,7 @@ void git_repository::set_super_module(
     }
 }
 
-void git_repository::write_changes()
+bool git_repository::close_commit()
 {
     // Logging
     if (Log::get_level() >= Log::Trace)
@@ -70,6 +70,9 @@ void git_repository::write_changes()
                 Log::trace() << "    delete " << d << std::endl;
         }
     }
+
+    assert(!"FIXME");
+    return true;
 
     // Now that changes are written, clear all pending information
     for (auto r : modified_refs)
