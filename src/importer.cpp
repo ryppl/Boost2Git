@@ -64,7 +64,7 @@ static inline std::string path_join(std::string p0, std::string const& p1)
     return p0;
 }
 
-std::string importer::delete_svn_path(std::string const& svn_path, Rule const* match)
+std::string importer::add_svn_tree_to_delete(std::string const& svn_path, Rule const* match)
 {
     assert(match);
     assert(boost::starts_with(svn_path, match->svn_path()));
@@ -84,9 +84,9 @@ std::string importer::delete_svn_path(std::string const& svn_path, Rule const* m
     return path_suffix;
 }
 
-void importer::rewrite_svn_tree(std::string const& svn_path, Rule const* match)
+void importer::add_svn_tree_to_rewrite(std::string const& svn_path, Rule const* match)
 {
-    std::string path_suffix = delete_svn_path(svn_path, match);
+    std::string path_suffix = add_svn_tree_to_delete(svn_path, match);
 
     // Mark this svn_path for rewriting.  If the path is being
     // deleted this will ultimately have no effect.
@@ -124,7 +124,7 @@ void importer::process_svn_changes(svn::revision const& rev)
             // *was* mapped, the ruleset transition would have
             // handled its deletion anyway.
             if (match)
-                delete_svn_path(svn_path, match);
+                add_svn_tree_to_delete(svn_path, match);
 
             if (change->node_kind != svn_node_file)
             {
@@ -135,7 +135,7 @@ void importer::process_svn_changes(svn::revision const& rev)
                      // also rewrite all SVN trees being mapped into a
                      // subtree of the Git tree.
                      boost::make_function_output_iterator(
-                         [&](Rule const* r){ rewrite_svn_tree(r->svn_path(), r); }));
+                         [&](Rule const* r){ add_svn_tree_to_rewrite(r->svn_path(), r); }));
             }
         }
         else // all the other change kinds can be treated the same
@@ -174,7 +174,7 @@ void importer::import_revision(int revnum)
 
     // Deal with rules becoming active/inactive in this revision
     for (Rule const* r: ruleset.matcher().rules_in_transition(revnum))
-        rewrite_svn_tree(r->svn_path(), r);
+        add_svn_tree_to_rewrite(r->svn_path(), r);
 
     // Discover SVN paths that are being deleted/modified
     svn::revision rev = svn_repository[revnum];
