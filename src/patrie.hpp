@@ -28,6 +28,12 @@ struct DummyCoverage
     void match(Rule const& r, std::size_t revision) {}
 };
 
+template <class Container>
+typename Container::iterator make_mutable_iterator(Container& c, typename Container::const_iterator it)
+{
+    return c.begin() + (it - c.begin());
+}
+
 template <class Rule, class Coverage = DummyCoverage<Rule> >
 struct patrie
 {
@@ -234,7 +240,9 @@ struct patrie
                 if (!allow_overlap)
                     report_overlap(*p, new_rule);
             }
-            n.rules.insert(p, this->new_rule);
+
+            // libstdc++ did not fix n2350 yet. insert needs a mutable iterator.
+            n.rules.insert(make_mutable_iterator(n.rules, p), this->new_rule);
         }
 
         Rule const* new_rule;
