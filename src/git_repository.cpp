@@ -16,7 +16,9 @@ git_repository::git_repository(std::string const& git_dir)
       created(ensure_existence(git_dir)),
       fast_import_(git_dir),
       super_module(nullptr),
-      in_progress(nullptr)
+      last_mark(0),
+      current_revnum(0),
+      current_ref(nullptr)
 {
 }
 
@@ -75,11 +77,35 @@ bool git_repository::close_commit()
     }
 
     // Now that changes are written, clear all pending information
-    for (auto r : modified_refs)
-        r->pending_deletions.clear();
-
     modified_refs.clear();
     return true;
 
     assert(!"FIXME");
+}
+
+// I/O manipulator that sends a linefeed character with no translation
+std::ostream& LF (std::ostream& stream)
+{
+    stream.rdbuf()->sputc('\n');
+    return stream;
+}
+
+void git_repository::open_commit(int revnum)
+{
+    assert(!modified_refs.empty());
+
+    current_revnum = revnum;
+
+    current_ref = *std::prev(modified_refs.end());
+    modified_refs.erase(current_ref);
+
+    fast_import() << "commit " << current_ref->name << LF
+                  << "mark :" 
+                  << (current_ref->marks[revnum] = ++last_mark)
+                  << LF;
+
+    // Do any deletions required in this ref
+    for (auto& p : current_ref->pending_deletions)
+        fast_import() << "D " << p << LF;
+    current_ref->pending_deletions.clear();
 }

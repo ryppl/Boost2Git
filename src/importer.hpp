@@ -31,7 +31,10 @@ struct importer
         svn::revision const& rev, path const& svn_path, Rule const* match);
     void add_svn_tree_to_rewrite(
         svn::revision const& rev, path const& svn_path);
-    void rewrite_svn_tree(svn::revision const& rev, path const& svn_path);
+    void rewrite_svn_tree(
+        svn::revision const& rev, path const& svn_path, bool allow_discovery);
+    void rewrite_svn_file(
+        svn::revision const& rev, path const& svn_path, bool allow_discovery);
 
  private: // persistent members
     std::map<std::string, git_repository> repositories;

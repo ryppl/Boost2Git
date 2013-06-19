@@ -67,10 +67,11 @@ path importer::add_svn_tree_to_delete(path const& svn_path, Rule const* match)
     auto& repo = modify_repo(match->git_repo_name());
 
     // Access the ref for modification
-    auto& ref = repo.modify_ref(match->git_ref_name());
+    auto ref = repo.modify_ref(match->git_ref_name());
+    assert(ref);
 
     // Mark the git path to be deleted at the start of the commit
-    ref.pending_deletions.insert( match->git_path()/path_suffix );
+    ref->pending_deletions.insert( match->git_path()/path_suffix );
 
     return path_suffix;
 }
@@ -179,21 +180,29 @@ void importer::import_revision(int revnum)
         << (svn_paths_to_rewrite.size() == 1 ? "path" : "paths")
         << " to rewrite" << std::endl;
 
-    // A single SVN commit can generate commits in multiple branches
-    // of the same Git repo, but the changes in a single Git branch's
-    // commit must all be sent contiguously to the fast-import
-    // process.  Therefore, multiple passes through the rewritten SVN
-    // paths may be required.
+    // Though it is expected to be rare, a single SVN commit can
+    // generate commits in multiple branches of the same Git repo, but
+    // the changes in a single Git branch's commit must all be sent
+    // contiguously to the fast-import process.  Therefore, multiple
+    // passes may be required in order to handle all the changing refs
+    // in a given repository.  However, we should discover all the
+    // repositories and refs to be modified during our first pass.
+    bool allow_discovery = true;
     do
     {
+        for (auto r : changed_repositories)
+            r->open_commit(revnum);
+        
         for (auto& svn_path : svn_paths_to_rewrite)
-            rewrite_svn_tree(rev, svn_path.c_str());
+            rewrite_svn_tree(rev, svn_path.c_str(), allow_discovery);
 
         for (auto r : changed_repositories)
         {
             if (r->close_commit())
                 changed_repositories.erase(r);
         }
+
+        allow_discovery = false;
     }
     while(!changed_repositories.empty());
 }
@@ -210,7 +219,7 @@ importer::~importer()
 }
 
 void importer::rewrite_svn_tree(
-    svn::revision const& rev, path const& svn_path)
+    svn::revision const& rev, path const& svn_path, bool allow_discovery)
 {
     if (boost::contains(svn_path.str(), "/CVSROOT/"))
         return;
@@ -219,20 +228,21 @@ void importer::rewrite_svn_tree(
     switch( svn::call(svn_fs_check_path, rev.fs_root, svn_path.c_str(), rev.pool) )
     {
     case svn_node_none: // If it turns out there's nothing here, there's nothing to do.
-        assert(!"We added a non-existent path to rewrite somehow?!");
         log << std::endl;
         Log::error() << svn_path << " doesn't exist!" << std::endl;
+        assert(!"We added a non-existent path to rewrite somehow?!");
         return;
+
     case svn_node_unknown:
-        assert(!"SVN should know the type of every node in its filesystem?!");
         log << std::endl;
         Log::error() << svn_path << " has unknown type!" << std::endl;
+        assert(!"SVN should know the type of every node in its filesystem?!");
         return;
+
     case svn_node_file:
     {
         log << "(a file)" << std::endl;
-        Rule const* const match = ruleset.matcher().longest_match(svn_path.str(), revnum);
-        assert(match); // At worst the path should get caught by a fallback rule, right?
+        rewrite_svn_file(rev, svn_path, allow_discovery);
     }
     break;
 
@@ -245,8 +255,30 @@ void importer::rewrite_svn_tree(
             char const* subpath;
             void* value;
             apr_hash_this(i, (void const **)&subpath, nullptr, nullptr);
-            rewrite_svn_tree(rev, (svn_path/subpath).c_str());
+            rewrite_svn_tree(rev, (svn_path/subpath).c_str(), allow_discovery);
         }
         break;
     };
+}
+
+void importer::rewrite_svn_file(
+    svn::revision const& rev, path const& svn_path, bool allow_discovery)
+{
+    Rule const* const match = ruleset.matcher().longest_match(svn_path.str(), revnum);
+    if (!match)
+    {
+        Log::error() << "Unmatched svn path " << svn_path 
+                     << " in r" << revnum << std::endl;
+        assert(!"unmatched SVN path");
+        return;
+    }
+
+    auto* repo = demand_repo(match->git_repo_name());
+
+    // See if this repository has already been completely processed
+    // and removed from the modified list.
+    if (!allow_discovery && changed_repositories.count(repo) == 0)
+        return;
+
+    changed_repositories.insert(repo);
 }

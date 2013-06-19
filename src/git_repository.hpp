@@ -30,12 +30,17 @@ struct git_repository
         path_set pending_deletions;
     };
 
-    ref& modify_ref(std::string const& name) 
+    ref* modify_ref(std::string const& name, bool allow_discovery = true) 
     {
         auto p = refs.emplace(name, name).first;
+        if (!allow_discovery && modified_refs.count(&p->second) == 0)
+            return nullptr;
         modified_refs.insert(&p->second);
-        return p->second;
+        return &p->second;
     }
+
+    // Begins a commit
+    void open_commit(int revnum);
 
     // Returns true iff there are no further commits to make in this
     // repository for this SVN revision.
@@ -53,7 +58,9 @@ struct git_repository
     std::string submodule_path;
     std::unordered_map<std::string, ref> refs;
     boost::container::flat_set<ref*> modified_refs;
-    ref* in_progress; // The fast-import process is currently writing to this ref
+    int last_mark;       // The last commit mark written to fast-import
+    int current_revnum;  // The revision for which we've opened a commit
+    ref* current_ref;    // The fast-import process is currently writing to this ref
 };
 
 #endif // GIT_REPOSITORY_DWA2013614_HPP
