@@ -21,7 +21,7 @@ git_fast_import::git_fast_import(std::string const& git_dir)
               close_fd(outp.sink),
 #endif
               throw_on_error())),
-      stdin(iostreams::file_descriptor_sink(outp.sink, iostreams::close_handle))
+      cin(iostreams::file_descriptor_sink(outp.sink, iostreams::close_handle))
 {
 }
 

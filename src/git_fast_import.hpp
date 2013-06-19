@@ -14,7 +14,10 @@ struct git_fast_import
 {
     git_fast_import(std::string const& repo_dir);
     ~git_fast_import();
-    void close() { stdin.close(); }
+    void close() { cin.close(); }
+
+    template <class T>
+    std::ostream& operator<<(T const& x) { return this->cin << x; }
 
  private:
     static std::vector<std::string> arg_vector(std::string const& git_dir);
@@ -23,7 +26,7 @@ struct git_fast_import
     boost::process::child process;
     boost::iostreams::stream<
         boost::iostreams::file_descriptor_sink
-    > stdin;
+    > cin;
 };
 
 #endif // GIT_FAST_IMPORT_DWA2013614_HPP
