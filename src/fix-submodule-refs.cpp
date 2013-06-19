@@ -133,8 +133,8 @@ void run()
   RepoStore repo_store;
   BOOST_FOREACH(AST::const_reference repo_rule, ast)
     {
-    Repository& repo = repo_store[repo_rule.name];
-    repo.name = repo_rule.name;
+    Repository& repo = repo_store[repo_rule.git_repo_name];
+    repo.name = repo_rule.git_repo_name;
     if (!repo_rule.submodule_info.empty())
       {
       assert(repo_rule.submodule_info.size() == 2);
