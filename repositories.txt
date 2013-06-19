@@ -2560,6 +2560,7 @@ repository boost : common_branches
     "LICENSE-1.0"              : "LICENSE-1.0";
     "LICENSE_1_0.txt"          : "LICENSE_1_0.txt";
     "README"                   : "README";
+    "README.txt"               : "README.txt";
     "boost-build.jam"          : "boost-build.jam";
     "boost.css"                : "boost.css";
     "boost.png"                : "boost.png";
