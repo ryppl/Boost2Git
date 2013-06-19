@@ -48,11 +48,13 @@ int importer::last_valid_svn_revision()
     return 1; // pessimization for now.  Later we should read marks files, etc.
 }
 
-git_repository& importer::modify_repo(std::string const& name)
+git_repository* importer::modify_repo(std::string const& name, bool allow_discovery)
 {
     auto& repo = repositories.find(name)->second;
+    if (!allow_discovery && changed_repositories.count(&repo) == 0)
+        return nullptr;
     changed_repositories.insert(&repo);
-    return repo;
+    return &repo;
 }
 
 path importer::add_svn_tree_to_delete(path const& svn_path, Rule const* match)
@@ -64,10 +66,10 @@ path importer::add_svn_tree_to_delete(path const& svn_path, Rule const* match)
     path path_suffix = svn_path.sans_prefix(match->svn_path());
 
     // Access the repository for modification
-    auto& repo = modify_repo(match->git_repo_name());
+    auto* repo = modify_repo(match->git_repo_name());
 
     // Access the ref for modification
-    auto ref = repo.modify_ref(match->git_ref_name());
+    auto ref = repo->modify_ref(match->git_ref_name());
     assert(ref);
 
     // Mark the git path to be deleted at the start of the commit
@@ -187,22 +189,28 @@ void importer::import_revision(int revnum)
     // passes may be required in order to handle all the changing refs
     // in a given repository.  However, we should discover all the
     // repositories and refs to be modified during our first pass.
-    bool allow_discovery = true;
+    int pass = 0;
     do
     {
+        Log::trace() << "pass " << pass << std::endl;
+
         for (auto r : changed_repositories)
-            r->open_commit(revnum);
+            r->open_commit(rev);
         
         for (auto& svn_path : svn_paths_to_rewrite)
-            rewrite_svn_tree(rev, svn_path.c_str(), allow_discovery);
+            rewrite_svn_tree(rev, svn_path.c_str(), pass == 0);
 
+        std::vector<git_repository*> closed_repositories;
         for (auto r : changed_repositories)
         {
             if (r->close_commit())
-                changed_repositories.erase(r);
+                closed_repositories.push_back(r);
         }
 
-        allow_discovery = false;
+        for (auto r : closed_repositories)
+            changed_repositories.erase(r);
+        
+        ++pass;
     }
     while(!changed_repositories.empty());
 }
@@ -273,12 +281,12 @@ void importer::rewrite_svn_file(
         return;
     }
 
-    auto* repo = demand_repo(match->git_repo_name());
-
-    // See if this repository has already been completely processed
-    // and removed from the modified list.
-    if (!allow_discovery && changed_repositories.count(repo) == 0)
-        return;
-
-    changed_repositories.insert(repo);
+    if (auto* repo = modify_repo(match->git_repo_name(), allow_discovery))
+    {
+        if (auto* ref = repo->modify_ref(match->git_ref_name(), allow_discovery))
+        {
+            changed_repositories.insert(repo);
+            repo->open_commit(rev);
+        }
+    }
 }

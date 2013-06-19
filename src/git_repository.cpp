@@ -17,7 +17,6 @@ git_repository::git_repository(std::string const& git_dir)
       fast_import_(git_dir),
       super_module(nullptr),
       last_mark(0),
-      current_revnum(0),
       current_ref(nullptr)
 {
 }
@@ -60,27 +59,16 @@ void git_repository::set_super_module(
     }
 }
 
-// Close the current ref's commit.  Return false if there are any more
-// modified refs; true otherwise.
+// Close the current ref's commit.  Return true iff there are no more
+// modified refs
 bool git_repository::close_commit()
 {
-    // Logging
-    if (Log::get_level() >= Log::Trace)
-    {
-        Log::trace() << "Repository " << git_dir << " changed:" << std::endl;
-        for (auto r : modified_refs)
-        {
-            Log::trace() << "  ref " << r->name << " changed:" << std::endl;
-            for (auto& d : r->pending_deletions)
-                Log::trace() << "    delete " << d << std::endl;
-        }
-    }
-
-    // Now that changes are written, clear all pending information
-    modified_refs.clear();
-    return true;
-
-    assert(!"FIXME");
+    Log::trace() << "repository " << git_dir
+                 << " closing commit in ref " << current_ref->name << std::endl;
+    modified_refs.erase(current_ref);
+    current_ref = nullptr;
+    Log::trace() << modified_refs.size() << " modified refs remaining." << std::endl;
+    return modified_refs.empty();
 }
 
 // I/O manipulator that sends a linefeed character with no translation
@@ -90,19 +78,24 @@ std::ostream& LF (std::ostream& stream)
     return stream;
 }
 
-void git_repository::open_commit(int revnum)
+void git_repository::open_commit(svn::revision const& rev)
 {
+    if (current_ref) // Commit is already open
+        return;
+
     assert(!modified_refs.empty());
 
-    current_revnum = revnum;
-
     current_ref = *std::prev(modified_refs.end());
-    modified_refs.erase(current_ref);
-
+    Log::trace() << "repository " << git_dir
+                 << " opening commit in ref " << current_ref->name << std::endl;
+    int mark = ++last_mark;
+    current_ref->marks[rev.revnum] = mark;
     fast_import() << "commit " << current_ref->name << LF
-                  << "mark :" 
-                  << (current_ref->marks[revnum] = ++last_mark)
-                  << LF;
+                  << "mark :" << mark << LF
+                  << "committer " << rev.author << " " << rev.epoch << " +0000" << LF;
+
+    fast_import() << "data " << rev.log_message.size() << LF;
+    fast_import().write_raw(rev.log_message.data(), rev.log_message.size()) << LF;
 
     // Do any deletions required in this ref
     for (auto& p : current_ref->pending_deletions)

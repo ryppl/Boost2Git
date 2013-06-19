@@ -5,10 +5,11 @@
 # define GIT_REPOSITORY_DWA2013614_HPP
 
 # include "git_fast_import.hpp"
-# include <boost/container/flat_map.hpp>
 # include "path_set.hpp"
-# include <unordered_map>
+# include "svn.hpp"
+# include <boost/container/flat_map.hpp>
 # include <boost/container/flat_set.hpp>
+# include <unordered_map>
 
 struct git_repository
 {
@@ -40,7 +41,7 @@ struct git_repository
     }
 
     // Begins a commit
-    void open_commit(int revnum);
+    void open_commit(svn::revision const& rev);
 
     // Returns true iff there are no further commits to make in this
     // repository for this SVN revision.
@@ -59,7 +60,6 @@ struct git_repository
     std::unordered_map<std::string, ref> refs;
     boost::container::flat_set<ref*> modified_refs;
     int last_mark;       // The last commit mark written to fast-import
-    int current_revnum;  // The revision for which we've opened a commit
     ref* current_ref;    // The fast-import process is currently writing to this ref
 };
 
