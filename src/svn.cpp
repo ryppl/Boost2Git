@@ -68,6 +68,7 @@ static std::string get_string(apr_hash_t *revprops, char const *key)
 svn::revision::revision(svn const& repo, int revnum)
     : pool(svn::global_pool.make_subpool())
     , fs_root(call(svn_fs_revision_root, repo.fs, revnum, pool))
+    , revnum(revnum)
     , epoch(0)
 {
     apr_hash_t *revprops = call(svn_fs_revision_proplist, repo.fs, revnum, pool);
