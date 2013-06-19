@@ -54,6 +54,9 @@ class svn
 
         AprPool pool;
         svn_fs_root_t* fs_root;
+        std::string author;
+        unsigned int epoch;
+        std::string log_message;
     };
     
     revision operator[](int revnum) const

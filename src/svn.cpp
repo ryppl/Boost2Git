@@ -31,6 +31,9 @@
 #include "apr_init.hpp"
 #include "apr_pool.hpp"
 
+#include <boost/date_time/posix_time/time_parsers.hpp>
+#include <boost/date_time/posix_time/posix_time_io.hpp>
+
 AprInit apr_init;
 AprPool svn::global_pool;
 
@@ -51,8 +54,39 @@ int svn::latest_revision() const
     return call(svn_fs_youngest_rev, fs, global_pool);
 }
 
+static std::string get_string(apr_hash_t *revprops, char const *key)
+{
+    std::string result;
+    svn_string_t *str = (svn_string_t*) apr_hash_get(revprops, key, APR_HASH_KEY_STRING);
+    if (str && !svn_string_isempty(str))
+    {
+        result.append(str->data, str->len);
+    }
+    return result;
+}
+
 svn::revision::revision(svn const& repo, int revnum)
     : pool(svn::global_pool.make_subpool())
     , fs_root(call(svn_fs_revision_root, repo.fs, revnum, pool))
+    , epoch(0)
 {
+    apr_hash_t *revprops = call(svn_fs_revision_proplist, repo.fs, revnum, pool);
+
+    author = repo.authors[get_string(revprops, "svn:author")];
+    if (author.empty())
+        author = "nobody <nobody@localhost>";
+
+    std::string svndate = get_string(revprops, "svn:date");
+    if (!svndate.empty())
+    {
+        namespace dt = boost::date_time;
+        namespace pt = boost::posix_time;
+        pt::ptime ptime = dt::parse_delimited_time<pt::ptime>(svndate, 'T');
+        static pt::ptime epoch_(boost::gregorian::date(1970, 1, 1));
+        epoch = (ptime - epoch_).total_seconds();
+    }
+
+    log_message = get_string(revprops, "svn:log");
+    if (log_message.empty())
+        log_message = "** empty log message **";
 }
