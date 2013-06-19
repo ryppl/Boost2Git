@@ -3,6 +3,7 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #undef NDEBUG
+#include "path.hpp"
 #include "patrie.hpp"
 #include <boost/fusion/adapted/struct/define_struct.hpp>
 #include <cassert>
@@ -11,12 +12,12 @@ namespace patrie_test {
 
 struct Rule
 {
-    std::string match;
+    path match;
     std::string git_address_;
     int min;
     int max;
 
-    std::string svn_path() const { return match; }
+    path svn_path() const { return match; }
     std::string git_address() const { return git_address_; }
     void report_overlap() const {}
 };
@@ -38,11 +39,11 @@ int main()
     using patrie_test::Rule;
     Rule rules[5]
     = {
-        {"abrasives",   "a:b:foo/bar", 1, 3}, // 0
-        {"abracadabra", "a:b:baz",     1, 3}, // 1
+        {"abra/sives",   "a:b:foo/bar", 1, 3}, // 0
+        {"abra/cadabra", "a:b:baz",     1, 3}, // 1
         {"abra",        "a:b:fubar",   1, 3}, // 2
-        {"abrahams",    "a:b:fu/bar",  1, 1}, // 3
-        {"abracadabra", "a:b:fu/bar",  4, 5}  // 4
+        {"abra/hams",    "a:b:fu/bar",  1, 1}, // 3
+        {"abra/cadabra", "a:b:fu/bar",  4, 5}  // 4
     };
 
     patrie<Rule> p;
@@ -50,14 +51,14 @@ int main()
         p.insert(m);
 
     {
-        std::string test = "abracadaver";
+        std::string test = "abra/cadaver";
         assert(*p.longest_match(test, 1) == rules[2]);
         assert(*p.longest_match(test, 3) == rules[2]);
         assert(p.longest_match(test, 4) == 0);
     }
 
     {
-        std::string test = "abracadabra";
+        std::string test = "abra/cadabra";
         assert(*p.longest_match(test, 3) == rules[1]);
         assert(*p.longest_match(test, 4) == rules[4]);
         assert(p.longest_match(test, 9) == 0);
@@ -69,7 +70,7 @@ int main()
     }
 
     {
-        std::string test = "abrahamson";
+        std::string test = "abra/hams/on";
         assert(*p.longest_match(test, 1) == rules[3]);
         assert(*p.longest_match(test, 2) == rules[2]);
         assert(p.longest_match(test, 5) == 0);

@@ -81,12 +81,13 @@ struct patrie
         if (rule.max < UINT_MAX)
             transitions(rule.max + 1).push_back(&rule);
 
-
         coverage.declare(rule);
 
         {
             insert_visitor v(&rules.back());
-            std::string svn_path = rule.svn_path();
+            std::string svn_path = rule.svn_path().str();
+            assert(!svn_path.empty());
+            assert(svn_path[0] != '/');
             traverse(&this->trie, svn_path.begin(), svn_path.end(), v);
         }
 
@@ -282,8 +283,12 @@ struct patrie
         template <class Iterator>
         void full_match(node const& n, Iterator start, Iterator finish)
         {
-            if (auto p = n.find_rule(this->revision))
-                found_rule = p;
+            // Only record the found rule if our match occurred on a directory boundary
+            if (start == finish || *start == '/')
+            {
+                if (auto p = n.find_rule(this->revision))
+                    found_rule = p;
+            }
         }
 
         Rule const* found_rule;
