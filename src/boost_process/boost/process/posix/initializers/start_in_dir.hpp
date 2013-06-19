@@ -24,7 +24,7 @@ public:
     template <class PosixExecutor>
     void on_exec_setup(PosixExecutor&) const
     {
-        ::chdir(s_.c_str());
+        (void) ::chdir(s_.c_str());
     }
 
 private:
