@@ -4,18 +4,19 @@
 #ifndef PATH_SET_DWA2013615_HPP
 # define PATH_SET_DWA2013615_HPP
 
-#include <boost/filesystem/path.hpp>
+#include "path.hpp"
 #include <boost/algorithm/string/predicate.hpp>
 #include <algorithm>
+#include <vector>
 
 class path_set
 {
-    typedef std::vector<boost::filesystem::path> storage;
+    typedef std::vector<path> storage;
  public:
 
     path_set() {}
 
-    path_set(std::initializer_list<boost::filesystem::path> const& x)
+    path_set(std::initializer_list<path> const& x)
         : paths(x)
     {}
 
@@ -32,22 +33,22 @@ class path_set
     const_iterator begin() const { return paths.begin(); }
     const_iterator end() const { return paths.end(); }
 
-    const_iterator insert(const_iterator _, boost::filesystem::path p)
+    const_iterator insert(const_iterator _, path p)
     {
         return insert(std::move(p));
     }
 
-    const_iterator insert(boost::filesystem::path p)
+    const_iterator insert(path p)
     {
         auto start = std::lower_bound(paths.begin(), paths.end(), p);
 
         // See if a parent path is already in the set
-        if (start != paths.begin() && boost::starts_with(p, *std::prev(start)))
+        if (start != paths.begin() && p.starts_with(*std::prev(start)))
             return start;  // if so, we're done
 
         // Find the range of paths in the set that p subsumes
         auto finish = start;
-        while (finish != paths.end() && boost::algorithm::starts_with(*finish, p))
+        while (finish != paths.end() && finish->starts_with(p))
             ++finish;
 
         if (start == finish)
@@ -58,7 +59,7 @@ class path_set
         {
             // p is passed by value, so this is equivalent to, but
             // more efficient than, assignment
-            swap(*start, p); 
+            swap(*start, p);
             paths.erase(std::next(start), finish);
         }
         return start;

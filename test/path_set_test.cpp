@@ -20,4 +20,14 @@ int main()
 
     path_set expected = { "x/foo", "y/bar", "y/fu" };
     assert(s == expected);
+
+    path_set s1;
+    s1.insert("/website/public_html/live/");
+    s1.insert("/website/");
+    s1.insert("/website/public_html/beta/");
+    s1.insert("/website/public_html/beta/");
+    path_set expected1 = { "website" };
+    for (auto p : s1)
+        std::cout << p << std::endl;
+    assert(s1 == expected1);
 }
