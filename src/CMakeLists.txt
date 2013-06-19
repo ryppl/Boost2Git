@@ -7,21 +7,26 @@ project(Svn2Git CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
-# Workaround for https://svn.boost.org/trac/boost/ticket/3999#comment:6
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/override_headers)
-
-find_package(Boost REQUIRED date_time program_options regex filesystem iostreams system)
-include_directories(${Boost_INCLUDE_DIRS})
+find_package(Boost REQUIRED
+  date_time
+  program_options
+  regex
+  filesystem
+  iostreams
+  system
+  )
 
 find_package(APR REQUIRED)
-include_directories(${APR_INCLUDE_DIRS})
-
 find_package(SVN REQUIRED fs repos subr)
-include_directories(${SVN_INCLUDE_DIRS})
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/boost_process)
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/boost_process)
+include_directories(BEFORE
+  # Workaround for https://svn.boost.org/trac/boost/ticket/3999#comment:6
+  ${CMAKE_CURRENT_SOURCE_DIR}/override_headers
+  ${CMAKE_CURRENT_SOURCE_DIR}/boost_process
+  ${Boost_INCLUDE_DIRS}
+  ${APR_INCLUDE_DIRS}
+  ${SVN_INCLUDE_DIRS}
+  )
 
 add_definitions(
   -D_XOPEN_SOURCE
