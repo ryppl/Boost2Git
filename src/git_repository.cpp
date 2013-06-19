@@ -58,6 +58,8 @@ void git_repository::set_super_module(
     }
 }
 
+// Close the current ref's commit.  Return false if there are any more
+// modified refs; true otherwise.
 bool git_repository::close_commit()
 {
     // Logging
