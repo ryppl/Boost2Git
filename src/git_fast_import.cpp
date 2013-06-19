@@ -15,6 +15,7 @@ git_fast_import::git_fast_import(std::string const& git_dir)
       process(
           boost::process::execute(
               run_exe(git_executable()),
+              set_env(std::vector<std::string>({"GIT_DIR="+git_dir})),
               set_args(arg_vector(git_dir)),
               bind_stdin(iostreams::file_descriptor_source(outp.source, iostreams::close_handle)),
 #if defined(BOOST_POSIX_API)
