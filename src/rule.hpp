@@ -10,25 +10,6 @@
 # include "AST.hpp"
 # include <boost/algorithm/string/predicate.hpp>
 
-inline std::string path_append(std::string path, std::string const& append)
-{
-    if (boost::ends_with(path, "/"))
-    {
-        if (boost::starts_with(append, "/"))
-        {
-            path.resize(path.size() - 1);
-        }
-    }
-    else
-    {
-        if (!boost::starts_with(append, "/"))
-        {
-            path += '/';
-        }
-    }
-    return path + append;
-}
-
 struct Rule
 {
     Rule(
@@ -59,16 +40,16 @@ struct Rule
             && lhs.max == rhs.max;
     }
 
-    std::string svn_path() const
+    path svn_path() const
     {
         return content_rule
-            ? path_append(branch_rule->svn_path, content_rule->svn_path)
+            ? branch_rule->svn_path / content_rule->svn_path
             : branch_rule->svn_path;
     }
 
     std::string git_address() const
     {
-        return git_repo_name() +  ":" + git_ref_name() + ":" + git_path();
+        return git_repo_name() +  ":" + git_ref_name() + ":" + git_path().str();
     }
 
     std::string git_repo_name() const
@@ -76,9 +57,9 @@ struct Rule
         return repo_rule->git_repo_name;
     }
 
-    std::string git_path() const
+    path git_path() const
     {
-        return content_rule ? content_rule->git_path : std::string();
+        return content_rule ? content_rule->git_path : path();
     }
 
     std::string git_ref_name() const

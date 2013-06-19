@@ -5,10 +5,9 @@
 #include "ruleset.hpp"
 #include "svn.hpp"
 #include "log.hpp"
+#include "path.hpp"
 #include <boost/range/adaptor/map.hpp>
 #include <boost/function_output_iterator.hpp>
-#include <boost/algorithm/string/trim.hpp>
-#include <boost/algorithm/string/predicate.hpp>
 #include <boost/range/as_literal.hpp>
 #include <svn_fs.h>
 #include <apr_hash.h>
@@ -56,25 +55,13 @@ git_repository& importer::modify_repo(std::string const& name)
     return repo;
 }
 
-// Like path_append in rule.hpp, but never returns a path starting or ending in
-// '/'.
-static inline std::string path_join(std::string p0, std::string const& p1)
-{
-    if (!p1.empty()) // optimize a common case
-        p0 = path_append(std::move(p0), p1);
-
-    boost::algorithm::trim_if(p0, boost::is_any_of("/"));
-
-    return p0;
-}
-
-std::string importer::add_svn_tree_to_delete(std::string const& svn_path, Rule const* match)
+path importer::add_svn_tree_to_delete(path const& svn_path, Rule const* match)
 {
     assert(match);
-    assert(boost::starts_with(svn_path, match->svn_path()));
+    assert(svn_path.starts_with(match->svn_path()));
 
     // Find the unmatched suffix of the path
-    std::string path_suffix = svn_path.substr(match->svn_path().size());
+    path path_suffix = svn_path.sans_prefix(match->svn_path());
 
     // Access the repository for modification
     auto& repo = modify_repo(match->git_repo_name());
@@ -83,22 +70,26 @@ std::string importer::add_svn_tree_to_delete(std::string const& svn_path, Rule c
     auto& ref = repo.modify_ref(match->git_ref_name());
 
     // Mark the git path to be deleted at the start of the commit
-    ref.pending_deletions.insert(path_join(match->git_path(), path_suffix));
+    ref.pending_deletions.insert( match->git_path()/path_suffix );
 
     return path_suffix;
 }
 
 void importer::invalidate_svn_tree(
-    svn::revision const& rev, std::string const& svn_path, Rule const* match)
+    svn::revision const& rev, path const& svn_path, Rule const* match)
 {
-    std::string path_suffix = add_svn_tree_to_delete(svn_path, match);
+    path path_suffix = add_svn_tree_to_delete(svn_path, match);
 
     add_svn_tree_to_rewrite(rev, svn_path);
 
     // Mark every svn tree that's mapped into the rule's git subtree for
     // rewriting.
+
     ruleset.matcher().git_subtree_rules(
-        path_join(match->git_address(), path_suffix), 
+        // FIXME: concatenating a subpath to a git address is pretty ugly!
+        match->git_address() 
+        + (match->git_path().str().empty() ? "" : "/") 
+        + path_suffix.str(), 
         revnum,
         boost::make_function_output_iterator(
             [&](Rule const* r){ add_svn_tree_to_rewrite(rev, r->svn_path()); })
@@ -106,7 +97,7 @@ void importer::invalidate_svn_tree(
 }
 
 void importer::add_svn_tree_to_rewrite(
-    svn::revision const& rev, std::string const& svn_path)
+    svn::revision const& rev, path const& svn_path)
 {
     // Mark this svn_path for rewriting.  
     auto kind = svn::call(
@@ -129,12 +120,12 @@ void importer::process_svn_changes(svn::revision const& rev)
         // According to the APR docs, this means the hash entry was
         // deleted, so it should never happen
         assert(change != nullptr); 
-        std::string const svn_path(svn_path_);
+        path const svn_path(svn_path_);
 
         // kind is one of {modify, add, delete, replace}
         if (change->change_kind == svn_fs_path_change_delete)
         {
-            Rule const* const match = ruleset.matcher().longest_match(svn_path, revnum);
+            Rule const* const match = ruleset.matcher().longest_match(svn_path.str(), revnum);
             // It's perfectly fine if an SVN path being deleted isn't
             // mapped anywhere in this revision; if the path ever
             // *was* mapped, the ruleset transition would have
@@ -146,7 +137,7 @@ void importer::process_svn_changes(svn::revision const& rev)
             {
                 // Handle rules that map SVN subtrees of the deleted path
                  ruleset.matcher().svn_subtree_rules(
-                     svn_path, revnum,
+                     svn_path.str(), revnum,
                      // Mark the target Git tree for deletion, but
                      // also rewrite all SVN trees being mapped into a
                      // subtree of the Git tree.
@@ -219,9 +210,9 @@ importer::~importer()
 }
 
 void importer::rewrite_svn_tree(
-    svn::revision const& rev, std::string const& svn_path)
+    svn::revision const& rev, path const& svn_path)
 {
-    if (boost::contains(svn_path, "/CVSROOT/"))
+    if (boost::contains(svn_path.str(), "/CVSROOT/"))
         return;
 
     auto& log = Log::trace() << "rewriting " << svn_path << "... ";
@@ -240,21 +231,21 @@ void importer::rewrite_svn_tree(
     case svn_node_file:
     {
         log << "(a file)" << std::endl;
-        std::string pth = boost::starts_with(svn_path, "/") ? svn_path : "/" + svn_path;
-        Rule const* const match = ruleset.matcher().longest_match(pth, revnum);
+        Rule const* const match = ruleset.matcher().longest_match(svn_path.str(), revnum);
         assert(match); // At worst the path should get caught by a fallback rule, right?
     }
     break;
 
     case svn_node_dir:
         log << "(a directory)" << std::endl;
-        apr_hash_t *entries = svn::call(svn_fs_dir_entries, rev.fs_root, svn_path.c_str(), rev.pool);
-        for (apr_hash_index_t *i = apr_hash_first(rev.pool, entries); i; i = apr_hash_next(i))
+        AprPool dir_pool = rev.pool.make_subpool();
+        apr_hash_t *entries = svn::call(svn_fs_dir_entries, rev.fs_root, svn_path.c_str(), dir_pool);
+        for (apr_hash_index_t *i = apr_hash_first(dir_pool, entries); i; i = apr_hash_next(i))
         {
             char const* subpath;
             void* value;
             apr_hash_this(i, (void const **)&subpath, nullptr, nullptr);
-            rewrite_svn_tree(rev, path_join(svn_path, subpath).c_str());
+            rewrite_svn_tree(rev, (svn_path/subpath).c_str());
         }
         break;
     };

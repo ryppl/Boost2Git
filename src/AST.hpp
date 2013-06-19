@@ -4,22 +4,23 @@
 #ifndef AST_DWA2013425_HPP
 # define AST_DWA2013425_HPP
 
+# include "path.hpp"
 #include <boost/fusion/adapted/struct/define_struct.hpp>
 #include <vector>
 #include <string>
 #include <set>
 
 BOOST_FUSION_DEFINE_STRUCT((boost2git), ContentRule,
-  (std::string, svn_path)
+  (path, svn_path)
   (bool, is_fallback)
-  (std::string, git_path)
+  (path, git_path)
   (int, line)
   )
 
 BOOST_FUSION_DEFINE_STRUCT((boost2git), BranchRule,
   (std::size_t, min)
   (std::size_t, max)
-  (std::string, svn_path)
+  (path, svn_path)
   (std::string, git_branch_or_tag_name)
   (int, line)
   (char const*, git_ref_qualifier)

@@ -40,25 +40,6 @@ static void set_git_ref_qualifier(boost2git::BranchRule& branch, char const* qua
 using namespace boost2git;
 using boost::spirit::make_default_multi_pass;
 
-// robustness: if prefix of content ends with "/",
-// make sure git_path ends with "/" too (unless it is empty).
-static void beef_up_content(std::vector<ContentRule> &content_vector)
-  {
-  BOOST_FOREACH(ContentRule &content, content_vector)
-    {
-    std::string const& prefix = content.svn_path;
-    std::string& git_path = content.git_path;
-    if (prefix.empty() || git_path.empty())
-      {
-      continue;
-      }
-    if (boost::ends_with(prefix, "/") && !boost::ends_with(git_path, "/"))
-      {
-      git_path += "/";
-      }
-    }
-  }
-
 template<typename Iterator, typename Skipper>
 struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
   {
@@ -73,7 +54,7 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
       > -(qi::lit("submodule") > qi::lit("of") > string_ > ':' > string_ > ';')
       > (("minrev" > qi::uint_ > ';') | qi::attr(0))
       > (("maxrev" > qi::uint_ > ';') | qi::attr(UINT_MAX))
-      > -content_[phoenix::bind(beef_up_content, qi::_1)]
+      > -content_
       > -branches_
       > -tags_
       > '}'

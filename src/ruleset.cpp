@@ -169,7 +169,7 @@ Ruleset::Ruleset(std::string const& filename)
 void report_overlap(Rule const* rule0, Rule const* rule1)
 {
     throw std::runtime_error(
-        "found duplicate rule: " + rule1->svn_path()
+        "found duplicate rule: " + rule1->svn_path().str()
         + "\n"
         + options.rules_file + ":" + to_string(rule1->branch_rule->line)
         + ": error: duplicate rule branch fragment\n"
