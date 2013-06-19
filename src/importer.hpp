@@ -27,8 +27,11 @@ struct importer
     git_repository& modify_repo(std::string const& name);
     void process_svn_changes(svn::revision const& rev);
     std::string add_svn_tree_to_delete(std::string const& svn_path, Rule const* match);
-    void add_svn_tree_to_rewrite(std::string const& svn_path, Rule const* match);
-    void rewrite_svn_tree(svn::revision const& rev, char const* svn_path);
+    void invalidate_svn_tree(
+        svn::revision const& rev, std::string const& svn_path, Rule const* match);
+    void add_svn_tree_to_rewrite(
+        svn::revision const& rev, std::string const& svn_path);
+    void rewrite_svn_tree(svn::revision const& rev, std::string const& svn_path);
 
  private: // persistent members
     std::map<std::string, git_repository> repositories;
