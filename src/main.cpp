@@ -27,6 +27,7 @@
 #include "svn.hpp"
 #include "log.hpp"
 #include "importer.hpp"
+#include "git_executable.hpp"
 
 #include <utility>
 
@@ -156,6 +157,8 @@ int main(int argc, char **argv)
 
         if (max_rev < 1)
             max_rev = svn_repo.latest_revision();
+
+        Log::info() << "Using git exectuable: " << git_executable() << std::endl;
 
         for (int i = imp.last_valid_svn_revision(); i <= max_rev; ++i)
             imp.import_revision(i);

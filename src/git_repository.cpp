@@ -71,17 +71,10 @@ bool git_repository::close_commit()
     return modified_refs.empty();
 }
 
-// I/O manipulator that sends a linefeed character with no translation
-std::ostream& LF (std::ostream& stream)
-{
-    stream.rdbuf()->sputc('\n');
-    return stream;
-}
-
-void git_repository::open_commit(svn::revision const& rev)
+git_repository::ref* git_repository::open_commit(svn::revision const& rev)
 {
     if (current_ref) // Commit is already open
-        return;
+        return current_ref;
 
     assert(!modified_refs.empty());
 
@@ -90,15 +83,11 @@ void git_repository::open_commit(svn::revision const& rev)
                  << " opening commit in ref " << current_ref->name << std::endl;
     int mark = ++last_mark;
     current_ref->marks[rev.revnum] = mark;
-    fast_import() << "commit " << current_ref->name << LF
-                  << "mark :" << mark << LF
-                  << "committer " << rev.author << " " << rev.epoch << " +0000" << LF;
-
-    fast_import() << "data " << rev.log_message.size() << LF;
-    fast_import().write_raw(rev.log_message.data(), rev.log_message.size()) << LF;
+    fast_import().commit(current_ref->name, mark, rev.author, rev.epoch, rev.log_message);
 
     // Do any deletions required in this ref
     for (auto& p : current_ref->pending_deletions)
-        fast_import() << "D " << p << LF;
+        fast_import().filedelete(p);
     current_ref->pending_deletions.clear();
+    return current_ref;
 }

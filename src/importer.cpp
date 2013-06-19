@@ -269,6 +269,27 @@ void importer::rewrite_svn_tree(
     };
 }
 
+extern "C"
+{
+    svn_error_t *fast_import_raw_bytes(void *baton, const char *data, apr_size_t *len)
+    {
+        auto& fast_import = *static_cast<git_fast_import*>(baton);
+        try
+        {
+            fast_import.write_raw(data, *len);
+            return SVN_NO_ERROR;
+        }
+        catch(std::exception const& e)
+        {
+            return svn_error_createf(APR_EOF, SVN_NO_ERROR, "%s", e.what());
+        }
+        catch(...)
+        {
+            return svn_error_createf(APR_EOF, SVN_NO_ERROR, "unknown error");
+        }
+    }
+}
+
 void importer::rewrite_svn_file(
     svn::revision const& rev, path const& svn_path, bool allow_discovery)
 {
@@ -281,12 +302,37 @@ void importer::rewrite_svn_file(
         return;
     }
 
-    if (auto* repo = modify_repo(match->git_repo_name(), allow_discovery))
+    if (auto* dst_repo = modify_repo(match->git_repo_name(), allow_discovery))
     {
-        if (auto* ref = repo->modify_ref(match->git_ref_name(), allow_discovery))
+        if (auto* dst_ref = dst_repo->modify_ref(match->git_ref_name(), allow_discovery))
         {
-            changed_repositories.insert(repo);
-            repo->open_commit(rev);
+            changed_repositories.insert(dst_repo);
+            if (dst_repo->open_commit(rev) == dst_ref)
+            {
+                auto& fast_import = dst_repo->fast_import();
+
+                fast_import.filemodify_hdr(
+                    match->git_path()/svn_path.sans_prefix(match->svn_path()) );
+
+                auto file_length = svn::call(
+                    svn_fs_file_length, rev.fs_root, svn_path.c_str(), rev.pool);
+
+                AprPool scope = rev.pool.make_subpool();
+                svn_stream_t* in_stream = svn::call(
+                    svn_fs_file_contents, rev.fs_root, svn_path.c_str(), scope);
+
+                // If it's a symlink, we may need to lop 5 bytes off the front of the stream.
+                /*
+                svn_string_t *special = svn::call(
+                    svn_fs_node_prop, rev.fs_root, svn_path.c_str(), "svn:special", scope);
+                */
+
+                fast_import.data_hdr(file_length);
+		svn_stream_t* out_stream = svn_stream_create(&fast_import, scope);
+                svn_stream_set_write(out_stream, fast_import_raw_bytes);
+                check_svn(svn_stream_copy3(in_stream, out_stream, nullptr, nullptr, scope));
+                fast_import << LF;
+            }
         }
     }
 }

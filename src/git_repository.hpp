@@ -40,8 +40,8 @@ struct git_repository
         return &p->second;
     }
 
-    // Begins a commit
-    void open_commit(svn::revision const& rev);
+    // Begins a commit; returns the ref currently being written.
+    ref* open_commit(svn::revision const& rev);
 
     // Returns true iff there are no further commits to make in this
     // repository for this SVN revision.

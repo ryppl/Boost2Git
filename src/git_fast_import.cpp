@@ -4,6 +4,8 @@
 
 #include "git_fast_import.hpp"
 #include "git_executable.hpp"
+#include "path.hpp"
+
 #include <boost/iostreams/device/file_descriptor.hpp>
 
 using namespace boost::process::initializers;
@@ -39,4 +41,46 @@ std::vector<std::string>
 git_fast_import::arg_vector(std::string const& git_dir)
 {
     return { git_executable(), "fast-import", "--quiet" };
+}
+
+git_fast_import& git_fast_import::write_raw(char const* data, std::size_t nbytes)
+{
+    if (Log::get_level() >= Log::Trace)
+        std::cerr << "fast-import <= " << nbytes << " raw bytes." << std::flush;
+    cin.write(data, nbytes);
+    return *this;
+}
+
+// Just writes the header.  
+git_fast_import& git_fast_import::data_hdr(std::size_t size)
+{
+    return *this << "data " << size << LF;
+}
+
+git_fast_import& git_fast_import::data(char const* data, std::size_t size)
+{
+    return data_hdr(size).write_raw(data, size) << LF;
+}
+
+git_fast_import& git_fast_import::commit(
+    std::string const& ref_name, 
+    std::size_t mark, 
+    std::string const& author,
+    unsigned long epoch,
+    std::string const& log_message)
+{
+    *this << "commit " << ref_name << LF
+          << "mark :" << mark << LF
+          << "committer " << author << " " << epoch << " +0000" << LF;
+    return data(log_message.data(), log_message.size());
+}
+
+git_fast_import& git_fast_import::filedelete(path const& p)
+{
+    return *this << "D " << p << LF;
+}
+
+git_fast_import& git_fast_import::filemodify_hdr(path const& p)
+{
+    return *this << "M 100644 inline " << p << LF;
 }

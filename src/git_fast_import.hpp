@@ -14,6 +14,15 @@
 
 # include <iostream>
 
+struct path;
+
+// I/O manipulator that sends a linefeed character with no translation
+inline std::ostream& LF (std::ostream& stream)
+{
+    stream.rdbuf()->sputc('\n');
+    return stream;
+}
+
 struct git_fast_import
 {
     git_fast_import(std::string const& repo_dir);
@@ -29,18 +38,23 @@ struct git_fast_import
         return *this;
     }
 
-    git_fast_import& write_raw(char const* data, std::size_t nbytes)
-    {
-        if (Log::get_level() >= Log::Trace)
-            std::cerr << "fast-import <= " << nbytes << " raw bytes." << std::endl << std::flush;
-        while (nbytes > 0)
-        {
-            std::streamsize chunk = cin.rdbuf()->sputn(data, nbytes);
-            data += chunk;
-            nbytes -= chunk;
-        }
-        return *this;
-    }
+    git_fast_import& data(char const* data, std::size_t size);
+
+    git_fast_import& commit(
+        std::string const& ref_name, 
+        std::size_t mark, 
+        std::string const& author,
+        unsigned long epoch,
+        std::string const& log_message);
+
+    git_fast_import& filedelete(path const& p);
+    
+    git_fast_import& filemodify_hdr(path const& p);
+
+    git_fast_import& write_raw(char const* data, std::size_t nbytes);
+
+    // Just writes the header.  
+    git_fast_import& data_hdr(std::size_t size);
 
  private:
     static std::vector<std::string> arg_vector(std::string const& git_dir);
