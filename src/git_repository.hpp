@@ -24,12 +24,10 @@ struct git_repository
             : name(std::move(name)) {}
 
         typedef boost::container::flat_map<std::size_t, std::size_t> rev_mark_map;
-        typedef boost::container::flat_map<std::string, std::string> path_map;
         
         std::string name;
         rev_mark_map marks;
         path_set pending_deletions;
-        path_map pending_translations;
     };
 
     ref& modify_ref(std::string const& name) 

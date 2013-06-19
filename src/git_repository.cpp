@@ -76,10 +76,8 @@ bool git_repository::close_commit()
 
     // Now that changes are written, clear all pending information
     for (auto r : modified_refs)
-    {
         r->pending_deletions.clear();
-        r->pending_translations.clear();
-    }
+
     modified_refs.clear();
     return true;
 
