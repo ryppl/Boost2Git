@@ -16,7 +16,7 @@ using boost::adaptors::map_values;
 using boost::as_literal;
 
 importer::importer(svn const& svn_repo, Ruleset const& ruleset)
-    : svn_repository(svn_repo), ruleset(ruleset)
+    : svn_repository(svn_repo), ruleset(ruleset), revnum(0)
 {
     for(auto const& rule : ruleset.repositories())
     {
@@ -27,11 +27,13 @@ importer::importer(svn const& svn_repo, Ruleset const& ruleset)
     }
 }
 
+// Return a pointer to a git_repository object having the given
+// repository name.  If name is empty, return null
 inline git_repository*
 importer::demand_repo(std::string const& name)
 {
     if (name.empty())
-        return 0;
+        return nullptr;
 
     auto p = repositories.find(name);
     if (p == repositories.end())
@@ -43,15 +45,17 @@ importer::demand_repo(std::string const& name)
     return &p->second;
 };
 
+// Return the number of the last SVN revision that was successfully
+// convertd to Git
 int importer::last_valid_svn_revision()
 {
-    return 1; // pessimization for now.  Later we should read marks files, etc.
+    return revnum;
 }
 
-git_repository* importer::modify_repo(std::string const& name, bool allow_discovery)
+git_repository* importer::modify_repo(std::string const& name, bool discover_changes)
 {
     auto& repo = repositories.find(name)->second;
-    if (!allow_discovery && changed_repositories.count(&repo) == 0)
+    if (!discover_changes && changed_repositories.count(&repo) == 0)
         return nullptr;
     changed_repositories.insert(&repo);
     return &repo;
@@ -83,7 +87,7 @@ void importer::invalidate_svn_tree(
 {
     path path_suffix = add_svn_tree_to_delete(svn_path, match);
 
-    add_svn_tree_to_rewrite(rev, svn_path);
+    add_svn_tree_to_convert(rev, svn_path);
 
     // Mark every svn tree that's mapped into the rule's git subtree for
     // rewriting.
@@ -95,11 +99,11 @@ void importer::invalidate_svn_tree(
         + path_suffix.str(), 
         revnum,
         boost::make_function_output_iterator(
-            [&](Rule const* r){ add_svn_tree_to_rewrite(rev, r->svn_path()); })
+            [&](Rule const* r){ add_svn_tree_to_convert(rev, r->svn_path()); })
     );
 }
 
-void importer::add_svn_tree_to_rewrite(
+void importer::add_svn_tree_to_convert(
     svn::revision const& rev, path const& svn_path)
 {
     // Mark this svn_path for rewriting.  
@@ -107,8 +111,8 @@ void importer::add_svn_tree_to_rewrite(
         svn_fs_check_path, rev.fs_root, svn_path.c_str(), rev.pool);
 
     if (kind != svn_node_none) {
-        Log::trace() << "adding " << svn_path << " for rewrite" << std::endl;
-        svn_paths_to_rewrite.insert(svn_path);
+        Log::trace() << "adding " << svn_path << " for conversion" << std::endl;
+        svn_paths_to_convert.insert(svn_path);
     }
 }
 
@@ -142,7 +146,7 @@ void importer::process_svn_changes(svn::revision const& rev)
                  ruleset.matcher().svn_subtree_rules(
                      svn_path.str(), revnum,
                      // Mark the target Git tree for deletion, but
-                     // also rewrite all SVN trees being mapped into a
+                     // also convert all SVN trees being mapped into a
                      // subtree of the Git tree.
                      boost::make_function_output_iterator(
                          [&](Rule const* r){ 
@@ -153,7 +157,7 @@ void importer::process_svn_changes(svn::revision const& rev)
         {
             // Git doesn't care about directory changes
             if (change->node_kind != svn_node_dir)
-                add_svn_tree_to_rewrite(rev, svn_path);
+                add_svn_tree_to_convert(rev, svn_path);
         }
     }
 }
@@ -164,10 +168,19 @@ void importer::import_revision(int revnum)
         << "importing revision " << revnum << std::endl;
 
     this->revnum = revnum;
-    svn_paths_to_rewrite.clear();
-    changed_repositories.clear();
-
     svn::revision rev = svn_repository[revnum];
+
+    // Importing an SVN revision happens in two phases.  In the first
+    // phase we discover actions to be performed: Git subtrees that
+    // must be deleted and SVN subtrees whose files must be
+    // (re-)convertd to Git.  In the second phase, we actually do
+    // those deletions and translations.
+
+    //
+    // Phase I: Action Discovery.  
+    //
+    svn_paths_to_convert.clear();
+    changed_repositories.clear();
 
     // Deal with rules becoming active/inactive in this revision
     for (Rule const* r: ruleset.matcher().rules_in_transition(revnum))
@@ -177,18 +190,30 @@ void importer::import_revision(int revnum)
     process_svn_changes(rev);
 
     Log::trace() 
-        << svn_paths_to_rewrite.size() 
+        << svn_paths_to_convert.size() 
         << " SVN " 
-        << (svn_paths_to_rewrite.size() == 1 ? "path" : "paths")
-        << " to rewrite" << std::endl;
+        << (svn_paths_to_convert.size() == 1 ? "path" : "paths")
+        << " to convert" << std::endl;
+
+    //
+    // Phase II: Writing to Git
+    //
 
     // Though it is expected to be rare, a single SVN commit can
-    // generate commits in multiple branches of the same Git repo, but
-    // the changes in a single Git branch's commit must all be sent
-    // contiguously to the fast-import process.  Therefore, multiple
-    // passes may be required in order to handle all the changing refs
-    // in a given repository.  However, we should discover all the
-    // repositories and refs to be modified during our first pass.
+    // generate commits in multiple refs of the same Git repo.
+    // However, all the changes in a single Git ref's commit must all
+    // be sent contiguously to the fast-import process.  Therefore,
+    // for each Git ref that must be committed during this SVN
+    // revision, a separate pass over the SVN trees to convert is
+    // required.
+    //
+    // During each pass, we map SVN paths to Git, and may discover Git
+    // repositories and refs to that need to be committed in this SVN
+    // revision.  As we handle refs and repositories, we remove them
+    // from the set of changed things.  To avoid processing them
+    // again, this discovery is only enabled in the first pass.  This
+    // explains the "discover_changes" parameters you see in many of
+    // this class' member functions.
     int pass = 0;
     do
     {
@@ -197,8 +222,8 @@ void importer::import_revision(int revnum)
         for (auto r : changed_repositories)
             r->open_commit(rev);
         
-        for (auto& svn_path : svn_paths_to_rewrite)
-            rewrite_svn_tree(rev, svn_path.c_str(), pass == 0);
+        for (auto& svn_path : svn_paths_to_convert)
+            convert_svn_tree(rev, svn_path.c_str(), pass == 0);
 
         std::vector<git_repository*> closed_repositories;
         for (auto r : changed_repositories)
@@ -226,8 +251,8 @@ importer::~importer()
         repo.fast_import().close();
 }
 
-void importer::rewrite_svn_tree(
-    svn::revision const& rev, path const& svn_path, bool allow_discovery)
+void importer::convert_svn_tree(
+    svn::revision const& rev, path const& svn_path, bool discover_changes)
 {
     if (boost::contains(svn_path.str(), "/CVSROOT/"))
         return;
@@ -238,7 +263,7 @@ void importer::rewrite_svn_tree(
     case svn_node_none: // If it turns out there's nothing here, there's nothing to do.
         log << std::endl;
         Log::error() << svn_path << " doesn't exist!" << std::endl;
-        assert(!"We added a non-existent path to rewrite somehow?!");
+        assert(!"We added a non-existent path to convert somehow?!");
         return;
 
     case svn_node_unknown:
@@ -250,7 +275,7 @@ void importer::rewrite_svn_tree(
     case svn_node_file:
     {
         log << "(a file)" << std::endl;
-        rewrite_svn_file(rev, svn_path, allow_discovery);
+        convert_svn_file(rev, svn_path, discover_changes);
     }
     break;
 
@@ -263,7 +288,7 @@ void importer::rewrite_svn_tree(
             char const* subpath;
             void* value;
             apr_hash_this(i, (void const **)&subpath, nullptr, nullptr);
-            rewrite_svn_tree(rev, (svn_path/subpath).c_str(), allow_discovery);
+            convert_svn_tree(rev, (svn_path/subpath).c_str(), discover_changes);
         }
         break;
     };
@@ -290,8 +315,8 @@ extern "C"
     }
 }
 
-void importer::rewrite_svn_file(
-    svn::revision const& rev, path const& svn_path, bool allow_discovery)
+void importer::convert_svn_file(
+    svn::revision const& rev, path const& svn_path, bool discover_changes)
 {
     Rule const* const match = ruleset.matcher().longest_match(svn_path.str(), revnum);
     if (!match)
@@ -302,9 +327,9 @@ void importer::rewrite_svn_file(
         return;
     }
 
-    if (auto* dst_repo = modify_repo(match->git_repo_name(), allow_discovery))
+    if (auto* dst_repo = modify_repo(match->git_repo_name(), discover_changes))
     {
-        if (auto* dst_ref = dst_repo->modify_ref(match->git_ref_name(), allow_discovery))
+        if (auto* dst_ref = dst_repo->modify_ref(match->git_ref_name(), discover_changes))
         {
             changed_repositories.insert(dst_repo);
             if (dst_repo->open_commit(rev) == dst_ref)

@@ -24,17 +24,17 @@ struct importer
 
  private: // helpers
     git_repository* demand_repo(std::string const& name);
-    git_repository* modify_repo(std::string const& name, bool allow_discovery = true);
+    git_repository* modify_repo(std::string const& name, bool discover_changes = true);
     void process_svn_changes(svn::revision const& rev);
     path add_svn_tree_to_delete(path const& svn_path, Rule const* match);
     void invalidate_svn_tree(
         svn::revision const& rev, path const& svn_path, Rule const* match);
-    void add_svn_tree_to_rewrite(
+    void add_svn_tree_to_convert(
         svn::revision const& rev, path const& svn_path);
-    void rewrite_svn_tree(
-        svn::revision const& rev, path const& svn_path, bool allow_discovery);
-    void rewrite_svn_file(
-        svn::revision const& rev, path const& svn_path, bool allow_discovery);
+    void convert_svn_tree(
+        svn::revision const& rev, path const& svn_path, bool discover_changes);
+    void convert_svn_file(
+        svn::revision const& rev, path const& svn_path, bool discover_changes);
 
  private: // persistent members
     std::map<std::string, git_repository> repositories;
@@ -43,7 +43,7 @@ struct importer
 
  private: // members used per SVN revision
     int revnum;
-    path_set svn_paths_to_rewrite;
+    path_set svn_paths_to_convert;
     boost::container::flat_set<git_repository*> changed_repositories;
 };
 
