@@ -59,11 +59,15 @@ struct git_fast_import
  private:
     static std::vector<std::string> arg_vector(std::string const& git_dir);
 
+    boost::process::pipe inp;
     boost::process::pipe outp;
     boost::process::child process;
     boost::iostreams::stream<
         boost::iostreams::file_descriptor_sink
     > cin;
+    boost::iostreams::stream<
+        boost::iostreams::file_descriptor_source
+    > cout;
 };
 
 #endif // GIT_FAST_IMPORT_DWA2013614_HPP

@@ -13,18 +13,22 @@ using namespace boost::process;
 namespace iostreams = boost::iostreams;
 
 git_fast_import::git_fast_import(std::string const& git_dir)
-    : outp(boost::process::create_pipe()),
+    : inp(boost::process::create_pipe()),
+      outp(boost::process::create_pipe()),
       process(
           boost::process::execute(
               run_exe(git_executable()),
               set_env(std::vector<std::string>({"GIT_DIR="+git_dir})),
               set_args(arg_vector(git_dir)),
+              bind_stdout(iostreams::file_descriptor_sink(inp.sink, iostreams::close_handle)),
               bind_stdin(iostreams::file_descriptor_source(outp.source, iostreams::close_handle)),
 #if defined(BOOST_POSIX_API)
               close_fd(outp.sink),
+              close_fd(inp.source),
 #endif
               throw_on_error())),
-      cin(iostreams::file_descriptor_sink(outp.sink, iostreams::close_handle))
+      cin(iostreams::file_descriptor_sink(outp.sink, iostreams::close_handle)),
+      cout(iostreams::file_descriptor_source(inp.source, iostreams::close_handle))
 {
 }
 
