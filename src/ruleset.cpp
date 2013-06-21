@@ -17,7 +17,6 @@
 
 #include "ruleset.hpp"
 #include "to_string.hpp"
-#include "log.hpp"
 
 #include <boost/foreach.hpp>
 #include <string>
@@ -105,8 +104,6 @@ collect_rule_components(
 Ruleset::Ruleset(std::string const& filename)
     : ast_(parse_rules_file(filename))
   {
-  Log::info() << "done parsing, summing up..." << std::endl;
-
   BOOST_FOREACH(RepoRule const& repo_rule, ast_)
     {  
     if (repo_rule.is_abstract)
