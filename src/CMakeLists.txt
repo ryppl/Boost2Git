@@ -19,13 +19,18 @@ find_package(Boost REQUIRED
 find_package(APR REQUIRED)
 find_package(SVN REQUIRED fs repos subr)
 
-include_directories(BEFORE
-  # Workaround for https://svn.boost.org/trac/boost/ticket/3999#comment:6
-  ${CMAKE_CURRENT_SOURCE_DIR}/override_headers
-  ${CMAKE_CURRENT_SOURCE_DIR}/boost_process
-  ${Boost_INCLUDE_DIRS}
+include_directories(
   ${APR_INCLUDE_DIRS}
   ${SVN_INCLUDE_DIRS}
+  )
+
+# Warning: using "BEFORE" adds the paths to the front _one by one_,
+# so they will appear in _reverse_ order!
+include_directories(BEFORE
+  ${Boost_INCLUDE_DIRS}
+  ${CMAKE_CURRENT_SOURCE_DIR}/boost_process
+  # Workaround for https://svn.boost.org/trac/boost/ticket/3999#comment:6
+  ${CMAKE_CURRENT_SOURCE_DIR}/override_headers
   )
 
 add_definitions(
