@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <stdexcept>
 #include <boost/spirit/include/qi.hpp>
+#include <boost/spirit/include/support_multi_pass.hpp>
 #include <boost/spirit/include/classic_position_iterator.hpp>
 #include <boost/spirit/repository/include/qi_confix.hpp>
 #include <boost/spirit/repository/include/qi_iter_pos.hpp>
@@ -22,7 +23,9 @@ namespace phoenix = boost::phoenix;
 namespace boost2git
 {
 
-using PosIterator = classic::position_iterator2<std::string::iterator>;
+typedef std::istreambuf_iterator<char> BaseIterator;
+typedef boost::spirit::multi_pass<BaseIterator> ForwardIterator;
+typedef classic::position_iterator2<ForwardIterator> PosIterator;
 
 static void get_line(int& line, PosIterator const& iterator)
   {
@@ -106,23 +109,23 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
 AST parse_rules_file(std::string filename)
   {
   AST ast;
-
-  std::ifstream file(filename);
+  
+  std::ifstream file(filename.c_str());
   if (!file)
     {
     throw std::runtime_error("cannot read ruleset: " + filename);
     }
 
-  using BaseIterator = std::istreambuf_iterator<char>;
-  std::string content{BaseIterator{file}, BaseIterator{}};
-  PosIterator begin{content.begin(), content.end()}, end;
+  BaseIterator in_begin(file);
+  ForwardIterator fwd_begin = make_default_multi_pass(in_begin), fwd_end;
+  PosIterator begin(fwd_begin, fwd_end), end;
 
-  auto comment
-    = ascii::space
+  BOOST_AUTO(comment
+    , ascii::space
     | boost::spirit::repository::confix("/*", "*/")[*(qi::char_ - "*/")]
     | boost::spirit::repository::confix("//", qi::eol)[*(qi::char_ - qi::eol)]
-    ;
-  RepositoryGrammar<PosIterator, decltype(comment)> grammar;
+    );
+  RepositoryGrammar<PosIterator, BOOST_TYPEOF(comment)> grammar;
   try
     {
     qi::phrase_parse(begin, end, qi::eps > +grammar, comment, ast);
@@ -142,3 +145,5 @@ AST parse_rules_file(std::string filename)
     }
   return ast;
   }
+
+
