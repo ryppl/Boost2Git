@@ -88,3 +88,25 @@ git_fast_import& git_fast_import::filemodify_hdr(path const& p)
 {
     return *this << "M 100644 inline " << p << LF;
 }
+
+git_fast_import& git_fast_import::checkpoint()
+{
+    return *this << "checkpoint" << LF << LF;
+}
+
+std::string git_fast_import::ls(std::string const& dataref_opt_path)
+{
+    *this << "ls " << dataref_opt_path << LF;
+    cin << std::flush;
+    std::string result;
+    std::getline(cout, result);
+    return result;
+}
+
+git_fast_import& git_fast_import::reset(std::string const& ref_name, int mark = -1)
+{
+    *this << "reset " << ref_name << LF;
+    if (mark >= 0)
+        *this << "from :" << mark << LF;
+    return *this << LF;
+}

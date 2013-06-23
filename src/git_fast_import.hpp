@@ -53,8 +53,14 @@ struct git_fast_import
 
     git_fast_import& write_raw(char const* data, std::size_t nbytes);
 
-    // Just writes the header.  
+    // Just writes the header for the 'data' command; you can write
+    // the actual data directly to the stream.
     git_fast_import& data_hdr(std::size_t size);
+
+    git_fast_import& checkpoint();
+    git_fast_import& reset(std::string const& ref_name, int mark);
+
+    std::string ls(std::string const& dataref_opt_path);
 
  private:
     static std::vector<std::string> arg_vector(std::string const& git_dir);

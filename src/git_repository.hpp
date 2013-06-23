@@ -29,6 +29,7 @@ struct git_repository
         std::string name;
         rev_mark_map marks;
         path_set pending_deletions;
+        std::string head_tree_sha;
     };
 
     ref* modify_ref(std::string const& name, bool allow_discovery = true) 

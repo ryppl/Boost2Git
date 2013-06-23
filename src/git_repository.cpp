@@ -65,6 +65,31 @@ bool git_repository::close_commit()
 {
     Log::trace() << "repository " << git_dir
                  << " closing commit in ref " << current_ref->name << std::endl;
+
+    std::string response = fast_import().ls("\"\"");
+    if (response.size() < 41)
+    {
+        Log::error() << "Unrecognized response from ls in ref " 
+                     << current_ref->name << std::endl;
+        current_ref->head_tree_sha.clear();
+    }
+    else
+    {
+        assert(response.back() == '\t');
+        std::string new_sha = response.substr(response.size() - 41, response.size() - 1);
+        Log::trace() << "New tree SHA: " << new_sha << std::endl;
+
+        // Dispose of the commit if it didn't change anything in the tree
+        if (new_sha == current_ref->head_tree_sha) 
+        {
+            Log::trace() << "Tree unchanged; resetting ref" << std::endl;
+            assert(current_ref->marks.size() >= 2);
+            current_ref->marks.erase(std::prev(current_ref->marks.end()));
+            fast_import().reset(current_ref->name, std::prev(current_ref->marks.end())->second);
+        }
+        current_ref->head_tree_sha = std::move(new_sha);
+    }
+
     modified_refs.erase(current_ref);
     current_ref = nullptr;
     Log::trace() << modified_refs.size() << " modified refs remaining." << std::endl;
