@@ -33,7 +33,7 @@ set_tests_properties(patrie_test PROPERTIES
   DEPENDS prepare_patrie_test
   )
 
-add_custom_target(test-svn-repo 
+add_custom_command(OUTPUT "${REPO_PATH}"
   COMMAND "${CMAKE_COMMAND}" -E remove_directory "${REPO_PATH}"
   COMMAND "${CMAKE_COMMAND}" -E remove_directory "${WC_PATH}"
   COMMAND "${SVNADMIN}" create test-repo
@@ -62,9 +62,6 @@ add_custom_target(test-svn-repo
                       "log-svn2git-fallback" "gitlog-svn2git-fallback"
 )
 
-add_test(NAME prepare_conversion
-  COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target test-svn-repo)
-
 add_test(NAME conversion 
   COMMAND
     $<TARGET_FILE:svn2git>
@@ -82,7 +79,7 @@ add_test(NAME conversion
 #   git log --all --pretty=format:"%s %d" --graph
 
 set_tests_properties(conversion PROPERTIES 
-  DEPENDS prepare_conversion
+  DEPENDS prepare_conversion DEPENDS "${REPO_PATH}"
   FAIL_REGULAR_EXPRESSION "(^|
 )[+][+] WARNING: "
   )
