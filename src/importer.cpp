@@ -90,7 +90,7 @@ void importer::invalidate_svn_tree(
     add_svn_tree_to_convert(rev, svn_path);
 
     // Mark every svn tree that's mapped into the rule's git subtree for
-    // rewriting.
+    // (re-)conversion.
 
     ruleset.matcher().git_subtree_rules(
         // FIXME: concatenating a subpath to a git address is pretty ugly!
@@ -106,7 +106,7 @@ void importer::invalidate_svn_tree(
 void importer::add_svn_tree_to_convert(
     svn::revision const& rev, path const& svn_path)
 {
-    // Mark this svn_path for rewriting.  
+    // Mark this svn_path for conversion.  
     auto kind = svn::call(
         svn_fs_check_path, rev.fs_root, svn_path.c_str(), rev.pool);
 
@@ -257,7 +257,7 @@ void importer::convert_svn_tree(
     if (boost::contains(svn_path.str(), "/CVSROOT/"))
         return;
 
-    auto& log = Log::trace() << "rewriting " << svn_path << "... ";
+    auto& log = Log::trace() << "converting " << svn_path << "... ";
     switch( svn::call(svn_fs_check_path, rev.fs_root, svn_path.c_str(), rev.pool) )
     {
     case svn_node_none: // If it turns out there's nothing here, there's nothing to do.
