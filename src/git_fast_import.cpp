@@ -49,8 +49,8 @@ git_fast_import::arg_vector(std::string const& git_dir)
 
 git_fast_import& git_fast_import::write_raw(char const* data, std::size_t nbytes)
 {
-    if (Log::get_level() >= Log::Trace)
-        std::cerr << "fast-import <= " << nbytes << " raw bytes." << std::flush;
+    // if (Log::get_level() >= Log::Trace)
+    //    std::cerr << "fast-import <= " << nbytes << " raw bytes." << std::flush;
     cin.write(data, nbytes);
     return *this;
 }
