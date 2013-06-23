@@ -30,6 +30,7 @@ struct Options
   int commit_interval;
   bool svn_branches;
   std::string rules_file;
+  std::string git_executable;
   };
 
 extern Options options;

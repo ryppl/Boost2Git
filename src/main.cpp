@@ -66,6 +66,7 @@ int main(int argc, char **argv)
         po::options_description program_options("Allowed options");
         program_options.add_options()
             ("help,h", "produce help message")
+            ("git", po::value(&options.git_executable)->value_name("PATH"), "Path to a Git executable containing the fix described in http://article.gmane.org/gmane.comp.version-control.git/228736")
             ("version,v", "print version string")
             ("quiet,q", "be quiet")
             ("verbose,V", "be verbose")

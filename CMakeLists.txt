@@ -60,13 +60,21 @@ add_custom_command(OUTPUT "${repositories_setup}"
   COMMENT "Cleaning temporary repositories."
   )
 
+set(GIT_EXECUTABLE "${CMAKE_BINARY_DIR}/git/git")
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/git" DESTINATION "${CMAKE_BINARY_DIR}" PATTERN .git EXCLUDE)
+add_custom_command( 
+  OUTPUT "${GIT_EXECUTABLE}"
+  COMMAND make template_dir="${CMAKE_BINARY_DIR}/git/templates"
+  WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/git"
+  COMMENT "Updating Git"
+  )
+
 # perform conversion
 add_custom_target(conversion
   COMMAND
-    "DYLD_LIBRARY_PATH=${Boost_LIBRARY_DIRS}"
-    "LD_LIBRARY_PATH=${Boost_LIBRARY_DIRS}"
     $<TARGET_FILE:svn2git>
     --add-metadata
+    --git     "${GIT_EXECUTABLE}"
     --authors "${authors}"
     --ignore  "${ignore_rev}"
     --rules   "${repositories}"
@@ -75,6 +83,7 @@ add_custom_target(conversion
     "Performing conversion."
   DEPENDS
     "${repositories_setup}"
+    "${GIT_EXECUTABLE}"
   WORKING_DIRECTORY
     "${git_repository}"
   )
@@ -92,6 +101,7 @@ add_custom_target(submodules
   DEPENDS
     conversion fix-submodule-refs 
     "${Boost2Git_SOURCE_DIR}/fix_submodules.cmake"
+    "${GIT_EXECUTABLE}"
   WORKING_DIRECTORY
     "${git_repository}"
   )
@@ -99,8 +109,6 @@ add_custom_target(submodules
 # perform conversion
 add_custom_target(analysis
   COMMAND
-    "DYLD_LIBRARY_PATH=${Boost_LIBRARY_DIRS}"
-    "LD_LIBRARY_PATH=${Boost_LIBRARY_DIRS}"
     $<TARGET_FILE:svn2git>
     --dry-run
     --coverage
@@ -115,8 +123,6 @@ add_custom_target(analysis
   WORKING_DIRECTORY
     "${git_repository}"
   )
-
-find_package(Git REQUIRED)
 
 set(push_targets )
 
