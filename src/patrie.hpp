@@ -86,7 +86,6 @@ struct patrie
         {
             insert_visitor v(&rules.back());
             std::string svn_path = rule.svn_path().str();
-            assert(!svn_path.empty());
             assert(svn_path[0] != '/');
             traverse(&this->trie, svn_path.begin(), svn_path.end(), v);
         }
@@ -125,12 +124,15 @@ struct patrie
  private:
     struct node
     {
+        node(std::string const& text = std::string(), Rule const* rule = 0)
+            : node(text.begin(), text.end(), rule)
+        {}
+              
         template<class Iterator>
         node(Iterator text_start, Iterator text_finish, Rule const* rule = 0)
             : text(text_start, text_finish),
               rules(rule ? 1 : 0, rule)
         {
-            assert(text_start != text_finish);
         }
     
         std::string text;
@@ -284,7 +286,7 @@ struct patrie
         void full_match(node const& n, Iterator start, Iterator finish)
         {
             // Only record the found rule if our match occurred on a directory boundary
-            if (start == finish || *start == '/')
+            if (start == finish || *start == '/' || n.text.empty())
             {
                 if (auto p = n.find_rule(this->revision))
                     found_rule = p;
@@ -349,9 +351,14 @@ struct patrie
         return os;
     }
   
-    template <class Nodes, class Iterator, class Visitor>
-    static void traverse(Nodes* nodes, Iterator start, Iterator finish, Visitor& visitor)
+    template <class Trie, class Iterator, class Visitor>
+    static void traverse(Trie* trie, Iterator start, Iterator finish, Visitor& visitor)
     {
+        visitor.full_match(*trie, start, finish);
+
+        auto nodes = &trie->next;
+        using Nodes = typename std::remove_reference<decltype(*nodes)>::type;
+
         while (start != finish)
         {
             // look for the node beginning with *start
@@ -389,8 +396,8 @@ struct patrie
 
  private: // data members
     std::deque<Rule> rules;
-    vector<node> trie;
-    vector<node> rtrie;
+    node trie;
+    node rtrie;
     mutable Coverage coverage;
     std::vector<rev_rules> transition_map;
 };
