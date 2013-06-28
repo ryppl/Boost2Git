@@ -12,7 +12,6 @@
 
 BOOST_FUSION_DEFINE_STRUCT((boost2git), ContentRule,
   (path, svn_path)
-  (bool, is_fallback)
   (path, git_path)
   (int, line)
   )

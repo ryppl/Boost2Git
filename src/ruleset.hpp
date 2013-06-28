@@ -41,7 +41,6 @@ class Ruleset
       std::string submodule_path;
       std::set<boost2git::BranchRule const*> branches;
       };
-    static Match const fallback;
   public:
     Ruleset(std::string const& filename);
   public:

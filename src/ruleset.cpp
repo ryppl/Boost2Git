@@ -26,41 +26,6 @@
 
 using namespace boost2git;
 
-RepoRule fallback_repo(
-  boost::fusion::make_vector(
-  false, /* bool abstract */
-  0, /* int line */
-  "svn2git-fallback", /* std::string name */
-  0, /* std::vector<std::string> bases */
-  0, /* std::vector<std::string> submodule_info */
-  0, /* std::size_t minrev */
-  UINT_MAX, /* std::size_t maxrev */
-  0, /* std::vector<boost2git::ContentRule> content */
-  0, /* std::vector<boost2git::BranchRule> branch_rules */
-  0 /* std::vector<boost2git::BranchRule> tag_rules */
-    ));
-
-BranchRule fallback_branch(
-  boost::fusion::make_vector(
-      0, /* std::size_t min */
-      std::size_t(-1), /* std::size_t max */
-      "", /* std::string prefix */
-      "master", /* std::string name */
-      0, /* int line */
-      "refs/heads/"
-    ));
-
-ContentRule fallback_content(
-  boost::fusion::make_vector(
-      "", /* std::string prefix */
-      true, /* bool is_fallback */
-      "", /* std::string git_path */
-      0 /* int line */
-    ));
-
-Ruleset::Match const Ruleset::fallback(
-    &fallback_repo, &fallback_branch, &fallback_content);
-
 template <class Seq1, class Seq2>
 void append_addresses(Seq1& target, Seq2 const& source)
   {
@@ -160,10 +125,6 @@ Ruleset::Ruleset(std::string const& filename)
       }
     repositories_.push_back(repo);
     }
-  Repository repo;
-  repo.name = fallback.repo_rule->git_repo_name;
-  repo.branches.insert(fallback.branch_rule);
-  repositories_.push_back(repo);
   }
 
 void report_overlap(Rule const* rule0, Rule const* rule1)

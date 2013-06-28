@@ -62,7 +62,7 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
     content_
      %= qi::lit("content")
       > '{'
-      > +(string_ > qi::matches['?'] > -(':' > string_) > line_number_ > ';')
+      > +(string_ > -(':' > string_) > line_number_ > ';')
       > '}'
       ;
     branches_

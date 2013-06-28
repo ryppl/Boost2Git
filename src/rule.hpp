@@ -66,11 +66,6 @@ struct Rule
     {
         return boost2git::git_ref_name(branch_rule);
     }
-
-    bool is_fallback() const
-    {
-        return content_rule != 0 && content_rule->is_fallback;
-    }
 };
 
 void report_overlap(Rule const* rule0, Rule const* rule1);
