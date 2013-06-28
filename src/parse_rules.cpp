@@ -90,7 +90,7 @@ struct RepositoryGrammar: qi::grammar<Iterator, RepoRule(), Skipper>
       > ';'
       ;
     string_
-     %= qi::char_("a-zA-Z_") >> *qi::char_("a-zA-Z_0-9")
+     %= qi::char_("a-zA-Z_") >> *qi::char_("-a-zA-Z_0-9")
       | qi::lexeme['"' >> +(qi::char_ - '"') >> '"']
       ;
     line_number_ = boost::spirit::repository::qi::iter_pos
