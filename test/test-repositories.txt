@@ -26,3 +26,15 @@ repository everything : common_branches
     "/";
   }
 }
+
+repository svn2git-fallback
+{
+   content
+   {
+     "/";
+   }
+   branches
+   {
+     [:] "/" : "master";
+   }
+}
