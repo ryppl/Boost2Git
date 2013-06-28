@@ -29,7 +29,6 @@ elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
   endif()
 endif()
 
-enable_testing()
 add_subdirectory(src)
 add_subdirectory(test)
 

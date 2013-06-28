@@ -3,6 +3,8 @@
 #=============================================================================
 
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+enable_testing()
+
 project(Svn2GitTests CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
@@ -19,68 +21,70 @@ set(LOG_MSG --username test -m)
 find_package(Boost REQUIRED filesystem system)
 include_directories(${Boost_INCLUDE_DIRS} ../src)
 
-add_executable(patrie_test patrie_test.cpp)
-add_test(patrie_test patrie_test)
+function(prepared_test)
+  cmake_parse_arguments(prepared_test "" "NAME;DEPENDENCY" "" ${ARGN})
+  
+  # Create a preparation test that builds the dependency
+  add_test(NAME prepare_${prepared_test_NAME}
+    COMMAND "${CMAKE_COMMAND}" --build "${CMAKE_BINARY_DIR}" 
+    --target ${prepared_test_DEPENDENCY})
 
-add_executable(path_set_test path_set_test.cpp)
-target_link_libraries(path_set_test ${Boost_LIBRARIES})
-add_test(path_set_test path_set_test)
+  # Declare the actual test
+  add_test(NAME ${prepared_test_NAME} ${prepared_test_UNPARSED_ARGUMENTS})
+  
+  # Make the prepared test depend on the preparation test
+  set_tests_properties(
+    ${prepared_test_NAME} PROPERTIES DEPENDS prepare_${prepared_test_NAME})
+endfunction()
 
-add_test(NAME prepare_patrie_test
-  COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target patrie_test)
+function(executable_test)
+  cmake_parse_arguments(executable_test "" "NAME" "SOURCES" ${ARGN})
+  add_executable(${executable_test_NAME}_program 
+    EXCLUDE_FROM_ALL ${executable_test_SOURCES})
+  prepared_test(
+    NAME ${executable_test_NAME} 
+    DEPENDENCY ${executable_test_NAME}_program 
+    COMMAND ${executable_test_NAME}_program)
+endfunction()
 
-set_tests_properties(patrie_test PROPERTIES 
-  DEPENDS prepare_patrie_test
-  )
+executable_test(NAME patrie_test SOURCES patrie_test.cpp)
+executable_test(NAME path_set_test SOURCES path_set_test.cpp)
+target_link_libraries(path_set_test_program ${Boost_LIBRARIES})
 
-add_custom_command(OUTPUT "${REPO_PATH}"
-  COMMAND "${CMAKE_COMMAND}" -E remove_directory "${REPO_PATH}"
-  COMMAND "${CMAKE_COMMAND}" -E remove_directory "${WC_PATH}"
-  COMMAND "${SVNADMIN}" create test-repo
-  COMMAND "${SVN}" mkdir ${LOG_MSG} "create trunk/" ${REPO_URI}/trunk
-  COMMAND "${SVN}" mkdir ${LOG_MSG} "create tags/" ${REPO_URI}/tags
-  COMMAND "${SVN}" mkdir ${LOG_MSG} "create branches/" ${REPO_URI}/branches
-  COMMAND "${SVN}" checkout "${REPO_URI}/trunk" test-wc
-  COMMAND echo "This is the README" > "${WC_PATH}/README.txt"
-  COMMAND ${IN_WC} "${SVN}" add README.txt
-  COMMAND ${IN_WC} "${SVN}" commit ${LOG_MSG} "first commit" 
-  COMMAND echo "This is the NEW README" > "${WC_PATH}/README.txt"
-  COMMAND ${IN_WC} "${SVN}" commit ${LOG_MSG} "updated README" 
-  COMMAND "${SVN}" cp ${LOG_MSG} "create branch" "${REPO_URI}/trunk" "${REPO_URI}/branches/branch1"
-  COMMAND "${SVN}" cp ${LOG_MSG} "create tag" "${REPO_URI}/trunk" "${REPO_URI}/tags/tag1"
-  COMMAND  ${IN_WC} "${SVN}" switch "${REPO_URI}/branches/branch1" .
-  COMMAND echo "This is the NEW YOU" > "${WC_PATH}/READYOU.txt"
-  COMMAND ${IN_WC} "${SVN}" add READYOU.txt
-  COMMAND ${IN_WC} "${SVN}" commit ${LOG_MSG} "added READYOU" 
-  COMMAND  ${IN_WC} "${SVN}" switch "${REPO_URI}/trunk" .
-  COMMAND echo "This is the Final README" > "${WC_PATH}/README.txt"
-  COMMAND ${IN_WC} "${SVN}" commit ${LOG_MSG} "Final README" 
+add_custom_command(OUTPUT ${REPO_PATH}
+  COMMAND "${CMAKE_COMMAND}" 
+    -DCMAKE_CURRENT_BINARY_DIR=${CMAKE_CURRENT_BINARY_DIR} 
+    -P ${CMAKE_CURRENT_SOURCE_DIR}/PrepareSVNRepo.cmake
+  DEPENDS PrepareSVNRepo.cmake
   COMMAND "${CMAKE_COMMAND}" -E remove_directory "everything"
   COMMAND "${CMAKE_COMMAND}" -E remove_directory "svn2git-fallback"
   COMMAND "${CMAKE_COMMAND}" -E remove -f 
-                      "log-everything" "gitlog-everything" 
-                      "log-svn2git-fallback" "gitlog-svn2git-fallback"
+                       "log-everything" "gitlog-everything" 
+                       "log-svn2git-fallback" "gitlog-svn2git-fallback"
 )
+add_custom_target(prepare_conversion_test DEPENDS svn2git ${REPO_PATH})
 
-add_test(NAME conversion 
-  COMMAND
-    $<TARGET_FILE:svn2git>
-    --extra-verbose
-    --debug-rules
-    --add-metadata
-    --exit-success
-    --authors "${CMAKE_CURRENT_LIST_DIR}/test-authors.txt"
-    --rules   "${CMAKE_CURRENT_LIST_DIR}/test-repositories.txt"
+set(GIT_EXECUTABLE "${CMAKE_BINARY_DIR}/git/git")
+
+prepared_test(NAME conversion DEPENDENCY prepare_conversion_test
+   COMMAND
+     $<TARGET_FILE:svn2git>
+     --git     "${GIT_EXECUTABLE}"
+     --extra-verbose
+     --debug-rules
+     --add-metadata
+     --exit-success
+     --authors "${CMAKE_CURRENT_LIST_DIR}/test-authors.txt"
+     --rules   "${CMAKE_CURRENT_LIST_DIR}/test-repositories.txt"
     --svnrepo "${REPO_PATH}"
-  )
+   )
 
 # TODO: check output of
 #
 #   git log --all --pretty=format:"%s %d" --graph
 
-set_tests_properties(conversion PROPERTIES 
-  DEPENDS prepare_conversion DEPENDS "${REPO_PATH}"
-  FAIL_REGULAR_EXPRESSION "(^|
+set_tests_properties(
+  conversion PROPERTIES FAIL_REGULAR_EXPRESSION "(^|
 )[+][+] WARNING: "
   )
 
