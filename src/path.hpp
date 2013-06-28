@@ -32,7 +32,9 @@ struct path : boost::totally_ordered<path>
     {
         return boost::starts_with(text, prefix.text) && (
             text.size() == prefix.text.size() 
-            || text[prefix.text.size()] == '/');
+            || text[prefix.text.size()] == '/'
+            || prefix.str().empty()
+        );
     }
 
     std::string sans_prefix(path const& prefix) const
