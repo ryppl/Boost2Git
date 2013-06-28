@@ -69,7 +69,7 @@ bool git_repository::close_commit()
     std::string response = fast_import().ls("\"\"");
     if (response.size() < 41)
     {
-        Log::error() << "Unrecognized response from ls in ref " 
+        Log::error() << "Unrecognized response \"" << response << "\" from ls in ref " 
                      << current_ref->name << std::endl;
         current_ref->head_tree_sha.clear();
     }
