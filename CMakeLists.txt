@@ -150,29 +150,3 @@ foreach(line IN LISTS repo_lines)
       )
   endif()
 endforeach()
-
-add_custom_target(push_fallback ALL
-  # Ensure that there's a master branch in the fallback repository so
-  # that it can be pushed.  If rule coverage is complete, this repo
-  # will be empty.  Also record the branch list in a file
-  # "branch_list.txt"
-  COMMAND ${CMAKE_COMMAND}
-    -D "GIT=${GIT_EXECUTABLE}"
-    -D "DEFAULT_CONTENT=${CMAKE_CURRENT_SOURCE_DIR}/empty-fallback-fast-import.txt"
-    -P "${Boost2Git_SOURCE_DIR}/ensure_git_pushable.cmake"
-  # Push the repository to github and bitbucket
-  COMMAND ${CMAKE_COMMAND}
-    -D "GIT=${GIT_EXECUTABLE}"
-    -D "NAME=svn2git-fallback"
-    -P "${Boost2Git_SOURCE_DIR}/git_push.cmake"
-  # Read "branch_list.txt" and if it's non-empty, fail with a message
-  # about an incomplete ruleset
-  COMMAND ${CMAKE_COMMAND}
-    -P "${Boost2Git_SOURCE_DIR}/fail_incomplete_ruleset.cmake"
-
-  # Depends on push_targets so that we don't fail too early.  If the
-  # ruleset is incomplete, we still want to be sure we execute all
-  # other build steps.
-  DEPENDS conversion ${push_targets}
-  WORKING_DIRECTORY "${git_repository}/svn2git-fallback"
-  )
