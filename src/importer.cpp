@@ -52,6 +52,9 @@ int importer::last_valid_svn_revision()
     return revnum;
 }
 
+// if discover_changes is false and the repository is not already
+// marked for modification, return NULL.  Otherwise, find the named
+// repository, mark it for modification, and return it
 git_repository* importer::modify_repo(std::string const& name, bool discover_changes)
 {
     auto& repo = repositories.find(name)->second;
@@ -116,6 +119,11 @@ void importer::add_svn_tree_to_convert(
     }
 }
 
+// Deal with all the SVN changes in this revision.  We're not actually
+// writing any file contents (blobs or trees) to Git in this step.
+// Our job is merely to make a record of paths to be deleted in Git at
+// the beginning of the commit and SVN files/directories to
+// subsequently be traversed and converted to Git blobs and trees.
 void importer::process_svn_changes(svn::revision const& rev)
 {
     apr_hash_t *changes = svn::call(svn_fs_paths_changed2, rev.fs_root, rev.pool);
@@ -129,35 +137,35 @@ void importer::process_svn_changes(svn::revision const& rev)
         assert(change != nullptr); 
         path const svn_path(svn_path_);
 
-        // kind is one of {modify, add, delete, replace}
-        if (change->change_kind == svn_fs_path_change_delete)
-        {
-            Rule const* const match = ruleset.matcher().longest_match(svn_path.str(), revnum);
+        // We have found a path being modified in SVN.  Start by
+        // marking its Git target for deletion.
+        if (Rule const* const match = ruleset.matcher().longest_match(svn_path.str(), revnum))
+            add_svn_tree_to_delete(svn_path, match);
+        else
             // It's perfectly fine if an SVN path being deleted isn't
             // mapped anywhere in this revision; if the path ever
             // *was* mapped, the ruleset transition would have
             // handled its deletion anyway.
-            if (match)
-                add_svn_tree_to_delete(svn_path, match);
+            assert(change->change_kind == svn_fs_path_change_delete && "Unmapped SVN path!");
 
-            if (change->node_kind != svn_node_file)
-            {
-                // Handle rules that map SVN subtrees of the deleted path
-                 ruleset.matcher().svn_subtree_rules(
-                     svn_path.str(), revnum,
-                     // Mark the target Git tree for deletion, but
-                     // also convert all SVN trees being mapped into a
-                     // subtree of the Git tree.
-                     boost::make_function_output_iterator(
-                         [&](Rule const* r){ 
-                             invalidate_svn_tree(rev, r->svn_path(), r); }));
-            }
-        }
-        else // all the other change kinds can be treated the same
+        // If it wasn't being deleted in SVN, also convert all of its
+        // files to Git.
+        if (change->change_kind != svn_fs_path_change_delete)
+            add_svn_tree_to_convert(rev, svn_path);
+
+        // Assume it's a directory if it's not known to be a file.
+        // This is conservative, in case node_kind == svn_node_unknown.
+        if (change->node_kind != svn_node_file)
         {
-            // Git doesn't care about directory changes
-            if (change->node_kind != svn_node_dir)
-                add_svn_tree_to_convert(rev, svn_path);
+            // Handle rules that map SVN subtrees of the deleted path
+             ruleset.matcher().svn_subtree_rules(
+                 svn_path.str(), revnum,
+                 // Mark the target Git tree for deletion, but
+                 // also convert all SVN trees being mapped into a
+                 // subtree of the Git tree.
+                 boost::make_function_output_iterator(
+                     [&](Rule const* r){ 
+                         invalidate_svn_tree(rev, r->svn_path(), r); }));
         }
     }
 }
@@ -328,37 +336,48 @@ void importer::convert_svn_file(
         return;
     }
 
-    if (auto* dst_repo = modify_repo(match->git_repo_name(), discover_changes))
-    {
-        if (auto* dst_ref = dst_repo->modify_ref(match->git_ref_name(), discover_changes))
-        {
-            changed_repositories.insert(dst_repo);
-            if (dst_repo->open_commit(rev) == dst_ref)
-            {
-                auto& fast_import = dst_repo->fast_import();
+    // There are two reasons we might skip processing this file in
+    // this pass and come back for it in a later one:
+    //
+    // 1. the target repository and/or ref has already been fully
+    // processed for this revision in an earlier pass over the
+    // invalidated SVN trees
+    auto* const dst_repo = modify_repo(match->git_repo_name(), discover_changes);
+    if (dst_repo == nullptr)
+        return;
+    auto* dst_ref = dst_repo->modify_ref(match->git_ref_name(), discover_changes);
+    if (dst_ref == nullptr)
+        return;
 
-                fast_import.filemodify_hdr(
-                    match->git_path()/svn_path.sans_prefix(match->svn_path()) );
+    // Mark the repository as having changes that will need to be written
+    changed_repositories.insert(dst_repo);
 
-                auto file_length = svn::call(
-                    svn_fs_file_length, rev.fs_root, svn_path.c_str(), rev.pool);
+    // 2. A different target ref is currently being written in this
+    // repository.
+    if (dst_repo->open_commit(rev) != dst_ref)
+        return;
 
-                AprPool scope = rev.pool.make_subpool();
-                svn_stream_t* in_stream = svn::call(
-                    svn_fs_file_contents, rev.fs_root, svn_path.c_str(), scope);
+    auto& fast_import = dst_repo->fast_import();
 
-                // If it's a symlink, we may need to lop 5 bytes off the front of the stream.
-                /*
-                svn_string_t *special = svn::call(
-                    svn_fs_node_prop, rev.fs_root, svn_path.c_str(), "svn:special", scope);
-                */
+    fast_import.filemodify_hdr(
+        match->git_path()/svn_path.sans_prefix(match->svn_path()) );
 
-                fast_import.data_hdr(file_length);
-		svn_stream_t* out_stream = svn_stream_create(&fast_import, scope);
-                svn_stream_set_write(out_stream, fast_import_raw_bytes);
-                check_svn(svn_stream_copy3(in_stream, out_stream, nullptr, nullptr, scope));
-                fast_import << LF;
-            }
-        }
-    }
+    auto file_length = svn::call(
+        svn_fs_file_length, rev.fs_root, svn_path.c_str(), rev.pool);
+
+    AprPool scope = rev.pool.make_subpool();
+    svn_stream_t* in_stream = svn::call(
+        svn_fs_file_contents, rev.fs_root, svn_path.c_str(), scope);
+
+    // If it's a symlink, we may need to lop 5 bytes off the front of the stream.
+    /*
+      svn_string_t *special = svn::call(
+      svn_fs_node_prop, rev.fs_root, svn_path.c_str(), "svn:special", scope);
+    */
+
+    fast_import.data_hdr(file_length);
+    svn_stream_t* out_stream = svn_stream_create(&fast_import, scope);
+    svn_stream_set_write(out_stream, fast_import_raw_bytes);
+    check_svn(svn_stream_copy3(in_stream, out_stream, nullptr, nullptr, scope));
+    fast_import << LF;
 }
