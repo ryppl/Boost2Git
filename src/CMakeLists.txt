@@ -40,7 +40,7 @@ add_definitions(
   -DFUSION_MAX_VECTOR_SIZE=20
   )
 
-set(svn2git_SOURCES
+add_executable(svn2git
   authors.cpp
   coverage.cpp
   log.cpp
@@ -50,9 +50,8 @@ set(svn2git_SOURCES
   git_repository.cpp
   importer.cpp
   svn.cpp
-  main.cpp)
-
-add_executable(svn2git ${svn2git_SOURCES})
+  main.cpp
+  )
 
 target_link_libraries(svn2git
   ${Boost_LIBRARIES}
