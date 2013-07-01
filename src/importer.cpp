@@ -168,7 +168,7 @@ void importer::process_svn_changes(svn::revision const& rev)
 
 void importer::import_revision(int revnum)
 {
-    if (Log::get_level >= Log::trace())
+    if (Log::get_level() >= Log::Trace)
     {
         Log::trace() 
         << "################## importing revision " 
