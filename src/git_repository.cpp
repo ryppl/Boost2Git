@@ -59,6 +59,10 @@ void git_repository::set_super_module(
     }
 }
 
+// This is the SHA1 of an empty tree.  We can use this to detect when
+// branches are deleted.
+std::string const empty_tree_sha("4b825dc642cb6eb9a060e54bf8d69288fbee4904");
+
 // Close the current ref's commit.  Return true iff there are no more
 // modified refs
 bool git_repository::close_commit()
