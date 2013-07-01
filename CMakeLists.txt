@@ -48,7 +48,6 @@ else()
 endif()
 
 set(authors      "${Boost2Git_SOURCE_DIR}/authors.txt")
-set(ignore_rev   "${Boost2Git_SOURCE_DIR}/ignore_rev.txt")
 set(repositories "${Boost2Git_SOURCE_DIR}/repositories.txt")
 
 # clean
@@ -57,7 +56,7 @@ add_custom_command(OUTPUT "${repositories_setup}"
   COMMAND ${CMAKE_COMMAND} -E remove_directory "${git_repository}"
   COMMAND ${CMAKE_COMMAND} -E make_directory "${git_repository}"
   COMMAND ${CMAKE_COMMAND} -E touch "${repositories_setup}"
-  DEPENDS svn2git "${authors}" "${ignore_rev}" "${repositories}"
+  DEPENDS svn2git "${authors}" "${repositories}"
   COMMENT "Cleaning temporary repositories."
   )
 
@@ -77,7 +76,6 @@ add_custom_target(conversion
     --add-metadata
     --git     "${GIT_EXECUTABLE}"
     --authors "${authors}"
-    --ignore  "${ignore_rev}"
     --rules   "${repositories}"
     --svnrepo "${svn_repository}"
   COMMENT
@@ -113,8 +111,8 @@ add_custom_target(analysis
     $<TARGET_FILE:svn2git>
     --dry-run
     --coverage
+    --git     "${GIT_EXECUTABLE}"
     --authors "${authors}"
-    --ignore  "${ignore_rev}"
     --rules   "${repositories}"
     --svnrepo "${svn_repository}"
   DEPENDS

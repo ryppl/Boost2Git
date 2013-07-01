@@ -33,22 +33,6 @@
 
 Options options;
 
-static std::set<int> load_ignore(std::string const& filename)
-{
-    std::string line;
-    std::set<int> result;
-    std::ifstream file(filename.c_str());
-    while (std::getline(file, line))
-    {
-        if (line.empty() || line[0] == '#')
-        {
-            continue;
-        }
-        result.insert(boost::lexical_cast<int>(line));
-    }
-    return result;
-}
-
 int main(int argc, char **argv)
 {
     bool exit_success = false;
@@ -74,7 +58,6 @@ int main(int argc, char **argv)
             ("exit-success", "exit with 0, even if errors occured")
             ("authors", po::value(&authors_file)->value_name("FILENAME"), "map between svn username and email")
             ("svnrepo", po::value(&svn_path)->value_name("PATH")->required(), "path to svn repository")
-            ("ignore", po::value(&ignore_file)->value_name("FILENAME"), "file with revisions to ignore")
             ("rules", po::value(&options.rules_file)->value_name("FILENAME")->required(), "file with the conversion rules")
             ("dry-run", "Write no Git repositories")
             ("coverage", "Dump an analysis of rule coverage")
@@ -134,7 +117,6 @@ int main(int argc, char **argv)
 
         Ruleset ruleset(options.rules_file);
         Log::info() << "done reading ruleset." << std::endl;
-        std::set<int> ignore_revisions = load_ignore(ignore_file);
 
         if (dump_rules)
         {
