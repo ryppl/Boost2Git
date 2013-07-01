@@ -55,13 +55,16 @@ add_custom_command(OUTPUT ${REPO_PATH}
     -DCMAKE_CURRENT_BINARY_DIR=${CMAKE_CURRENT_BINARY_DIR} 
     -P ${CMAKE_CURRENT_SOURCE_DIR}/PrepareSVNRepo.cmake
   DEPENDS PrepareSVNRepo.cmake
+)
+
+add_custom_target(prepare_conversion_test 
   COMMAND "${CMAKE_COMMAND}" -E remove_directory "everything"
   COMMAND "${CMAKE_COMMAND}" -E remove_directory "svn2git-fallback"
-  COMMAND "${CMAKE_COMMAND}" -E remove -f 
-                       "log-everything" "gitlog-everything" 
-                       "log-svn2git-fallback" "gitlog-svn2git-fallback"
+  COMMAND "${CMAKE_COMMAND}" -E 
+   remove -f "log-everything" "gitlog-everything" 
+             "log-svn2git-fallback" "gitlog-svn2git-fallback"
+  DEPENDS svn2git ${REPO_PATH}
 )
-add_custom_target(prepare_conversion_test DEPENDS svn2git ${REPO_PATH})
 
 set(GIT_EXECUTABLE "${CMAKE_BINARY_DIR}/git/git")
 
