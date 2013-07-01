@@ -34,7 +34,8 @@ add_subdirectory(src)
 add_subdirectory(test)
 
 if(NOT BOOST_SVN)
-  message(FATAL_ERROR "Please set BOOST_SVN to Boost's Subversion repository")
+  message(STATUS "BOOST_SVN is not set. Disabling targets for conversion.")
+  return()
 endif()
 
 if(RAMDISK)
