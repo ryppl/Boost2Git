@@ -165,7 +165,8 @@ void importer::process_svn_changes(svn::revision const& rev)
 void importer::import_revision(int revnum)
 {
     ((revnum % 1000) ? Log::trace() : Log::info())
-        << "importing revision " << revnum << std::endl;
+        << "################## importing revision " 
+        << revnum << " ##################" << std::endl;
 
     this->revnum = revnum;
     svn::revision rev = svn_repository[revnum];
