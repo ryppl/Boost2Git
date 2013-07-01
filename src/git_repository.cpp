@@ -112,6 +112,7 @@ git_repository::ref* git_repository::open_commit(svn::revision const& rev)
                  << " opening commit in ref " << current_ref->name << std::endl;
     int mark = ++last_mark;
     current_ref->marks[rev.revnum] = mark;
+    fast_import() << "# SVN revision " << rev.revnum << LF;
     fast_import().commit(current_ref->name, mark, rev.author, rev.epoch, rev.log_message);
 
     // Do any deletions required in this ref
