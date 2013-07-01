@@ -133,16 +133,22 @@ void importer::process_svn_changes(svn::revision const& rev)
         assert(change != nullptr); 
         path const svn_path(svn_path_);
 
-        // We have found a path being modified in SVN.  Start by
-        // marking its Git target for deletion.
+        // We have found a path being modified in SVN.  
         if (Rule const* const match = ruleset.matcher().longest_match(svn_path.str(), revnum))
+        {
+            // Start by marking its Git target for deletion.
             add_svn_tree_to_delete(svn_path, match);
+            if (change->copyfrom_known && change->copyfrom_path != nullptr) 
+            {
+                Log::warn() << "SVN path " << svn_path << " copyfrom " 
+                        << change->copyfrom_path << std::endl;
+            }
+        }
         else
-            // It's perfectly fine if an SVN path being deleted isn't
-            // mapped anywhere in this revision; if the path ever
-            // *was* mapped, the ruleset transition would have
-            // handled its deletion anyway.
+        {
+            // Make sure non-deletions have their targets mapped to Git 
             assert(change->change_kind == svn_fs_path_change_delete && "Unmapped SVN path!");
+        }
 
         // If it wasn't being deleted in SVN, also convert all of its
         // files to Git.
