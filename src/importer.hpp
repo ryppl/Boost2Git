@@ -7,8 +7,10 @@
 # include "git_repository.hpp"
 # include "path_set.hpp"
 # include "svn.hpp"
+# include "path.hpp"
 
 # include <boost/container/flat_set.hpp>
+# include <boost/container/flat_map.hpp>
 # include <map>
 
 struct Rule;
@@ -45,6 +47,9 @@ struct importer
     int revnum;
     path_set svn_paths_to_convert;
     boost::container::flat_set<git_repository*> changed_repositories;
+
+    // A map from destination directory to (source revision, directory) pairs
+    boost::container::flat_map<path, std::pair<std::size_t, path> > svn_directory_copies;
 };
 
 #endif // IMPORTER_DWA2013614_HPP

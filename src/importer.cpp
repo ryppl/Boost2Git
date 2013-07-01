@@ -134,31 +134,34 @@ void importer::process_svn_changes(svn::revision const& rev)
         path const svn_path(svn_path_);
 
         // We have found a path being modified in SVN.  
-        if (Rule const* const match = ruleset.matcher().longest_match(svn_path.str(), revnum))
-        {
-            // Start by marking its Git target for deletion.
+        Rule const* const match = ruleset.matcher().longest_match(svn_path.str(), revnum);
+
+        // Start by marking its Git target for deletion.
+        if (match)
             add_svn_tree_to_delete(svn_path, match);
-            if (change->copyfrom_known && change->copyfrom_path != nullptr) 
-            {
-                Log::warn() << "SVN path " << svn_path << " copyfrom " 
-                        << change->copyfrom_path << std::endl;
-            }
-        }
-        else
-        {
-            // Make sure non-deletions have their targets mapped to Git 
-            assert(change->change_kind == svn_fs_path_change_delete && "Unmapped SVN path!");
-        }
 
         // If it wasn't being deleted in SVN, also convert all of its
         // files to Git.
         if (change->change_kind != svn_fs_path_change_delete)
+        {
+            // Non-deletions must have their targets mapped to Git 
+            assert(match && "Unmapped SVN path!");
             add_svn_tree_to_convert(rev, svn_path);
+        }
 
         // Assume it's a directory if it's not known to be a file.
         // This is conservative, in case node_kind == svn_node_unknown.
         if (change->node_kind != svn_node_file)
         {
+            // Remember directory copy sources
+            if (change->copyfrom_known && change->copyfrom_path != nullptr)
+            {
+                // It's OK to retain only the last source directory if
+                // this target was copied-to more than once
+                svn_directory_copies[svn_path] 
+                    = std::make_pair(change->copyfrom_rev, change->copyfrom_path);
+            }
+
             // Handle rules that map SVN subtrees of the deleted path
              ruleset.matcher().svn_subtree_rules(
                  svn_path.str(), revnum,
@@ -199,6 +202,7 @@ void importer::import_revision(int revnum)
     //
     svn_paths_to_convert.clear();
     changed_repositories.clear();
+    svn_directory_copies.clear();
 
     // Deal with rules becoming active/inactive in this revision
     for (Rule const* r: ruleset.matcher().rules_in_transition(revnum))
