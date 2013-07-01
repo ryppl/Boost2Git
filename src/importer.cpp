@@ -52,9 +52,9 @@ int importer::last_valid_svn_revision()
     return revnum;
 }
 
-// if discover_changes is false and the Git ref specified by match is
-// not already marked for modification, return NULL.  Otherwise, find
-// the ref, mark it for modification, and return it
+// Unless the Git ref specified by match has already been completely
+// processed in this revision, find it, mark it for modification, and
+// return it.  Otherwise, discover_changes will be false.
 git_repository::ref* importer::prepare_to_modify(Rule const* match, bool discover_changes)
 {
     auto& repo = repositories.find(match->git_repo_name())->second;
@@ -219,11 +219,10 @@ void importer::import_revision(int revnum)
 
     // Though it is expected to be rare, a single SVN commit can
     // generate commits in multiple refs of the same Git repo.
-    // However, all the changes in a single Git ref's commit must all
-    // be sent contiguously to the fast-import process.  Therefore,
-    // for each Git ref that must be committed during this SVN
-    // revision, a separate pass over the SVN trees to convert is
-    // required.
+    // However, the changes in a single Git ref's commit must all be
+    // sent contiguously to the fast-import process.  Therefore, for
+    // each Git ref that must be committed during this SVN revision, a
+    // separate pass over the SVN trees to convert is required.
     //
     // During each pass, we map SVN paths to Git, and may discover Git
     // repositories and refs to that need to be committed in this SVN
