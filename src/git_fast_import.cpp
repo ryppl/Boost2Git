@@ -7,6 +7,7 @@
 #include "path.hpp"
 
 #include <boost/iostreams/device/file_descriptor.hpp>
+#include <numeric>
 
 using namespace boost::process::initializers;
 using namespace boost::process;
@@ -49,8 +50,13 @@ git_fast_import::arg_vector(std::string const& git_dir)
 
 git_fast_import& git_fast_import::write_raw(char const* data, std::size_t nbytes)
 {
-    // if (Log::get_level() >= Log::Trace)
-    //    std::cerr << "fast-import <= " << nbytes << " raw bytes." << std::flush;
+    if (Log::get_level() >= Log::Trace)
+    {
+        std::cerr.write(data, std::min(nbytes, (std::size_t)100));
+        if (nbytes > 100)
+            std::cerr << "...";
+        std::cerr << std::endl;
+    }
     cin.write(data, nbytes);
     return *this;
 }
