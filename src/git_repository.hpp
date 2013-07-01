@@ -21,20 +21,27 @@ struct git_repository
     // A branch or tag
     struct ref
     {
-        ref(std::string name) 
-            : name(std::move(name)) {}
+        ref(std::string name, git_repository* repo) 
+            : name(std::move(name)), repo(repo) {}
 
         typedef boost::container::flat_map<std::size_t, std::size_t> rev_mark_map;
-        
+
+        // Maps a Git ref into an SVN revision from that ref that has
+        // been merged into this ref.
+        typedef boost::container::flat_map<ref const*, std::size_t> merge_map;
+
         std::string name;
+        git_repository* repo;
         rev_mark_map marks;
+        merge_map merged_revisions;
+        // merge_map pending_merges;
         path_set pending_deletions;
         std::string head_tree_sha;
     };
 
     ref* modify_ref(std::string const& name, bool allow_discovery = true) 
     {
-        auto p = refs.emplace(name, name).first;
+        auto p = refs.emplace(name, ref(name, this)).first;
         if (!allow_discovery && modified_refs.count(&p->second) == 0)
             return nullptr;
         modified_refs.insert(&p->second);

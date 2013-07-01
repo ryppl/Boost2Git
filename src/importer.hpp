@@ -24,7 +24,7 @@ struct importer
 
  private: // helpers
     git_repository* demand_repo(std::string const& name);
-    git_repository* modify_repo(std::string const& name, bool discover_changes = true);
+    git_repository::ref* prepare_to_modify(Rule const* match, bool discover_changes);
     void process_svn_changes(svn::revision const& rev);
     path add_svn_tree_to_delete(path const& svn_path, Rule const* match);
     void invalidate_svn_tree(

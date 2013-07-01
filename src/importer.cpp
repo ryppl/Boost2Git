@@ -52,16 +52,16 @@ int importer::last_valid_svn_revision()
     return revnum;
 }
 
-// if discover_changes is false and the repository is not already
-// marked for modification, return NULL.  Otherwise, find the named
-// repository, mark it for modification, and return it
-git_repository* importer::modify_repo(std::string const& name, bool discover_changes)
+// if discover_changes is false and the Git ref specified by match is
+// not already marked for modification, return NULL.  Otherwise, find
+// the ref, mark it for modification, and return it
+git_repository::ref* importer::prepare_to_modify(Rule const* match, bool discover_changes)
 {
-    auto& repo = repositories.find(name)->second;
+    auto& repo = repositories.find(match->git_repo_name())->second;
     if (!discover_changes && changed_repositories.count(&repo) == 0)
         return nullptr;
     changed_repositories.insert(&repo);
-    return &repo;
+    return repo.modify_ref(match->git_ref_name(), discover_changes);
 }
 
 path importer::add_svn_tree_to_delete(path const& svn_path, Rule const* match)
@@ -72,12 +72,8 @@ path importer::add_svn_tree_to_delete(path const& svn_path, Rule const* match)
     // Find the unmatched suffix of the path
     path path_suffix = svn_path.sans_prefix(match->svn_path());
 
-    // Access the repository for modification
-    auto* repo = modify_repo(match->git_repo_name());
-
     // Access the ref for modification
-    auto ref = repo->modify_ref(match->git_ref_name());
-    assert(ref);
+    auto* ref = prepare_to_modify(match, true);
 
     // Mark the git path to be deleted at the start of the commit
     ref->pending_deletions.insert( match->git_path()/path_suffix );
@@ -349,22 +345,19 @@ void importer::convert_svn_file(
     // 1. the target repository and/or ref has already been fully
     // processed for this revision in an earlier pass over the
     // invalidated SVN trees
-    auto* const dst_repo = modify_repo(match->git_repo_name(), discover_changes);
-    if (dst_repo == nullptr)
-        return;
-    auto* dst_ref = dst_repo->modify_ref(match->git_ref_name(), discover_changes);
+    auto* dst_ref = prepare_to_modify(match, discover_changes);
     if (dst_ref == nullptr)
         return;
 
     // Mark the repository as having changes that will need to be written
-    changed_repositories.insert(dst_repo);
+    changed_repositories.insert(dst_ref->repo);
 
     // 2. A different target ref is currently being written in this
     // repository.
-    if (dst_repo->open_commit(rev) != dst_ref)
+    if (dst_ref->repo->open_commit(rev) != dst_ref)
         return;
 
-    auto& fast_import = dst_repo->fast_import();
+    auto& fast_import = dst_ref->repo->fast_import();
 
     fast_import.filemodify_hdr(
         match->git_path()/svn_path.sans_prefix(match->svn_path()) );
