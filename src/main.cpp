@@ -159,7 +159,7 @@ int main(int argc, char **argv)
         if (max_rev < 1)
             max_rev = svn_repo.latest_revision();
 
-        Log::info() << "Using git exectuable: " << git_executable() << std::endl;
+        Log::info() << "Using git executable: " << git_executable() << std::endl;
 
         for (int i = imp.last_valid_svn_revision(); ++i <= max_rev;)
             imp.import_revision(i);
