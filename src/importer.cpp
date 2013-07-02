@@ -292,11 +292,9 @@ void importer::convert_svn_tree(
         return;
 
     case svn_node_file:
-    {
         log << "(a file)" << std::endl;
         convert_svn_file(rev, svn_path, discover_changes);
-    }
-    break;
+        break;
 
     case svn_node_dir:
         log << "(a directory)" << std::endl;
