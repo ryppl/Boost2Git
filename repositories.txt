@@ -22,13 +22,13 @@ abstract repository common_branches
   branches
   {
     [     :38326] "/trunk/boost/" : "master";
-    [38327:38328] "/devel/" : "master";
+    [     :     ] "/devel/" : "master";
     [38329:     ] "/trunk/" : "master";
 
     [:] "/sandbox-branches/geometry/index_dev/" : "sandbox/geometry/index_dev";
-    [77091:     ] "/sandbox-branches/optional_optimization/" : "sandbox/optional_optimization";
-    [79440:     ] "/branches/maintenance/1_50_0/" : "maintenance/1_50_0";
-    [77438:     ] "/sandbox-branches/birbacher/propertymap-functormap/" : "sandbox/birbacher/propertymap-functormap";
+    [:] "/sandbox-branches/optional_optimization/" : "sandbox/optional_optimization";
+    [:] "/branches/maintenance/1_50_0/" : "maintenance/1_50_0";
+    [:] "/sandbox-branches/birbacher/propertymap-functormap/" : "sandbox/birbacher/propertymap-functormap";
     [:] "/sandbox-branches/expaler/" : "sandbox/expaler";
     [:] "/branches/unlabeled-1.1.1/boost/" : "old-branches/unlabeled-1.1.1";
     [:] "/branches/iterator-adaptors/boost/" : "old-branches/iterator-adaptors";
@@ -95,169 +95,169 @@ abstract repository common_branches
     [:] "/branches/Boost_Jam_994/boost/" : "old-branches/Boost_Jam_994";
     [:] "/branches/RC_1_34_0/boost/" : "old-branches/RC_1_34_0";
     [:] "/branches/QUICKBOOK_BACKEND/boost/" : "old-branches/QUICKBOOK_BACKEND";
-    [38613:     ] "/branches/serialization_next_release/boost/" : "serialization_next_release";
-    [39706:     ] "/branches/release/" : "release";
-    [40545:     ] "/sandbox-branches/birbacher/fix_iostreams/" : "sandbox/birbacher/fix_iostreams";
-    [41573:     ] "/branches/fix-links/" : "fix-links";
-    [42144:     ] "/branches/iostreams_dev/" : "iostreams_dev";
-    [38539:     ] "/branches/proto/v3/" : "proto/v3";
-    [44394:     ] "/branches/proto/v4.bak/" : "proto/v4.bak";
-    [44584:     ] "/branches/doc/" : "doc";
-    [47337:     ] "/branches/pdimov_pre_136/" : "pdimov_pre_136";
-    [48931:     ] "/branches/initializer-list/" : "initializer-list";
-    [39356:     ] "/branches/bcbboost/" : "bcbboost";
-    [48740:     ] "/branches/serialization_helper_support/" : "serialization_helper_support";
-    [44061:     ] "/branches/proto/v4/" : "proto/v4";
-    [46531:     ] "/branches/cpp0x/" : "cpp0x";
-    [53280:     ] "/sandbox-branches/straszheim/merge_me_into_trunk/" : "sandbox/straszheim/merge_me_into_trunk";
-    [53348:     ] "/branches/phoenix_v3/" : "phoenix_v3";
-    [52115:     ] "/sandbox-branches/bhy/py3k/" : "sandbox/bhy/py3k";
-    [55764:     ] "/sandbox-branches/intrusive_fix_SunCC/" : "sandbox/intrusive_fix_SunCC";
-    [53026:     ] "/branches/sredl_2009_05_proptree_update/" : "sredl_2009_05_proptree_update";
-    [59143:     ] "/branches/b2/" : "b2";
-    [57781:     ] "/branches/maintenance/1_41/" : "maintenance/1_41";
-    [60575:     ] "/sandbox-branches/birbacher/fix_documentation/" : "sandbox/birbacher/fix_documentation";
-    [61439:     ] "/branches/inspect/" : "inspect";
-    [59996:     ] "/branches/units/autoprefix/" : "units/autoprefix";
-    [68345:     ] "/branches/quickbook-filenames/" : "quickbook-filenames";
+    [:] "/branches/serialization_next_release/boost/" : "serialization_next_release";
+    [:] "/branches/release/" : "release";
+    [:] "/sandbox-branches/birbacher/fix_iostreams/" : "sandbox/birbacher/fix_iostreams";
+    [:] "/branches/fix-links/" : "fix-links";
+    [:] "/branches/iostreams_dev/" : "iostreams_dev";
+    [:] "/branches/proto/v3/" : "proto/v3";
+    [:] "/branches/proto/v4.bak/" : "proto/v4.bak";
+    [:] "/branches/doc/" : "doc";
+    [:] "/branches/pdimov_pre_136/" : "pdimov_pre_136";
+    [:] "/branches/initializer-list/" : "initializer-list";
+    [:] "/branches/bcbboost/" : "bcbboost";
+    [:] "/branches/serialization_helper_support/" : "serialization_helper_support";
+    [:] "/branches/proto/v4/" : "proto/v4";
+    [:] "/branches/cpp0x/" : "cpp0x";
+    [:] "/sandbox-branches/straszheim/merge_me_into_trunk/" : "sandbox/straszheim/merge_me_into_trunk";
+    [:] "/branches/phoenix_v3/" : "phoenix_v3";
+    [:] "/sandbox-branches/bhy/py3k/" : "sandbox/bhy/py3k";
+    [:] "/sandbox-branches/intrusive_fix_SunCC/" : "sandbox/intrusive_fix_SunCC";
+    [:] "/branches/sredl_2009_05_proptree_update/" : "sredl_2009_05_proptree_update";
+    [:] "/branches/b2/" : "b2";
+    [:] "/branches/maintenance/1_41/" : "maintenance/1_41";
+    [:] "/sandbox-branches/birbacher/fix_documentation/" : "sandbox/birbacher/fix_documentation";
+    [:] "/branches/inspect/" : "inspect";
+    [:] "/branches/units/autoprefix/" : "units/autoprefix";
+    [:] "/branches/quickbook-filenames/" : "quickbook-filenames";
     [:] "/sandbox/" : "sandbox/trunk";
-    [68640:     ] "/branches/doc-tools-docs/" : "doc-tools-docs";
-    [70613:     ] "/branches/quickbook-dev/" : "quickbook-dev";
+    [:] "/branches/doc-tools-docs/" : "doc-tools-docs";
+    [:] "/branches/quickbook-dev/" : "quickbook-dev";
     [:] "/branches/build/docs_2001_10_24/boost/" : "docs_2001_10_24";
     [:] "/branches/BOOST_BUILD_PYTHON/boost/" : "BOOST_BUILD_PYTHON";
 
-    [62649:     ] "/branches/filesystem3/" : "filesystem3";
-    [77385:     ] "/branches/filesystem-v3/" : "filesystem-v3";
-    [77385:77584] "/branches/filesystem-v3a/" : "filesystem-v3a";
+    [:] "/branches/filesystem3/" : "filesystem3";
+    [:] "/branches/filesystem-v3/" : "filesystem-v3";
+    [:] "/branches/filesystem-v3a/" : "filesystem-v3a";
 
-    [38959:     ] "/branches/multi_array/" : "old-branches/multi_array";
-    [38759:     ] "/branches/xpressive/nested_dynamic_regex/" : "old-branches/xpressive/nested_dynamic_regex";
+    [:] "/branches/multi_array/" : "old-branches/multi_array";
+    [:] "/branches/xpressive/nested_dynamic_regex/" : "old-branches/xpressive/nested_dynamic_regex";
     [:] "/branches/thread_rewrite/boost/" : "old-branches/thread_rewrite";
-    [38869:     ] "/branches/hash/" : "old-branches/hash";
-    [40222:     ] "/branches/fusion/2_1/" : "old-branches/fusion/2_1";
-    [40931:     ] "/branches/system/" : "old-branches/system";
-    [41004:     ] "/branches/bitten/" : "old-branches/bitten";
+    [:] "/branches/hash/" : "old-branches/hash";
+    [:] "/branches/fusion/2_1/" : "old-branches/fusion/2_1";
+    [:] "/branches/system/" : "old-branches/system";
+    [:] "/branches/bitten/" : "old-branches/bitten";
   }
   tags
   {
     [:] "/tags/tools/jam/Perforce_Jam_2_4_merge_1/boost/" : "Perforce_Jam_2_4_merge_1";
 
-    [44228:     ] "/tags/release/Version_1_17_0/boost/" : "release/Version_1_17_0";
-    [44229:     ] "/tags/release/Version_1_18_0/boost/" : "release/Version_1_18_0";
-    [44231:     ] "/tags/release/Version_1_18_2/boost/" : "release/Version_1_18_2";
-    [44233:     ] "/tags/release/Version_1_18_3/boost/" : "release/Version_1_18_3";
-    [44234:     ] "/tags/release/Version_1_19_0/boost/" : "release/Version_1_19_0";
-    [44235:     ] "/tags/release/Version_1_20_0/boost/" : "release/Version_1_20_0";
-    [44236:     ] "/tags/release/Version_1_20_1/boost/" : "release/Version_1_20_1";
-    [44237:     ] "/tags/release/Version_1_20_2/boost/" : "release/Version_1_20_2";
-    [44238:     ] "/tags/release/Version_1_21_0/boost/" : "release/Version_1_21_0";
-    [44239:     ] "/tags/release/Version_1_21_1/boost/" : "release/Version_1_21_1";
-    [44240:     ] "/tags/release/Version_1_21_2/boost/" : "release/Version_1_21_2";
-    [44241:     ] "/tags/release/Version_1_22_0/boost/" : "release/Version_1_22_0";
-    [44242:     ] "/tags/release/Version_1_23_0/boost/" : "release/Version_1_23_0";
-    [44243:     ] "/tags/release/Version_1_24_0/boost/" : "release/Version_1_24_0";
-    [44244:     ] "/tags/release/Version_1_25_0/boost/" : "release/Version_1_25_0";
-    [44245:     ] "/tags/release/Version_1_25_1/boost/" : "release/Version_1_25_1";
-    [44247:     ] "/tags/release/Version_1_26_0/boost/" : "release/Version_1_26_0";
-    [44248:     ] "/tags/release/Version_1_27_0/boost/" : "release/Version_1_27_0";
-    [44249:     ] "/tags/release/Version_1_28_0/boost/" : "release/Version_1_28_0";
-    [44250:     ] "/tags/release/Version_1_29_0/boost/" : "release/Version_1_29_0";
-    [44251:     ] "/tags/release/Version_1_30_0/boost/" : "release/Version_1_30_0";
-    [44252:     ] "/tags/release/Version_1_30_1/boost/" : "release/Version_1_30_1";
-    [44253:     ] "/tags/release/Version_1_30_2/boost/" : "release/Version_1_30_2";
-    [44254:     ] "/tags/release/Version_1_31_0/boost/" : "release/Version_1_31_0";
-    [44255:     ] "/tags/release/Version_1_32_0/boost/" : "release/Version_1_32_0";
-    [44256:     ] "/tags/release/Version_1_33_0/boost/" : "release/Version_1_33_0";
-    [44257:     ] "/tags/release/Version_1_33_1/boost/" : "release/Version_1_33_1";
-    [44258:     ] "/tags/release/Version_1_33_1_beta/boost/" : "release/Version_1_33_1_beta";
-    [44259:     ] "/tags/release/Version_1_34_0/boost/" : "release/Version_1_34_0";
-    [44260:     ] "/tags/release/Version_1_34_0_beta/boost/" : "release/Version_1_34_0_beta";
-    [44261:     ] "/tags/release/Version_1_34_0_RC1/boost/" : "release/Version_1_34_0_RC1";
-    [44262:     ] "/tags/release/Version_1_34_0_RC2/boost/" : "release/Version_1_34_0_RC2";
-    [44263:     ] "/tags/release/Version_1_34_0_RC3/boost/" : "release/Version_1_34_0_RC3";
-    [44264:     ] "/tags/release/Version_1_34_1/boost/" : "release/Version_1_34_1";
-    [44265:     ] "/tags/release/Version_1_34_1_RC1/boost/" : "release/Version_1_34_1_RC1";
-    [44266:     ] "/tags/release/Version_1_34_1_RC2/boost/" : "release/Version_1_34_1_RC2";
-    [44267:     ] "/tags/release/Version_1_34_1_RC3/boost/" : "release/Version_1_34_1_RC3";
-    [44268:     ] "/tags/release/Version_1_35_0/" : "release/Version_1_35_0";
-    [44269:     ] "/tags/release/VERSION_1_35_0_RC1/" : "release/VERSION_1_35_0_RC1";
-    [44270:     ] "/tags/release/Version_1_35_0_RC3/" : "release/Version_1_35_0_RC3";
+    [:] "/tags/release/Version_1_17_0/boost/" : "release/Version_1_17_0";
+    [:] "/tags/release/Version_1_18_0/boost/" : "release/Version_1_18_0";
+    [:] "/tags/release/Version_1_18_2/boost/" : "release/Version_1_18_2";
+    [:] "/tags/release/Version_1_18_3/boost/" : "release/Version_1_18_3";
+    [:] "/tags/release/Version_1_19_0/boost/" : "release/Version_1_19_0";
+    [:] "/tags/release/Version_1_20_0/boost/" : "release/Version_1_20_0";
+    [:] "/tags/release/Version_1_20_1/boost/" : "release/Version_1_20_1";
+    [:] "/tags/release/Version_1_20_2/boost/" : "release/Version_1_20_2";
+    [:] "/tags/release/Version_1_21_0/boost/" : "release/Version_1_21_0";
+    [:] "/tags/release/Version_1_21_1/boost/" : "release/Version_1_21_1";
+    [:] "/tags/release/Version_1_21_2/boost/" : "release/Version_1_21_2";
+    [:] "/tags/release/Version_1_22_0/boost/" : "release/Version_1_22_0";
+    [:] "/tags/release/Version_1_23_0/boost/" : "release/Version_1_23_0";
+    [:] "/tags/release/Version_1_24_0/boost/" : "release/Version_1_24_0";
+    [:] "/tags/release/Version_1_25_0/boost/" : "release/Version_1_25_0";
+    [:] "/tags/release/Version_1_25_1/boost/" : "release/Version_1_25_1";
+    [:] "/tags/release/Version_1_26_0/boost/" : "release/Version_1_26_0";
+    [:] "/tags/release/Version_1_27_0/boost/" : "release/Version_1_27_0";
+    [:] "/tags/release/Version_1_28_0/boost/" : "release/Version_1_28_0";
+    [:] "/tags/release/Version_1_29_0/boost/" : "release/Version_1_29_0";
+    [:] "/tags/release/Version_1_30_0/boost/" : "release/Version_1_30_0";
+    [:] "/tags/release/Version_1_30_1/boost/" : "release/Version_1_30_1";
+    [:] "/tags/release/Version_1_30_2/boost/" : "release/Version_1_30_2";
+    [:] "/tags/release/Version_1_31_0/boost/" : "release/Version_1_31_0";
+    [:] "/tags/release/Version_1_32_0/boost/" : "release/Version_1_32_0";
+    [:] "/tags/release/Version_1_33_0/boost/" : "release/Version_1_33_0";
+    [:] "/tags/release/Version_1_33_1/boost/" : "release/Version_1_33_1";
+    [:] "/tags/release/Version_1_33_1_beta/boost/" : "release/Version_1_33_1_beta";
+    [:] "/tags/release/Version_1_34_0/boost/" : "release/Version_1_34_0";
+    [:] "/tags/release/Version_1_34_0_beta/boost/" : "release/Version_1_34_0_beta";
+    [:] "/tags/release/Version_1_34_0_RC1/boost/" : "release/Version_1_34_0_RC1";
+    [:] "/tags/release/Version_1_34_0_RC2/boost/" : "release/Version_1_34_0_RC2";
+    [:] "/tags/release/Version_1_34_0_RC3/boost/" : "release/Version_1_34_0_RC3";
+    [:] "/tags/release/Version_1_34_1/boost/" : "release/Version_1_34_1";
+    [:] "/tags/release/Version_1_34_1_RC1/boost/" : "release/Version_1_34_1_RC1";
+    [:] "/tags/release/Version_1_34_1_RC2/boost/" : "release/Version_1_34_1_RC2";
+    [:] "/tags/release/Version_1_34_1_RC3/boost/" : "release/Version_1_34_1_RC3";
+    [:] "/tags/release/Version_1_35_0/" : "release/Version_1_35_0";
+    [:] "/tags/release/VERSION_1_35_0_RC1/" : "release/VERSION_1_35_0_RC1";
+    [:] "/tags/release/Version_1_35_0_RC3/" : "release/Version_1_35_0_RC3";
 
-    [44273:     ] "/tags/release/Boost_1_30_2_RC/boost/" : "release/Boost_1_30_2_RC";
-    [44274:     ] "/tags/release/Boost_1_16_1/boost/" : "release/Boost_1_16_1";
-    [44301:     ] "/tags/release/Boost_1_17_0/boost/" : "release/Boost_1_17_0";
-    [44302:     ] "/tags/release/Boost_1_18_0/boost/" : "release/Boost_1_18_0";
-    [44303:     ] "/tags/release/Boost_1_18_2/boost/" : "release/Boost_1_18_2";
-    [44304:     ] "/tags/release/Boost_1_18_3/boost/" : "release/Boost_1_18_3";
-    [44305:     ] "/tags/release/Boost_1_19_0/boost/" : "release/Boost_1_19_0";
-    [44306:     ] "/tags/release/Boost_1_20_0/boost/" : "release/Boost_1_20_0";
-    [44307:     ] "/tags/release/Boost_1_20_1/boost/" : "release/Boost_1_20_1";
-    [44308:     ] "/tags/release/Boost_1_20_2/boost/" : "release/Boost_1_20_2";
-    [44309:     ] "/tags/release/Boost_1_21_0/boost/" : "release/Boost_1_21_0";
-    [44310:     ] "/tags/release/Boost_1_21_1/boost/" : "release/Boost_1_21_1";
-    [44311:     ] "/tags/release/Boost_1_21_2/boost/" : "release/Boost_1_21_2";
-    [44312:     ] "/tags/release/Boost_1_22_0/boost/" : "release/Boost_1_22_0";
-    [44313:     ] "/tags/release/Boost_1_23_0/boost/" : "release/Boost_1_23_0";
-    [44314:     ] "/tags/release/Boost_1_24_0/boost/" : "release/Boost_1_24_0";
-    [44315:     ] "/tags/release/Boost_1_25_0/boost/" : "release/Boost_1_25_0";
-    [44316:     ] "/tags/release/Boost_1_25_1/boost/" : "release/Boost_1_25_1";
-    [44317:     ] "/tags/release/Boost_1_26_0/boost/" : "release/Boost_1_26_0";
-    [44318:     ] "/tags/release/Boost_1_27_0/boost/" : "release/Boost_1_27_0";
-    [44319:     ] "/tags/release/Boost_1_28_0/boost/" : "release/Boost_1_28_0";
-    [44320:     ] "/tags/release/Boost_1_29_0/boost/" : "release/Boost_1_29_0";
-    [44321:     ] "/tags/release/Boost_1_30_0/boost/" : "release/Boost_1_30_0";
-    [44322:     ] "/tags/release/Boost_1_30_1/boost/" : "release/Boost_1_30_1";
-    [44323:     ] "/tags/release/Boost_1_30_2/boost/" : "release/Boost_1_30_2";
-    [44324:     ] "/tags/release/Boost_1_31_0/boost/" : "release/Boost_1_31_0";
-    [44325:     ] "/tags/release/Boost_1_32_0/boost/" : "release/Boost_1_32_0";
-    [44326:     ] "/tags/release/Boost_1_33_0/boost/" : "release/Boost_1_33_0";
-    [44327:     ] "/tags/release/Boost_1_33_1/boost/" : "release/Boost_1_33_1";
-    [44328:     ] "/tags/release/Boost_1_33_1_B1/boost/" : "release/Boost_1_33_1_B1";
-    [44329:     ] "/tags/release/Boost_1_34_0/boost/" : "release/Boost_1_34_0";
-    [44330:     ] "/tags/release/Boost_1_34_0_B1/boost/" : "release/Boost_1_34_0_B1";
-    [44331:     ] "/tags/release/Boost_1_34_0_RC1/boost/" : "release/Boost_1_34_0_RC1";
-    [44332:     ] "/tags/release/Boost_1_34_0_RC2/boost/" : "release/Boost_1_34_0_RC2";
-    [44333:     ] "/tags/release/Boost_1_34_0_RC3/boost/" : "release/Boost_1_34_0_RC3";
-    [44334:     ] "/tags/release/Boost_1_34_1/boost/" : "release/Boost_1_34_1";
-    [44335:     ] "/tags/release/Boost_1_34_1_RC1/boost/" : "release/Boost_1_34_1_RC1";
-    [44336:     ] "/tags/release/Boost_1_34_1_RC2/boost/" : "release/Boost_1_34_1_RC2";
-    [44337:     ] "/tags/release/Boost_1_34_1_RC3/boost/" : "release/Boost_1_34_1_RC3";
-    [44338:     ] "/tags/release/Boost_1_35_0/" : "release/Boost_1_35_0";
-    [44339:     ] "/tags/release/Boost_1_35_0_RC1/" : "release/Boost_1_35_0_RC1";
-    [44340:     ] "/tags/release/Boost_1_35_0_RC3/" : "release/Boost_1_35_0_RC3";
-    [47919:     ] "/tags/release/Boost_1_36_0_beta1/" : "release/Boost_1_36_0_beta1";
-    [48100:     ] "/tags/release/Boost_1_36_0/" : "release/Boost_1_36_0";
-    [49441:     ] "/tags/release/Boost_1_37_0_beta1/" : "release/Boost_1_37_0_beta1";
-    [49549:     ] "/tags/release/Boost_1_37_0/" : "release/Boost_1_37_0";
-    [51178:     ] "/tags/release/Boost_1_38_0/" : "release/Boost_1_38_0";
-    [52601:     ] "/tags/release/Boost_1_39_0_beta1/" : "release/Boost_1_39_0_beta1";
-    [52732:     ] "/tags/release/Boost_1_39_0/" : "release/Boost_1_39_0";
-    [55802:     ] "/tags/release/Boost_1_40_0/" : "release/Boost_1_40_0";
-    [57353:     ] "/tags/release/Boost_1_41_0_beta1/" : "release/Boost_1_41_0_beta1";
-    [57747:     ] "/tags/release/Boost_1_41_0/" : "release/Boost_1_41_0";
-    [59432:     ] "/tags/release/Boost_1_42_0/" : "release/Boost_1_42_0";
-    [61461:     ] "/tags/release/Boost_1_43_0_beta1/" : "release/Boost_1_43_0_beta1";
-    [61817:     ] "/tags/release/Boost_1_43_0/" : "release/Boost_1_43_0";
-    [64617:     ] "/tags/release/Boost_1_44_0_beta1/" : "release/Boost_1_44_0_beta1";
-    [64846:     ] "/tags/release/Boost_1_44_0/" : "release/Boost_1_44_0";
-    [66473:     ] "/tags/release/Boost_1_45_0_beta1/" : "release/Boost_1_45_0_beta1";
-    [66646:     ] "/tags/release/Boost_1_45_0/" : "release/Boost_1_45_0";
-    [68581:     ] "/tags/release/Boost_1_46_0_beta_1/" : "release/Boost_1_46_0_beta_1";
-    [69125:     ] "/tags/release/Boost_1_46_0/" : "release/Boost_1_46_0";
-    [69890:     ] "/tags/release/Boost_1_46_1/" : "release/Boost_1_46_1";
-    [72708:     ] "/tags/release/Boost_1_47_0_beta1/" : "release/Boost_1_47_0_beta1";
-    [73007:     ] "/tags/release/Boost_1_47_0/" : "release/Boost_1_47_0";
-    [75132:     ] "/tags/release/Boost_1_48_0_beta1/" : "release/Boost_1_48_0_beta1";
-    [75495:     ] "/tags/release/Boost_1_48_0/" : "release/Boost_1_48_0";
-    [76721:     ] "/tags/release/Boost_1_49_0_beta1/" : "release/Boost_1_49_0_beta1";
-    [77094:     ] "/tags/release/Boost_1_49_0/" : "release/Boost_1_49_0";
-    [78831:     ] "/tags/release/Boost_1_50_0_beta1/" : "release/Boost_1_50_0_beta1";
-    [79156:     ] "/tags/release/Boost_1_50_0/" : "release/Boost_1_50_0";
-    [80098:     ] "/tags/release/Boost_1_51_0/" : "release/Boost_1_51_0";
-    [81201:     ] "/tags/release/Boost_1_52_0/" : "release/Boost_1_52_0";
-    [82734:     ] "/tags/release/Boost_1_53_0/" : "release/Boost_1_53_0";
-    [84600:     ] "/tags/release/Boost_1_54_0_beta1/" : "release/Boost_1_54_0_beta1";
-    [     :     ] "/tags/release/Boost_1_54_0/" : "release/Boost_1_54_0";
+    [:] "/tags/release/Boost_1_30_2_RC/boost/" : "release/Boost_1_30_2_RC";
+    [:] "/tags/release/Boost_1_16_1/boost/" : "release/Boost_1_16_1";
+    [:] "/tags/release/Boost_1_17_0/boost/" : "release/Boost_1_17_0";
+    [:] "/tags/release/Boost_1_18_0/boost/" : "release/Boost_1_18_0";
+    [:] "/tags/release/Boost_1_18_2/boost/" : "release/Boost_1_18_2";
+    [:] "/tags/release/Boost_1_18_3/boost/" : "release/Boost_1_18_3";
+    [:] "/tags/release/Boost_1_19_0/boost/" : "release/Boost_1_19_0";
+    [:] "/tags/release/Boost_1_20_0/boost/" : "release/Boost_1_20_0";
+    [:] "/tags/release/Boost_1_20_1/boost/" : "release/Boost_1_20_1";
+    [:] "/tags/release/Boost_1_20_2/boost/" : "release/Boost_1_20_2";
+    [:] "/tags/release/Boost_1_21_0/boost/" : "release/Boost_1_21_0";
+    [:] "/tags/release/Boost_1_21_1/boost/" : "release/Boost_1_21_1";
+    [:] "/tags/release/Boost_1_21_2/boost/" : "release/Boost_1_21_2";
+    [:] "/tags/release/Boost_1_22_0/boost/" : "release/Boost_1_22_0";
+    [:] "/tags/release/Boost_1_23_0/boost/" : "release/Boost_1_23_0";
+    [:] "/tags/release/Boost_1_24_0/boost/" : "release/Boost_1_24_0";
+    [:] "/tags/release/Boost_1_25_0/boost/" : "release/Boost_1_25_0";
+    [:] "/tags/release/Boost_1_25_1/boost/" : "release/Boost_1_25_1";
+    [:] "/tags/release/Boost_1_26_0/boost/" : "release/Boost_1_26_0";
+    [:] "/tags/release/Boost_1_27_0/boost/" : "release/Boost_1_27_0";
+    [:] "/tags/release/Boost_1_28_0/boost/" : "release/Boost_1_28_0";
+    [:] "/tags/release/Boost_1_29_0/boost/" : "release/Boost_1_29_0";
+    [:] "/tags/release/Boost_1_30_0/boost/" : "release/Boost_1_30_0";
+    [:] "/tags/release/Boost_1_30_1/boost/" : "release/Boost_1_30_1";
+    [:] "/tags/release/Boost_1_30_2/boost/" : "release/Boost_1_30_2";
+    [:] "/tags/release/Boost_1_31_0/boost/" : "release/Boost_1_31_0";
+    [:] "/tags/release/Boost_1_32_0/boost/" : "release/Boost_1_32_0";
+    [:] "/tags/release/Boost_1_33_0/boost/" : "release/Boost_1_33_0";
+    [:] "/tags/release/Boost_1_33_1/boost/" : "release/Boost_1_33_1";
+    [:] "/tags/release/Boost_1_33_1_B1/boost/" : "release/Boost_1_33_1_B1";
+    [:] "/tags/release/Boost_1_34_0/boost/" : "release/Boost_1_34_0";
+    [:] "/tags/release/Boost_1_34_0_B1/boost/" : "release/Boost_1_34_0_B1";
+    [:] "/tags/release/Boost_1_34_0_RC1/boost/" : "release/Boost_1_34_0_RC1";
+    [:] "/tags/release/Boost_1_34_0_RC2/boost/" : "release/Boost_1_34_0_RC2";
+    [:] "/tags/release/Boost_1_34_0_RC3/boost/" : "release/Boost_1_34_0_RC3";
+    [:] "/tags/release/Boost_1_34_1/boost/" : "release/Boost_1_34_1";
+    [:] "/tags/release/Boost_1_34_1_RC1/boost/" : "release/Boost_1_34_1_RC1";
+    [:] "/tags/release/Boost_1_34_1_RC2/boost/" : "release/Boost_1_34_1_RC2";
+    [:] "/tags/release/Boost_1_34_1_RC3/boost/" : "release/Boost_1_34_1_RC3";
+    [:] "/tags/release/Boost_1_35_0/" : "release/Boost_1_35_0";
+    [:] "/tags/release/Boost_1_35_0_RC1/" : "release/Boost_1_35_0_RC1";
+    [:] "/tags/release/Boost_1_35_0_RC3/" : "release/Boost_1_35_0_RC3";
+    [:] "/tags/release/Boost_1_36_0_beta1/" : "release/Boost_1_36_0_beta1";
+    [:] "/tags/release/Boost_1_36_0/" : "release/Boost_1_36_0";
+    [:] "/tags/release/Boost_1_37_0_beta1/" : "release/Boost_1_37_0_beta1";
+    [:] "/tags/release/Boost_1_37_0/" : "release/Boost_1_37_0";
+    [:] "/tags/release/Boost_1_38_0/" : "release/Boost_1_38_0";
+    [:] "/tags/release/Boost_1_39_0_beta1/" : "release/Boost_1_39_0_beta1";
+    [:] "/tags/release/Boost_1_39_0/" : "release/Boost_1_39_0";
+    [:] "/tags/release/Boost_1_40_0/" : "release/Boost_1_40_0";
+    [:] "/tags/release/Boost_1_41_0_beta1/" : "release/Boost_1_41_0_beta1";
+    [:] "/tags/release/Boost_1_41_0/" : "release/Boost_1_41_0";
+    [:] "/tags/release/Boost_1_42_0/" : "release/Boost_1_42_0";
+    [:] "/tags/release/Boost_1_43_0_beta1/" : "release/Boost_1_43_0_beta1";
+    [:] "/tags/release/Boost_1_43_0/" : "release/Boost_1_43_0";
+    [:] "/tags/release/Boost_1_44_0_beta1/" : "release/Boost_1_44_0_beta1";
+    [:] "/tags/release/Boost_1_44_0/" : "release/Boost_1_44_0";
+    [:] "/tags/release/Boost_1_45_0_beta1/" : "release/Boost_1_45_0_beta1";
+    [:] "/tags/release/Boost_1_45_0/" : "release/Boost_1_45_0";
+    [:] "/tags/release/Boost_1_46_0_beta_1/" : "release/Boost_1_46_0_beta_1";
+    [:] "/tags/release/Boost_1_46_0/" : "release/Boost_1_46_0";
+    [:] "/tags/release/Boost_1_46_1/" : "release/Boost_1_46_1";
+    [:] "/tags/release/Boost_1_47_0_beta1/" : "release/Boost_1_47_0_beta1";
+    [:] "/tags/release/Boost_1_47_0/" : "release/Boost_1_47_0";
+    [:] "/tags/release/Boost_1_48_0_beta1/" : "release/Boost_1_48_0_beta1";
+    [:] "/tags/release/Boost_1_48_0/" : "release/Boost_1_48_0";
+    [:] "/tags/release/Boost_1_49_0_beta1/" : "release/Boost_1_49_0_beta1";
+    [:] "/tags/release/Boost_1_49_0/" : "release/Boost_1_49_0";
+    [:] "/tags/release/Boost_1_50_0_beta1/" : "release/Boost_1_50_0_beta1";
+    [:] "/tags/release/Boost_1_50_0/" : "release/Boost_1_50_0";
+    [:] "/tags/release/Boost_1_51_0/" : "release/Boost_1_51_0";
+    [:] "/tags/release/Boost_1_52_0/" : "release/Boost_1_52_0";
+    [:] "/tags/release/Boost_1_53_0/" : "release/Boost_1_53_0";
+    [:] "/tags/release/Boost_1_54_0_beta1/" : "release/Boost_1_54_0_beta1";
+    [:] "/tags/release/Boost_1_54_0/" : "release/Boost_1_54_0";
 
     [:] "/tags/Version_1_17_0/boost/" : "Version_1_17_0";
     [:] "/tags/Version_1_18_0/boost/" : "Version_1_18_0";
@@ -293,13 +293,13 @@ abstract repository common_branches
     [:] "/tags/Version_1_34_0_RC2/boost/" : "Version_1_34_0_RC2";
     [:] "/tags/Version_1_34_0_RC3/boost/" : "Version_1_34_0_RC3";
     [:] "/tags/Version_1_34_0/boost/" : "Version_1_34_0";
-    [38058:     ] "/tags/Version_1_34_1_RC1/boost/" : "Version_1_34_1_RC1";
-    [38193:     ] "/tags/Version_1_34_1_RC2/boost/" : "Version_1_34_1_RC2";
-    [38225:     ] "/tags/Version_1_34_1_RC3/boost/" : "Version_1_34_1_RC3";
+    [:] "/tags/Version_1_34_1_RC1/boost/" : "Version_1_34_1_RC1";
+    [:] "/tags/Version_1_34_1_RC2/boost/" : "Version_1_34_1_RC2";
+    [:] "/tags/Version_1_34_1_RC3/boost/" : "Version_1_34_1_RC3";
     [:] "/tags/Version_1_34_1/boost/" : "Version_1_34_1";
-    [43603:     ] "/tags/VERSION_1_35_0_RC1/" : "VERSION_1_35_0_RC1";
-    [43909:     ] "/tags/Version_1_35_0_RC3/" : "Version_1_35_0_RC3";
-    [43921:     ] "/tags/Version_1_35_0/" : "Version_1_35_0";
+    [:] "/tags/VERSION_1_35_0_RC1/" : "VERSION_1_35_0_RC1";
+    [:] "/tags/Version_1_35_0_RC3/" : "Version_1_35_0_RC3";
+    [:] "/tags/Version_1_35_0/" : "Version_1_35_0";
 
     [:] "/tags/RC_1_28_0_last_merge/boost/" : "RC_1_28_0_last_merge";
     [:] "/tags/RC_1_29_0_last_merge/boost/" : "RC_1_29_0_last_merge";
@@ -324,19 +324,19 @@ abstract repository common_branches
     [:] "/tags/dwa-prelicense/boost/" : "dwa-prelicense";
     [:] "/tags/merged_to_1_34_0/boost/" : "merged_to_1_34_0";
     [:] "/tags/merged_to_RC_1_34_0/boost/" : "merged_to_RC_1_34_0";
-    [38030:     ] "/tags/SPIRIT_1_6_4_MINIBOOST/boost/" : "SPIRIT_1_6_4_MINIBOOST";
-    [38032:     ] "/tags/SPIRIT_MINIBOOST_1_34_0/boost/" : "SPIRIT_MINIBOOST_1_34_0";
-    [38031:     ] "/tags/SPIRIT_1_8_5_MINIBOOST/boost/" : "SPIRIT_1_8_5_MINIBOOST";
-    [44230:     ] "/tags/release/release_1_16_1/boost/" : "release/release_1_16_1";
-    [44271:     ] "/tags/release/RC_1_30_2/boost/" : "release/RC_1_30_2";
+    [:] "/tags/SPIRIT_1_6_4_MINIBOOST/boost/" : "SPIRIT_1_6_4_MINIBOOST";
+    [:] "/tags/SPIRIT_MINIBOOST_1_34_0/boost/" : "SPIRIT_MINIBOOST_1_34_0";
+    [:] "/tags/SPIRIT_1_8_5_MINIBOOST/boost/" : "SPIRIT_1_8_5_MINIBOOST";
+    [:] "/tags/release/release_1_16_1/boost/" : "release/release_1_16_1";
+    [:] "/tags/release/RC_1_30_2/boost/" : "release/RC_1_30_2";
     [:] "/tags/header-cache/boost/" : "header-cache";
     [:] "/tags/bjam_3_1_2/boost/" : "bjam_3_1_2";
     [:] "/tags/Milestone_9_1/boost/" : "Milestone_9_1";
     [:] "/tags/dwa-postlicense/boost/" : "dwa-postlicense";
     [:] "/tags/perforce_2_4_merge_1/boost/" : "perforce_2_4_merge_1";
-    [44232:     ] "/tags/start/Version_1_18_3/boost/" : "start-tags/Version_1_18_3";
-    [38383:     ] "/tags/jam/perforce_2_4_merge_1/boost/" : "jam/perforce_2_4_merge_1";
-    [38389:     ] "/tags/jam/Perforce_Jam_2_4_merge_1/boost/" : "jam/Perforce_Jam_2_4_merge_1";
+    [:] "/tags/start/Version_1_18_3/boost/" : "start-tags/Version_1_18_3";
+    [:] "/tags/jam/perforce_2_4_merge_1/boost/" : "jam/perforce_2_4_merge_1";
+    [:] "/tags/jam/Perforce_Jam_2_4_merge_1/boost/" : "jam/Perforce_Jam_2_4_merge_1";
   }
 }
 
@@ -661,7 +661,7 @@ repository date_time : common_branches
   }
   branches
   {
-    [62584:     ] "/branches/date_time_io_rewrite/" : "date_time_io_rewrite";
+    [:] "/branches/date_time_io_rewrite/" : "date_time_io_rewrite";
   }
 }
 
@@ -734,7 +734,7 @@ repository filesystem
   }
   branches
   {
-    [38875:     ] "/branches/libs/filesystem/" : "filesystem";
+    [:] "/branches/libs/filesystem/" : "filesystem";
   }
 }
 
@@ -841,8 +841,8 @@ repository geometry : common_branches
   }
   tags
   {
-    [77006:     ] "/tags/geometry/boost_1_49_0/" : "geometry/boost_1_49_0";
-    [70322:     ] "/sandbox-tags/geometry/boost-geometry-0.9.0/" : "sandbox/geometry/boost-geometry-0.9.0";
+    [:] "/tags/geometry/boost_1_49_0/" : "geometry/boost_1_49_0";
+    [:] "/sandbox-tags/geometry/boost-geometry-0.9.0/" : "sandbox/geometry/boost-geometry-0.9.0";
   }
 }
 
@@ -1000,7 +1000,7 @@ repository iostreams : common_branches
   }
   branches
   {
-    [39108:     ] "/sandbox-branches/birbacher/tmp_iostreams/" : "sandbox/birbacher/tmp_iostreams";
+    [:] "/sandbox-branches/birbacher/tmp_iostreams/" : "sandbox/birbacher/tmp_iostreams";
   }
   tags
   {
@@ -1191,8 +1191,8 @@ repository msm : common_branches
   }
   branches
   {
-    [69829:     ] "/branches/msm/v2_30/" : "msm/v2_30";
-    [71680:     ] "/branches/msm/msm_phoenix/" : "msm/msm_phoenix";
+    [:] "/branches/msm/v2_30/" : "msm/v2_30";
+    [:] "/branches/msm/msm_phoenix/" : "msm/msm_phoenix";
   }
 }
 
@@ -1332,7 +1332,7 @@ repository parameter : common_branches
   tags
   {
     [:] "/tags/parameter_merged_to_RC_1_34_0/boost/" : "parameter_merged_to_RC_1_34_0";
-    [38381:     ] "/tags/jam/parameter_merged_to_RC_1_34_0/boost/" : "jam/parameter_merged_to_RC_1_34_0";
+    [:] "/tags/jam/parameter_merged_to_RC_1_34_0/boost/" : "jam/parameter_merged_to_RC_1_34_0";
   }
 }
 
@@ -1380,7 +1380,7 @@ repository preprocessor : common_branches
   branches
   {
     [:] "/branches/pplib/variadics/" : "variadics";
-    [71970:     ] "/branches/pplib/v2/" : "v2";
+    [:] "/branches/pplib/v2/" : "v2";
   }
 }
 
@@ -1830,7 +1830,7 @@ repository spirit : common_branches
   branches
   {
     [:] "/branches/FUSION_MSVC/boost/" : "old-branches/FUSION_MSVC";
-    [77158:     ] "/branches/spirit_3x/" : "spirit_3x";
+    [:] "/branches/spirit_3x/" : "spirit_3x";
     [:] "/branches/SPIRIT_1_9/boost/" : "old-branches/SPIRIT_1_9";
     [:] "/branches/SPIRIT_RC_1_8_5/boost/" : "old-branches/SPIRIT_RC_1_8_5";
     [:] "/branches/SPIRIT_1_8/boost/" : "old-branches/SPIRIT_1_8";
@@ -1899,7 +1899,7 @@ repository system
   }
   branches
   {
-    [38875:     ] "/branches/libs/system/" : "system";
+    [:] "/branches/libs/system/" : "system";
   }
 }
 
@@ -2239,7 +2239,7 @@ repository build : common_branches
     [:] "/branches/jam/jam_src/boost/" : "old-branches/jam_src";
     [:] "/branches/jam/jam-src/boost/" : "old-branches/jam-src";
     [:] "/branches/build/jam-src/boost/" : "old-branches/jam-src";
-    [38357:     ] "/branches/quickbook/include/boost/" : "quickbook/include";
+    [:] "/branches/quickbook/include/boost/" : "quickbook/include";
   }
   tags
   {
@@ -2419,7 +2419,7 @@ repository quickbook : common_branches
   }
   branches
   {
-    [38357:     ] "/branches/quickbook/include/boost/" : "quickbook/include";
+    [:] "/branches/quickbook/include/boost/" : "quickbook/include";
   }
 }
 
@@ -2435,7 +2435,7 @@ repository quickbook
   {
     [:] "/branches/quickbook-1.5/" : "quickbook-1.5";
     [:] "/branches/quickbook-1.5-spirit2/" : "quickbook-1.5-spirit2";
-    [75162:     ] "/branches/quickbook/literate/" : "literate";
+    [:] "/branches/quickbook/literate/" : "literate";
   }
 }
 
@@ -2471,7 +2471,7 @@ repository sandbox
   }
   branches
   {
-    [44914:44914] "/sandbox/libs/smart_ptr/" : "trunk";
+    [:] "/sandbox/libs/smart_ptr/" : "trunk";
   }
 }
 
@@ -2599,8 +2599,8 @@ repository boost : common_branches
     [:] "/branches/build-developement/boost/" : "old-branches/build-developement";
     [:] "/branches/boost/boost/" : "old-branches/oops";
     [:] "/branches/quickbook/QUICKBOOK_BACKEND/boost/" : "old-branches/QUICKBOOK_BACKEND";
-    [50979:     ] "/sandbox-branches/guigl-wmbuild/" : "sandbox/guigl-wmbuild";
-    [51204:     ] "/sandbox-branches/andreo/guigl/" : "sandbox/andreo/guigl";
+    [:] "/sandbox-branches/guigl-wmbuild/" : "sandbox/guigl-wmbuild";
+    [:] "/sandbox-branches/andreo/guigl/" : "sandbox/andreo/guigl";
     [:] "/branches/coding_guidelines/boost/" : "old-branches/coding_guidelines";
   }
   tags
