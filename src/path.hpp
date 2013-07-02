@@ -28,6 +28,11 @@ struct path : boost::totally_ordered<path>
         : text(path::trim(std::move(x)))
     {}
 
+    path(path const&) = default;
+    path(path&&) = default;
+    path& operator=(path const&) = default;
+    path& operator=(path&&) = default;
+
     bool starts_with(path const& prefix) const
     {
         return boost::starts_with(text, prefix.text) && (
