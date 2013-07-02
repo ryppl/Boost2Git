@@ -257,6 +257,7 @@ abstract repository common_branches
     [81201:     ] "/tags/release/Boost_1_52_0/" : "release/Boost_1_52_0";
     [82734:     ] "/tags/release/Boost_1_53_0/" : "release/Boost_1_53_0";
     [84600:     ] "/tags/release/Boost_1_54_0_beta1/" : "release/Boost_1_54_0_beta1";
+    [     :     ] "/tags/release/Boost_1_54_0/" : "release/Boost_1_54_0";
 
     [:] "/tags/Version_1_17_0/boost/" : "Version_1_17_0";
     [:] "/tags/Version_1_18_0/boost/" : "Version_1_18_0";
