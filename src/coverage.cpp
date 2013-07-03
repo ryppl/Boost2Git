@@ -37,6 +37,15 @@ void coverage::match(Rule const& r, std::size_t revision)
   // std::cout << "** match count: " << matched[r.branch_rule].size() << std::endl;
   }
 
+void coverage::range_required(boost2git::BranchRule const* branch_rule)
+  {
+  static std::set<boost2git::BranchRule const*> rules;
+  if (rules.insert(branch_rule).second)
+    {
+    std::cout << "Required rev-range in line " << branch_rule->line << ": " << branch_rule->svn_path << std::endl;
+    }
+  }
+
 struct project1st
   {
   template <class T, class U>

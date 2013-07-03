@@ -8,10 +8,16 @@
 
 struct Rule;
 
+namespace boost2git
+{
+struct BranchRule;
+}
+
 struct coverage
 {
     static void declare(Rule const& r);
     static void match(Rule const& r, std::size_t revision);
+    static void range_required(boost2git::BranchRule const* branch_rule);
     static void report();
 };
 

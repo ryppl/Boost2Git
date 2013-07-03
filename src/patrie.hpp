@@ -26,6 +26,8 @@ struct DummyCoverage
 {
     void declare(Rule const& r) {}
     void match(Rule const& r, std::size_t revision) {}
+    template<typename BranchRule>
+    void range_required(BranchRule const* branch_rule) {}
 };
 
 template <class Container>
@@ -100,7 +102,7 @@ struct patrie
     template <class Range>
     Rule const* longest_match(Range const& r, std::size_t revision) const
     {
-        search_visitor v(revision);
+        search_visitor v(revision, coverage);
         traverse(&this->trie, boost::begin(r), boost::end(r), v);
         if (v.found_rule)
             coverage.match(*v.found_rule, revision);
@@ -278,22 +280,40 @@ struct patrie
   
     struct search_visitor : search_visitor_base
     {
-        search_visitor(std::size_t revision)
-            : search_visitor_base(revision), found_rule(0) {}
+        search_visitor(std::size_t revision, Coverage& coverage)
+            : search_visitor_base(revision), found_rule(0), coverage(coverage) {}
 
         // We matched all of node n
         template <class Iterator>
         void full_match(node const& n, Iterator start, Iterator finish)
         {
+            if (n.rules.empty())
+                return;
+
             // Only record the found rule if our match occurred on a directory boundary
             if (start == finish || *start == '/' || n.text.empty())
             {
+                // if there is more than one rule, we pick one depending on the revision
+                if (n.rules.size() != 1)
+                {
+                    for (auto rule: n.rules)
+                        coverage.range_required(rule->branch_rule);
+                }
+
                 if (auto p = n.find_rule(this->revision))
+                {
                     found_rule = p;
+                }
+                else if (n.rules.size() == 1)
+                {
+                    // there is a single rule and we ignored it based on the revision
+                    coverage.range_required(n.rules[0]->branch_rule);
+                }
             }
         }
 
         Rule const* found_rule;
+        Coverage& coverage;
     };
   
     // Finds all Rules at paths beneath the prefix being sought
