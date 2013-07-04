@@ -366,6 +366,7 @@ void importer::convert_svn_file(
     if (dst_ref->repo->open_commit(rev) != dst_ref)
         return;
 
+    record_merges(dst_ref, svn_path, match);
     auto& fast_import = dst_ref->repo->fast_import();
 
     fast_import.filemodify_hdr(
@@ -389,4 +390,14 @@ void importer::convert_svn_file(
     svn_stream_set_write(out_stream, fast_import_raw_bytes);
     check_svn(svn_stream_copy3(in_stream, out_stream, nullptr, nullptr, scope));
     fast_import << LF;
+}
+
+void record_merges(git_repository::ref* target, path const& svn_path, Rule const* match)
+{
+    auto p = svn_directory_copies.lower_bound(svn_path);
+    if (p == svn_directory_copies.begin())
+        return;
+    if (!svn_path.starts_with((--p)->first))
+        return;
+    // target->pending_merges[p->
 }

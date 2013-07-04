@@ -34,7 +34,7 @@ struct git_repository
         git_repository* repo;
         rev_mark_map marks;
         merge_map merged_revisions;
-        // merge_map pending_merges;
+        merge_map pending_merges;
         path_set pending_deletions;
         std::string head_tree_sha;
     };

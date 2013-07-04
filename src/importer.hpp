@@ -40,6 +40,7 @@ struct importer
         svn::revision const& rev, path const& svn_path, bool discover_changes);
     void convert_svn_file(
         svn::revision const& rev, path const& svn_path, bool discover_changes);
+    void record_merges(git_repository::ref*, path const& svn_path, Rule const* match);
 
  private: // persistent members
     std::map<std::string, git_repository> repositories;
