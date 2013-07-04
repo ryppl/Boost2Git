@@ -392,13 +392,46 @@ void importer::convert_svn_file(
     fast_import << LF;
 }
 
-void importer::record_merges(git_repository::ref* target, path const& svn_path, Rule const* match)
+// Given the SVN path of a file being converted to Git, try to find an
+// SVN directory copy that caused this file to be converted, and from
+// that, extract Git merge information
+void importer::record_merges(git_repository::ref* target, path const& dst_svn_path, Rule const* match)
 {
     // Look for an svn directory copy whose target contains svn_path
-    auto p = svn_directory_copies.upper_bound(svn_path);
+    auto p = svn_directory_copies.lower_bound(dst_svn_path);
     if (p == svn_directory_copies.begin())
         return;
-    if (!svn_path.starts_with((--p)->first))
+    if (!dst_svn_path.starts_with((--p)->first))
         return;
-    // target->pending_merges[p->
+
+    // compute the path and revision in SVN corresponding to the
+    // source of this file in that directory copy
+    auto src_revnum = p->second.first;
+    auto src_svn_path = p->second.second / dst_svn_path.sans_prefix(p->first);
+
+    // Find out where that path landed in Git
+    Rule const* const src_match = ruleset.matcher().longest_match(src_svn_path.str(), src_revnum);
+    
+    // If in a different repository, there's nothing to be done but warn
+    auto const& src_repo_name = src_match->repo_rule->git_repo_name;
+
+    if (src_repo_name != target->repo->name())
+    {
+        Log::warn() 
+            << "In r" << revnum << ", SVN " 
+            << src_svn_path << " (which landed in Git repo " << src_repo_name << ")"
+            << " is copied or moved to "
+            << dst_svn_path << " in Git repo " << target->repo->name()
+            << std::endl;
+        return;
+    }
+
+    // Get the source ref
+    auto& src_ref_name = src_match->branch_rule->git_branch_or_tag_name;
+    auto src_ref = target->repo->demand_ref(src_ref_name);
+
+    // Update the latest source revision merged
+    auto& merged_rev = target->pending_merges[src_ref];
+    if (merged_rev < src_revnum)
+        merged_rev = src_revnum;
 }

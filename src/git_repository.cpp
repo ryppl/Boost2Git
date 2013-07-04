@@ -70,6 +70,8 @@ bool git_repository::close_commit()
     Log::trace() << "repository " << git_dir
                  << " closing commit in ref " << current_ref->name << std::endl;
 
+    write_merges();
+
     std::string response = fast_import().ls("\"\"");
     if (response.size() < 41)
     {
@@ -98,6 +100,15 @@ bool git_repository::close_commit()
     current_ref = nullptr;
     Log::trace() << modified_refs.size() << " modified refs remaining." << std::endl;
     return modified_refs.empty();
+}
+
+void git_repository::write_merges()
+{
+    for (auto const& kv : current_ref->pending_merges)
+    {
+        // FIXME: actually write something
+        Log::warn() << "merge r" << kv.second << " from ref " << kv.first->name << std::endl;
+    }
 }
 
 git_repository::ref* git_repository::open_commit(svn::revision const& rev)

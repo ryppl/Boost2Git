@@ -39,13 +39,19 @@ struct git_repository
         std::string head_tree_sha;
     };
 
-    ref* modify_ref(std::string const& name, bool allow_discovery = true) 
+    ref* demand_ref(std::string const& name)
     {
         auto p = refs.emplace(name, ref(name, this)).first;
-        if (!allow_discovery && modified_refs.count(&p->second) == 0)
-            return nullptr;
-        modified_refs.insert(&p->second);
         return &p->second;
+    }
+
+    ref* modify_ref(std::string const& name, bool allow_discovery = true) 
+    {
+        auto r = demand_ref(name);
+        if (!allow_discovery && modified_refs.count(r) == 0)
+            return nullptr;
+        modified_refs.insert(r);
+        return r;
     }
 
     // Begins a commit; returns the ref currently being written.
@@ -55,9 +61,12 @@ struct git_repository
     // repository for this SVN revision.
     bool close_commit(); 
 
+    std::string const& name() { return git_dir; }
+
  private:
     void read_logfile();
     static bool ensure_existence(std::string const& git_dir);
+    void write_merges();
 
  private: // data members
     std::string git_dir;
