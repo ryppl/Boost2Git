@@ -392,9 +392,10 @@ void importer::convert_svn_file(
     fast_import << LF;
 }
 
-void record_merges(git_repository::ref* target, path const& svn_path, Rule const* match)
+void importer::record_merges(git_repository::ref* target, path const& svn_path, Rule const* match)
 {
-    auto p = svn_directory_copies.lower_bound(svn_path);
+    // Look for an svn directory copy whose target contains svn_path
+    auto p = svn_directory_copies.upper_bound(svn_path);
     if (p == svn_directory_copies.begin())
         return;
     if (!svn_path.starts_with((--p)->first))
