@@ -150,27 +150,31 @@ void importer::process_svn_changes(svn::revision const& rev)
         // Assume it's a directory if it's not known to be a file.
         // This is conservative, in case node_kind == svn_node_unknown.
         if (change->node_kind != svn_node_file)
-        {
-            // Remember directory copy sources
-            if (change->copyfrom_known && change->copyfrom_path != nullptr)
-            {
-                // It's OK to retain only the last source directory if
-                // this target was copied-to more than once
-                svn_directory_copies[svn_path] 
-                    = std::make_pair(change->copyfrom_rev, change->copyfrom_path);
-            }
-
-            // Handle rules that map SVN subtrees of the deleted path
-             ruleset.matcher().svn_subtree_rules(
-                 svn_path.str(), revnum,
-                 // Mark the target Git tree for deletion, but
-                 // also convert all SVN trees being mapped into a
-                 // subtree of the Git tree.
-                 boost::make_function_output_iterator(
-                     [&](Rule const* r){ 
-                         invalidate_svn_tree(rev, r->svn_path(), r); }));
-        }
+            process_svn_directory_change(rev, change, svn_path);
     }
+}
+
+void importer::process_svn_directory_change(
+    svn::revision const& rev, svn_fs_path_change2_t *change, path const& svn_path)
+{
+    // Remember directory copy sources
+    if (change->copyfrom_known && change->copyfrom_path != nullptr)
+    {
+        // It's OK to retain only the last source directory if
+        // this target was copied-to more than once
+        svn_directory_copies[svn_path] 
+            = std::make_pair(change->copyfrom_rev, change->copyfrom_path);
+    }
+
+    // Handle rules that map SVN subtrees of the deleted path
+     ruleset.matcher().svn_subtree_rules(
+         svn_path.str(), revnum,
+         // Mark the target Git tree for deletion, but
+         // also convert all SVN trees being mapped into a
+         // subtree of the Git tree.
+         boost::make_function_output_iterator(
+             [&](Rule const* r){ 
+                 invalidate_svn_tree(rev, r->svn_path(), r); }));
 }
 
 void importer::import_revision(int revnum)
