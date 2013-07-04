@@ -70,8 +70,6 @@ bool git_repository::close_commit()
     Log::trace() << "repository " << git_dir
                  << " closing commit in ref " << current_ref->name << std::endl;
 
-    write_merges();
-
     std::string response = fast_import().ls("\"\"");
     if (response.size() < 41)
     {
@@ -106,8 +104,22 @@ void git_repository::write_merges()
 {
     for (auto const& kv : current_ref->pending_merges)
     {
-        // FIXME: actually write something
-        Log::warn() << "merge r" << kv.second << " from ref " << kv.first->name << std::endl;
+        auto src_ref = kv.first;
+        auto src_rev = kv.second;
+
+        if (src_rev > current_ref->merged_revisions[src_ref])
+        {
+            auto p = src_ref->marks.upper_bound(src_rev);
+            if (p == src_ref->marks.begin())
+            {
+                Log::warn() << "No commit found at or preceding the source of merge r" 
+                            << src_rev << " in Git repo " << git_dir << " ref " 
+                            << src_ref->name << std::endl;
+                continue;
+            }
+            fast_import() << "merge :" << p->second << LF;
+            current_ref->merged_revisions[src_ref] = src_rev;
+        }
     }
     current_ref->pending_merges.clear();
 }
@@ -126,6 +138,9 @@ git_repository::ref* git_repository::open_commit(svn::revision const& rev)
     current_ref->marks[rev.revnum] = mark;
     fast_import() << "# SVN revision " << rev.revnum << LF;
     fast_import().commit(current_ref->name, mark, rev.author, rev.epoch, rev.log_message);
+
+    // Write any merges required in this ref
+    write_merges();
 
     // Do any deletions required in this ref
     for (auto& p : current_ref->pending_deletions)

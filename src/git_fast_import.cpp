@@ -50,6 +50,7 @@ git_fast_import::arg_vector(std::string const& git_dir)
 
 git_fast_import& git_fast_import::write_raw(char const* data, std::size_t nbytes)
 {
+#if 0
     if (Log::get_level() >= Log::Trace)
     {
         std::cerr.write(data, std::min(nbytes, (std::size_t)100));
@@ -57,6 +58,7 @@ git_fast_import& git_fast_import::write_raw(char const* data, std::size_t nbytes
             std::cerr << "...";
         std::cerr << std::endl;
     }
+#endif 
     cin.write(data, nbytes);
     return *this;
 }

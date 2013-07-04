@@ -42,6 +42,8 @@ struct importer
         svn::revision const& rev, path const& svn_path, bool discover_changes);
     void record_merges(git_repository::ref*, path const& svn_path, Rule const* match);
 
+    void warn_about_cross_repository_copies();
+
  private: // persistent members
     std::map<std::string, git_repository> repositories;
     svn const& svn_repository;
@@ -52,8 +54,20 @@ struct importer
     path_set svn_paths_to_convert;
     boost::container::flat_set<git_repository*> changed_repositories;
 
+    struct svn_directory_copy
+    {
+        std::size_t src_revision;
+        path src_directory;
+
+        // For warning, a record of all Git repository pairs across
+        // which this directory copy is mapped.
+        boost::container::flat_set<
+            std::pair<std::string, std::string> 
+        > crossed_repositories;
+    };
+
     // A map from destination directory to (source revision, directory) pairs
-    boost::container::flat_map<path, std::pair<std::size_t, path> > svn_directory_copies;
+    boost::container::flat_map<path, svn_directory_copy> svn_directory_copies;
 };
 
 #endif // IMPORTER_DWA2013614_HPP

@@ -162,8 +162,9 @@ void importer::process_svn_directory_change(
     {
         // It's OK to retain only the last source directory if
         // this target was copied-to more than once
-        svn_directory_copies[svn_path] 
-            = std::make_pair(change->copyfrom_rev, change->copyfrom_path);
+        auto& copy = svn_directory_copies[svn_path];
+        copy.src_revision = change->copyfrom_rev;
+        copy.src_directory = change->copyfrom_path;
     }
 
     // Handle rules that map SVN subtrees of the deleted path
@@ -261,6 +262,29 @@ void importer::import_revision(int revnum)
         ++pass;
     }
     while(!changed_repositories.empty());
+
+    warn_about_cross_repository_copies();
+}
+
+void importer::warn_about_cross_repository_copies()
+{
+    for (auto& kv: svn_directory_copies)
+    {
+        if (kv.second.crossed_repositories.empty())
+            continue;
+
+        auto& warn = Log::warn() 
+            << "In r" << revnum << ", SVN directory copy " 
+            << kv.second.src_directory << " => " << kv.first
+            << " crossed Git repositories:";
+
+        for (auto& src_dst : kv.second.crossed_repositories)
+        {
+            warn << " (" << src_dst.first << " -> " << src_dst.second << ")";
+        }
+
+        warn << std::endl;
+    }
 }
 
 importer::~importer()
@@ -406,8 +430,8 @@ void importer::record_merges(git_repository::ref* target, path const& dst_svn_pa
 
     // compute the path and revision in SVN corresponding to the
     // source of this file in that directory copy
-    auto src_revnum = p->second.first;
-    auto src_svn_path = p->second.second / dst_svn_path.sans_prefix(p->first);
+    auto src_revnum = p->second.src_revision;
+    auto src_svn_path = p->second.src_directory / dst_svn_path.sans_prefix(p->first);
 
     // Find out where that path landed in Git
     Rule const* const src_match = ruleset.matcher().longest_match(src_svn_path.str(), src_revnum);
@@ -415,18 +439,16 @@ void importer::record_merges(git_repository::ref* target, path const& dst_svn_pa
     // If in a different repository, there's nothing to be done but warn
     auto const& src_repo_name = src_match->repo_rule->git_repo_name;
 
-    if (src_repo_name != target->repo->name())
+    if (src_repo_name == target->repo->name())
     {
-        Log::warn() 
-            << "In r" << revnum << ", SVN " 
-            << src_svn_path << " (which landed in Git repo " << src_repo_name << ")"
-            << " is copied or moved to "
-            << dst_svn_path << " in Git repo " << target->repo->name()
-            << std::endl;
-        return;
+        // Update the latest source revision merged
+        target->repo->record_ancestor(
+            git_ref_name(src_match->branch_rule), src_revnum);
     }
-
-    // Update the latest source revision merged
-    target->repo->record_ancestor(
-        src_match->branch_rule->git_branch_or_tag_name, src_revnum);
+    else
+    {
+        // Prepare to warn about cross-repository copies
+        p->second.crossed_repositories.insert(
+            std::make_pair(src_repo_name, target->repo->name()));
+    }
 }
