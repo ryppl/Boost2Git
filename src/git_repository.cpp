@@ -133,3 +133,14 @@ git_repository::ref* git_repository::open_commit(svn::revision const& rev)
     current_ref->pending_deletions.clear();
     return current_ref;
 }
+
+void git_repository::record_ancestor(std::string const& src_ref_name, std::size_t revnum)
+{
+    auto src_ref = demand_ref(src_ref_name);
+
+    // Update the latest source revision merged
+    auto& merged_rev = current_ref->pending_merges[src_ref];
+    if (merged_rev < revnum)
+        merged_rev = revnum;
+}
+

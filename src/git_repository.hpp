@@ -63,6 +63,9 @@ struct git_repository
 
     std::string const& name() { return git_dir; }
 
+    // Remember that the given source ref at the given SVN revision is
+    // an ancestor of the current_ref
+    void record_ancestor(std::string const& src_ref_name, std::size_t revnum);
  private:
     void read_logfile();
     static bool ensure_existence(std::string const& git_dir);

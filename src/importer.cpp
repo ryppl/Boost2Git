@@ -426,12 +426,7 @@ void importer::record_merges(git_repository::ref* target, path const& dst_svn_pa
         return;
     }
 
-    // Get the source ref
-    auto& src_ref_name = src_match->branch_rule->git_branch_or_tag_name;
-    auto src_ref = target->repo->demand_ref(src_ref_name);
-
     // Update the latest source revision merged
-    auto& merged_rev = target->pending_merges[src_ref];
-    if (merged_rev < src_revnum)
-        merged_rev = src_revnum;
+    target->repo->record_ancestor(
+        src_match->branch_rule->git_branch_or_tag_name, src_revnum);
 }
