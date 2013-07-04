@@ -298,34 +298,30 @@ importer::~importer()
         repo.fast_import().close();
 }
 
-void importer::convert_svn_tree(
-    svn::revision const& rev, path const& svn_path, bool discover_changes)
+template <class F>
+void for_each_svn_file(
+    svn::revision const& rev, path const& svn_path, F const& f)
 {
     if (boost::contains(svn_path.str(), "/CVSROOT/"))
         return;
 
-    auto& log = Log::trace() << "converting " << svn_path << "... ";
     switch( svn::call(svn_fs_check_path, rev.fs_root, svn_path.c_str(), rev.pool) )
     {
     case svn_node_none: // If it turns out there's nothing here, there's nothing to do.
-        log << std::endl;
         Log::error() << svn_path << " doesn't exist!" << std::endl;
         assert(!"We added a non-existent path to convert somehow?!");
         return;
 
     case svn_node_unknown:
-        log << std::endl;
         Log::error() << svn_path << " has unknown type!" << std::endl;
         assert(!"SVN should know the type of every node in its filesystem?!");
         return;
 
     case svn_node_file:
-        log << "(a file)" << std::endl;
-        convert_svn_file(rev, svn_path, discover_changes);
+        f(svn_path);
         break;
 
     case svn_node_dir:
-        log << "(a directory)" << std::endl;
         AprPool dir_pool = rev.pool.make_subpool();
         apr_hash_t *entries = svn::call(svn_fs_dir_entries, rev.fs_root, svn_path.c_str(), dir_pool);
         for (apr_hash_index_t *i = apr_hash_first(dir_pool, entries); i; i = apr_hash_next(i))
@@ -333,10 +329,20 @@ void importer::convert_svn_tree(
             char const* subpath;
             void* value;
             apr_hash_this(i, (void const **)&subpath, nullptr, nullptr);
-            convert_svn_tree(rev, (svn_path/subpath).c_str(), discover_changes);
+            for_each_svn_file(rev, svn_path/subpath, f);
         }
         break;
     };
+}
+
+void importer::convert_svn_tree(
+    svn::revision const& rev, path const& svn_path, bool discover_changes)
+{
+    for_each_svn_file(
+        rev, svn_path, 
+        [=,&rev](path const& file_path) {
+            convert_svn_file(rev, file_path, discover_changes); 
+        });
 }
 
 extern "C"
