@@ -109,6 +109,7 @@ void git_repository::write_merges()
         // FIXME: actually write something
         Log::warn() << "merge r" << kv.second << " from ref " << kv.first->name << std::endl;
     }
+    current_ref->pending_merges.clear();
 }
 
 git_repository::ref* git_repository::open_commit(svn::revision const& rev)
