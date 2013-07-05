@@ -19,6 +19,11 @@ if(NOT result EQUAL 0)
   message(FATAL_ERROR "Failed to push ${NAME} to bitbucket!")
 endif()
 
+# GitHub does not accept files bigger than 100MB. The sandbox is on Bitbucket only.
+if("${NAME}" STREQUAL "sandbox")
+  return()
+endif()
+
 execute_process(COMMAND ${GIT} push --quiet --mirror git@github.com:boostorg/${NAME}.git
   RESULT_VARIABLE result
   )
