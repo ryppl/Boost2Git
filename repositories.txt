@@ -835,6 +835,7 @@ repository geometry : common_branches
   }
   branches
   {
+    [:] "/sandbox/geometry/" : "sandbox/geometry";
     [:] "/sandbox-branches/geometry/index_080_vis/" : "sandbox/geometry/index_080_vis";
     [:] "/sandbox-branches/geometry/index_080/" : "sandbox/geometry/index_080";
     [:] "/sandbox-branches/geometry/index_080_new/" : "sandbox/geometry/index_080_new";
@@ -1134,7 +1135,9 @@ repository math : common_branches
   }
   branches
   {
-    [:] "/sandbox-branches/math_toolkit/" : "sandbox/math_toolkit";
+    [:] "/sandbox/math/" : "sandbox/math";
+    [:] "/sandbox/math_toolkit/" : "sandbox/math_toolkit";
+    [:] "/sandbox-branches/math_toolkit/" : "sandbox-branch/math_toolkit";
   }
 }
 
@@ -1745,6 +1748,10 @@ repository signals2 : common_branches
     "boost/signals2/" : "include/boost/signals2/";
     "libs/signals2/";
   }
+  branches
+  {
+    [:] "/sandbox/thread_safe_signals/" : "sandbox/thread_safe_signals";
+  }
 }
 
 repository smart_ptr : common_branches
@@ -2023,6 +2030,10 @@ repository type_erasure : common_branches
   {
     "boost/type_erasure/" : "include/boost/type_erasure/";
     "libs/type_erasure/";
+  }
+  branches
+  {
+    [:] "/sandbox/type_erasure/" : "sandbox/type_erasure";
   }
 }
 
