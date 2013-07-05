@@ -8,6 +8,7 @@
 # include "path_set.hpp"
 # include "svn.hpp"
 # include "path.hpp"
+# include "ruleset.hpp"
 
 # include <boost/container/flat_set.hpp>
 # include <boost/container/flat_map.hpp>
@@ -40,9 +41,11 @@ struct importer
         svn::revision const& rev, path const& svn_path, bool discover_changes);
     void convert_svn_file(
         svn::revision const& rev, path const& svn_path, bool discover_changes);
+    void discover_merges(svn::revision const& rev);
     void record_merges(git_repository::ref*, path const& svn_path, Rule const* match);
 
     void warn_about_cross_repository_copies();
+    Rule const* match_svn_path(path const& svn_path, std::size_t revnum, bool require_match = true);
 
  private: // persistent members
     std::map<std::string, git_repository> repositories;
@@ -59,8 +62,10 @@ struct importer
         std::size_t src_revision;
         path src_directory;
 
-        // For warning, a record of all Git repository pairs across
-        // which this directory copy is mapped.
+        // For the sake of issuing useful and not-overly-verbose
+        // warnings, each time this copy causes a file/revision that
+        // was directed to one Git repo to be copied into a distinc
+        // Git repo, we remember that pair.
         boost::container::flat_set<
             std::pair<std::string, std::string> 
         > crossed_repositories;

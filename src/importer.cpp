@@ -133,12 +133,12 @@ void importer::process_svn_changes(svn::revision const& rev)
         assert(change != nullptr); 
         path const svn_path(svn_path_);
 
-        // We have found a path being modified in SVN.  
-        Rule const* const match = ruleset.matcher().longest_match(svn_path.str(), revnum);
-
-        // Start by marking its Git target for deletion.  Note: it's
+        // We have found a path being modified in SVN.  Note: it's
         // too early to error-out on unmapped SVN paths here: any that
         // are problematic will be picked up later.
+        Rule const* const match = match_svn_path(svn_path, revnum, false);
+
+        // Start by marking its Git target for deletion.  
         if (match)
             add_svn_tree_to_delete(svn_path, match);
 
@@ -219,6 +219,8 @@ void importer::import_revision(int revnum)
         << " SVN " 
         << (svn_paths_to_convert.size() == 1 ? "path" : "paths")
         << " to convert" << std::endl;
+
+    discover_merges(rev);
 
     //
     // Phase II: Writing to Git
@@ -335,6 +337,23 @@ void for_each_svn_file(
     };
 }
 
+void importer::discover_merges(svn::revision const& rev)
+{
+    for (auto& kv : svn_directory_copies)
+    {
+        for_each_svn_file(
+            rev, kv.first,
+            [=](path const& file_path) 
+            {
+                if (Rule const* const match = match_svn_path(file_path, revnum))
+                {
+                    auto* dst_ref = prepare_to_modify(match, true);
+                    record_merges(dst_ref, file_path, match);
+                }
+            });
+    }
+}
+
 void importer::convert_svn_tree(
     svn::revision const& rev, path const& svn_path, bool discover_changes)
 {
@@ -369,14 +388,8 @@ extern "C"
 void importer::convert_svn_file(
     svn::revision const& rev, path const& svn_path, bool discover_changes)
 {
-    Rule const* const match = ruleset.matcher().longest_match(svn_path.str(), revnum);
-    if (!match)
-    {
-        Log::error() << "Unmatched svn path " << svn_path 
-                     << " in r" << revnum << std::endl;
-        assert(!"unmatched SVN path");
-        return;
-    }
+    Rule const* const match = match_svn_path(svn_path, revnum);
+    if (!match) return;
 
     // There are two reasons we might skip processing this file in
     // this pass and come back for it in a later one:
@@ -396,7 +409,6 @@ void importer::convert_svn_file(
     if (dst_ref->repo->open_commit(rev) != dst_ref)
         return;
 
-    record_merges(dst_ref, svn_path, match);
     auto& fast_import = dst_ref->repo->fast_import();
 
     fast_import.filemodify_hdr(
@@ -440,7 +452,8 @@ void importer::record_merges(git_repository::ref* target, path const& dst_svn_pa
     auto src_svn_path = p->second.src_directory / dst_svn_path.sans_prefix(p->first);
 
     // Find out where that path landed in Git
-    Rule const* const src_match = ruleset.matcher().longest_match(src_svn_path.str(), src_revnum);
+    Rule const* const src_match = match_svn_path(src_svn_path, src_revnum);
+    if (!src_match) return;
     
     // If in a different repository, there's nothing to be done but warn
     auto const& src_repo_name = src_match->repo_rule->git_repo_name;
@@ -449,12 +462,31 @@ void importer::record_merges(git_repository::ref* target, path const& dst_svn_pa
     {
         // Update the latest source revision merged
         target->repo->record_ancestor(
-            git_ref_name(src_match->branch_rule), src_revnum);
+            target, git_ref_name(src_match->branch_rule), src_revnum);
     }
-    else
+    else        // Prepare to warn about cross-repository copies
     {
-        // Prepare to warn about cross-repository copies
-        p->second.crossed_repositories.insert(
-            std::make_pair(src_repo_name, target->repo->name()));
+        // ignore all cross-repository copies into the sandbox.  These
+        // may represent experimentation that was never merged back
+        // into the main work area.  HACK/FIXME: this should not be
+        // hardcoded.  A --sandbox= command-line option or an
+        // annotation in the repository grammar would work better.
+        if (target->repo->name() != "sandbox")
+        {
+            p->second.crossed_repositories.insert(
+                std::make_pair(src_repo_name, target->repo->name()));
+        }
     }
+}
+
+Rule const* importer::match_svn_path(path const& svn_path, std::size_t revnum, bool require_match)
+{
+    Rule const* match = ruleset.matcher().longest_match(svn_path.str(), revnum);
+    if (require_match && match == nullptr)
+    {
+        Log::error() << "Unmatched svn path " << svn_path 
+                     << " in r" << revnum << std::endl;
+        assert(!"unmatched SVN path");
+    }
+    return match;
 }

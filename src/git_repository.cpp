@@ -117,7 +117,7 @@ void git_repository::write_merges()
                             << src_ref->name << std::endl;
                 continue;
             }
-            fast_import() << "merge :" << p->second << LF;
+            fast_import() << "merge :" << (--p)->second << LF;
             current_ref->merged_revisions[src_ref] = src_rev;
         }
     }
@@ -149,12 +149,12 @@ git_repository::ref* git_repository::open_commit(svn::revision const& rev)
     return current_ref;
 }
 
-void git_repository::record_ancestor(std::string const& src_ref_name, std::size_t revnum)
+void git_repository::record_ancestor(ref* descendant, std::string const& src_ref_name, std::size_t revnum)
 {
     auto src_ref = demand_ref(src_ref_name);
 
     // Update the latest source revision merged
-    auto& merged_rev = current_ref->pending_merges[src_ref];
+    auto& merged_rev = descendant->pending_merges[src_ref];
     if (merged_rev < revnum)
         merged_rev = revnum;
 }
