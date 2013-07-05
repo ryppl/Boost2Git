@@ -27,7 +27,6 @@ abstract repository common_branches
 
     [:] "/sandbox-branches/geometry/index_dev/" : "sandbox/geometry/index_dev";
     [:] "/sandbox-branches/optional_optimization/" : "sandbox/optional_optimization";
-    [:] "/branches/maintenance/1_50_0/" : "maintenance/1_50_0";
     [:] "/sandbox-branches/birbacher/propertymap-functormap/" : "sandbox/birbacher/propertymap-functormap";
     [ 2110:     ] "/sandbox-branches/expaler/" : "sandbox/expaler";
     [:] "/branches/unlabeled-1.1.1/boost/" : "old-branches/unlabeled-1.1.1";
@@ -115,7 +114,6 @@ abstract repository common_branches
     [:] "/sandbox-branches/intrusive_fix_SunCC/" : "sandbox/intrusive_fix_SunCC";
     [:] "/branches/sredl_2009_05_proptree_update/" : "sredl_2009_05_proptree_update";
     [:] "/branches/b2/" : "b2";
-    [:] "/branches/maintenance/1_41/" : "maintenance/1_41";
     [60575:     ] "/sandbox-branches/birbacher/fix_documentation/" : "sandbox/birbacher/fix_documentation";
     [:] "/branches/inspect/" : "inspect";
     [:] "/branches/units/autoprefix/" : "units/autoprefix";
@@ -137,6 +135,10 @@ abstract repository common_branches
     [:] "/branches/fusion/2_1/" : "old-branches/fusion/2_1";
     [:] "/branches/system/" : "old-branches/system";
     [:] "/branches/bitten/" : "old-branches/bitten";
+
+    [:] "/branches/maintenance/1_41/" : "maintenance/1_41";
+    [:] "/branches/maintenance/1_50_0/" : "maintenance/1_50_0";
+    [:] "/branches/maintenance/1_54_0/" : "maintenance/1_54_0";
   }
   tags
   {
