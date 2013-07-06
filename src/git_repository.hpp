@@ -6,6 +6,7 @@
 
 # include "git_fast_import.hpp"
 # include "path_set.hpp"
+# include "path.hpp"
 # include "svn.hpp"
 # include <boost/container/flat_map.hpp>
 # include <boost/container/flat_set.hpp>
@@ -22,7 +23,7 @@ struct git_repository
     struct ref
     {
         ref(std::string name, git_repository* repo) 
-            : name(std::move(name)), repo(repo), rewrite_dot_gitmodules(false) {}
+            : name(std::move(name)), repo(repo) {}
 
         typedef boost::container::flat_map<std::size_t, std::size_t> rev_mark_map;
 
@@ -36,7 +37,10 @@ struct git_repository
         merge_map merged_revisions;
         merge_map pending_merges;
         path_set pending_deletions;
-        bool rewrite_dot_gitmodules;
+        // Submodule refs included in the previous commit
+        boost::container::flat_set<ref const*> submodule_refs;
+        // Submodule refs modified in the current commit
+        boost::container::flat_set<ref const*> changed_submodule_refs;
         std::string head_tree_sha;
     };
 
@@ -86,7 +90,7 @@ struct git_repository
 
     // If this is a submodule, of whom and were?
     git_repository* super_module;
-    std::string submodule_path;
+    path submodule_path;
     bool _has_submodules;
     // How many refs need to be written in submodules of this
     // repository before we can write this repo's changes?

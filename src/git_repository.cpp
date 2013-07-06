@@ -187,10 +187,12 @@ git_repository::ref* git_repository::open_commit(svn::revision const& rev)
     {
         fast_import().filedelete(p);
 
-        // make sure we rewrite .gitmodules if the repository root
-        // directory gets deleted.
-        if (has_submodules() && p.str().empty())
-            current_ref->rewrite_dot_gitmodules = true;
+        // make sure we rewrite all submodules caught by this delete
+        for (auto submodule_ref : current_ref->submodule_refs)
+        {
+            if (submodule_ref->repo->submodule_path.starts_with(p))
+                current_ref->changed_submodule_refs.insert(submodule_ref);
+        }
     }
 
     current_ref->pending_deletions.clear();
@@ -225,7 +227,7 @@ git_repository::ref* git_repository::modify_ref(std::string const& name, bool al
         {
             ++super_module->modified_submodule_refs;
             if (auto super_ref = super_module->modify_ref(name, allow_discovery))
-                super_ref->rewrite_dot_gitmodules = true;
+                super_ref->changed_submodule_refs.insert(r);
         }
     }
 
