@@ -72,15 +72,29 @@ struct git_repository
     void write_merges();
 
  private: // data members
-    std::string git_dir;
+    // Relative path to the repository from the current working
+    // directory.  Also the repository's name
+    std::string git_dir; 
+
+    // This is just a place to hang a constructor initializer, that
+    // ensures the repository is created before the git fast-import
+    // process (next member) is started.
     bool created;
+
+    // The process through which we write this Git repository
     git_fast_import fast_import_;
+
+    // If this is a submodule, of whom and were?
     git_repository* super_module;
     std::string submodule_path;
+
+    // branches and tags
     std::unordered_map<std::string, ref> refs;
-    boost::container::flat_set<ref*> modified_refs;
+    boost::container::flat_set<ref*> modified_refs; // to be written in current revision
+
     int last_mark;       // The last commit mark written to fast-import
-    ref* current_ref;    // The fast-import process is currently writing to this ref
+    ref* current_ref;    // The ref to which the fast-import process is currently writing
+    
 };
 
 #endif // GIT_REPOSITORY_DWA2013614_HPP
