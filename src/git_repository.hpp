@@ -22,7 +22,7 @@ struct git_repository
     struct ref
     {
         ref(std::string name, git_repository* repo) 
-            : name(std::move(name)), repo(repo) {}
+            : name(std::move(name)), repo(repo), rewrite_dot_gitmodules(false) {}
 
         typedef boost::container::flat_map<std::size_t, std::size_t> rev_mark_map;
 
@@ -36,6 +36,7 @@ struct git_repository
         merge_map merged_revisions;
         merge_map pending_merges;
         path_set pending_deletions;
+        bool rewrite_dot_gitmodules;
         std::string head_tree_sha;
     };
 
@@ -50,6 +51,8 @@ struct git_repository
     // Begins a commit; returns the ref currently being written.
     ref* open_commit(svn::revision const& rev);
 
+    void prepare_to_close_commit(bool discover_changes); 
+
     // Returns true iff there are no further commits to make in this
     // repository for this SVN revision.
     bool close_commit(bool discover_changes); 
@@ -63,6 +66,7 @@ struct git_repository
     bool has_submodules() const { return _has_submodules; }
 
  private:
+    bool defer_close(bool discover_changes);
     void read_logfile();
     static bool ensure_existence(std::string const& git_dir);
     void write_merges();

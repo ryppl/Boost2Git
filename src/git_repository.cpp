@@ -66,20 +66,45 @@ void git_repository::set_super_module(
 // branches are deleted.
 std::string const empty_tree_sha("4b825dc642cb6eb9a060e54bf8d69288fbee4904");
 
+void git_repository::prepare_to_close_commit(bool discover_changes)
+{
+    if (defer_close(discover_changes))
+        return;
+
+    // TODO: right here, write .gitmodules if necessary
+
+    // Send a fast-import "ls" command to the changed repository now;
+    // responses will be read in a separate close_commit() pass over
+    // all changed repos.  Hopefully this will prevent us from
+    // blocking for each repo when multiple repositories are changed
+    // in a single SVN revision.
+    fast_import().send_ls("\"\"");
+}
+
+bool git_repository::defer_close(bool discover_changes)
+{
+    if (!has_submodules())
+        return false;
+
+    // Don't close this repo until all of its submodule changes have
+    // been discovered and written
+    return discover_changes || modified_submodule_refs != 0;
+}
+
+
 // Close the current ref's commit.  Return true iff there are no more
 // modified refs
 bool git_repository::close_commit(bool discover_changes)
 {
+    if (defer_close(discover_changes))
+        return false;
+
     Log::trace() << "repository " << git_dir
                  << " closing commit in ref " << current_ref->name << std::endl;
 
     // Read the response to the git-fast-import "ls" command sent earlier
     std::string response = fast_import().readline();
 
-    // Don't close this repo until all of its submodule changes have
-    // been discovered and written
-    if ((has_submodules() && discover_changes) || modified_submodule_refs != 0)
-        return false;
 
     if (response.size() < 41)
     {
@@ -159,7 +184,15 @@ git_repository::ref* git_repository::open_commit(svn::revision const& rev)
 
     // Do any deletions required in this ref
     for (auto& p : current_ref->pending_deletions)
+    {
         fast_import().filedelete(p);
+
+        // make sure we rewrite .gitmodules if the repository root
+        // directory gets deleted.
+        if (has_submodules() && p.str().empty())
+            current_ref->rewrite_dot_gitmodules = true;
+    }
+
     current_ref->pending_deletions.clear();
     return current_ref;
 }
@@ -189,7 +222,11 @@ git_repository::ref* git_repository::modify_ref(std::string const& name, bool al
         modified_refs.insert(r);
 
         if (super_module)
+        {
             ++super_module->modified_submodule_refs;
+            if (auto super_ref = super_module->modify_ref(name, allow_discovery))
+                super_ref->rewrite_dot_gitmodules = true;
+        }
     }
 
     return r;
