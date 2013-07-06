@@ -131,8 +131,13 @@ void importer::process_svn_changes(svn::revision const& rev)
         // According to the APR docs, this means the hash entry was
         // deleted, so it should never happen
         assert(change != nullptr); 
-        path const svn_path(svn_path_);
 
+        // Ignore changes that only edit properties
+        if (change->change_kind == svn_fs_path_change_modify && !change->text_mod)
+            continue;
+
+        path const svn_path(svn_path_);
+        
         // We have found a path being modified in SVN.  Note: it's
         // too early to error-out on unmapped SVN paths here: any that
         // are problematic will be picked up later.
