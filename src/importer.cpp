@@ -259,15 +259,15 @@ void importer::import_revision(int revnum)
         // Send fast-import "ls" commands to all the changed
         // repositories now; responses will be read in the
         // close_commit() call below.  Hopefully this will prevent us
-        // from blocking for each repo when there are large-scale
-        // changes.
+        // from blocking for each repo when multiple repositories are
+        // changed.
         for (auto r : changed_repositories)
             r->fast_import().send_ls("\"\"");
 
         std::vector<git_repository*> closed_repositories;
         for (auto r : changed_repositories)
         {
-            if (r->close_commit())
+            if (r->close_commit(pass == 0))
                 closed_repositories.push_back(r);
         }
 

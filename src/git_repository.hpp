@@ -45,27 +45,23 @@ struct git_repository
         return &p->second;
     }
 
-    ref* modify_ref(std::string const& name, bool allow_discovery = true) 
-    {
-        auto r = demand_ref(name);
-        if (!allow_discovery && modified_refs.count(r) == 0)
-            return nullptr;
-        modified_refs.insert(r);
-        return r;
-    }
+    ref* modify_ref(std::string const& name, bool allow_discovery = true);
 
     // Begins a commit; returns the ref currently being written.
     ref* open_commit(svn::revision const& rev);
 
     // Returns true iff there are no further commits to make in this
     // repository for this SVN revision.
-    bool close_commit(); 
+    bool close_commit(bool discover_changes); 
 
     std::string const& name() { return git_dir; }
 
     // Remember that the given ref is a descendant of the named source
     // ref at the given SVN revision
     void record_ancestor(ref* descendant, std::string const& src_ref_name, std::size_t revnum);
+
+    bool has_submodules() const { return _has_submodules; }
+
  private:
     void read_logfile();
     static bool ensure_existence(std::string const& git_dir);
@@ -87,6 +83,10 @@ struct git_repository
     // If this is a submodule, of whom and were?
     git_repository* super_module;
     std::string submodule_path;
+    bool _has_submodules;
+    // How many refs need to be written in submodules of this
+    // repository before we can write this repo's changes?
+    unsigned modified_submodule_refs; 
 
     // branches and tags
     std::unordered_map<std::string, ref> refs;

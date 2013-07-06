@@ -16,6 +16,8 @@ git_repository::git_repository(std::string const& git_dir)
       created(ensure_existence(git_dir)),
       fast_import_(git_dir),
       super_module(nullptr),
+      _has_submodules(false),
+      modified_submodule_refs(0),
       last_mark(0),
       current_ref(nullptr)
 {
@@ -56,6 +58,7 @@ void git_repository::set_super_module(
         }
         this->super_module = super_module;
         this->submodule_path = submodule_path;
+        super_module->_has_submodules = true;
     }
 }
 
@@ -65,12 +68,24 @@ std::string const empty_tree_sha("4b825dc642cb6eb9a060e54bf8d69288fbee4904");
 
 // Close the current ref's commit.  Return true iff there are no more
 // modified refs
-bool git_repository::close_commit()
+bool git_repository::close_commit(bool discover_changes)
 {
     Log::trace() << "repository " << git_dir
                  << " closing commit in ref " << current_ref->name << std::endl;
 
+    // Read the response to the git-fast-import "ls" command sent earlier
     std::string response = fast_import().readline();
+
+    // Don't close this repo until all of its submodule changes have
+    // been discovered and written
+    if ((has_submodules() && discover_changes) || modified_submodule_refs != 0)
+    {
+        Log::trace() << "Deferring super-module with " << modified_submodule_refs 
+                     << " modified submodule refs" << std::endl;
+        return false;
+    }
+
+
     if (response.size() < 41)
     {
         Log::error() << "Unrecognized response \"" << response << "\" from ls in ref " 
@@ -79,6 +94,7 @@ bool git_repository::close_commit()
     }
     else
     {
+
         assert(response.back() == '\t');
         std::string new_sha = response.substr(response.size() - 41, response.size() - 1);
         Log::trace() << "New tree SHA: " << new_sha << std::endl;
@@ -96,7 +112,15 @@ bool git_repository::close_commit()
 
     modified_refs.erase(current_ref);
     current_ref = nullptr;
+
     Log::trace() << modified_refs.size() << " modified refs remaining." << std::endl;
+    if (super_module != nullptr)
+    {
+        --super_module->modified_submodule_refs;
+        Log::trace() << "super-module " << super_module->name() << " has " 
+                     << super_module->modified_submodule_refs 
+                     << " modified submodule refs" << std::endl;
+    }
     return modified_refs.empty();
 }
 
@@ -134,6 +158,7 @@ git_repository::ref* git_repository::open_commit(svn::revision const& rev)
     current_ref = *std::prev(modified_refs.end());
     Log::trace() << "repository " << git_dir
                  << " opening commit in ref " << current_ref->name << std::endl;
+
     int mark = ++last_mark;
     current_ref->marks[rev.revnum] = mark;
     fast_import() << "# SVN revision " << rev.revnum << LF;
@@ -157,5 +182,31 @@ void git_repository::record_ancestor(ref* descendant, std::string const& src_ref
     auto& merged_rev = descendant->pending_merges[src_ref];
     if (merged_rev < revnum)
         merged_rev = revnum;
+}
+
+git_repository::ref* git_repository::modify_ref(std::string const& name, bool allow_discovery)
+{
+    auto r = demand_ref(name);
+    bool already_modified = modified_refs.count(r);
+    if (!already_modified)
+    {
+        if (!allow_discovery)
+            return nullptr;
+
+        Log::trace() << "In Git repo " << this->name() << ", marking " << r->name 
+                     << " for modification" << std::endl;
+
+        modified_refs.insert(r);
+
+        if (super_module)
+        {
+            ++super_module->modified_submodule_refs;
+            Log::trace() << "super-module " << super_module->name() << " has " 
+                         << super_module->modified_submodule_refs 
+                         << " modified submodule refs" << std::endl;
+        }
+    }
+
+    return r;
 }
 
