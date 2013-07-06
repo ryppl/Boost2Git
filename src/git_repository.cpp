@@ -79,12 +79,7 @@ bool git_repository::close_commit(bool discover_changes)
     // Don't close this repo until all of its submodule changes have
     // been discovered and written
     if ((has_submodules() && discover_changes) || modified_submodule_refs != 0)
-    {
-        Log::trace() << "Deferring super-module with " << modified_submodule_refs 
-                     << " modified submodule refs" << std::endl;
         return false;
-    }
-
 
     if (response.size() < 41)
     {
@@ -115,12 +110,7 @@ bool git_repository::close_commit(bool discover_changes)
 
     Log::trace() << modified_refs.size() << " modified refs remaining." << std::endl;
     if (super_module != nullptr)
-    {
         --super_module->modified_submodule_refs;
-        Log::trace() << "super-module " << super_module->name() << " has " 
-                     << super_module->modified_submodule_refs 
-                     << " modified submodule refs" << std::endl;
-    }
     return modified_refs.empty();
 }
 
@@ -199,12 +189,7 @@ git_repository::ref* git_repository::modify_ref(std::string const& name, bool al
         modified_refs.insert(r);
 
         if (super_module)
-        {
             ++super_module->modified_submodule_refs;
-            Log::trace() << "super-module " << super_module->name() << " has " 
-                         << super_module->modified_submodule_refs 
-                         << " modified submodule refs" << std::endl;
-        }
     }
 
     return r;
