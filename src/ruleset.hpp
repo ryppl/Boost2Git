@@ -30,36 +30,36 @@
 boost2git::AST parse_rules_file(std::string filename);
 
 class Ruleset
-  {
-  public:
+{
+ public:
     typedef Rule Match;
     
     struct Repository
-      {
-      std::string name;
-      std::string submodule_in_repo;
-      std::string submodule_path;
-      std::set<boost2git::BranchRule const*> branches;
-      };
-  public:
+    {
+        std::string name;
+        std::string submodule_in_repo;
+        std::string submodule_path;
+        std::set<boost2git::BranchRule const*> branches;
+    };
+ public:
     Ruleset(std::string const& filename);
-  public:
+ public:
     patrie<Rule,coverage> const& matcher() const
-      {
-      return matcher_;
-      }
+    {
+        return matcher_;
+    }
     std::vector<Repository> const& repositories() const
-      {
-      return repositories_;
-      }
+    {
+        return repositories_;
+    }
     boost2git::AST const& getAST() const
-      {
-      return ast_;
-      }
-  private:
+    {
+        return ast_;
+    }
+ private:
     patrie<Rule,coverage> matcher_;
     std::vector<Repository> repositories_;
     boost2git::AST ast_;
-  };
+};
 
 #endif /* RULESET_HPP */
