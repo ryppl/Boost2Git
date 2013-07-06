@@ -102,10 +102,14 @@ git_fast_import& git_fast_import::checkpoint()
     return *this << "checkpoint" << LF << LF;
 }
 
-std::string git_fast_import::ls(std::string const& dataref_opt_path)
+void git_fast_import::send_ls(std::string const& dataref_opt_path)
 {
     *this << "ls " << dataref_opt_path << LF;
     cin << std::flush;
+}
+
+std::string git_fast_import::readline()
+{
     std::string result;
     std::getline(cout, result);
     return result;

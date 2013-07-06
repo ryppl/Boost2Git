@@ -60,7 +60,8 @@ struct git_fast_import
     git_fast_import& checkpoint();
     git_fast_import& reset(std::string const& ref_name, int mark);
 
-    std::string ls(std::string const& dataref_opt_path);
+    void send_ls(std::string const& dataref_opt_path);
+    std::string readline();
 
  private:
     static std::vector<std::string> arg_vector(std::string const& git_dir);

@@ -251,6 +251,14 @@ void importer::import_revision(int revnum)
         for (auto& svn_path : svn_paths_to_convert)
             convert_svn_tree(rev, svn_path.c_str(), pass == 0);
 
+        // Send fast-import "ls" commands to all the changed
+        // repositories now; responses will be read in the
+        // close_commit() call below.  Hopefully this will prevent us
+        // from blocking for each repo when there are large-scale
+        // changes.
+        for (auto r : changed_repositories)
+            r->fast_import().send_ls("\"\"");
+
         std::vector<git_repository*> closed_repositories;
         for (auto r : changed_repositories)
         {

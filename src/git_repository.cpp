@@ -70,7 +70,7 @@ bool git_repository::close_commit()
     Log::trace() << "repository " << git_dir
                  << " closing commit in ref " << current_ref->name << std::endl;
 
-    std::string response = fast_import().ls("\"\"");
+    std::string response = fast_import().readline();
     if (response.size() < 41)
     {
         Log::error() << "Unrecognized response \"" << response << "\" from ls in ref " 
