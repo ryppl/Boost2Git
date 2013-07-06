@@ -5,9 +5,11 @@
 #include "git_repository.hpp"
 #include "git_executable.hpp"
 #include "log.hpp"
+#include "flat_set_union.hpp"
 
 #include <boost/filesystem.hpp>
 #include <boost/process.hpp>
+#include <boost/range/adaptor/filtered.hpp>
 #include <array>
 #include <boost/range/adaptor/map.hpp>
 
@@ -72,6 +74,9 @@ void git_repository::prepare_to_close_commit(bool discover_changes)
         return;
 
     // TODO: right here, write .gitmodules if necessary
+
+    current_ref->submodule_refs |= current_ref->changed_submodule_refs;
+    current_ref->changed_submodule_refs.clear();
 
     // Send a fast-import "ls" command to the changed repository now;
     // responses will be read in a separate close_commit() pass over
@@ -170,32 +175,31 @@ git_repository::ref* git_repository::open_commit(svn::revision const& rev)
 
     assert(!modified_refs.empty());
 
-    current_ref = *std::prev(modified_refs.end());
+    auto target = current_ref = *std::prev(modified_refs.end());
+
     Log::trace() << "repository " << git_dir
-                 << " opening commit in ref " << current_ref->name << std::endl;
+                 << " opening commit in ref " << target->name << std::endl;
 
     int mark = ++last_mark;
-    current_ref->marks[rev.revnum] = mark;
+    target->marks[rev.revnum] = mark;
     fast_import() << "# SVN revision " << rev.revnum << LF;
-    fast_import().commit(current_ref->name, mark, rev.author, rev.epoch, rev.log_message);
+    fast_import().commit(target->name, mark, rev.author, rev.epoch, rev.log_message);
 
     // Write any merges required in this ref
     write_merges();
 
     // Do any deletions required in this ref
-    for (auto& p : current_ref->pending_deletions)
+    for (auto& p : target->pending_deletions)
     {
         fast_import().filedelete(p);
 
         // make sure we rewrite all submodules caught by this delete
-        for (auto submodule_ref : current_ref->submodule_refs)
-        {
-            if (submodule_ref->repo->submodule_path.starts_with(p))
-                current_ref->changed_submodule_refs.insert(submodule_ref);
-        }
+        target->changed_submodule_refs
+            |= target->submodule_refs | boost::adaptors::filtered(
+                [&](ref const* r){ return r->repo->submodule_path.starts_with(p); });
     }
+    target->pending_deletions.clear();
 
-    current_ref->pending_deletions.clear();
     return current_ref;
 }
 
