@@ -251,6 +251,7 @@ void importer::import_revision(int revnum)
     do
     {
         Log::trace() << "pass " << pass << std::endl;
+        assert(pass < 500);
 
         for (auto r : changed_repositories)
             r->open_commit(rev);
