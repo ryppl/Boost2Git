@@ -61,6 +61,8 @@ git_repository::ref* importer::prepare_to_modify(Rule const* match, bool discove
     if (!discover_changes && changed_repositories.count(&repo) == 0)
         return nullptr;
     changed_repositories.insert(&repo);
+    if (auto s = repo.in_super_module())
+        changed_repositories.insert(s);
     return repo.modify_ref(match->git_ref_name(), discover_changes);
 }
 
@@ -257,12 +259,12 @@ void importer::import_revision(int revnum)
             convert_svn_tree(rev, svn_path.c_str(), pass == 0);
 
         for (auto r : changed_repositories)
-            r->prepare_to_close_commit(pass == 0);
+            r->prepare_to_close_commit();
 
         std::vector<git_repository*> closed_repositories;
         for (auto r : changed_repositories)
         {
-            if (r->close_commit(pass == 0))
+            if (r->close_commit())
                 closed_repositories.push_back(r);
         }
 

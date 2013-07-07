@@ -22,8 +22,13 @@ struct git_repository
     // A branch or tag
     struct ref
     {
-        ref(std::string name, git_repository* repo) 
-            : name(std::move(name)), repo(repo) {}
+        ref(std::string const& name, git_repository* repo) 
+            : name(name), repo(repo) 
+            , super_module_ref(
+                repo->super_module ? repo->super_module->demand_ref(name) : nullptr
+            )
+            , submodule_refs_written(0)
+        {}
 
         typedef boost::container::flat_map<std::size_t, std::size_t> rev_mark_map;
 
@@ -31,8 +36,16 @@ struct git_repository
         // been merged into this ref.
         typedef boost::container::flat_map<ref const*, std::size_t> merge_map;
 
+        // An open ref in a super-module can be committed only when every
+        // participating submodule ref has been committed.
+        bool can_close()
+        {
+            return submodule_refs_written == changed_submodule_refs.size();
+        }
+
         std::string name;
         git_repository* repo;
+        ref* super_module_ref;
         rev_mark_map marks;
         merge_map merged_revisions;
         merge_map pending_merges;
@@ -41,6 +54,8 @@ struct git_repository
         boost::container::flat_set<ref const*> submodule_refs;
         // Submodule refs modified in the current commit
         boost::container::flat_set<ref const*> changed_submodule_refs;
+        // How many of the changed submodule refs have been written in this commit
+        unsigned submodule_refs_written;
         std::string head_tree_sha;
     };
 
@@ -55,11 +70,11 @@ struct git_repository
     // Begins a commit; returns the ref currently being written.
     ref* open_commit(svn::revision const& rev);
 
-    void prepare_to_close_commit(bool discover_changes); 
+    void prepare_to_close_commit(); 
 
     // Returns true iff there are no further commits to make in this
     // repository for this SVN revision.
-    bool close_commit(bool discover_changes); 
+    bool close_commit(); 
 
     std::string const& name() { return git_dir; }
 
@@ -67,10 +82,9 @@ struct git_repository
     // ref at the given SVN revision
     void record_ancestor(ref* descendant, std::string const& src_ref_name, std::size_t revnum);
 
-    bool has_submodules() const { return _has_submodules; }
+    git_repository* in_super_module() const { return super_module; }
 
  private:
-    bool defer_close(bool discover_changes);
     void read_logfile();
     static bool ensure_existence(std::string const& git_dir);
     void write_merges();
@@ -91,10 +105,7 @@ struct git_repository
     // If this is a submodule, of whom and were?
     git_repository* super_module;
     path submodule_path;
-    bool _has_submodules;
-    // How many refs need to be written in submodules of this
-    // repository before we can write this repo's changes?
-    unsigned modified_submodule_refs; 
+    //bool _has_submodules;
 
     // branches and tags
     std::unordered_map<std::string, ref> refs;
