@@ -1,3 +1,3 @@
 [submodule "git"]
 	path = git
-	url = git@github.com:ryppl/git
+	url = https://github.com/ryppl/git.git
