@@ -56,6 +56,10 @@ struct git_repository
         boost::container::flat_set<ref const*> changed_submodule_refs;
         // How many of the changed submodule refs have been written in this commit
         unsigned submodule_refs_written;
+        // Submodule refs that need to be refreshed: the submodule
+        // itself may not have changed but the part of the
+        // super-module where it lives is being rewritten.
+        boost::container::flat_set<ref const*> stale_submodule_refs;
         std::string head_tree_sha;
     };
 

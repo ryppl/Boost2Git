@@ -128,6 +128,9 @@ bool git_repository::close_commit()
         }
     }
 
+    // TODO: write stale and changed submodule refs
+
+    current_ref->stale_submodule_refs.clear();
     current_ref->changed_submodule_refs.clear();
     current_ref->submodule_refs_written = 0;
 
@@ -188,8 +191,10 @@ git_repository::ref* git_repository::open_commit(svn::revision const& rev)
     {
         fast_import().filedelete(p);
 
-        // make sure we rewrite all submodules caught by this delete
-        current_ref->changed_submodule_refs
+        // Make sure we rewrite the refs of all submodules caught by
+        // this delete.  The submodule repositories themselves don't
+        // (necessarily) need an update.
+        current_ref->stale_submodule_refs
             |= current_ref->submodule_refs | boost::adaptors::filtered(
                 [&](ref const* r){ return r->repo->submodule_path.starts_with(p); });
     }
