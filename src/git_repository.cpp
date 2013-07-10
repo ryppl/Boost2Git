@@ -134,18 +134,21 @@ bool git_repository::close_commit()
     Log::trace() << "repository " << git_dir
                  << " closing commit in ref " << current_ref->name << std::endl;
 
-    // Read the response to the git-fast-import "ls" command sent earlier
-    std::string response = fast_import().readline();
     std::string new_sha;
+    if (!options.dry_run)
+    {
+        // Read the response to the git-fast-import "ls" command sent earlier
+        std::string response = fast_import().readline();
     
-    if (response.size() < 41)
-        Log::error() << "Unrecognized response \"" << response << "\" from ls in ref " 
-                     << current_ref->name << std::endl;
-    else
-        new_sha = response.substr(response.size() - 41, response.size() - 1);
-    
+        if (response.size() < 41)
+            Log::error() << "Unrecognized response \"" << response << "\" from ls in ref " 
+                         << current_ref->name << std::endl;
+        else
+            new_sha = response.substr(response.size() - 41, response.size() - 1);
+    }
+
     // Dispose of the commit if it didn't change anything in the tree
-    if (new_sha == current_ref->head_tree_sha) 
+    if (!options.dry_run && new_sha == current_ref->head_tree_sha) 
     {
         Log::trace() << "Tree unchanged; resetting ref" << std::endl;
         assert(current_ref->marks.size() >= 2);

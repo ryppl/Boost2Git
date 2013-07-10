@@ -5,6 +5,7 @@
 #include "git_fast_import.hpp"
 #include "git_executable.hpp"
 #include "path.hpp"
+#include "options.hpp"
 
 #include <boost/iostreams/device/file_descriptor.hpp>
 #include <numeric>
@@ -17,7 +18,8 @@ git_fast_import::git_fast_import(std::string const& git_dir)
     : inp(boost::process::create_pipe()),
       outp(boost::process::create_pipe()),
       process(
-          boost::process::execute(
+          options.dry_run ? boost::optional<boost::process::child>()
+          : boost::process::execute(
               run_exe(git_executable()),
               set_env(std::vector<std::string>({"GIT_DIR="+git_dir})),
               set_args(arg_vector(git_dir)),
@@ -39,7 +41,8 @@ git_fast_import::~git_fast_import()
     // process exit if there are other subprocesses whose input
     // streams are still open.
     close();
-    wait_for_exit(process);
+    if (process)
+        wait_for_exit(*process);
 }
 
 std::vector<std::string> 
@@ -59,7 +62,8 @@ git_fast_import& git_fast_import::write_raw(char const* data, std::size_t nbytes
         std::cerr << std::endl;
     }
 #endif 
-    cin.write(data, nbytes);
+    if (!options.dry_run)
+        cin.write(data, nbytes);
     return *this;
 }
 

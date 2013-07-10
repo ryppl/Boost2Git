@@ -5,6 +5,7 @@
 # define GIT_FAST_IMPORT_DWA2013614_HPP
 
 # include "log.hpp"
+# include "options.hpp"
 
 # include <boost/process.hpp>
 # include <boost/iostreams/device/file_descriptor.hpp>
@@ -13,6 +14,7 @@
 # include <string>
 
 # include <iostream>
+# include <boost/optional.hpp>
 
 struct path;
 
@@ -34,7 +36,8 @@ struct git_fast_import
     {
         if (Log::get_level() >= Log::Trace)
             std::cerr << x << std::flush;
-        this->cin << x; 
+        if (!options.dry_run)
+            this->cin << x; 
         return *this;
     }
 
@@ -68,7 +71,7 @@ struct git_fast_import
 
     boost::process::pipe inp;
     boost::process::pipe outp;
-    boost::process::child process;
+    boost::optional<boost::process::child> process;
     boost::iostreams::stream<
         boost::iostreams::file_descriptor_sink
     > cin;
