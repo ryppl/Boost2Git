@@ -30,6 +30,7 @@
 #include "git_executable.hpp"
 
 #include <utility>
+#include <numeric>
 
 Options options;
 
@@ -143,7 +144,7 @@ int main(int argc, char **argv)
 
         Log::info() << "Using git executable: " << git_executable() << std::endl;
 
-        for (int i = imp.last_valid_svn_revision(); ++i <= max_rev;)
+        for (int i = std::max(resume_from, imp.last_valid_svn_revision()); ++i <= max_rev;)
             imp.import_revision(i);
 
         coverage::report();
