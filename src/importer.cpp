@@ -313,12 +313,14 @@ importer::~importer()
 
 template <class F>
 void for_each_svn_file(
-    svn::revision const& rev, path const& svn_path, F const& f)
+    svn::revision const& rev, path const& svn_path, F const& f, AprPool* pool_ = 0)
 {
     if (boost::contains(svn_path.str(), "/CVSROOT/"))
         return;
 
-    switch( svn::call(svn_fs_check_path, rev.fs_root, svn_path.c_str(), rev.pool) )
+    auto& pool = pool_ ? *pool_ : rev.pool;
+
+    switch( svn::call(svn_fs_check_path, rev.fs_root, svn_path.c_str(), pool) )
     {
     case svn_node_none: // If it turns out there's nothing here, there's nothing to do.
         Log::error() << svn_path << " doesn't exist!" << std::endl;
@@ -335,14 +337,14 @@ void for_each_svn_file(
         break;
 
     case svn_node_dir:
-        AprPool dir_pool = rev.pool.make_subpool();
+        AprPool dir_pool = pool.make_subpool();
         apr_hash_t *entries = svn::call(svn_fs_dir_entries, rev.fs_root, svn_path.c_str(), dir_pool);
         for (apr_hash_index_t *i = apr_hash_first(dir_pool, entries); i; i = apr_hash_next(i))
         {
             char const* subpath;
             void* value;
             apr_hash_this(i, (void const **)&subpath, nullptr, nullptr);
-            for_each_svn_file(rev, svn_path/subpath, f);
+            for_each_svn_file(rev, svn_path/subpath, f, &dir_pool);
         }
         break;
     };
