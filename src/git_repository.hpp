@@ -80,7 +80,7 @@ struct git_repository
     // repository for this SVN revision.
     bool close_commit(); 
 
-    std::string const& name() { return git_dir; }
+    std::string const& name() const { return git_dir; }
 
     // Remember that the given ref is a descendant of the named source
     // ref at the given SVN revision
