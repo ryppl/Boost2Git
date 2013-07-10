@@ -1,6 +1,5 @@
 /build/
-/.build/
-/.xcode/
+/.build*/
 /.cproject
 /.project
 *~
