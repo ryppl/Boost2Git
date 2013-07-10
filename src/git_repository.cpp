@@ -20,7 +20,8 @@ git_repository::git_repository(std::string const& git_dir)
       fast_import_(git_dir),
       super_module(nullptr),
       last_mark(0),
-      current_ref(nullptr)
+      current_ref(nullptr),
+      prepared_to_close_commit(false)
 {
 }
 
@@ -72,6 +73,9 @@ void git_repository::prepare_to_close_commit()
     if (!current_ref->can_close())
         return;
     
+    Log::trace() << "repository " << git_dir
+                 << " preparing to close commit in ref " << current_ref->name << std::endl;
+
     auto subrefs = std::move(current_ref->stale_submodule_refs);
     subrefs |= current_ref->changed_submodule_refs;
 
@@ -112,6 +116,7 @@ void git_repository::prepare_to_close_commit()
     // blocking for each repo when multiple repositories are changed
     // in a single SVN revision.
     fast_import().send_ls("\"\"");
+    prepared_to_close_commit = true;
 }
 
 // Close the current ref's commit.  Return true iff there are no more
@@ -121,6 +126,12 @@ bool git_repository::close_commit()
     assert(current_ref);
     if (!current_ref->can_close())
         return false;
+
+    // Super-modules sometimes become ready to close just after their
+    // submodules have closed, so we may not have prepared them for
+    // closure when we arrive here; do it on-demand.
+    if (!prepared_to_close_commit)
+        prepare_to_close_commit();
 
     Log::trace() << "repository " << git_dir
                  << " closing commit in ref " << current_ref->name << std::endl;
@@ -169,7 +180,7 @@ bool git_repository::close_commit()
     // Done changing this ref
     modified_refs.erase(current_ref);
     current_ref = nullptr;
-
+    prepared_to_close_commit = false;
     Log::trace() << modified_refs.size() << " modified refs remaining." << std::endl;
     return modified_refs.empty();
 }
