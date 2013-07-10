@@ -77,10 +77,12 @@ void git_repository::prepare_to_close_commit()
     for (auto sr : subrefs)
     {
         assert(!sr->marks.empty());
+        std::stringstream sha_prep;
+        sha_prep << std::setfill('0') << std::setw(40) 
+                 << std::prev(sr->marks.end())->second;
         fast_import() 
             << "M 160000 "
-            << (std::stringstream() << std::setfill('0') << std::setw(40) 
-                << std::prev(sr->marks.end())->second).str()
+            << sha_prep.str()
             << " " << sr->repo->submodule_path << LF;
     }
 
