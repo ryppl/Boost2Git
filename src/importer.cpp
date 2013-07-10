@@ -253,17 +253,20 @@ void importer::import_revision(int revnum)
         Log::trace() << "pass " << pass << std::endl;
         assert(pass < 500);
 
-        for (auto r : changed_repositories)
+        // Make a copy so it can be modified as we work this pass
+        auto changed_repos = changed_repositories;
+        for (auto r : changed_repos)
             r->open_commit(rev);
         
-        for (auto& svn_path : svn_paths_to_convert)
+        auto paths_to_convert = svn_paths_to_convert;
+        for (auto& svn_path : paths_to_convert)
             convert_svn_tree(rev, svn_path.c_str(), pass == 0);
 
-        for (auto r : changed_repositories)
+        for (auto r : changed_repos)
             r->prepare_to_close_commit();
 
         std::vector<git_repository*> closed_repositories;
-        for (auto r : changed_repositories)
+        for (auto r : changed_repos)
         {
             if (r->close_commit())
                 closed_repositories.push_back(r);

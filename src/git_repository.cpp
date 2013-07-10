@@ -68,6 +68,7 @@ std::string const empty_tree_sha("4b825dc642cb6eb9a060e54bf8d69288fbee4904");
 
 void git_repository::prepare_to_close_commit()
 {
+    assert(current_ref);
     if (!current_ref->can_close())
         return;
     
@@ -117,6 +118,7 @@ void git_repository::prepare_to_close_commit()
 // modified refs
 bool git_repository::close_commit()
 {
+    assert(current_ref);
     if (!current_ref->can_close())
         return false;
 
@@ -174,6 +176,7 @@ bool git_repository::close_commit()
 
 void git_repository::write_merges()
 {
+    assert(current_ref);
     for (auto const& kv : current_ref->pending_merges)
     {
         auto src_ref = kv.first;
