@@ -12,6 +12,7 @@
 #include <boost/range/adaptor/filtered.hpp>
 #include <array>
 #include <boost/range/adaptor/map.hpp>
+#include <iomanip>
 
 git_repository::git_repository(std::string const& git_dir)
     : git_dir(git_dir),
@@ -69,12 +70,38 @@ void git_repository::prepare_to_close_commit()
 {
     if (!current_ref->can_close())
         return;
+    
+    auto subrefs = std::move(current_ref->stale_submodule_refs);
+    subrefs |= current_ref->changed_submodule_refs;
 
-    // TODO: right here, write .gitmodules if necessary
+    for (auto sr : subrefs)
+    {
+        assert(!sr->marks.empty());
+        fast_import() 
+            << "M 160000 "
+            << (std::stringstream() << std::setfill('0') << std::setw(40) 
+                << std::prev(sr->marks.end())->second).str()
+            << " " << sr->repo->submodule_path << LF;
+    }
+
+    if (!subrefs.empty())
+    {
+        current_ref->submodule_refs |= subrefs;
+
+        std::stringstream content;
+        for (auto sr : current_ref->submodule_refs)
+        {
+            content << "[submodule \"" << sr->repo->name() << "\"]\n"
+                    << "	path = " << sr->repo->submodule_path << "\n"
+                    << "	url = http://github.com/boostorg/" << sr->repo->name() << ".git\n"
+                ;
+        }
+        fast_import().filemodify_hdr(".gitmodules");
+        fast_import().data(content.str().data(), content.str().size());
+    }
     
     // Absorb any new changed submodule refs into the overall list of
     // submodule refs
-    current_ref->submodule_refs |= current_ref->changed_submodule_refs;
 
     // Send a fast-import "ls" command to the changed repository now;
     // responses will be read in a separate close_commit() pass over
@@ -127,8 +154,6 @@ bool git_repository::close_commit()
             assert(s->submodule_refs_written <= s->changed_submodule_refs.size());
         }
     }
-
-    // TODO: write stale and changed submodule refs
 
     current_ref->stale_submodule_refs.clear();
     current_ref->changed_submodule_refs.clear();
