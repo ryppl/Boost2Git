@@ -109,6 +109,7 @@ struct git_repository
     // If this is a submodule, of whom and were?
     git_repository* super_module;
     path submodule_path;
+    //bool _has_submodules;
 
     // branches and tags
     std::unordered_map<std::string, ref> refs;
@@ -117,8 +118,6 @@ struct git_repository
     int last_mark;       // The last commit mark written to fast-import
     ref* current_ref;    // The ref to which the fast-import process is currently writing
     
-    // Whether or not we've sent the "ls" command to git fast-import
-    bool prepared_to_close_commit;
 };
 
 #endif // GIT_REPOSITORY_DWA2013614_HPP
