@@ -478,7 +478,7 @@ void importer::record_merges(git_repository::ref* target, path const& dst_svn_pa
     {
         // Update the latest source revision merged
         target->repo->record_ancestor(
-            target, git_ref_name(src_match->branch_rule), src_revnum);
+            target, src_match->git_ref_name(), src_revnum);
     }
     else        // Prepare to warn about cross-repository copies
     {
