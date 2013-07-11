@@ -247,14 +247,20 @@ git_repository::ref* git_repository::open_commit(svn::revision const& rev)
     return current_ref;
 }
 
-void git_repository::record_ancestor(ref* descendant, std::string const& src_ref_name, std::size_t revnum)
+void git_repository::record_ancestor(
+    ref* descendant, std::string const& src_ref_name, std::size_t revnum)
 {
-    auto src_ref = demand_ref(src_ref_name);
+    // Don't bother recording merges from one branch into itself; that
+    // ancestry is already going to be represented.
+    if (src_ref_name != descendant->name)
+    {
+        auto src_ref = demand_ref(src_ref_name);
 
-    // Update the latest source revision merged
-    auto& merged_rev = descendant->pending_merges[src_ref];
-    if (merged_rev < revnum)
-        merged_rev = revnum;
+        // Update the latest source revision merged
+        auto& merged_rev = descendant->pending_merges[src_ref];
+        if (merged_rev < revnum)
+            merged_rev = revnum;
+    }
 }
 
 git_repository::ref* git_repository::modify_ref(std::string const& name, bool allow_discovery)
