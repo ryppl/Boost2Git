@@ -6,6 +6,7 @@
 #include "git_executable.hpp"
 #include "path.hpp"
 #include "options.hpp"
+#include "marks_file_name.hpp"
 
 #include <boost/iostreams/device/file_descriptor.hpp>
 #include <numeric>
@@ -48,7 +49,11 @@ git_fast_import::~git_fast_import()
 std::vector<std::string> 
 git_fast_import::arg_vector(std::string const& git_dir)
 {
-    return { git_executable(), "fast-import", "--quiet", "--force" };
+    return 
+    { 
+        git_executable(), "fast-import", "--quiet", "--force", 
+        "--export-marks=" + marksFileName(git_dir) 
+    };
 }
 
 git_fast_import& git_fast_import::write_raw(char const* data, std::size_t nbytes)
