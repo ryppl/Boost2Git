@@ -7,8 +7,11 @@
 # include <boost/algorithm/string/trim.hpp>
 # include <boost/algorithm/string/predicate.hpp>
 # include <boost/operators.hpp>
+# include <boost/range/iterator_range.hpp>
+# include <boost/iterator/iterator_facade.hpp>
 # include <utility>
 # include <ostream>
+# include <algorithm>
 
 // A wrapper for Git/SVN path strings.  Boost.Filesystem's path is
 // inappropriate for this purpose because of
@@ -18,6 +21,54 @@
 // slashes, which is perfectly fine for this application
 struct path : boost::totally_ordered<path>
 {
+    typedef boost::iterator_range<std::string::const_iterator> component;
+
+    struct component_iterator
+      : public boost::iterator_facade<
+            component_iterator
+          , component
+          , std::input_iterator_tag
+          , component
+        >
+    {
+        component_iterator() {}
+
+        component_iterator(path const& p)
+            : first(p.str().begin())
+            , last(p.str().end())
+            , mid(std::find(first, last, '/'))
+        {}
+
+        component_iterator(std::string::const_iterator i)
+            : first(i)
+            , last(i)
+            , mid(i)
+        {}
+
+     private:
+        friend class boost::iterator_core_access;
+
+        void increment()
+        {
+            first = mid;
+            if (first != last)
+                ++first;
+            mid = std::find(first, last, '/');
+        }
+        
+        component dereference() const
+        {
+            return boost::make_iterator_range(first, mid);
+        }
+
+        bool equal(component_iterator const& rhs) const
+        {
+            return first == rhs.first;
+        }
+
+        std::string::const_iterator first, last, mid;
+    };
+
     path() {}
 
     path(char const* x)
@@ -55,7 +106,9 @@ struct path : boost::totally_ordered<path>
 
     friend bool operator<(path const& p0, path const& p1)
     {
-        return p0.text < p1.text;
+        return std::lexicographical_compare(
+            component_iterator(p0), component_iterator(p0.str().end()),
+            component_iterator(p1), component_iterator(p1.str().end()));
     }
 
     friend void swap(path& p0, path& p1)

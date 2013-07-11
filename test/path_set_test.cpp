@@ -30,4 +30,14 @@ int main()
     for (auto p : s1)
         std::cout << p << std::endl;
     assert(s1 == expected1);
+
+    path_set s2;
+    s2.insert("a.txt/bb");
+    s2.insert("a");
+    s2.insert("a/b");
+    s2.insert("x");
+    s2.insert("x.txt/yy");
+    s2.insert("x/y");
+    path_set expected2 = { "a", "a.txt/bb", "x", "x.txt/yy" };
+    assert(s2 == expected2);
 }
