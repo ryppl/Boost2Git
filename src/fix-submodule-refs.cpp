@@ -50,10 +50,10 @@ void read_marks_file(Repository& repo)
   while (marks >> colon >> mark_sha.first >> mark_sha.second)
     {
     if (colon != ':')
-        throw std::runtime_error("Expected colon in marks file!");
+        throw std::runtime_error("Expected colon in marks file: " + marks_path);
     marks.read(&newline, 1);
     if (newline != '\n')
-        throw std::runtime_error("Expected newline in marks file!");
+        throw std::runtime_error("Expected newline in marks file: " + marks_path);
 
     // Insert the mapping.  All kinds of efficiencies are possible
     // here, but I was more interested in getting the logic right.
@@ -61,7 +61,7 @@ void read_marks_file(Repository& repo)
     
     // Make sure we're not mapping the same mark twice.
     if (where != repo.mark2sha.end() && where->first == mark_sha.first)
-        throw std::runtime_error("Duplicate mark mapping!");
+        throw std::runtime_error("Duplicate mark mapping in " + marks_path);
     
     repo.mark2sha.insert(where, mark_sha);
     }
@@ -101,7 +101,7 @@ void transform_import_stream(
       if (mark_sha->first != mark)
         {
         throw std::runtime_error(
-            "unmapped mark " + to_string(mark) + "in " + marks_file_path(sub_repo->second->name)
+            "unmapped mark " + to_string(mark) + " in " + marks_file_path(sub_repo->second->name)
           );
         }
       out << submodule_prefix << mark_sha->second << " " << submodule_path << "\n";
