@@ -52,7 +52,7 @@ git_fast_import::arg_vector(std::string const& git_dir)
     return 
     { 
         git_executable(), "fast-import", "--quiet", "--force", 
-        "--export-marks=" + marksFileName(git_dir) 
+        "--export-marks=" + marks_file_path(git_dir) 
     };
 }
 
