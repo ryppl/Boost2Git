@@ -39,8 +39,12 @@ Options options;
 
 void read_marks_file(Repository& repo)
   {
-  std::ifstream marks(marks_file_path(repo.name).c_str());
+  std::string marks_path = marks_file_path(repo.name);
+  std::ifstream marks(marks_path.c_str());
+  if (marks.fail())
+    throw std::runtime_error("Couldn't open marks file: " + marks_path);
   marks.exceptions( std::ifstream::badbit );
+
   char colon, newline;
   std::pair<unsigned long, std::string> mark_sha;
   while (marks >> colon >> mark_sha.first >> mark_sha.second)
