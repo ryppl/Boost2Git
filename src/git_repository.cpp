@@ -93,6 +93,8 @@ void git_repository::prepare_to_close_commit()
 
     if (!subrefs.empty())
     {
+        // Absorb any new changed submodule refs into the overall list of
+        // submodule refs
         current_ref->submodule_refs |= subrefs;
 
         std::stringstream content;
@@ -107,8 +109,12 @@ void git_repository::prepare_to_close_commit()
         fast_import().data(content.str().data(), content.str().size());
     }
     
-    // Absorb any new changed submodule refs into the overall list of
-    // submodule refs
+    if (current_ref->gitattributes_outdated)
+    {
+        fast_import().filemodify_hdr(".gitattributes");
+        fast_import().data(options.gitattributes.data(), options.gitattributes.size());
+        current_ref->gitattributes_outdated = false;
+    }
 
     // Send a fast-import "ls" command to the changed repository now;
     // responses will be read in a separate close_commit() pass over
@@ -243,10 +249,7 @@ git_repository::ref* git_repository::open_commit(svn::revision const& rev)
                 [&](ref const* r){ return r->repo->submodule_path.starts_with(p); });
 
         if (p.str().empty() && !options.gitattributes.empty())
-        {
-            fast_import().filemodify_hdr(".gitattributes");
-            fast_import().data(options.gitattributes.data(), options.gitattributes.size());
-        }
+            current_ref->gitattributes_outdated = true;
     }
     current_ref->pending_deletions.clear();
 

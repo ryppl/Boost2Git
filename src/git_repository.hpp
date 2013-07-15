@@ -28,6 +28,7 @@ struct git_repository
                 repo->super_module ? repo->super_module->demand_ref(name) : nullptr
             )
             , submodule_refs_written(0)
+            , gitattributes_outdated(!options.gitattributes.empty())
         {}
 
         typedef boost::container::flat_map<std::size_t, std::size_t> rev_mark_map;
@@ -61,6 +62,7 @@ struct git_repository
         // super-module where it lives is being rewritten.
         boost::container::flat_set<ref const*> stale_submodule_refs;
         std::string head_tree_sha;
+        bool gitattributes_outdated;
     };
 
     ref* demand_ref(std::string const& name)
