@@ -79,6 +79,7 @@ prepared_test(NAME conversion DEPENDENCY prepare_conversion_test
      --authors "${CMAKE_CURRENT_LIST_DIR}/test-authors.txt"
      --rules   "${CMAKE_CURRENT_LIST_DIR}/test-repositories.txt"
     --svnrepo "${REPO_PATH}"
+    --gitattributes "${CMAKE_SOURCE_DIR}/dot_gitattributes"
     WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
    )
 

@@ -78,6 +78,7 @@ add_custom_target(conversion
     --authors "${authors}"
     --rules   "${repositories}"
     --svnrepo "${svn_repository}"
+    --gitattributes "${CMAKE_CURRENT_SOURCE_DIR}/dot_gitattributes"
   COMMENT
     "Performing conversion."
   DEPENDS

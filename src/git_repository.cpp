@@ -241,6 +241,12 @@ git_repository::ref* git_repository::open_commit(svn::revision const& rev)
         current_ref->stale_submodule_refs
             |= current_ref->submodule_refs | boost::adaptors::filtered(
                 [&](ref const* r){ return r->repo->submodule_path.starts_with(p); });
+
+        if (p.str().empty() && !options.gitattributes.empty())
+        {
+            fast_import().filemodify_hdr(".gitattributes");
+            fast_import().data(options.gitattributes.data(), options.gitattributes.size());
+        }
     }
     current_ref->pending_deletions.clear();
 

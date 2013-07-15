@@ -31,6 +31,7 @@ struct Options
   bool svn_branches;
   std::string rules_file;
   std::string git_executable;
+  std::string gitattributes;
   };
 
 extern Options options;

@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 {
     bool exit_success = false;
     std::string authors_file;
-    std::string ignore_file;
+    std::string gitattributes_path;
     std::string svn_path;
     int resume_from = 0;
     int max_rev = 0;
@@ -60,6 +60,7 @@ int main(int argc, char **argv)
             ("authors", po::value(&authors_file)->value_name("FILENAME"), "map between svn username and email")
             ("svnrepo", po::value(&svn_path)->value_name("PATH")->required(), "path to svn repository")
             ("rules", po::value(&options.rules_file)->value_name("FILENAME")->required(), "file with the conversion rules")
+            ("gitattributes,a", po::value(&gitattributes_path)->value_name("PATH"), "A file whose contents to inject as .gitattributes in every Git repository")
             ("dry-run", "Write no Git repositories")
             ("coverage", "Dump an analysis of rule coverage")
             ("add-metadata", "if passed, each git commit will have svn commit info")
@@ -103,6 +104,7 @@ int main(int argc, char **argv)
         {
             exit_success = true;
         }
+
         dump_rules = variables.count("dump-rules") > 0;
         options.add_metadata = variables.count("add-metadata");
         options.add_metadata_notes = variables.count("add-metadata-notes");
@@ -134,6 +136,18 @@ int main(int argc, char **argv)
 
         Log::info() << "Opening SVN repository at " << svn_path << std::endl;
         svn svn_repo(svn_path, authors_file);
+
+        if (!gitattributes_path.empty())
+        {
+            std::ifstream ifs(gitattributes_path);
+            if (ifs.fail())
+                throw std::runtime_error("Couldn't open .gitattributes file: " + gitattributes_path);
+            ifs.exceptions( std::ifstream::badbit );
+            ifs.seekg(0, std::ios::end);
+            options.gitattributes.resize(ifs.tellg());
+            ifs.seekg(0, std::ios::beg);
+            ifs.read(&options.gitattributes[0], options.gitattributes.size());
+        }
 
         Log::info() << "preparing repositories and import processes..." << std::endl;
         importer imp(svn_repo, ruleset);
