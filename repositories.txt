@@ -1132,6 +1132,7 @@ repository math : common_branches
     "boost/math/" : "include/boost/math/";
     "boost/math_fwd.hpp" : "include/boost/math_fwd.hpp";
     "libs/math/";
+    "libs/math_functions/"; // was renamed to "math" in revision 4007
   }
   branches
   {
@@ -1508,6 +1509,7 @@ repository python : common_branches
     [:] "/branches/python-voidptr/boost/" : "old-branches/python-voidptr";
     [:] "/branches/boost/boost/" : "old-branches/oops";
     [:] "/branches/python_v2_API_restructure/boost/" : "old-branches/python_v2_API_restructure";
+    [:] "/sandbox-branches/boost/" : "sandbox-branches/boost";
   }
   tags
   {
@@ -2047,8 +2049,8 @@ repository type_traits : common_branches
     "boost/detail/ob_type_traits.hpp" : "include/boost/detail/ob_type_traits.hpp";
     "boost/type_traits.hpp" : "include/boost/type_traits.hpp";
     "boost/type_traits/" : "include/boost/type_traits/";
-    "development/type_traits/boost/" : "include/boost/";
-    "development/type_traits/libs/type_traits/";
+    "development/type_traits/boost/" : "development/include/boost/";
+    "development/type_traits/libs/type_traits/" : "development";
     "libs/type_traits/";
   }
   branches
@@ -2069,6 +2071,7 @@ repository units : common_branches
   }
   branches
   {
+    [:] "/sandbox/units/" : "sandbox/units";
     [:] "/sandbox-branches/steven_watanabe/" : "sandbox/steven_watanabe";
   }
   tags
@@ -2358,6 +2361,7 @@ repository build : tools_branches
   }
   branches
   {
+    [:] "/branches/build-development/boost/" : "old-branches/build-development";
     [:] "/branches/build-development-2/boost/" : "old-branches/build-development-2";
   }
   tags
@@ -2513,6 +2517,19 @@ repository website
     [:]    "/website/public_html/beta/" : "beta";
     [:]    "/website/public_html/dev/"  : "dev";
     [:139] "/website/"                  : "master";
+  }
+}
+
+repository website
+{
+  content
+  {
+    "doc/" : "doc/";
+    "tools/" : "tools/";
+  }
+  branches
+  {
+    [:] "/sandbox/boost_docs/trunk/" : "sandbox/boost_docs";
   }
 }
 
