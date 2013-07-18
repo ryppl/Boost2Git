@@ -829,7 +829,7 @@ repository geometry : common_branches
   submodule of "boost" : "libs/geometry";
   content
   {
-    "boost/geometry.hpp" : " include/boost/geometry.hpp";
+    "boost/geometry.hpp" : "include/boost/geometry.hpp";
     "boost/geometry/" : "include/boost/geometry/";
     "libs/geometry/";
   }
