@@ -1238,6 +1238,10 @@ repository multiprecision : common_branches
     "boost/multiprecision/" : "include/boost/multiprecision/";
     "libs/multiprecision/";
   }
+  branches
+  {
+    [:] "/sandbox/big_number/" : "sandbox/big_number";
+  }
 }
 
 repository numeric_conversion : common_branches
@@ -1351,6 +1355,10 @@ repository phoenix : common_branches
     "boost/phoenix/" : "include/boost/phoenix/";
     "libs/phoenix/";
   }
+  branches
+  {
+    [:] "/sandbox/SOC/2010/phoenix3/" : "SOC/2010";
+  }
 }
 
 repository polygon : common_branches
@@ -1370,6 +1378,10 @@ repository pool : common_branches
   {
     "boost/pool/" : "include/boost/pool/";
     "libs/pool/";
+  }
+  branches
+  {
+    [:] "/sandbox/guild/pool/" : "sandbox/guild";
   }
 }
 
@@ -1752,7 +1764,7 @@ repository signals2 : common_branches
   }
   branches
   {
-    [:] "/sandbox/thread_safe_signals/" : "sandbox/thread_safe_signals";
+    [:] "/sandbox/thread_safe_signals/trunk/" : "sandbox/thread_safe_signals";
   }
 }
 
@@ -1997,6 +2009,10 @@ repository tti : common_branches
   {
     "boost/tti/" : "include/boost/tti/";
     "libs/tti/";
+  }
+  branches
+  {
+    [:] "/sandbox/tti/" : "sandbox";
   }
 }
 
