@@ -52,7 +52,7 @@ struct git_fast_import
 
     git_fast_import& filedelete(path const& p);
     
-    git_fast_import& filemodify_hdr(path const& p);
+    git_fast_import& filemodify_hdr(path const& p, unsigned long mode = 0100644);
 
     git_fast_import& write_raw(char const* data, std::size_t nbytes);
 

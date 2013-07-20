@@ -427,8 +427,12 @@ void importer::convert_svn_file(
 
     auto& fast_import = dst_ref->repo->fast_import();
 
+    auto propvalue = svn::call(
+        svn_fs_node_prop, rev.fs_root, svn_path.c_str(), "svn:executable", rev.pool);
+
     fast_import.filemodify_hdr(
-        match->git_path()/svn_path.sans_prefix(match->svn_path()) );
+        match->git_path()/svn_path.sans_prefix(match->svn_path()), 
+        propvalue ? 0100755 : 0100644 );
 
     auto file_length = svn::call(
         svn_fs_file_length, rev.fs_root, svn_path.c_str(), rev.pool);

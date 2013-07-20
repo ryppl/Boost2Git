@@ -101,9 +101,9 @@ git_fast_import& git_fast_import::filedelete(path const& p)
     return *this << "D " << p << LF;
 }
 
-git_fast_import& git_fast_import::filemodify_hdr(path const& p)
+git_fast_import& git_fast_import::filemodify_hdr(path const& p, unsigned long mode)
 {
-    return *this << "M 100644 inline " << p << LF;
+    return *this << "M " << std::oct << mode << std::dec << " inline " << p << LF;
 }
 
 git_fast_import& git_fast_import::checkpoint()
