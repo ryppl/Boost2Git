@@ -1402,6 +1402,16 @@ repository preprocessor : common_branches
   }
 }
 
+repository predef : common_branches
+{
+  submodule of "boost" : "libs/predef";
+  content
+  {
+    "boost/predef.h" : "include/boost/predef.h";
+    "libs/predef/";
+  }
+}
+
 repository preprocessor
 {
   content
