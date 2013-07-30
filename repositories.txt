@@ -1770,6 +1770,8 @@ repository signals2 : common_branches
   {
     "boost/signals2.hpp" : "include/boost/signals2.hpp";
     "boost/signals2/" : "include/boost/signals2/";
+    "boost/thread_safe_signals/" : "include/boost/thread_safe_signals/"
+    "libs/thread_safe_signals/";
     "libs/signals2/";
   }
   branches
@@ -2657,6 +2659,7 @@ repository boost : common_branches
     [:] "/branches/quickbook/QUICKBOOK_BACKEND/boost/" : "old-branches/QUICKBOOK_BACKEND";
     [:] "/sandbox-branches/guigl-wmbuild/" : "sandbox/guigl-wmbuild";
     [:] "/sandbox-branches/andreo/guigl/" : "sandbox/andreo/guigl";
+    [:] "/sandbox/guigl/" : "sandbox/guigl";
     [:] "/branches/coding_guidelines/boost/" : "old-branches/coding_guidelines";
   }
   tags
