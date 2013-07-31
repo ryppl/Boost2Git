@@ -1770,7 +1770,7 @@ repository signals2 : common_branches
   {
     "boost/signals2.hpp" : "include/boost/signals2.hpp";
     "boost/signals2/" : "include/boost/signals2/";
-    "boost/thread_safe_signals/" : "include/boost/thread_safe_signals/"
+    "boost/thread_safe_signals/" : "include/boost/thread_safe_signals/";
     "libs/thread_safe_signals/";
     "libs/signals2/";
   }
