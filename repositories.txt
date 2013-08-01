@@ -1408,6 +1408,7 @@ repository predef : common_branches
   content
   {
     "boost/predef.h" : "include/boost/predef.h";
+    "boost/predef/" : "include/boost/predef/";
     "libs/predef/";
   }
 }
