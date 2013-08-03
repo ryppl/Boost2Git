@@ -25,7 +25,6 @@ abstract repository common_branches
     [     :     ] "/devel/" : "master";
     [38329:     ] "/trunk/" : "master";
 
-    [:] "/sandbox-branches/geometry/index_dev/" : "sandbox/geometry/index_dev";
     [:] "/sandbox-branches/optional_optimization/" : "sandbox/optional_optimization";
     [:] "/sandbox-branches/birbacher/propertymap-functormap/" : "sandbox/birbacher/propertymap-functormap";
     [ 2110:     ] "/sandbox-branches/expaler/" : "sandbox/expaler";
@@ -833,20 +832,35 @@ repository geometry : common_branches
     "boost/geometry.hpp" : "include/boost/geometry.hpp";
     "boost/geometry/" : "include/boost/geometry/";
     "libs/geometry/";
+    "other/programs/doxygen_xml2qbk/" : "doc/src/docutils/tools/doxygen_xml2qbk/";
   }
   branches
   {
     [:] "/sandbox/geometry/" : "sandbox/geometry";
-    [:] "/sandbox-branches/geometry/index_080_vis/" : "sandbox/geometry/index_080_vis";
-    [:] "/sandbox-branches/geometry/index_080/" : "sandbox/geometry/index_080";
-    [:] "/sandbox-branches/geometry/index_080_new/" : "sandbox/geometry/index_080_new";
-    [:] "/sandbox-branches/geometry/index_080_nhch/" : "sandbox/geometry/index_080_nhch";
-    [:] "/sandbox-branches/geometry/index_dyn/" : "sandbox/geometry/index_dyn";
   }
   tags
   {
     [:] "/tags/geometry/boost_1_49_0/" : "geometry/boost_1_49_0";
-    [:] "/sandbox-tags/geometry/boost-geometry-0.9.0/" : "sandbox/geometry/boost-geometry-0.9.0";
+  }
+}
+
+// branches that don't inherit the common layout
+repository geometry
+{
+  content
+  {
+    "boost/" : "include/boost/";
+    "tests/" : "tests/";
+  }
+  branches
+  {
+    [:] "/sandbox-branches/geometry/index/" : "sandbox/geometry/index";
+    [:] "/sandbox-branches/geometry/index_dev/" : "sandbox/geometry/index_dev";
+    [:] "/sandbox-branches/geometry/index_dyn/" : "sandbox/geometry/index_dyn";
+    [:] "/sandbox-branches/geometry/index_080/" : "sandbox/geometry/index_080";
+    [:] "/sandbox-branches/geometry/index_080_vis/" : "sandbox/geometry/index_080_vis";
+    [:] "/sandbox-branches/geometry/index_080_new/" : "sandbox/geometry/index_080_new";
+    [:] "/sandbox-branches/geometry/index_080_nhch/" : "sandbox/geometry/index_080_nhch";
   }
 }
 
