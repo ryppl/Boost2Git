@@ -565,6 +565,7 @@ abstract repository unordered_foreign_branches
     [:] "/branches/unordered/trunk/" : "unordered/trunk";
     [:] "/branches/unordered/dev/" : "unordered/dev";
     [:] "/branches/unordered/add-on/" : "unordered/add-on";
+    [:] "/sandbox/unordered/" : "unordered/sandbox";
   }
 }
 
@@ -1777,7 +1778,14 @@ repository signals2 : common_branches
   }
   branches
   {
+    // everything was moved to subdir trunk in r48925
+    [:] "/sandbox/thread_safe_signals/" : "sandbox/thread_safe_signals";
     [:] "/sandbox/thread_safe_signals/trunk/" : "sandbox/thread_safe_signals";
+  }
+  tags
+  {
+    [:] "/sandbox/thread_safe_signals/tags/pre_signals2/" : "sandbox/thread_safe_signals/pre_signals2";
+    [:] "/sandbox/thread_safe_signals/tags/v2009-02-11/" : "sandbox/thread_safe_signals/v2009-02-11";
   }
 }
 
