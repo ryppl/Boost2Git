@@ -29,71 +29,71 @@ abstract repository common_branches
     [:] "/sandbox-branches/optional_optimization/" : "sandbox/optional_optimization";
     [:] "/sandbox-branches/birbacher/propertymap-functormap/" : "sandbox/birbacher/propertymap-functormap";
     [ 2110:     ] "/sandbox-branches/expaler/" : "sandbox/expaler";
-    [:] "/branches/unlabeled-1.1.1/boost/" : "old-branches/unlabeled-1.1.1";
-    [:] "/branches/iterator-adaptors/boost/" : "old-branches/iterator-adaptors";
-    [:] "/branches/conversion/boost/" : "old-branches/conversion";
-    [:] "/branches/boost-graph-library/boost/" : "old-branches/boost-graph-library";
-    [:] "/branches/regex-sub/boost/" : "old-branches/regex-sub";
-    [:] "/branches/better_indirect/boost/" : "old-branches/better_indirect";
-    [:] "/branches/named-args/boost/" : "old-branches/named-args";
-    [:] "/branches/moved_pointer/boost/" : "old-branches/moved_pointer";
-    [:] "/branches/unlabeled-1.12.2/boost/" : "old-branches/unlabeled-1.12.2";
-    [:] "/branches/unlabeled-1.16.2/boost/" : "old-branches/unlabeled-1.16.2";
-    [:] "/branches/unlabeled-1.9.2/boost/" : "old-branches/unlabeled-1.9.2";
-    [:] "/branches/unlabeled-1.1.8/boost/" : "old-branches/unlabeled-1.1.8";
-    [:] "/branches/unlabeled-1.3.2/boost/" : "old-branches/unlabeled-1.3.2";
-    [:] "/branches/unlabeled-1.1.1.1.8/boost/" : "old-branches/unlabeled-1.1.1.1.8";
-    [:] "/branches/unlabeled-1.2.8/boost/" : "old-branches/unlabeled-1.2.8";
-    [:] "/branches/unlabeled-1.15.2/boost/" : "old-branches/unlabeled-1.15.2";
-    [:] "/branches/unlabeled-1.4.2/boost/" : "old-branches/unlabeled-1.4.2";
-    [:] "/branches/unlabeled-1.1.1.1.10/boost/" : "old-branches/unlabeled-1.1.1.1.10";
-    [:] "/branches/iter-adaptor-and-categories/boost/" : "old-branches/iter-adaptor-and-categories";
-    [:] "/branches/split-config/boost/" : "old-branches/split-config";
-    [:] "/branches/iterator_adaptor_update/boost/" : "old-branches/iterator_adaptor_update";
-    [:] "/branches/RC_1_27_0/boost/" : "old-branches/RC_1_27_0";
-    [:] "/branches/perforce_2_4_merge/boost/" : "old-branches/perforce_2_4_merge";
-    [:] "/branches/compiler_supported_error_messages/boost/" : "old-branches/compiler_supported_error_messages";
-    [:] "/branches/boost_build_v2/boost/" : "old-branches/boost_build_v2";
-    [:] "/branches/unlabeled-1.8.2/boost/" : "old-branches/unlabeled-1.8.2";
-    [:] "/branches/unlabeled-1.5.2/boost/" : "old-branches/unlabeled-1.5.2";
-    [:] "/branches/unlabeled-1.10.2/boost/" : "old-branches/unlabeled-1.10.2";
-    [:] "/branches/unlabeled-1.2.6/boost/" : "old-branches/unlabeled-1.2.6";
-    [:] "/branches/unlabeled-1.6.2/boost/" : "old-branches/unlabeled-1.6.2";
-    [:] "/branches/unlabeled-1.18.2/boost/" : "old-branches/unlabeled-1.18.2";
-    [:] "/branches/unlabeled-1.7.2/boost/" : "old-branches/unlabeled-1.7.2";
-    [:] "/branches/unlabeled-1.11.2/boost/" : "old-branches/unlabeled-1.11.2";
-    [:] "/branches/unlabeled-1.14.2/boost/" : "old-branches/unlabeled-1.14.2";
-    [:] "/branches/unlabeled-1.1.6/boost/" : "old-branches/unlabeled-1.1.6";
-    [:] "/branches/aix_so/boost/" : "old-branches/aix_so";
-    [:] "/branches/feature_branch-update_rule/boost/" : "old-branches/feature_branch-update_rule";
-    [:] "/branches/RC_1_28_0/boost/" : "old-branches/RC_1_28_0";
-    [:] "/branches/python-v2-dev/boost/" : "old-branches/python-v2-dev";
-    [:] "/branches/mpl_v2/boost/" : "old-branches/mpl_v2";
-    [:] "/branches/RC_1_29_0/boost/" : "old-branches/RC_1_29_0";
-    [:] "/branches/fs_review/boost/" : "old-branches/fs_review";
-    [:] "/branches/sane-testing/boost/" : "old-branches/sane-testing";
-    [:] "/branches/unlabeled-1.1.2/boost/" : "old-branches/unlabeled-1.1.2";
-    [:] "/branches/mpl_v2_2/boost/" : "old-branches/mpl_v2_2";
-    [:] "/branches/bbv1_cross_project/boost/" : "old-branches/bbv1_cross_project";
-    [:] "/branches/build_for_distribution/boost/" : "old-branches/build_for_distribution";
-    [:] "/branches/RC_1_30_0/boost/" : "old-branches/RC_1_30_0";
-    [:] "/branches/unlabeled-1.2.2/boost/" : "old-branches/unlabeled-1.2.2";
-    [:] "/branches/function_signature_patches_1_31/boost/" : "old-branches/function_signature_patches_1_31";
-    [:] "/branches/RC_1_31_0/boost/" : "old-branches/RC_1_31_0";
-    [:] "/branches/mplbook/boost/" : "old-branches/mplbook";
-    [:] "/branches/RC_1_32_0/boost/" : "old-branches/RC_1_32_0";
+    [:] "/branches/unlabeled-1.1.1/boost/" : "unlabeled-1.1.1";
+    [:] "/branches/iterator-adaptors/boost/" : "iterator-adaptors";
+    [:] "/branches/conversion/boost/" : "conversion";
+    [:] "/branches/boost-graph-library/boost/" : "boost-graph-library";
+    [:] "/branches/regex-sub/boost/" : "regex-sub";
+    [:] "/branches/better_indirect/boost/" : "better_indirect";
+    [:] "/branches/named-args/boost/" : "named-args";
+    [:] "/branches/moved_pointer/boost/" : "moved_pointer";
+    [:] "/branches/unlabeled-1.12.2/boost/" : "unlabeled-1.12.2";
+    [:] "/branches/unlabeled-1.16.2/boost/" : "unlabeled-1.16.2";
+    [:] "/branches/unlabeled-1.9.2/boost/" : "unlabeled-1.9.2";
+    [:] "/branches/unlabeled-1.1.8/boost/" : "unlabeled-1.1.8";
+    [:] "/branches/unlabeled-1.3.2/boost/" : "unlabeled-1.3.2";
+    [:] "/branches/unlabeled-1.1.1.1.8/boost/" : "unlabeled-1.1.1.1.8";
+    [:] "/branches/unlabeled-1.2.8/boost/" : "unlabeled-1.2.8";
+    [:] "/branches/unlabeled-1.15.2/boost/" : "unlabeled-1.15.2";
+    [:] "/branches/unlabeled-1.4.2/boost/" : "unlabeled-1.4.2";
+    [:] "/branches/unlabeled-1.1.1.1.10/boost/" : "unlabeled-1.1.1.1.10";
+    [:] "/branches/iter-adaptor-and-categories/boost/" : "iter-adaptor-and-categories";
+    [:] "/branches/split-config/boost/" : "split-config";
+    [:] "/branches/iterator_adaptor_update/boost/" : "iterator_adaptor_update";
+    [:] "/branches/RC_1_27_0/boost/" : "RC_1_27_0";
+    [:] "/branches/perforce_2_4_merge/boost/" : "perforce_2_4_merge";
+    [:] "/branches/compiler_supported_error_messages/boost/" : "compiler_supported_error_messages";
+    [:] "/branches/boost_build_v2/boost/" : "boost_build_v2";
+    [:] "/branches/unlabeled-1.8.2/boost/" : "unlabeled-1.8.2";
+    [:] "/branches/unlabeled-1.5.2/boost/" : "unlabeled-1.5.2";
+    [:] "/branches/unlabeled-1.10.2/boost/" : "unlabeled-1.10.2";
+    [:] "/branches/unlabeled-1.2.6/boost/" : "unlabeled-1.2.6";
+    [:] "/branches/unlabeled-1.6.2/boost/" : "unlabeled-1.6.2";
+    [:] "/branches/unlabeled-1.18.2/boost/" : "unlabeled-1.18.2";
+    [:] "/branches/unlabeled-1.7.2/boost/" : "unlabeled-1.7.2";
+    [:] "/branches/unlabeled-1.11.2/boost/" : "unlabeled-1.11.2";
+    [:] "/branches/unlabeled-1.14.2/boost/" : "unlabeled-1.14.2";
+    [:] "/branches/unlabeled-1.1.6/boost/" : "unlabeled-1.1.6";
+    [:] "/branches/aix_so/boost/" : "aix_so";
+    [:] "/branches/feature_branch-update_rule/boost/" : "feature_branch-update_rule";
+    [:] "/branches/RC_1_28_0/boost/" : "RC_1_28_0";
+    [:] "/branches/python-v2-dev/boost/" : "python-v2-dev";
+    [:] "/branches/mpl_v2/boost/" : "mpl_v2";
+    [:] "/branches/RC_1_29_0/boost/" : "RC_1_29_0";
+    [:] "/branches/fs_review/boost/" : "fs_review";
+    [:] "/branches/sane-testing/boost/" : "sane-testing";
+    [:] "/branches/unlabeled-1.1.2/boost/" : "unlabeled-1.1.2";
+    [:] "/branches/mpl_v2_2/boost/" : "mpl_v2_2";
+    [:] "/branches/bbv1_cross_project/boost/" : "bbv1_cross_project";
+    [:] "/branches/build_for_distribution/boost/" : "build_for_distribution";
+    [:] "/branches/RC_1_30_0/boost/" : "RC_1_30_0";
+    [:] "/branches/unlabeled-1.2.2/boost/" : "unlabeled-1.2.2";
+    [:] "/branches/function_signature_patches_1_31/boost/" : "function_signature_patches_1_31";
+    [:] "/branches/RC_1_31_0/boost/" : "RC_1_31_0";
+    [:] "/branches/mplbook/boost/" : "mplbook";
+    [:] "/branches/RC_1_32_0/boost/" : "RC_1_32_0";
     [:] "/branches/quickbook/backend/boost/" : "quickbook/backend";
-    [:] "/branches/quickbook/QUICKBOOK_INCLUDE/boost/" : "old-branches/QUICKBOOK_INCLUDE";
-    [:] "/branches/QUICKBOOK_INCLUDE/boost/" : "old-branches/QUICKBOOK_INCLUDE";
-    [:] "/branches/SPIRIT_MINIBOOST/boost/" : "old-branches/SPIRIT_MINIBOOST";
-    [:] "/branches/fast_array_serialization/boost/" : "old-branches/fast_array_serialization";
-    [:] "/branches/array_wrapper/boost/" : "old-branches/array_wrapper";
-    [:] "/branches/RC_1_33_0/boost/" : "old-branches/RC_1_33_0";
-    [:] "/branches/SPIRIT_1_6/boost/" : "old-branches/SPIRIT_1_6";
-    [:] "/branches/bbv2python/boost/" : "old-branches/bbv2python";
-    [:] "/branches/Boost_Jam_994/boost/" : "old-branches/Boost_Jam_994";
-    [:] "/branches/RC_1_34_0/boost/" : "old-branches/RC_1_34_0";
-    [:] "/branches/QUICKBOOK_BACKEND/boost/" : "old-branches/QUICKBOOK_BACKEND";
+    [:] "/branches/quickbook/QUICKBOOK_INCLUDE/boost/" : "QUICKBOOK_INCLUDE";
+    [:] "/branches/QUICKBOOK_INCLUDE/boost/" : "QUICKBOOK_INCLUDE";
+    [:] "/branches/SPIRIT_MINIBOOST/boost/" : "SPIRIT_MINIBOOST";
+    [:] "/branches/fast_array_serialization/boost/" : "fast_array_serialization";
+    [:] "/branches/array_wrapper/boost/" : "array_wrapper";
+    [:] "/branches/RC_1_33_0/boost/" : "RC_1_33_0";
+    [:] "/branches/SPIRIT_1_6/boost/" : "SPIRIT_1_6";
+    [:] "/branches/bbv2python/boost/" : "bbv2python";
+    [:] "/branches/Boost_Jam_994/boost/" : "Boost_Jam_994";
+    [:] "/branches/RC_1_34_0/boost/" : "RC_1_34_0";
+    [:] "/branches/QUICKBOOK_BACKEND/boost/" : "QUICKBOOK_BACKEND";
     [:] "/branches/serialization_next_release/boost/" : "serialization_next_release";
     [:] "/branches/release/" : "release";
     [40545:] "/sandbox-branches/birbacher/fix_iostreams/" : "sandbox/birbacher/fix_iostreams";
@@ -128,13 +128,13 @@ abstract repository common_branches
     [:] "/branches/filesystem-v3/" : "filesystem-v3";
     [:] "/branches/filesystem-v3a/" : "filesystem-v3a";
 
-    [:] "/branches/multi_array/" : "old-branches/multi_array";
-    [:] "/branches/xpressive/nested_dynamic_regex/" : "old-branches/xpressive/nested_dynamic_regex";
-    [:] "/branches/thread_rewrite/boost/" : "old-branches/thread_rewrite";
-    [:] "/branches/hash/" : "old-branches/hash";
-    [:] "/branches/fusion/2_1/" : "old-branches/fusion/2_1";
-    [:] "/branches/system/" : "old-branches/system";
-    [:] "/branches/bitten/" : "old-branches/bitten";
+    [:] "/branches/multi_array/" : "multi_array";
+    [:] "/branches/xpressive/nested_dynamic_regex/" : "xpressive/nested_dynamic_regex";
+    [:] "/branches/thread_rewrite/boost/" : "thread_rewrite";
+    [:] "/branches/hash/" : "hash";
+    [:] "/branches/fusion/2_1/" : "fusion/2_1";
+    [:] "/branches/system/" : "system";
+    [:] "/branches/bitten/" : "bitten";
 
     [:] "/branches/maintenance/1_41/" : "maintenance/1_41";
     [:] "/branches/maintenance/1_50_0/" : "maintenance/1_50_0";
@@ -442,8 +442,8 @@ repository bind : common_branches
   }
   branches
   {
-    [:] "/branches/pro7_void_returns/boost/" : "old-branches/pro7_void_returns";
-    [:] "/branches/void_returns/boost/" : "old-branches/void_returns";
+    [:] "/branches/pro7_void_returns/boost/" : "pro7_void_returns";
+    [:] "/branches/void_returns/boost/" : "void_returns";
   }
 }
 
@@ -518,8 +518,8 @@ repository config : common_branches
   }
   branches
   {
-    [:] "/branches/BOOST_VERSION_NUMBER/boost/" : "old-branches/BOOST_VERSION_NUMBER";
-    [:] "/branches/unlabeled-1.37.2/boost/" : "old-branches/unlabeled-1.37.2";
+    [:] "/branches/BOOST_VERSION_NUMBER/boost/" : "BOOST_VERSION_NUMBER";
+    [:] "/branches/unlabeled-1.37.2/boost/" : "unlabeled-1.37.2";
   }
 }
 
@@ -716,7 +716,7 @@ repository filesystem : common_branches
   }
   branches
   {
-    [:] "/branches/i18n/boost/" : "old-branches/i18n";
+    [:] "/branches/i18n/boost/" : "i18n";
   }
   tags
   {
@@ -789,7 +789,7 @@ repository function : common_branches
   }
   branches
   {
-    [:] "/branches/function_v2/boost/" : "old-branches/function_v2";
+    [:] "/branches/function_v2/boost/" : "function_v2";
   }
 }
 
@@ -902,13 +902,13 @@ repository graph : common_branches
   }
   branches
   {
-    [:] "/branches/unlabeled-1.65.2/boost/" : "old-branches/unlabeled-1.65.2";
-    [:] "/branches/graph_devel/boost/" : "old-branches/graph_devel";
-    [:] "/branches/unlabeled-1.1.4/boost/" : "old-branches/unlabeled-1.1.4";
-    [:] "/branches/graph_devel_1_33_0/boost/" : "old-branches/graph_devel_1_33_0";
-    [:] "/branches/unlabeled-1.19.2/boost/" : "old-branches/unlabeled-1.19.2";
-    [:] "/branches/unlabeled-1.21.2/boost/" : "old-branches/unlabeled-1.21.2";
-    [:] "/branches/unlabeled-1.13.2/boost/" : "old-branches/unlabeled-1.13.2";
+    [:] "/branches/unlabeled-1.65.2/boost/" : "unlabeled-1.65.2";
+    [:] "/branches/graph_devel/boost/" : "graph_devel";
+    [:] "/branches/unlabeled-1.1.4/boost/" : "unlabeled-1.1.4";
+    [:] "/branches/graph_devel_1_33_0/boost/" : "graph_devel_1_33_0";
+    [:] "/branches/unlabeled-1.19.2/boost/" : "unlabeled-1.19.2";
+    [:] "/branches/unlabeled-1.21.2/boost/" : "unlabeled-1.21.2";
+    [:] "/branches/unlabeled-1.13.2/boost/" : "unlabeled-1.13.2";
   }
   tags
   {
@@ -1038,12 +1038,12 @@ repository iterator : common_branches
   }
   branches
   {
-    [:] "/branches/boostify/boost/" : "old-branches/boostify";
-    [:] "/branches/iterator_build/boost/" : "old-branches/iterator_build";
-    [:] "/branches/unlabeled-1.25.2/boost/" : "old-branches/unlabeled-1.25.2";
-    [:] "/branches/zip_iterator_fusion/boost/" : "old-branches/zip_iterator_fusion";
-    [:] "/branches/unlabeled-1.37.6/boost/" : "old-branches/unlabeled-1.37.6";
-    [:] "/branches/simplify/boost/" : "old-branches/simplify";
+    [:] "/branches/boostify/boost/" : "boostify";
+    [:] "/branches/iterator_build/boost/" : "iterator_build";
+    [:] "/branches/unlabeled-1.25.2/boost/" : "unlabeled-1.25.2";
+    [:] "/branches/zip_iterator_fusion/boost/" : "zip_iterator_fusion";
+    [:] "/branches/unlabeled-1.37.6/boost/" : "unlabeled-1.37.6";
+    [:] "/branches/simplify/boost/" : "simplify";
     [:] "/branches/build/boost/" : "build";
   }
   tags
@@ -1062,8 +1062,8 @@ repository lambda : common_branches
   }
   branches
   {
-    [:] "/branches/lambda_development/boost/" : "old-branches/lambda_development";
-    [:] "/branches/lambda_development_during_review/boost/" : "old-branches/lambda_development_during_review";
+    [:] "/branches/lambda_development/boost/" : "lambda_development";
+    [:] "/branches/lambda_development_during_review/boost/" : "lambda_development_during_review";
   }
   tags
   {
@@ -1176,7 +1176,7 @@ repository mpl : common_branches
   }
   branches
   {
-    [:] "/branches/mpl-development/boost/" : "old-branches/mpl-development";
+    [:] "/branches/mpl-development/boost/" : "mpl-development";
   }
   tags
   {
@@ -1214,7 +1214,7 @@ repository multi_array : common_branches
   }
   branches
   {
-    [:] "/branches/multi_array_python/boost/" : "old-branches/multi_array_python";
+    [:] "/branches/multi_array_python/boost/" : "multi_array_python";
   }
 }
 
@@ -1287,8 +1287,8 @@ repository ublas : common_branches
   }
   branches
   {
-    [:] "/branches/uBLAS_pure/boost/" : "old-branches/uBLAS_pure";
-    [:] "/branches/uBLAS_assignment_sematics/boost/" : "old-branches/uBLAS_assignment_sematics";
+    [:] "/branches/uBLAS_pure/boost/" : "uBLAS_pure";
+    [:] "/branches/uBLAS_assignment_sematics/boost/" : "uBLAS_assignment_sematics";
   }
   tags
   {
@@ -1335,9 +1335,9 @@ repository parameter : common_branches
   }
   branches
   {
-    [:] "/branches/parameter-post-1_33/boost/" : "old-branches/parameter-post-1_33";
-    [:] "/branches/robstewart/boost/" : "old-branches/robstewart";
-    [:] "/branches/parameter-python/boost/" : "old-branches/parameter-python";
+    [:] "/branches/parameter-post-1_33/boost/" : "parameter-post-1_33";
+    [:] "/branches/robstewart/boost/" : "robstewart";
+    [:] "/branches/parameter-python/boost/" : "parameter-python";
   }
   tags
   {
@@ -1510,28 +1510,28 @@ repository python : common_branches
   }
   branches
   {
-    [:] "/branches/boost_python_richcmp/boost/" : "old-branches/boost_python_richcmp";
-    [:] "/branches/unlabeled-1.23.2/boost/" : "old-branches/unlabeled-1.23.2";
-    [:] "/branches/unlabeled-1.7.4/boost/" : "old-branches/unlabeled-1.7.4";
-    [:] "/branches/unlabeled-1.3.6/boost/" : "old-branches/unlabeled-1.3.6";
-    [:] "/branches/unlabeled-1.10.4/boost/" : "old-branches/unlabeled-1.10.4";
-    [:] "/branches/unlabeled-1.5.4/boost/" : "old-branches/unlabeled-1.5.4";
-    [:] "/branches/rollback/boost/" : "old-branches/rollback";
-    [:] "/branches/newbpl/boost/" : "old-branches/newbpl";
-    [:] "/branches/unlabeled-1.1.1.1.6/boost/" : "old-branches/unlabeled-1.1.1.1.6";
-    [:] "/branches/unlabeled-1.3.8/boost/" : "old-branches/unlabeled-1.3.8";
-    [:] "/branches/shared_modules/boost/" : "old-branches/shared_modules";
-    [:] "/branches/cursor/boost/" : "old-branches/cursor";
-    [:] "/branches/python/boost/" : "old-branches/python";
-    [:] "/branches/null_ptr_is_none/boost/" : "old-branches/null_ptr_is_none";
-    [:] "/branches/indexing_v2/boost/" : "old-branches/indexing_v2";
-    [:] "/branches/build_development-gcc-unix/boost/" : "old-branches/build_development-gcc-unix";
-    [:] "/branches/build-development-gcc-unix/boost/" : "old-branches/build-development-gcc-unix";
-    [:] "/branches/ralf_grosse_kunstleve/boost/" : "old-branches/ralf_grosse_kunstleve";
-    [:] "/branches/boost_python_friend_fixes/boost/" : "old-branches/boost_python_friend_fixes";
-    [:] "/branches/python-voidptr/boost/" : "old-branches/python-voidptr";
-    [:] "/branches/boost/boost/" : "old-branches/oops";
-    [:] "/branches/python_v2_API_restructure/boost/" : "old-branches/python_v2_API_restructure";
+    [:] "/branches/boost_python_richcmp/boost/" : "boost_python_richcmp";
+    [:] "/branches/unlabeled-1.23.2/boost/" : "unlabeled-1.23.2";
+    [:] "/branches/unlabeled-1.7.4/boost/" : "unlabeled-1.7.4";
+    [:] "/branches/unlabeled-1.3.6/boost/" : "unlabeled-1.3.6";
+    [:] "/branches/unlabeled-1.10.4/boost/" : "unlabeled-1.10.4";
+    [:] "/branches/unlabeled-1.5.4/boost/" : "unlabeled-1.5.4";
+    [:] "/branches/rollback/boost/" : "rollback";
+    [:] "/branches/newbpl/boost/" : "newbpl";
+    [:] "/branches/unlabeled-1.1.1.1.6/boost/" : "unlabeled-1.1.1.1.6";
+    [:] "/branches/unlabeled-1.3.8/boost/" : "unlabeled-1.3.8";
+    [:] "/branches/shared_modules/boost/" : "shared_modules";
+    [:] "/branches/cursor/boost/" : "cursor";
+    [:] "/branches/python/boost/" : "python";
+    [:] "/branches/null_ptr_is_none/boost/" : "null_ptr_is_none";
+    [:] "/branches/indexing_v2/boost/" : "indexing_v2";
+    [:] "/branches/build_development-gcc-unix/boost/" : "build_development-gcc-unix";
+    [:] "/branches/build-development-gcc-unix/boost/" : "build-development-gcc-unix";
+    [:] "/branches/ralf_grosse_kunstleve/boost/" : "ralf_grosse_kunstleve";
+    [:] "/branches/boost_python_friend_fixes/boost/" : "boost_python_friend_fixes";
+    [:] "/branches/python-voidptr/boost/" : "python-voidptr";
+    [:] "/branches/boost/boost/" : "oops";
+    [:] "/branches/python_v2_API_restructure/boost/" : "python_v2_API_restructure";
     [:] "/sandbox-branches/boost/" : "sandbox-branches/boost";
   }
   tags
@@ -1627,7 +1627,7 @@ repository python
   branches
   {
     [:] "/branches/boost/boost/development/py_cpp/" : "py_cpp/development";
-    [:] "/branches/build_system/boost/" : "old-branches/build_system";
+    [:] "/branches/build_system/boost/" : "build_system";
     [:] "/branches/coercion_experiments/boost/development/py_cpp/" : "py_cpp/coercion_experiments";
     [:] "/branches/data_driven/boost/development/py_cpp/" : "py_cpp/data_driven";
     [:] "/branches/error_handling/boost/development/py_cpp/" : "py_cpp/error_handling";
@@ -1654,7 +1654,7 @@ repository random : common_branches
   }
   branches
   {
-    [:] "/branches/wg21_random_proposal/boost/" : "old-branches/wg21_random_proposal";
+    [:] "/branches/wg21_random_proposal/boost/" : "wg21_random_proposal";
   }
   tags
   {
@@ -1711,9 +1711,9 @@ repository regex : common_branches
   }
   branches
   {
-    [:] "/branches/regex-4-1/boost/" : "old-branches/regex-4-1";
-    [:] "/branches/regex5/boost/" : "old-branches/regex5";
-    [:] "/branches/regex-4/boost/" : "old-branches/regex-4";
+    [:] "/branches/regex-4-1/boost/" : "regex-4-1";
+    [:] "/branches/regex5/boost/" : "regex5";
+    [:] "/branches/regex-4/boost/" : "regex-4";
   }
 }
 
@@ -1743,7 +1743,7 @@ repository serialization : common_branches
   }
   branches
   {
-    [:] "/branches/serialization_header_order/boost/" : "old-branches/serialization_header_order";
+    [:] "/branches/serialization_header_order/boost/" : "serialization_header_order";
   }
   tags
   {
@@ -1865,11 +1865,11 @@ repository spirit : common_branches
   }
   branches
   {
-    [:] "/branches/FUSION_MSVC/boost/" : "old-branches/FUSION_MSVC";
+    [:] "/branches/FUSION_MSVC/boost/" : "FUSION_MSVC";
     [:] "/branches/spirit_3x/" : "spirit_3x";
-    [:] "/branches/SPIRIT_1_9/boost/" : "old-branches/SPIRIT_1_9";
-    [:] "/branches/SPIRIT_RC_1_8_5/boost/" : "old-branches/SPIRIT_RC_1_8_5";
-    [:] "/branches/SPIRIT_1_8/boost/" : "old-branches/SPIRIT_1_8";
+    [:] "/branches/SPIRIT_1_9/boost/" : "SPIRIT_1_9";
+    [:] "/branches/SPIRIT_RC_1_8_5/boost/" : "SPIRIT_RC_1_8_5";
+    [:] "/branches/SPIRIT_1_8/boost/" : "SPIRIT_1_8";
   }
   tags
   {
@@ -1883,10 +1883,10 @@ repository spirit
 {
   branches
   {
-    [:] "/branches/SPIRIT_RC_1_6_2/boost/" : "old-branches/SPIRIT_RC_1_6_2";
-    [:] "/branches/SPIRIT_RC_1_6_2/boost/libs/" : "old-branches/SPIRIT_RC_1_6_2";
-    [:] "/branches/SPIRIT_RC_1_8_2/boost/" : "old-branches/SPIRIT_RC_1_8_2";
-    [:] "/branches/SPIRIT_RC_1_8_2/boost/libs/" : "old-branches/SPIRIT_RC_1_8_2";
+    [:] "/branches/SPIRIT_RC_1_6_2/boost/" : "SPIRIT_RC_1_6_2";
+    [:] "/branches/SPIRIT_RC_1_6_2/boost/libs/" : "SPIRIT_RC_1_6_2";
+    [:] "/branches/SPIRIT_RC_1_8_2/boost/" : "SPIRIT_RC_1_8_2";
+    [:] "/branches/SPIRIT_RC_1_8_2/boost/libs/" : "SPIRIT_RC_1_8_2";
   }
 }
 
@@ -1921,7 +1921,7 @@ repository system : common_branches
   }
   branches
   {
-    [:] "/branches/c++0x/boost/" : "old-branches/c++0x";
+    [:] "/branches/c++0x/boost/" : "c++0x";
   }
 }
 
@@ -1949,7 +1949,7 @@ repository test : common_branches
   }
   branches
   {
-    [:] "/branches/unit_test_development/boost/" : "old-branches/unit_test_development";
+    [:] "/branches/unit_test_development/boost/" : "unit_test_development";
   }
   tags
   {
@@ -1970,10 +1970,10 @@ repository thread : common_branches
   }
   branches
   {
-    [:] "/branches/thread-initial/boost/" : "old-branches/thread-initial";
-    [:] "/branches/thread_dev/boost/" : "old-branches/thread_dev";
+    [:] "/branches/thread-initial/boost/" : "thread-initial";
+    [:] "/branches/thread_dev/boost/" : "thread_dev";
     [:] "/tags/thread_rewrite_1/boost/" : "thread_rewrite_1";
-    [:] "/branches/thread_development/boost/" : "old-branches/thread_development";
+    [:] "/branches/thread_development/boost/" : "thread_development";
   }
   tags
   {
@@ -2039,8 +2039,8 @@ repository tuple : common_branches
   }
   branches
   {
-    [:] "/branches/tuples_subnamespace/boost/" : "old-branches/tuples_subnamespace";
-    [:] "/branches/rich_cons/boost/" : "old-branches/rich_cons";
+    [:] "/branches/tuples_subnamespace/boost/" : "tuples_subnamespace";
+    [:] "/branches/rich_cons/boost/" : "rich_cons";
   }
 }
 
@@ -2084,9 +2084,9 @@ repository type_traits : common_branches
   }
   branches
   {
-    [:] "/branches/type_traits2/boost/" : "old-branches/type_traits2";
-    [:] "/branches/unlabeled-1.1.1.1.2/boost/" : "old-branches/unlabeled-1.1.1.1.2";
-    [:] "/tags/type_traits2_sub/boost/" : "old-branches/type_traits2_sub";
+    [:] "/branches/type_traits2/boost/" : "type_traits2";
+    [:] "/branches/unlabeled-1.1.1.1.2/boost/" : "unlabeled-1.1.1.1.2";
+    [:] "/tags/type_traits2_sub/boost/" : "type_traits2_sub";
   }
 }
 
@@ -2176,8 +2176,8 @@ repository utility : common_branches
   }
   branches
   {
-    [:] "/branches/tmpw2001-paper/boost/" : "old-branches/tmpw2001-paper";
-    [:] "/branches/unlabeled-1.4.6/boost/" : "old-branches/unlabeled-1.4.6";
+    [:] "/branches/tmpw2001-paper/boost/" : "tmpw2001-paper";
+    [:] "/branches/unlabeled-1.4.6/boost/" : "unlabeled-1.4.6";
   }
 }
 
@@ -2228,8 +2228,8 @@ repository xpressive : common_branches
   }
   branches
   {
-    [:] "/branches/XPRESSIVE_1_1/boost/" : "old-branches/XPRESSIVE_1_1";
-    [:] "/branches/PROTO2/boost/" : "old-branches/PROTO2";
+    [:] "/branches/XPRESSIVE_1_1/boost/" : "XPRESSIVE_1_1";
+    [:] "/branches/PROTO2/boost/" : "PROTO2";
   }
 }
 
@@ -2279,11 +2279,11 @@ repository build : common_branches
   }
   branches
   {
-    [:] "/branches/jam_src/boost/" : "old-branches/jam_src";
-    [:] "/branches/jam-src/boost/" : "old-branches/jam-src";
-    [:] "/branches/jam/jam_src/boost/" : "old-branches/jam_src";
-    [:] "/branches/jam/jam-src/boost/" : "old-branches/jam-src";
-    [:] "/branches/build/jam-src/boost/" : "old-branches/jam-src";
+    [:] "/branches/jam_src/boost/" : "jam_src";
+    [:] "/branches/jam-src/boost/" : "jam-src";
+    [:] "/branches/jam/jam_src/boost/" : "jam_src";
+    [:] "/branches/jam/jam-src/boost/" : "jam-src";
+    [:] "/branches/build/jam-src/boost/" : "jam-src";
     [:] "/branches/quickbook/include/boost/" : "quickbook/include";
   }
   tags
@@ -2390,8 +2390,8 @@ repository build : tools_branches
   }
   branches
   {
-    [:] "/branches/build-development/boost/" : "old-branches/build-development";
-    [:] "/branches/build-development-2/boost/" : "old-branches/build-development-2";
+    [:] "/branches/build-development/boost/" : "build-development";
+    [:] "/branches/build-development-2/boost/" : "build-development-2";
   }
   tags
   {
@@ -2644,24 +2644,24 @@ repository boost : common_branches
   }
   branches
   {
-    [:] "/branches/alternative_regression/boost/" : "old-branches/alternative_regression";
-    [:] "/branches/test-development/boost/" : "old-branches/test-development";
-    [:] "/branches/jam/version_2_3_2/boost/" : "old-branches/jam/version_2_3_2";
-    [:] "/branches/logo_contest_images/boost/" : "old-branches/logo_contest_images";
-    [:] "/branches/unlabeled-1.32.2/boost/" : "old-branches/unlabeled-1.32.2";
-    [:] "/branches/jam/pipe_rule/boost/" : "old-branches/pipe_rule";
-    [:] "/branches/jam/Boost_Jam_994/boost/" : "old-branches/Boost_Jam_994";
-    [:] "/branches/quickbook/QUICKBOOK_PREPROCESSOR/boost/" : "old-branches/QUICKBOOK_PREPROCESSOR";
+    [:] "/branches/alternative_regression/boost/" : "alternative_regression";
+    [:] "/branches/test-development/boost/" : "test-development";
+    [:] "/branches/jam/version_2_3_2/boost/" : "jam/version_2_3_2";
+    [:] "/branches/logo_contest_images/boost/" : "logo_contest_images";
+    [:] "/branches/unlabeled-1.32.2/boost/" : "unlabeled-1.32.2";
+    [:] "/branches/jam/pipe_rule/boost/" : "pipe_rule";
+    [:] "/branches/jam/Boost_Jam_994/boost/" : "Boost_Jam_994";
+    [:] "/branches/quickbook/QUICKBOOK_PREPROCESSOR/boost/" : "QUICKBOOK_PREPROCESSOR";
     [:] "/branches/quickbook/preprocessor/boost/" : "quickbook/preprocessor";
-    [:] "/branches/QUICKBOOK_PREPROCESSOR/boost/" : "old-branches/QUICKBOOK_PREPROCESSOR";
-    [:] "/branches/more1/boost/" : "old-branches/more1";
-    [:] "/branches/build-developement/boost/" : "old-branches/build-developement";
-    [:] "/branches/boost/boost/" : "old-branches/oops";
-    [:] "/branches/quickbook/QUICKBOOK_BACKEND/boost/" : "old-branches/QUICKBOOK_BACKEND";
+    [:] "/branches/QUICKBOOK_PREPROCESSOR/boost/" : "QUICKBOOK_PREPROCESSOR";
+    [:] "/branches/more1/boost/" : "more1";
+    [:] "/branches/build-developement/boost/" : "build-developement";
+    [:] "/branches/boost/boost/" : "oops";
+    [:] "/branches/quickbook/QUICKBOOK_BACKEND/boost/" : "QUICKBOOK_BACKEND";
     [:] "/sandbox-branches/guigl-wmbuild/" : "sandbox/guigl-wmbuild";
     [:] "/sandbox-branches/andreo/guigl/" : "sandbox/andreo/guigl";
     [:] "/sandbox/guigl/" : "sandbox/guigl";
-    [:] "/branches/coding_guidelines/boost/" : "old-branches/coding_guidelines";
+    [:] "/branches/coding_guidelines/boost/" : "coding_guidelines";
   }
   tags
   {
