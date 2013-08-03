@@ -1789,6 +1789,21 @@ repository signals2 : common_branches
   }
 }
 
+// explicitly add directories "doc" and "test" for a single branch.
+// Including them above adds false positives!
+repository signals2
+{
+  content
+  {
+    "libs/doc/" : "doc/";
+    "libs/test/" : "test/";
+  }
+  branches
+  {
+    [:] "/sandbox/thread_safe_signals/" : "sandbox/thread_safe_signals";
+  }
+}
+
 repository smart_ptr : common_branches
 {
   submodule of "boost" : "libs/smart_ptr";
