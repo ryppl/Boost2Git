@@ -850,7 +850,10 @@ repository geometry
   content
   {
     "boost/" : "include/boost/";
+    "doc/" : "doc/";
+    "example/" : "example/";
     "tests/" : "tests/";
+    "test/" : "test/";
   }
   branches
   {
@@ -1250,6 +1253,18 @@ repository multiprecision : common_branches
   submodule of "boost" : "libs/multiprecision";
   content
   {
+    "boost/multiprecision/" : "include/boost/multiprecision/";
+    "libs/multiprecision/";
+  }
+}
+
+// math belongs to multiprecision, but only in the branch "sandbox/big_number" !
+repository multiprecision
+{
+  content
+  {
+    "boost/math/" : "include/boost/math/";
+    "libs/math/" : "math/";
     "boost/multiprecision/" : "include/boost/multiprecision/";
     "libs/multiprecision/";
   }
