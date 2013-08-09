@@ -18,7 +18,7 @@ directory mapping structure.  Our rewrite requires C++11.
 In the rewrite, we dropped several features of svn2git that aren't
 needed for Boost, most notably incremental conversions.  The dropped
 features could be brought back without too much difficulty, but
-unleess someone else takes over maintenance of this project, they are
+unless someone else takes over maintenance of this project, they are
 unlikely to get addressed.  The
 [issue tracker](https://github.com/ryppl/Boost2Git/issues?state=open)
 is our record of what can or should still be done.
