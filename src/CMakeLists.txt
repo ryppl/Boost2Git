@@ -29,6 +29,7 @@ include_directories(
 include_directories(BEFORE
   ${Boost_INCLUDE_DIRS}
   ${CMAKE_CURRENT_SOURCE_DIR}/boost_process
+  ${CMAKE_CURRENT_SOURCE_DIR}/boost_cgi
   # Workaround for https://svn.boost.org/trac/boost/ticket/3999#comment:6
   ${CMAKE_CURRENT_SOURCE_DIR}/override_headers
   )
