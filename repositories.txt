@@ -2017,6 +2017,7 @@ repository thread : common_branches
     "boost/detail/atomic_undef_macros.hpp" : "include/boost/detail/atomic_undef_macros.hpp";
     "boost/thread.hpp" : "include/boost/thread.hpp";
     "boost/thread/" : "include/boost/thread/";
+    "boost/sync/" : "include/boost/sync/";
     "libs/thread/";
   }
   branches
