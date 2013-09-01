@@ -251,7 +251,7 @@ void importer::import_revision(int revnum)
     do
     {
         Log::trace() << "pass " << pass << std::endl;
-        assert(pass < 500);
+        assert(pass < 5000);
 
         // Make a copy so it can be modified as we work this pass
         auto changed_repos = changed_repositories;
