@@ -113,7 +113,7 @@ void git_repository::prepare_to_close_commit()
     if (current_ref->gitattributes_outdated)
     {
         fast_import().filemodify_hdr(".gitattributes");
-        fast_import().data(options.gitattributes.data(), options.gitattributes.size());
+        fast_import().data(options.gitattributes_text.data(), options.gitattributes_text.size());
         current_ref->gitattributes_outdated = false;
     }
 
@@ -249,7 +249,7 @@ git_repository::ref* git_repository::open_commit(svn::revision const& rev)
             |= current_ref->submodule_refs | boost::adaptors::filtered(
                 [&](ref const* r){ return r->repo->submodule_path.starts_with(p); });
 
-        if (p.str().empty() && !options.gitattributes.empty())
+        if (p.str().empty() && !options.gitattributes_text.empty())
             current_ref->gitattributes_outdated = true;
     }
     current_ref->pending_deletions.clear();

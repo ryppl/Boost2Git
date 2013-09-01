@@ -144,9 +144,12 @@ int main(int argc, char **argv)
                 throw std::runtime_error("Couldn't open .gitattributes file: " + gitattributes_path);
             ifs.exceptions( std::ifstream::badbit );
             ifs.seekg(0, std::ios::end);
-            options.gitattributes.resize(ifs.tellg());
+            options.gitattributes_text.resize(ifs.tellg());
             ifs.seekg(0, std::ios::beg);
-            ifs.read(&options.gitattributes[0], options.gitattributes.size());
+            ifs.read(&options.gitattributes_text[0], options.gitattributes_text.size());
+            ifs.seekg(0, std::ios::beg);
+            boost::property_tree::read_gitattributes(ifs, options.gitattributes_tree);
+            //boost::property_tree::write_info(std::cout, options.gitattributes_tree);
         }
 
         Log::info() << "preparing repositories and import processes..." << std::endl;
