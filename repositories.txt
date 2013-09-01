@@ -551,6 +551,7 @@ repository conversion : common_branches
     "boost/implicit_cast.hpp" : "include/boost/implicit_cast.hpp";
     "boost/cast.hpp" : "include/boost/cast.hpp";
     "boost/lexical_cast.hpp" : "include/boost/lexical_cast.hpp";
+    "boost/detail/basic_pointerbuf.hpp" : "include/boost/detail/basic_pointerbuf.hpp";
     "boost/detail/lcast_precision.hpp" : "include/boost/detail/lcast_precision.hpp";
     "libs/conversion/";
   }
