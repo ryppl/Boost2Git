@@ -427,6 +427,59 @@ void importer::convert_svn_file(
 
     auto& fast_import = dst_ref->repo->fast_import();
 
+    std::string svn_eol_style;
+    svn_string_t *svn_eol_style_raw = svn::call(
+        svn_fs_node_prop, rev.fs_root, svn_path.c_str(), "svn:eol-style", rev.pool);
+    if(svn_eol_style_raw) svn_eol_style=std::string(svn_eol_style_raw->data, svn_eol_style_raw->len);
+    
+    auto git_attribs = options.gitattributes_tree.end();
+    // Need to glob. Last match is what takes effect.
+    for(auto &m : options.glob_cache)
+    {
+        // Manually glob for speed if it's a *.ext pattern
+        /*if(m.first.size()==7 && !strncmp(m.first.c_str(), ".*\\.", 4))
+        {
+            const char *period=strrchr(svn_path.c_str(), '.');
+            if(period)
+            {
+                if(!strcmp(period+1, m.first.c_str()+4))
+                  git_attribs = m.second;
+            }
+        }
+        else if(std::regex_match(svn_path.str(), std::regex(m.first)))
+        {
+            git_attribs = m.second;
+        }*/
+        if(std::regex_match(svn_path.str(), m.first))
+        {
+            git_attribs = m.second;
+        }
+    }
+    std::string git_eol_style("unset");
+    if(options.gitattributes_tree.end()!=git_attribs)
+        git_eol_style = git_attribs->second.get<std::string>("svneol", "unset");
+    //std::cout << "File '" << svn_path.str() << "' has svn-eol-style=" << svn_eol_style << " and git-eol-style=" << git_eol_style << std::endl;
+    int need_to_crlf_reduce = 0;
+    if(!git_eol_style.empty() && boost::iequals("native", git_eol_style))
+    {
+        if(!svn_eol_style.empty())
+            need_to_crlf_reduce = boost::iequals("crlf", svn_eol_style);
+        else
+        {
+            // Git thinks this file ought to be text with native EOL, yet svn::eol-style not set
+            // which means whatever is in there is in there.
+            // Set to CRLF reduce anyway as the CRLF reduction routine copes with LF only input
+            need_to_crlf_reduce = 2;
+        }
+    }
+    if(need_to_crlf_reduce)
+    {
+        auto& warn = Log::warn() 
+            << "In r" << revnum << ", text file '" << svn_path.str() << "' has "
+            << (2==need_to_crlf_reduce ? "missing svn::eol-style." : "incorrect svn:eol-style=CRLF. Downconverting to LF ...")
+            << std::endl;
+    }
+
     auto propvalue = svn::call(
         svn_fs_node_prop, rev.fs_root, svn_path.c_str(), "svn:executable", rev.pool);
 

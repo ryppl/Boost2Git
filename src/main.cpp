@@ -17,6 +17,7 @@
 
 #include <boost/program_options.hpp>
 #include <boost/foreach.hpp>
+#include <boost/regex.hpp>
 
 #include <fstream>
 #include <limits.h>
@@ -33,6 +34,20 @@
 #include <numeric>
 
 Options options;
+
+// Derived from http://stackoverflow.com/questions/445910/create-regex-from-glob-expression/445994#445994
+static inline std::string glob_to_regex(std::string val)
+{
+    boost::trim(val);
+    const char* expression = "(\\*)|(\\?)|([[:blank:]])|(\\.|\\+|\\^|\\$|\\[|\\]|\\(|\\)|\\{|\\}|\\\\)";
+    const char* format = "(?1\\.*)(?2\\.)(?3\\\\s*)(?4\\\\$&)";
+    std::stringstream final;
+    std::ostream_iterator<char, char> oi(final);
+    boost::regex re;
+    re.assign(expression);
+    boost::regex_replace(oi, val.begin(), val.end(), re, format, boost::match_default | boost::format_all);
+    return final.str();
+}
 
 int main(int argc, char **argv)
 {
@@ -150,6 +165,13 @@ int main(int argc, char **argv)
             ifs.seekg(0, std::ios::beg);
             boost::property_tree::read_gitattributes(ifs, options.gitattributes_tree);
             //boost::property_tree::write_info(std::cout, options.gitattributes_tree);
+            // Convert all globs to precompiled regexs for speed
+            for(auto it=options.gitattributes_tree.begin(); it!=options.gitattributes_tree.end(); ++it)
+            {
+                std::string regex_str=glob_to_regex(it->first);
+                //std::cout << it->first << " => " << regex_str << std::endl;
+                options.glob_cache.push_back(std::make_pair(std::regex(regex_str), it));
+            }
         }
 
         Log::info() << "preparing repositories and import processes..." << std::endl;

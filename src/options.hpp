@@ -19,6 +19,8 @@
 #define OPTIONS_HPP
 
 #include <string>
+#include <unordered_map>
+#include <regex>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/detail/file_parser_error.hpp>
 #include <boost/algorithm/string.hpp>
@@ -403,6 +405,7 @@ struct Options
   std::string git_executable;
   std::string gitattributes_text;
   boost::property_tree::ptree gitattributes_tree;
+  std::vector<std::pair<std::regex, boost::property_tree::ptree::iterator>> glob_cache;
   };
 
 extern Options options;
