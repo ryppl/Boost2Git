@@ -399,14 +399,103 @@ void importer::convert_svn_tree(
         });
 }
 
+enum class eol_conversion_t
+{
+    None,
+    CRLFtoLF,
+    MaybeCRLFtoLF
+};
+
+struct eol_conversion_state_t
+{
+    bool firstrun;
+    eol_conversion_t conversion;
+    char *buffer;
+    size_t length, orig_length;
+    git_fast_import *git_fast_import_instance;
+    eol_conversion_state_t(eol_conversion_t _conversion, git_fast_import *_git_fast_import_instance, size_t _orig_length) :
+        firstrun(true), conversion(_conversion), buffer(nullptr), length(0), orig_length(_orig_length),
+        git_fast_import_instance(_git_fast_import_instance) { }
+    ~eol_conversion_state_t() { if(buffer) free(buffer); }
+};
+
 extern "C"
 {
-    svn_error_t *fast_import_raw_bytes(void *baton, const char *data, apr_size_t *len)
+    svn_error_t *fast_import_raw_bytes(void *_baton, const char *data, apr_size_t *len)
     {
-        auto& fast_import = *static_cast<git_fast_import*>(baton);
+        eol_conversion_state_t &baton=*static_cast<eol_conversion_state_t *>(_baton);
+        auto& fast_import = *static_cast<git_fast_import*>(baton.git_fast_import_instance);
         try
         {
-            fast_import.write_raw(data, *len);
+            switch(baton.conversion)
+            {
+                case eol_conversion_t::MaybeCRLFtoLF:
+                {
+                    // Unfortunately some files (e.g. trunk/boost/tools/regression/test/test-cases/general/bjam.log)
+                    // actually contain mixed CRLF and LF endings. That confuses this optimisation path, so disabled
+                    // in exchange for even slower performance.
+#if 0
+                    if(!memchr(data, 13, *len))
+                    {
+                        if(baton.firstrun)
+                        {
+                            fast_import.data_hdr(baton.orig_length);
+                            baton.firstrun=false;
+                        }
+                        fast_import.write_raw(data, *len);
+                        break;
+                    }
+#endif
+                    // Fall through
+                }
+                case eol_conversion_t::CRLFtoLF:
+                {
+                    // Quick sanity check: anything which will be interpreted as native EOL by git
+                    // ought to never contain zeros. This also ought to catch any UTF-16 text.
+                    if(memchr(data, 0, *len))
+                        return svn_error_createf(APR_EOF, SVN_NO_ERROR, "Text contains zeros, might be UTF-16 text or a binary.");
+                    if(!baton.firstrun)
+                        return svn_error_createf(APR_EOF, SVN_NO_ERROR, "Earlier block was not CRLF, now it is. This is bad.");
+
+                    // Copy the input, removing any CRs
+                    if(!baton.buffer)
+                    {                        
+                        if(!(baton.buffer=(char *) malloc(*len)))
+                            return svn_error_createf(APR_ENOMEM, SVN_NO_ERROR, "Out of memory");
+                    }
+                    else
+                    {
+                        size_t newsize=baton.length+*len;
+                        char *newbuffer=(char *) realloc(baton.buffer, newsize);
+                        if(newbuffer)
+                            baton.buffer=newbuffer;
+                        else
+                            return svn_error_createf(APR_ENOMEM, SVN_NO_ERROR, "Out of memory");
+                    }
+                    char *buffer=baton.buffer+baton.length, *out=buffer;
+                    const char *in=data, *end=data+*len, *cr;
+                    while(in<end)
+                    {
+                        cr=(const char *) memchr(in, 13, end-in);
+                        if(!cr) cr=end;
+                        memcpy(out, in, cr-in);
+                        out+=cr-in;
+                        in=cr+1;
+                    }
+                    baton.length+=out-buffer;
+                    break;
+                }
+                default:
+                {
+                    if(baton.firstrun)
+                    {
+                        fast_import.data_hdr(baton.orig_length);
+                        baton.firstrun=false;
+                    }
+                    fast_import.write_raw(data, *len);
+                    break;
+                }
+            }
             return SVN_NO_ERROR;
         }
         catch(std::exception const& e)
@@ -464,25 +553,20 @@ void importer::convert_svn_file(
     std::string git_eol_style("unset");
     if(options.gitattributes_tree.end()!=git_attribs)
         git_eol_style = git_attribs->second.get<std::string>("svneol", "unset");
-    int need_to_crlf_reduce = 0;
+    auto need_to_crlf_reduce = eol_conversion_t::None;
     if(!git_eol_style.empty() && boost::iequals("native", git_eol_style))
     {
         if(!svn_eol_style.empty())
-            need_to_crlf_reduce = boost::iequals("crlf", svn_eol_style);
+        {
+            if(boost::iequals("crlf", svn_eol_style))
+                need_to_crlf_reduce = eol_conversion_t::CRLFtoLF;
+        }
         else
         {
             // Git thinks this file ought to be text with native EOL, yet svn::eol-style not set
-            // which means whatever is in there is in there.
-            // Set to CRLF reduce anyway as the CRLF reduction routine copes with LF only input
-            need_to_crlf_reduce = 2;
+            // which means it may or may not contain CRLF. Ask the conversion routine to do a detect.
+            need_to_crlf_reduce = eol_conversion_t::MaybeCRLFtoLF;
         }
-    }
-    if(need_to_crlf_reduce)
-    {
-        auto& warn = Log::warn() 
-            << "In r" << revnum << ", text file '" << svn_path.str() << "' has "
-            << (2==need_to_crlf_reduce ? "missing svn::eol-style." : "incorrect svn:eol-style=CRLF. Downconverting to LF ...")
-            << std::endl;
     }
 
     auto propvalue = svn::call(
@@ -505,10 +589,46 @@ void importer::convert_svn_file(
       svn_fs_node_prop, rev.fs_root, svn_path.c_str(), "svn:special", scope);
     */
 
-    fast_import.data_hdr(file_length);
-    svn_stream_t* out_stream = svn_stream_create(&fast_import, scope);
-    svn_stream_set_write(out_stream, fast_import_raw_bytes);
-    check_svn(svn_stream_copy3(in_stream, out_stream, nullptr, nullptr, scope));
+    if(file_length==0)
+    {
+        fast_import.data_hdr(0);
+    }
+    else
+    {
+        eol_conversion_state_t baton(need_to_crlf_reduce, &fast_import, file_length);
+        svn_stream_t* out_stream = svn_stream_create(&baton, scope);
+        svn_stream_set_write(out_stream, fast_import_raw_bytes);
+        check_svn(svn_stream_copy3(in_stream, out_stream, nullptr, nullptr, scope));
+        if(baton.firstrun)
+        {
+            if(need_to_crlf_reduce!=eol_conversion_t::None)
+            {
+                assert(baton.buffer && baton.length);
+                fast_import.data_hdr(baton.length);
+                fast_import.write_raw(baton.buffer, baton.length);
+                if(file_length!=baton.length)
+                    switch(need_to_crlf_reduce)
+                    {
+                      case eol_conversion_t::MaybeCRLFtoLF:
+                        Log::warn() 
+                            << "In r" << revnum << ", text file '" << svn_path.str() << "' has missing required svn:eol-style and contains CRLFs. Downconverting to LF ..."
+                            << std::endl;
+                        break;
+                      case eol_conversion_t::CRLFtoLF:
+                        Log::warn() 
+                            << "In r" << revnum << ", text file '" << svn_path.str() << "' has incorrect svn:eol-style=CRLF. Downconverting to LF ..."
+                            << std::endl;
+                        break;
+                      default:
+                        break;
+                    }
+            }
+            else
+                    Log::warn() 
+                        << "In r" << revnum << ", text file '" << svn_path.str() << "' did not output " << file_length << " bytes."
+                        << std::endl;
+        }
+    }
     fast_import << LF;
 }
 

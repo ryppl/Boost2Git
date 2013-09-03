@@ -169,6 +169,7 @@ int main(int argc, char **argv)
             // Convert all globs to precompiled regexs for speed
             for(auto it=options.gitattributes_tree.begin(); it!=options.gitattributes_tree.end(); ++it)
             {
+                if(it->first=="*") continue;
                 std::string regex_str=glob_to_regex(it->first);
                 options.glob_cache.push_back(std::make_pair(std::regex(regex_str), it));
             }
