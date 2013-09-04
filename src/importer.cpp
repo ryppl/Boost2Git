@@ -6,6 +6,7 @@
 #include "svn.hpp"
 #include "log.hpp"
 #include "path.hpp"
+#include "to_string.hpp"
 #include <boost/range/adaptor/map.hpp>
 #include <boost/function_output_iterator.hpp>
 #include <boost/range/as_literal.hpp>
@@ -251,7 +252,12 @@ void importer::import_revision(int revnum)
     do
     {
         Log::trace() << "pass " << pass << std::endl;
-        assert(pass < 500);
+        if (pass > 5000)
+        {
+            throw std::runtime_error(
+                "On pass " + to_string(pass) + " in r" + to_string(revnum) + 
+                "; terminating to avoid infinite loop.  Check program logic!");
+        }
 
         // Make a copy so it can be modified as we work this pass
         auto changed_repos = changed_repositories;
@@ -278,6 +284,9 @@ void importer::import_revision(int revnum)
         ++pass;
     }
     while(!changed_repositories.empty());
+
+    if (pass > 100)
+        Log::warn() << "Processing r" << revnum << " took " << pass << "passes" << std::endl;
 
     warn_about_cross_repository_copies();
 }
