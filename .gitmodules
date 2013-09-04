@@ -1,3 +1,6 @@
 [submodule "git"]
 	path = git
 	url = https://github.com/ryppl/git.git
+[submodule "src/boost_cgi"]
+	path = src/boost_cgi
+	url = https://github.com/darrengarvey/cgi
