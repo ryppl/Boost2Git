@@ -149,8 +149,7 @@ int main(int argc, char **argv)
             ifs.seekg(0, std::ios::beg);
             ifs.read(&options.gitattributes_text[0], options.gitattributes_text.size());
             ifs.seekg(0, std::ios::beg);
-            boost::property_tree::read_gitattributes(ifs, options.gitattributes_tree);
-            //boost::property_tree::write_info(std::cout, options.gitattributes_tree);
+            gitattributes_parser::read_gitattributes(ifs, options.gitattributes_tree);
         }
 
         Log::info() << "preparing repositories and import processes..." << std::endl;

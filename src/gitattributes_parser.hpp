@@ -12,8 +12,11 @@
 #include <string>
 #include <vector>
 
-namespace boost { namespace property_tree { namespace gitattributes_parser
+namespace gitattributes_parser
 {   
+    namespace property_tree = boost::property_tree;
+    using file_parser_error = property_tree::file_parser_error;
+
     /**
      * Determines whether the @c flags are valid for use with the gitattributes_parser.
      * @param flags value to check for validity as flags to gitattributes_parser.
@@ -177,14 +180,7 @@ namespace boost { namespace property_tree { namespace gitattributes_parser
             }
         }
     }
+}
 
-
-} } }
-
-namespace boost { namespace property_tree
-{
-    using gitattributes_parser::gitattributes_parser_error;
-    using gitattributes_parser::read_gitattributes;
-} }
 
 #endif // GITATTRIBUTES_PARSER_DWA201393_HPP
