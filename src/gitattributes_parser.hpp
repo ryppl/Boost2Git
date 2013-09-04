@@ -97,7 +97,6 @@ namespace gitattributes_parser
                         BOOST_PROPERTY_TREE_THROW(gitattributes_parser_error(
                             "' ' character not found in line", "", line_no));                    
                     Ptree &container = local.push_back(std::make_pair(tokens.front(), Ptree()))->second;
-                    //std::cout << tokens.front() << std::endl;
                     
                     for(auto it=tokens.cbegin(); it!=tokens.cend(); ++it)
                     {
@@ -109,7 +108,6 @@ namespace gitattributes_parser
                             item.substr(0, eqpos), stream.getloc());
                         Str data = (eqpos == Str::npos) ? "" : property_tree::detail::trim(
                             item.substr(eqpos + 1, (Str::npos==hshpos) ? Str::npos : (hshpos - eqpos - 1)), stream.getloc());
-                        //std::cout << "  " << key << " " << data << std::endl;
                         if (container.find(key) != container.not_found())
                             BOOST_PROPERTY_TREE_THROW(gitattributes_parser_error(
                                 "duplicate key name", "", line_no));
@@ -118,7 +116,6 @@ namespace gitattributes_parser
                             Str mimetype = property_tree::detail::trim(
                                 item.substr(hshpos + 1, Str::npos), stream.getloc());
                             mimetype = boost::cgi::detail::url_decode(mimetype);
-                            //std::cout << "  mime_type " << mimetype << std::endl;
                             container.push_back(std::make_pair("mime_type", Ptree(mimetype)));
                         }
                         container.push_back(std::make_pair(key, Ptree(data)));
