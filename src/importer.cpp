@@ -11,6 +11,7 @@
 #include <boost/function_output_iterator.hpp>
 #include <boost/range/as_literal.hpp>
 #include <svn_fs.h>
+#include <svn_version.h>
 #include <apr_hash.h>
 
 using boost::adaptors::map_values;
@@ -344,6 +345,14 @@ void for_each_svn_file(
         assert(!"SVN should know the type of every node in its filesystem?!");
         return;
 
+# if SVN_VER_MAJOR > 1 || SVN_VER_MAJOR == 1 && SVN_VER_MINOR >= 8
+    case svn_node_symlink:
+        // FIXME: handle symlinks properly.  In earlier SVN versions
+        // they are represented differently.
+        Log::error() << svn_path << " is a symlink; this case is unhandled" << std::endl;
+        break;
+# endif
+ 
     case svn_node_file:
         f(svn_path);
         break;
@@ -359,6 +368,7 @@ void for_each_svn_file(
             for_each_svn_file(rev, svn_path/subpath, f, &dir_pool);
         }
         break;
+
     };
 }
 
