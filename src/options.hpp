@@ -191,111 +191,6 @@ namespace boost { namespace property_tree { namespace gitattributes_parser
         }
     }
 
-#if 0 // unfinished
-    /**
-     * Translates the property tree to gitattributes and writes it the given output
-     * stream.
-     * @pre @e pt cannot have data in its root.
-     * @pre @e pt cannot have keys both data and children.
-     * @pre @e pt cannot be deeper than two levels.
-     * @pre There cannot be duplicate keys on any given level of @e pt.
-     * @throw gitattributes_parser_error In case of error translating the property tree to
-     *                         gitattributes or writing to the output stream.
-     * @param stream The stream to which to write the gitattributes representation of the 
-     *               property tree.
-     * @param pt The property tree to tranlsate to gitattributes and output.
-     * @param flags The flags to use when writing the gitattributes file.
-     *              No flags are currently supported.
-     */
-    template<class Ptree>
-    void write_gitattributes(std::basic_ostream<
-                       typename Ptree::key_type::value_type
-                   > &stream,
-                   const Ptree &pt,
-                   int flags = 0)
-    {
-        using detail::check_dupes;
-
-        typedef typename Ptree::key_type::value_type Ch;
-        typedef std::basic_string<Ch> Str;
-
-        BOOST_ASSERT(validate_flags(flags));
-        (void)flags;
-
-        if (!pt.data().empty())
-            BOOST_PROPERTY_TREE_THROW(gitattributes_parser_error(
-                "ptree has data on root", "", 0));
-        check_dupes(pt);
-
-        for (typename Ptree::const_iterator it = pt.begin(), end = pt.end();
-             it != end; ++it)
-        {
-            check_dupes(it->second);
-            if (it->second.empty()) {
-                stream << it->first << Ch('=')
-                    << it->second.template get_value<
-                        std::basic_string<Ch> >()
-                    << Ch('\n');
-            } else {
-                if (!it->second.data().empty())
-                    BOOST_PROPERTY_TREE_THROW(gitattributes_parser_error(
-                        "mixed data and children", "", 0));
-                stream << Ch('[') << it->first << Ch(']') << Ch('\n');
-                for (typename Ptree::const_iterator it2 = it->second.begin(),
-                         end2 = it->second.end(); it2 != end2; ++it2)
-                {
-                    if (!it2->second.empty())
-                        BOOST_PROPERTY_TREE_THROW(gitattributes_parser_error(
-                            "ptree is too deep", "", 0));
-                    stream << it2->first << Ch('=')
-                        << it2->second.template get_value<
-                            std::basic_string<Ch> >()
-                        << Ch('\n');
-                }
-            }
-        }
-
-    }
-
-    /**
-     * Translates the property tree to gitattributes and writes it the given file.
-     * @pre @e pt cannot have data in its root.
-     * @pre @e pt cannot have keys both data and children.
-     * @pre @e pt cannot be deeper than two levels.
-     * @pre There cannot be duplicate keys on any given level of @e pt.
-     * @throw info_parser_error In case of error translating the property tree
-     *                          to gitattributes or writing to the file.
-     * @param filename The name of the file to which to write the gitattributes
-     *                 representation of the property tree.
-     * @param pt The property tree to tranlsate to gitattributes and output.
-     * @param flags The flags to use when writing the gitattributes file.
-     *              The following flags are supported:
-     * @li @c skip_gitattributes_validity_check -- Skip check if ptree is a valid gitattributes. The
-     *     validity check covers the preconditions but takes <tt>O(n log n)</tt>
-     *     time.
-     * @param loc The locale to use when writing the file.
-     */
-    template<class Ptree>
-    void write_gitattributes(const std::string &filename,
-                   const Ptree &pt,
-                   int flags = 0,
-                   const std::locale &loc = std::locale())
-    {
-        std::basic_ofstream<typename Ptree::key_type::value_type>
-            stream(filename.c_str());
-        if (!stream)
-            BOOST_PROPERTY_TREE_THROW(gitattributes_parser_error(
-                "cannot open file", filename, 0));
-        stream.imbue(loc);
-        try {
-            write_gitattributes(stream, pt, flags);
-        }
-        catch (gitattributes_parser_error &e) {
-            BOOST_PROPERTY_TREE_THROW(gitattributes_parser_error(
-                e.message(), filename, e.line()));
-        }
-    }
-#endif
 
 } } }
 
@@ -303,9 +198,6 @@ namespace boost { namespace property_tree
 {
     using gitattributes_parser::gitattributes_parser_error;
     using gitattributes_parser::read_gitattributes;
-#if 0 // unfinished
-    using gitattributes_parser::write_gitattributes;
-#endif
 } }
 
 struct Options
