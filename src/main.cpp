@@ -28,6 +28,7 @@
 #include "log.hpp"
 #include "importer.hpp"
 #include "git_executable.hpp"
+#include "gitattributes_parser.hpp"
 
 #include <utility>
 #include <numeric>
