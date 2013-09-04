@@ -256,7 +256,7 @@ void importer::import_revision(int revnum)
         if (pass > 5000)
         {
             throw std::runtime_error(
-                "On pass " + to_string(pass) + " in r" + to_string(revnum) + 
+                "On pass " + to_string(pass) + " in r" + to_string(revnum) +
                 "; terminating to avoid infinite loop.  Check program logic!");
         }
 
