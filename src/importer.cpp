@@ -456,19 +456,6 @@ void importer::convert_svn_file(
     for(auto &m : options.glob_cache)
     {
         // Manually glob for speed if it's a *.ext pattern
-        /*if(m.first.size()==7 && !strncmp(m.first.c_str(), ".*\\.", 4))
-        {
-            const char *period=strrchr(svn_path.c_str(), '.');
-            if(period)
-            {
-                if(!strcmp(period+1, m.first.c_str()+4))
-                  git_attribs = m.second;
-            }
-        }
-        else if(std::regex_match(svn_path.str(), std::regex(m.first)))
-        {
-            git_attribs = m.second;
-        }*/
         if(std::regex_match(svn_path.str(), m.first))
         {
             git_attribs = m.second;
@@ -477,7 +464,6 @@ void importer::convert_svn_file(
     std::string git_eol_style("unset");
     if(options.gitattributes_tree.end()!=git_attribs)
         git_eol_style = git_attribs->second.get<std::string>("svneol", "unset");
-    //std::cout << "File '" << svn_path.str() << "' has svn-eol-style=" << svn_eol_style << " and git-eol-style=" << git_eol_style << std::endl;
     int need_to_crlf_reduce = 0;
     if(!git_eol_style.empty() && boost::iequals("native", git_eol_style))
     {
