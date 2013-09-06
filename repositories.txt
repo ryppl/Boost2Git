@@ -2019,6 +2019,7 @@ repository thread : common_branches
     "boost/thread.hpp" : "include/boost/thread.hpp";
     "boost/thread/" : "include/boost/thread/";
     "boost/sync/" : "include/boost/sync/";
+    "libs/sync/" : "sync/";
     "libs/thread/";
   }
   branches
