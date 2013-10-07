@@ -1,5 +1,6 @@
 (no author) = Douglas Gregor <doug.gregor@gmail.com>
 aaron_windsor = Aaron Windsor <aaron.windsor@gmail.com>
+aberge = Agustín K-ballo Bergé <kaballo86@hotmail.com>
 abrahams = Dave Abrahams <dave@boostpro.com>
 aconstantine = Al Constantine Ashford <constantine@aconstantine.net>
 adams = Adam Smith <unfactorable.polynomial@gmail.com>
