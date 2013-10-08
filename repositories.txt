@@ -575,6 +575,7 @@ repository detail : common_branches, unordered_foreign_branches
   content
   {
     "boost/detail/win/" : "include/boost/detail/win/";
+    "boost/detail/winapi/" : "include/boost/detail/winapi/";
     "boost/detail/allocator.hpp" : "include/boost/detail/allocator.hpp";
     "boost/detail/allocator_utilities.hpp" : "include/boost/detail/allocator_utilities.hpp";
     "boost/detail/binary_search.hpp" : "include/boost/detail/binary_search.hpp";
