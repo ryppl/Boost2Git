@@ -338,6 +338,7 @@ shammah = Stephen Cleary <scleary@jerviswebb.com>
 siliconman = David Dean <david.dean@codegear.com>
 simons = Peter Simons <simons@cryp.to>
 sixtrillion = Jeremy <sixtrillion@users.sf.net>
+skelly = Stephen Kelly <steveire@gmail.com>
 sl_ = Slawomir Lisznianski <sl@paramay.com>
 slapi = Stefan Slapeta <stefan@slapeta.com>
 smcmurray = Scott McMurray <me22.ca+boost@gmail.com>
