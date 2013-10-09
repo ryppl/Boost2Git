@@ -138,6 +138,7 @@ abstract repository common_branches
     [:] "/branches/maintenance/1_41/" : "maintenance/1_41";
     [:] "/branches/maintenance/1_50_0/" : "maintenance/1_50_0";
     [:] "/branches/maintenance/1_54_0/" : "maintenance/1_54_0";
+    [:] "/branches/modular-build/" : "modular-build";
   }
   tags
   {
