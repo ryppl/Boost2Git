@@ -518,6 +518,7 @@ repository config : common_branches
   {
     "boost/config.hpp" : "include/boost/config.hpp";
     "boost/config/" : "include/boost/config/";
+    "boost/detail/workaround.hpp" : "include/boost/detail/workaround.hpp";
     "libs/config/";
   }
   branches
@@ -615,7 +616,6 @@ repository detail : common_branches, unordered_foreign_branches
     "boost/detail/test_framework.hpp" : "include/boost/detail/test_framework.hpp";
     "boost/detail/utf8_codecvt_facet.hpp" : "include/boost/detail/utf8_codecvt_facet.hpp";
     "boost/detail/utf8_codecvt_facet.ipp" : "include/boost/detail/utf8_codecvt_facet.ipp";
-    "boost/detail/workaround.hpp" : "include/boost/detail/workaround.hpp";
     "boost/pending/cstddef.hpp" : "include/boost/pending/cstddef.hpp";
     "boost/pending/ct_if.hpp" : "include/boost/pending/ct_if.hpp";
     "boost/pending/integer_log2.hpp" : "include/boost/pending/integer_log2.hpp";
