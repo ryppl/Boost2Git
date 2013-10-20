@@ -4,6 +4,8 @@
 # See accompanying file LICENSE_1_0.txt or copy at
 #   http://www.boost.org/LICENSE_1_0.txt
 
+execute_process(COMMAND ${CMAKE_COMMAND} -E remove_directory "${DST_REPO}")
+
 execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory "${DST_REPO}"
   ERROR_VARIABLE message
   RESULT_VARIABLE result)
