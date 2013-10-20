@@ -596,6 +596,7 @@ repository detail : common_branches, unordered_foreign_branches
     "boost/detail/is_xxx.hpp" : "include/boost/detail/is_xxx.hpp";
     "boost/detail/iterator.hpp" : "include/boost/detail/iterator.hpp";
     "boost/detail/lightweight_main.hpp" : "include/boost/detail/lightweight_main.hpp";
+    "boost/detail/lightweight_mutex.hpp" : "include/boost/detail/lightweight_mutex.hpp";
     "boost/detail/lightweight_test.hpp" : "include/boost/detail/lightweight_test.hpp";
     "boost/detail/lightweight_thread.hpp" : "include/boost/detail/lightweight_thread.hpp";
     "boost/detail/limits.hpp" : "include/boost/detail/limits.hpp";
@@ -1840,7 +1841,6 @@ repository smart_ptr : common_branches
   minrev 7620;
   content
   {
-    "boost/detail/atomic_count.hpp" : "include/boost/detail/atomic_count.hpp";
     "boost/detail/atomic_count_gcc.hpp" : "include/boost/detail/atomic_count_gcc.hpp";
     "boost/detail/atomic_count_gcc_x86.hpp" : "include/boost/detail/atomic_count_gcc_x86.hpp";
     "boost/detail/atomic_count.hpp" : "include/boost/detail/atomic_count.hpp";
@@ -1850,7 +1850,6 @@ repository smart_ptr : common_branches
     "boost/detail/atomic_count_sync.hpp" : "include/boost/detail/atomic_count_sync.hpp";
     "boost/detail/atomic_count_win32.hpp" : "include/boost/detail/atomic_count_win32.hpp";
     "boost/detail/bad_weak_ptr.hpp" : "include/boost/detail/bad_weak_ptr.hpp";
-    "boost/detail/lightweight_mutex.hpp" : "include/boost/detail/lightweight_mutex.hpp";
     "boost/detail/lwm_gcc.hpp" : "include/boost/detail/lwm_gcc.hpp";
     "boost/detail/lwm_irix.hpp" : "include/boost/detail/lwm_irix.hpp";
     "boost/detail/lwm_linux.hpp" : "include/boost/detail/lwm_linux.hpp";
