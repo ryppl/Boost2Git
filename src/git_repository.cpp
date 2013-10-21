@@ -6,6 +6,7 @@
 #include "git_executable.hpp"
 #include "log.hpp"
 #include "flat_set_union.hpp"
+#include "to_string.hpp"
 
 #include <boost/filesystem.hpp>
 #include <boost/process.hpp>
@@ -232,7 +233,14 @@ git_repository::ref* git_repository::open_commit(svn::revision const& rev)
     int mark = ++last_mark;
     current_ref->marks[rev.revnum] = mark;
     fast_import() << "# SVN revision " << rev.revnum << LF;
-    fast_import().commit(current_ref->name, mark, rev.author, rev.epoch, rev.log_message);
+
+    std::string const& log_message
+      = options.add_metadata 
+        ? rev.log_message + "\n\n[SVN r" + to_string(rev.revnum) + "]\n"
+        : rev.log_message;
+
+    fast_import().commit(
+        current_ref->name, mark, rev.author, rev.epoch, log_message);
 
     // Write any merges required in this ref
     write_merges();
