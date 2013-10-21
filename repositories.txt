@@ -21,9 +21,14 @@ abstract repository common_branches
 {
   branches
   {
-    [     :38326] "/trunk/boost/" : "master";
-    [     :     ] "/devel/" : "master";
-    [38329:     ] "/trunk/" : "master";
+    // HACK: A true git-flow master should be synthesized from the tags!
+    // This release branch actually corresponds to release-preparation, i.e. the
+    // green one here: http://nvie.com/posts/a-successful-git-branching-model/
+    [:] "/branches/release/" : "master";
+
+    [     :38326] "/trunk/boost/" : "develop";
+    [     :     ] "/devel/" : "develop";
+    [38329:     ] "/trunk/" : "develop";
 
     [:] "/sandbox-branches/optional_optimization/" : "sandbox/optional_optimization";
     [:] "/sandbox-branches/birbacher/propertymap-functormap/" : "sandbox/birbacher/propertymap-functormap";
@@ -94,7 +99,6 @@ abstract repository common_branches
     [:] "/branches/RC_1_34_0/boost/" : "RC_1_34_0";
     [:] "/branches/QUICKBOOK_BACKEND/boost/" : "QUICKBOOK_BACKEND";
     [:] "/branches/serialization_next_release/boost/" : "serialization_next_release";
-    [:] "/branches/release/" : "release";
     [40545:] "/sandbox-branches/birbacher/fix_iostreams/" : "sandbox/birbacher/fix_iostreams";
     [:] "/branches/fix-links/" : "fix-links";
     [:] "/branches/iostreams_dev/" : "iostreams_dev";
