@@ -6,6 +6,11 @@ then
   exit 0
 fi
 
+if [ ${PWD##*/} = 'sync' ]
+then
+  git symbolic-ref HEAD refs/heads/develop
+fi
+
 # remove merged branches
 git branch --merged | grep -v "\*" | xargs -n 1 git branch -d
 

@@ -1970,7 +1970,7 @@ repository static_assert : common_branches
 
 repository sync : common_branches
 {
-  // submodule of "boost" : "libs/sync";
+  submodule of "boost" : "libs/sync";
   content
   {
     "boost/sync/" : "include/boost/sync/";
