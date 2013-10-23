@@ -2638,6 +2638,7 @@ repository boost : common_branches
     "doc/"                     : "doc/";
     "development/more/directory-structure.htm" : "development/more/directory-structure.htm";
     "libs/CMakeLists.txt"       : "libs/CMakeLists.txt";
+    "libs/Jamfile.v2"           : "libs/Jamfile.v2";
     "libs/concept/CMakeLists.txt" : "libs/concept/CMakeLists.txt";
     "libs/concept/module.cmake" : "libs/concept/module.cmake";
     "libs/numeric/CMakeLists.txt" : "libs/numeric/CMakeLists.txt";
