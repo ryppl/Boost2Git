@@ -518,6 +518,11 @@ repository config : common_branches
   {
     "boost/config.hpp" : "include/boost/config.hpp";
     "boost/config/" : "include/boost/config/";
+    "boost/detail/workaround.hpp" : "include/boost/detail/workaround.hpp";
+    "boost/detail/limits.hpp" : "include/boost/detail/limits.hpp";
+    "boost/limits.hpp" : "include/boost/limits.hpp";
+    "boost/pending/limits.hpp" : "include/boost/pending/limits.hpp";
+    "boost/version.hpp" : "include/boost/version.hpp";
     "libs/config/";
   }
   branches
@@ -602,11 +607,9 @@ repository detail : common_branches, unordered_foreign_branches
     "boost/detail/lightweight_main.hpp" : "include/boost/detail/lightweight_main.hpp";
     "boost/detail/lightweight_test.hpp" : "include/boost/detail/lightweight_test.hpp";
     "boost/detail/lightweight_thread.hpp" : "include/boost/detail/lightweight_thread.hpp";
-    "boost/detail/limits.hpp" : "include/boost/detail/limits.hpp";
     "boost/detail/main.hpp" : "include/boost/detail/main.hpp";
     "boost/detail/named_template_params.hpp" : "include/boost/detail/named_template_params.hpp";
     "boost/detail/no_exceptions_support.hpp" : "include/boost/detail/no_exceptions_support.hpp";
-    "boost/detail/none_t.hpp" : "include/boost/detail/none_t.hpp";
     "boost/detail/numeric_traits.hpp" : "include/boost/detail/numeric_traits.hpp";
     "boost/detail/quick_allocator.hpp" : "include/boost/detail/quick_allocator.hpp";
     "boost/detail/reference_content.hpp" : "include/boost/detail/reference_content.hpp";
@@ -616,20 +619,16 @@ repository detail : common_branches, unordered_foreign_branches
     "boost/detail/test_framework.hpp" : "include/boost/detail/test_framework.hpp";
     "boost/detail/utf8_codecvt_facet.hpp" : "include/boost/detail/utf8_codecvt_facet.hpp";
     "boost/detail/utf8_codecvt_facet.ipp" : "include/boost/detail/utf8_codecvt_facet.ipp";
-    "boost/detail/workaround.hpp" : "include/boost/detail/workaround.hpp";
     "boost/pending/cstddef.hpp" : "include/boost/pending/cstddef.hpp";
     "boost/pending/ct_if.hpp" : "include/boost/pending/ct_if.hpp";
     "boost/pending/integer_log2.hpp" : "include/boost/pending/integer_log2.hpp";
-    "boost/pending/limits.hpp" : "include/boost/pending/limits.hpp";
     "boost/blank.hpp" : "include/boost/blank.hpp";
     "boost/blank_fwd.hpp" : "include/boost/blank_fwd.hpp";
     "boost/cstdlib.hpp" : "include/boost/cstdlib.hpp";
     "boost/indirect_reference.hpp" : "include/boost/indirect_reference.hpp";
-    "boost/limits.hpp" : "include/boost/limits.hpp";
     "boost/non_type.hpp" : "include/boost/non_type.hpp";
     "boost/type.hpp" : "include/boost/type.hpp";
     "boost/utf8_codecvt_facet.hpp" : "include/boost/utf8_codecvt_facet.hpp";
-    "boost/version.hpp" : "include/boost/version.hpp";
     "boost/visit_each.hpp" : "include/boost/visit_each.hpp";
     "libs/detail/";
   }
@@ -1349,6 +1348,7 @@ repository optional : common_branches
     "boost/detail/in_place_factory.hpp" : "include/boost/detail/in_place_factory.hpp";
     "boost/detail/in_place_factory_prefix.hpp" : "include/boost/detail/in_place_factory_prefix.hpp";
     "boost/detail/in_place_factory_suffix.hpp" : "include/boost/detail/in_place_factory_suffix.hpp";
+    "boost/detail/none_t.hpp" : "include/boost/detail/none_t.hpp";
     "boost/detail/typed_in_place_factory.hpp" : "include/boost/detail/typed_in_place_factory.hpp";
     "boost/detail/none.hpp" : "include/boost/detail/none.hpp";
     "boost/none.hpp" : "include/boost/none.hpp";
