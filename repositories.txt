@@ -2326,6 +2326,10 @@ repository boostbook : common_branches
   {
     "tools/boostbook/";
   }
+  branches
+  {
+    [:] "/sandbox/boost_docs/trunk/" : "sandbox/boost_docs";
+  }
 }
 
 // ==============================================================
@@ -2534,6 +2538,7 @@ repository quickbook : common_branches
   branches
   {
     [:] "/branches/quickbook/include/boost/" : "quickbook/include";
+    [:] "/sandbox/boost_docs/trunk/" : "sandbox/boost_docs";
   }
 }
 
@@ -2622,7 +2627,6 @@ repository website
   content
   {
     "doc/" : "doc/";
-    "tools/" : "tools/";
   }
   branches
   {
