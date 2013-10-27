@@ -403,7 +403,8 @@ enum class eol_conversion_t
 {
     None,
     CRLFtoLF,
-    MaybeCRLFtoLF
+    MaybeCRLFtoLF,
+    SawUTF16
 };
 
 struct eol_conversion_state_t
@@ -427,6 +428,8 @@ extern "C"
         auto& fast_import = *static_cast<git_fast_import*>(baton.git_fast_import_instance);
         try
         {
+            if(eol_conversion_t::None!=baton.conversion && memchr(data, 0, *len))
+                baton.conversion=eol_conversion_t::SawUTF16;
             switch(baton.conversion)
             {
                 case eol_conversion_t::MaybeCRLFtoLF:
@@ -452,8 +455,6 @@ extern "C"
                 {
                     // Quick sanity check: anything which will be interpreted as native EOL by git
                     // ought to never contain zeros. This also ought to catch any UTF-16 text.
-                    if(memchr(data, 0, *len))
-                        return svn_error_createf(APR_EOF, SVN_NO_ERROR, "Text contains zeros, might be UTF-16 text or a binary.");
                     if(!baton.firstrun)
                         return svn_error_createf(APR_EOF, SVN_NO_ERROR, "Earlier block was not CRLF, now it is. This is bad.");
 
@@ -628,6 +629,10 @@ void importer::convert_svn_file(
                         << "In r" << revnum << ", text file '" << svn_path.str() << "' did not output " << file_length << " bytes."
                         << std::endl;
         }
+        if(eol_conversion_t::SawUTF16==baton.conversion)
+            Log::warn() 
+                << "In r" << revnum << ", text file '" << svn_path.str() << "' contained zeros and therefore was treated as binary."
+                << std::endl;
     }
     fast_import << LF;
 }
