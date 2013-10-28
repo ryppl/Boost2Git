@@ -143,9 +143,6 @@ abstract repository common_branches
     [:] "/branches/maintenance/1_50_0/" : "maintenance/1_50_0";
     [:] "/branches/maintenance/1_54_0/" : "maintenance/1_54_0";
     [:] "/branches/modular-build/" : "modular-build";
-  }
-  tags
-  {
     [:] "/tags/tools/jam/Perforce_Jam_2_4_merge_1/boost/" : "Perforce_Jam_2_4_merge_1";
 
     [:] "/tags/release/Version_1_17_0/boost/" : "release/Version_1_17_0";
@@ -188,82 +185,6 @@ abstract repository common_branches
     [:] "/tags/release/Version_1_35_0/" : "release/Version_1_35_0";
     [:] "/tags/release/VERSION_1_35_0_RC1/" : "release/VERSION_1_35_0_RC1";
     [:] "/tags/release/Version_1_35_0_RC3/" : "release/Version_1_35_0_RC3";
-
-    [:] "/tags/release/Boost_1_30_2_RC/boost/" : "release/Boost_1_30_2_RC";
-    [:] "/tags/release/Boost_1_16_1/boost/" : "release/Boost_1_16_1";
-    [:] "/tags/release/Boost_1_17_0/boost/" : "release/Boost_1_17_0";
-    [:] "/tags/release/Boost_1_18_0/boost/" : "release/Boost_1_18_0";
-    [:] "/tags/release/Boost_1_18_2/boost/" : "release/Boost_1_18_2";
-    [:] "/tags/release/Boost_1_18_3/boost/" : "release/Boost_1_18_3";
-    [:] "/tags/release/Boost_1_19_0/boost/" : "release/Boost_1_19_0";
-    [:] "/tags/release/Boost_1_20_0/boost/" : "release/Boost_1_20_0";
-    [:] "/tags/release/Boost_1_20_1/boost/" : "release/Boost_1_20_1";
-    [:] "/tags/release/Boost_1_20_2/boost/" : "release/Boost_1_20_2";
-    [:] "/tags/release/Boost_1_21_0/boost/" : "release/Boost_1_21_0";
-    [:] "/tags/release/Boost_1_21_1/boost/" : "release/Boost_1_21_1";
-    [:] "/tags/release/Boost_1_21_2/boost/" : "release/Boost_1_21_2";
-    [:] "/tags/release/Boost_1_22_0/boost/" : "release/Boost_1_22_0";
-    [:] "/tags/release/Boost_1_23_0/boost/" : "release/Boost_1_23_0";
-    [:] "/tags/release/Boost_1_24_0/boost/" : "release/Boost_1_24_0";
-    [:] "/tags/release/Boost_1_25_0/boost/" : "release/Boost_1_25_0";
-    [:] "/tags/release/Boost_1_25_1/boost/" : "release/Boost_1_25_1";
-    [:] "/tags/release/Boost_1_26_0/boost/" : "release/Boost_1_26_0";
-    [:] "/tags/release/Boost_1_27_0/boost/" : "release/Boost_1_27_0";
-    [:] "/tags/release/Boost_1_28_0/boost/" : "release/Boost_1_28_0";
-    [:] "/tags/release/Boost_1_29_0/boost/" : "release/Boost_1_29_0";
-    [:] "/tags/release/Boost_1_30_0/boost/" : "release/Boost_1_30_0";
-    [:] "/tags/release/Boost_1_30_1/boost/" : "release/Boost_1_30_1";
-    [:] "/tags/release/Boost_1_30_2/boost/" : "release/Boost_1_30_2";
-    [:] "/tags/release/Boost_1_31_0/boost/" : "release/Boost_1_31_0";
-    [:] "/tags/release/Boost_1_32_0/boost/" : "release/Boost_1_32_0";
-    [:] "/tags/release/Boost_1_33_0/boost/" : "release/Boost_1_33_0";
-    [:] "/tags/release/Boost_1_33_1/boost/" : "release/Boost_1_33_1";
-    [:] "/tags/release/Boost_1_33_1_B1/boost/" : "release/Boost_1_33_1_B1";
-    [:] "/tags/release/Boost_1_34_0/boost/" : "release/Boost_1_34_0";
-    [:] "/tags/release/Boost_1_34_0_B1/boost/" : "release/Boost_1_34_0_B1";
-    [:] "/tags/release/Boost_1_34_0_RC1/boost/" : "release/Boost_1_34_0_RC1";
-    [:] "/tags/release/Boost_1_34_0_RC2/boost/" : "release/Boost_1_34_0_RC2";
-    [:] "/tags/release/Boost_1_34_0_RC3/boost/" : "release/Boost_1_34_0_RC3";
-    [:] "/tags/release/Boost_1_34_1/boost/" : "release/Boost_1_34_1";
-    [:] "/tags/release/Boost_1_34_1_RC1/boost/" : "release/Boost_1_34_1_RC1";
-    [:] "/tags/release/Boost_1_34_1_RC2/boost/" : "release/Boost_1_34_1_RC2";
-    [:] "/tags/release/Boost_1_34_1_RC3/boost/" : "release/Boost_1_34_1_RC3";
-    [:] "/tags/release/Boost_1_35_0/" : "release/Boost_1_35_0";
-    [:] "/tags/release/Boost_1_35_0_RC1/" : "release/Boost_1_35_0_RC1";
-    [:] "/tags/release/Boost_1_35_0_RC3/" : "release/Boost_1_35_0_RC3";
-    [:] "/tags/release/Boost_1_36_0_beta1/" : "release/Boost_1_36_0_beta1";
-    [:] "/tags/release/Boost_1_36_0/" : "release/Boost_1_36_0";
-    [:] "/tags/release/Boost_1_37_0_beta1/" : "release/Boost_1_37_0_beta1";
-    [:] "/tags/release/Boost_1_37_0/" : "release/Boost_1_37_0";
-    [:] "/tags/release/Boost_1_38_0/" : "release/Boost_1_38_0";
-    [:] "/tags/release/Boost_1_39_0_beta1/" : "release/Boost_1_39_0_beta1";
-    [:] "/tags/release/Boost_1_39_0/" : "release/Boost_1_39_0";
-    [:] "/tags/release/Boost_1_40_0/" : "release/Boost_1_40_0";
-    [:] "/tags/release/Boost_1_41_0_beta1/" : "release/Boost_1_41_0_beta1";
-    [:] "/tags/release/Boost_1_41_0/" : "release/Boost_1_41_0";
-    [:] "/tags/release/Boost_1_42_0/" : "release/Boost_1_42_0";
-    [:] "/tags/release/Boost_1_43_0_beta1/" : "release/Boost_1_43_0_beta1";
-    [:] "/tags/release/Boost_1_43_0/" : "release/Boost_1_43_0";
-    [:] "/tags/release/Boost_1_44_0_beta1/" : "release/Boost_1_44_0_beta1";
-    [:] "/tags/release/Boost_1_44_0/" : "release/Boost_1_44_0";
-    [:] "/tags/release/Boost_1_45_0_beta1/" : "release/Boost_1_45_0_beta1";
-    [:] "/tags/release/Boost_1_45_0/" : "release/Boost_1_45_0";
-    [:] "/tags/release/Boost_1_46_0_beta_1/" : "release/Boost_1_46_0_beta_1";
-    [:] "/tags/release/Boost_1_46_0/" : "release/Boost_1_46_0";
-    [:] "/tags/release/Boost_1_46_1/" : "release/Boost_1_46_1";
-    [:] "/tags/release/Boost_1_47_0_beta1/" : "release/Boost_1_47_0_beta1";
-    [:] "/tags/release/Boost_1_47_0/" : "release/Boost_1_47_0";
-    [:] "/tags/release/Boost_1_48_0_beta1/" : "release/Boost_1_48_0_beta1";
-    [:] "/tags/release/Boost_1_48_0/" : "release/Boost_1_48_0";
-    [:] "/tags/release/Boost_1_49_0_beta1/" : "release/Boost_1_49_0_beta1";
-    [:] "/tags/release/Boost_1_49_0/" : "release/Boost_1_49_0";
-    [:] "/tags/release/Boost_1_50_0_beta1/" : "release/Boost_1_50_0_beta1";
-    [:] "/tags/release/Boost_1_50_0/" : "release/Boost_1_50_0";
-    [:] "/tags/release/Boost_1_51_0/" : "release/Boost_1_51_0";
-    [:] "/tags/release/Boost_1_52_0/" : "release/Boost_1_52_0";
-    [:] "/tags/release/Boost_1_53_0/" : "release/Boost_1_53_0";
-    [:] "/tags/release/Boost_1_54_0_beta1/" : "release/Boost_1_54_0_beta1";
-    [:] "/tags/release/Boost_1_54_0/" : "release/Boost_1_54_0";
 
     [:] "/tags/Version_1_17_0/boost/" : "Version_1_17_0";
     [:] "/tags/Version_1_18_0/boost/" : "Version_1_18_0";
@@ -343,6 +264,84 @@ abstract repository common_branches
     [:] "/tags/start/Version_1_18_3/boost/" : "start-tags/Version_1_18_3";
     [:] "/tags/jam/perforce_2_4_merge_1/boost/" : "jam/perforce_2_4_merge_1";
     [:] "/tags/jam/Perforce_Jam_2_4_merge_1/boost/" : "jam/Perforce_Jam_2_4_merge_1";
+  }
+  tags
+  {
+    [:] "/tags/release/Boost_1_30_2_RC/boost/" : "release/Boost_1_30_2_RC";
+    [:] "/tags/release/Boost_1_16_1/boost/" : "release/Boost_1_16_1";
+    [:] "/tags/release/Boost_1_17_0/boost/" : "release/Boost_1_17_0";
+    [:] "/tags/release/Boost_1_18_0/boost/" : "release/Boost_1_18_0";
+    [:] "/tags/release/Boost_1_18_2/boost/" : "release/Boost_1_18_2";
+    [:] "/tags/release/Boost_1_18_3/boost/" : "release/Boost_1_18_3";
+    [:] "/tags/release/Boost_1_19_0/boost/" : "release/Boost_1_19_0";
+    [:] "/tags/release/Boost_1_20_0/boost/" : "release/Boost_1_20_0";
+    [:] "/tags/release/Boost_1_20_1/boost/" : "release/Boost_1_20_1";
+    [:] "/tags/release/Boost_1_20_2/boost/" : "release/Boost_1_20_2";
+    [:] "/tags/release/Boost_1_21_0/boost/" : "release/Boost_1_21_0";
+    [:] "/tags/release/Boost_1_21_1/boost/" : "release/Boost_1_21_1";
+    [:] "/tags/release/Boost_1_21_2/boost/" : "release/Boost_1_21_2";
+    [:] "/tags/release/Boost_1_22_0/boost/" : "release/Boost_1_22_0";
+    [:] "/tags/release/Boost_1_23_0/boost/" : "release/Boost_1_23_0";
+    [:] "/tags/release/Boost_1_24_0/boost/" : "release/Boost_1_24_0";
+    [:] "/tags/release/Boost_1_25_0/boost/" : "release/Boost_1_25_0";
+    [:] "/tags/release/Boost_1_25_1/boost/" : "release/Boost_1_25_1";
+    [:] "/tags/release/Boost_1_26_0/boost/" : "release/Boost_1_26_0";
+    [:] "/tags/release/Boost_1_27_0/boost/" : "release/Boost_1_27_0";
+    [:] "/tags/release/Boost_1_28_0/boost/" : "release/Boost_1_28_0";
+    [:] "/tags/release/Boost_1_29_0/boost/" : "release/Boost_1_29_0";
+    [:] "/tags/release/Boost_1_30_0/boost/" : "release/Boost_1_30_0";
+    [:] "/tags/release/Boost_1_30_1/boost/" : "release/Boost_1_30_1";
+    [:] "/tags/release/Boost_1_30_2/boost/" : "release/Boost_1_30_2";
+    [:] "/tags/release/Boost_1_31_0/boost/" : "release/Boost_1_31_0";
+    [:] "/tags/release/Boost_1_32_0/boost/" : "release/Boost_1_32_0";
+    [:] "/tags/release/Boost_1_33_0/boost/" : "release/Boost_1_33_0";
+    [:] "/tags/release/Boost_1_33_1/boost/" : "release/Boost_1_33_1";
+    [:] "/tags/release/Boost_1_33_1_B1/boost/" : "release/Boost_1_33_1_B1";
+    [:] "/tags/release/Boost_1_34_0/boost/" : "release/Boost_1_34_0";
+    [:] "/tags/release/Boost_1_34_0_B1/boost/" : "release/Boost_1_34_0_B1";
+    [:] "/tags/release/Boost_1_34_0_RC1/boost/" : "release/Boost_1_34_0_RC1";
+    [:] "/tags/release/Boost_1_34_0_RC2/boost/" : "release/Boost_1_34_0_RC2";
+    [:] "/tags/release/Boost_1_34_0_RC3/boost/" : "release/Boost_1_34_0_RC3";
+    [:] "/tags/release/Boost_1_34_1/boost/" : "release/Boost_1_34_1";
+    [:] "/tags/release/Boost_1_34_1_RC1/boost/" : "release/Boost_1_34_1_RC1";
+    [:] "/tags/release/Boost_1_34_1_RC2/boost/" : "release/Boost_1_34_1_RC2";
+    [:] "/tags/release/Boost_1_34_1_RC3/boost/" : "release/Boost_1_34_1_RC3";
+    [:] "/tags/release/Boost_1_35_0/" : "release/Boost_1_35_0";
+    [:] "/tags/release/Boost_1_35_0_RC1/" : "release/Boost_1_35_0_RC1";
+    [:] "/tags/release/Boost_1_35_0_RC3/" : "release/Boost_1_35_0_RC3";
+    [:] "/tags/release/Boost_1_36_0_beta1/" : "release/Boost_1_36_0_beta1";
+    [:] "/tags/release/Boost_1_36_0/" : "release/Boost_1_36_0";
+    [:] "/tags/release/Boost_1_37_0_beta1/" : "release/Boost_1_37_0_beta1";
+    [:] "/tags/release/Boost_1_37_0/" : "release/Boost_1_37_0";
+    [:] "/tags/release/Boost_1_38_0/" : "release/Boost_1_38_0";
+    [:] "/tags/release/Boost_1_39_0_beta1/" : "release/Boost_1_39_0_beta1";
+    [:] "/tags/release/Boost_1_39_0/" : "release/Boost_1_39_0";
+    [:] "/tags/release/Boost_1_40_0/" : "release/Boost_1_40_0";
+    [:] "/tags/release/Boost_1_41_0_beta1/" : "release/Boost_1_41_0_beta1";
+    [:] "/tags/release/Boost_1_41_0/" : "release/Boost_1_41_0";
+    [:] "/tags/release/Boost_1_42_0/" : "release/Boost_1_42_0";
+    [:] "/tags/release/Boost_1_43_0_beta1/" : "release/Boost_1_43_0_beta1";
+    [:] "/tags/release/Boost_1_43_0/" : "release/Boost_1_43_0";
+    [:] "/tags/release/Boost_1_44_0_beta1/" : "release/Boost_1_44_0_beta1";
+    [:] "/tags/release/Boost_1_44_0/" : "release/Boost_1_44_0";
+    [:] "/tags/release/Boost_1_45_0_beta1/" : "release/Boost_1_45_0_beta1";
+    [:] "/tags/release/Boost_1_45_0/" : "release/Boost_1_45_0";
+    [:] "/tags/release/Boost_1_46_0_beta_1/" : "release/Boost_1_46_0_beta_1";
+    [:] "/tags/release/Boost_1_46_0/" : "release/Boost_1_46_0";
+    [:] "/tags/release/Boost_1_46_1/" : "release/Boost_1_46_1";
+    [:] "/tags/release/Boost_1_47_0_beta1/" : "release/Boost_1_47_0_beta1";
+    [:] "/tags/release/Boost_1_47_0/" : "release/Boost_1_47_0";
+    [:] "/tags/release/Boost_1_48_0_beta1/" : "release/Boost_1_48_0_beta1";
+    [:] "/tags/release/Boost_1_48_0/" : "release/Boost_1_48_0";
+    [:] "/tags/release/Boost_1_49_0_beta1/" : "release/Boost_1_49_0_beta1";
+    [:] "/tags/release/Boost_1_49_0/" : "release/Boost_1_49_0";
+    [:] "/tags/release/Boost_1_50_0_beta1/" : "release/Boost_1_50_0_beta1";
+    [:] "/tags/release/Boost_1_50_0/" : "release/Boost_1_50_0";
+    [:] "/tags/release/Boost_1_51_0/" : "release/Boost_1_51_0";
+    [:] "/tags/release/Boost_1_52_0/" : "release/Boost_1_52_0";
+    [:] "/tags/release/Boost_1_53_0/" : "release/Boost_1_53_0";
+    [:] "/tags/release/Boost_1_54_0_beta1/" : "release/Boost_1_54_0_beta1";
+    [:] "/tags/release/Boost_1_54_0/" : "release/Boost_1_54_0";
   }
 }
 
@@ -721,9 +720,6 @@ repository filesystem : common_branches
   branches
   {
     [:] "/branches/i18n/boost/" : "i18n";
-  }
-  tags
-  {
     [:] "/tags/n1889/boost/" : "n1889";
     [:] "/sandbox-tags/Formal_Review/" : "sandbox/Formal_Review";
   }
@@ -774,9 +770,6 @@ repository format : common_branches
     "boost/format.hpp" : "include/boost/format.hpp";
     "boost/format/" : "include/boost/format/";
     "libs/format/";
-  }
-  tags
-  {
     [:] "/tags/RC_1_29_0_last_sync/boost/" : "RC_1_29_0_last_sync";
   }
 }
@@ -841,9 +834,6 @@ repository geometry : common_branches
   branches
   {
     [:] "/sandbox/geometry/" : "sandbox/geometry";
-  }
-  tags
-  {
     [:] "/tags/geometry/boost_1_49_0/" : "geometry/boost_1_49_0";
   }
 }
@@ -931,9 +921,6 @@ repository graph : common_branches
     [:] "/branches/unlabeled-1.19.2/boost/" : "unlabeled-1.19.2";
     [:] "/branches/unlabeled-1.21.2/boost/" : "unlabeled-1.21.2";
     [:] "/branches/unlabeled-1.13.2/boost/" : "unlabeled-1.13.2";
-  }
-  tags
-  {
     [:] "/tags/graph_devel_merged_to_trunk/boost/" : "graph_devel_merged_to_trunk";
     [:] "/tags/boost++graph/boost/" : "boost++graph";
     [:] "/tags/merged_to_graph_devel/boost/" : "merged_to_graph_devel";
@@ -1008,9 +995,6 @@ repository io : common_branches
   branches
   {
     [:] "/sandbox-branches/cppljevans/" : "sandbox/cppljevans";
-  }
-  tags
-  {
     [:] "/sandbox-tags/init_import/" : "sandbox/init_import";
   }
 }
@@ -1026,9 +1010,6 @@ repository iostreams : common_branches
   branches
   {
     [:] "/sandbox-branches/birbacher/tmp_iostreams/" : "sandbox/birbacher/tmp_iostreams";
-  }
-  tags
-  {
     [:] "/tags/iostreams_pre_non_blocking/boost/" : "iostreams_pre_non_blocking";
   }
 }
@@ -1067,9 +1048,6 @@ repository iterator : common_branches
     [:] "/branches/unlabeled-1.37.6/boost/" : "unlabeled-1.37.6";
     [:] "/branches/simplify/boost/" : "simplify";
     [:] "/branches/build/boost/" : "build";
-  }
-  tags
-  {
     [:] "/tags/jan18/boost/" : "jan18";
   }
 }
@@ -1086,9 +1064,6 @@ repository lambda : common_branches
   {
     [:] "/branches/lambda_development/boost/" : "lambda_development";
     [:] "/branches/lambda_development_during_review/boost/" : "lambda_development_during_review";
-  }
-  tags
-  {
     [:] "/tags/reference_types_in_return_type_deduction/boost/" : "reference_types_in_return_type_deduction";
   }
 }
@@ -1199,9 +1174,6 @@ repository mpl : common_branches
   branches
   {
     [:] "/branches/mpl-development/boost/" : "mpl-development";
-  }
-  tags
-  {
     [:] "/tags/mpl_root_license_rename_1/boost/" : "mpl_root_license_rename_1";
     [:] "/tags/merged_to_mplbook/boost/" : "merged_to_mplbook";
   }
@@ -1323,9 +1295,6 @@ repository ublas : common_branches
   {
     [:] "/branches/uBLAS_pure/boost/" : "uBLAS_pure";
     [:] "/branches/uBLAS_assignment_sematics/boost/" : "uBLAS_assignment_sematics";
-  }
-  tags
-  {
     [:] "/tags/Root_uBLAS_pure/boost/" : "Root_uBLAS_pure";
     [:] "/tags/Root_uBLAS_assignment_sematics/boost/" : "Root_uBLAS_assignment_sematics";
     [:] "/tags/uBLAS_good/boost/" : "uBLAS_good";
@@ -1373,9 +1342,6 @@ repository parameter : common_branches
     [:] "/branches/parameter-post-1_33/boost/" : "parameter-post-1_33";
     [:] "/branches/robstewart/boost/" : "robstewart";
     [:] "/branches/parameter-python/boost/" : "parameter-python";
-  }
-  tags
-  {
     [:] "/tags/parameter_merged_to_RC_1_34_0/boost/" : "parameter_merged_to_RC_1_34_0";
     [:] "/tags/jam/parameter_merged_to_RC_1_34_0/boost/" : "jam/parameter_merged_to_RC_1_34_0";
   }
@@ -1568,9 +1534,6 @@ repository python : common_branches
     [:] "/branches/boost/boost/" : "oops";
     [:] "/branches/python_v2_API_restructure/boost/" : "python_v2_API_restructure";
     [:] "/sandbox-branches/boost/" : "sandbox-branches/boost";
-  }
-  tags
-  {
     [:] "/tags/monthly/boost/" : "monthly";
     [:] "/tags/version_0-9-26/boost/" : "version_0-9-26";
     [:] "/tags/start/boost/" : "start";
@@ -1690,9 +1653,6 @@ repository random : common_branches
   branches
   {
     [:] "/branches/wg21_random_proposal/boost/" : "wg21_random_proposal";
-  }
-  tags
-  {
     [:] "/tags/merge_wg21_random_proposal/boost/" : "merge_wg21_random_proposal";
   }
 }
@@ -1779,9 +1739,6 @@ repository serialization : common_branches
   branches
   {
     [:] "/branches/serialization_header_order/boost/" : "serialization_header_order";
-  }
-  tags
-  {
     [:] "/tags/pre_serialization_header_order/boost/" : "pre_serialization_header_order";
   }
 }
@@ -1815,9 +1772,6 @@ repository signals2 : common_branches
     // everything was moved to subdir trunk in r48925
     [:] "/sandbox/thread_safe_signals/" : "sandbox/thread_safe_signals";
     [:] "/sandbox/thread_safe_signals/trunk/" : "sandbox/thread_safe_signals";
-  }
-  tags
-  {
     [:] "/sandbox/thread_safe_signals/tags/pre_signals2/" : "sandbox/thread_safe_signals/pre_signals2";
     [:] "/sandbox/thread_safe_signals/tags/v2009-02-11/" : "sandbox/thread_safe_signals/v2009-02-11";
   }
@@ -1928,9 +1882,6 @@ repository spirit : common_branches
     [:] "/branches/SPIRIT_1_9/boost/" : "SPIRIT_1_9";
     [:] "/branches/SPIRIT_RC_1_8_5/boost/" : "SPIRIT_RC_1_8_5";
     [:] "/branches/SPIRIT_1_8/boost/" : "SPIRIT_1_8";
-  }
-  tags
-  {
     [:] "/tags/SPIRIT_1_8_5/boost/" : "SPIRIT_1_8_5";
     [:] "/tags/SPIRIT_1_6_4/boost/" : "SPIRIT_1_6_4";
     [:] "/tags/USING_BOOST_TEST/boost/" : "USING_BOOST_TEST";
@@ -2018,9 +1969,6 @@ repository test : common_branches
   branches
   {
     [:] "/branches/unit_test_development/boost/" : "unit_test_development";
-  }
-  tags
-  {
     [:] "/tags/before_partial_unit_test_merge/boost/" : "before_partial_unit_test_merge";
   }
 }
@@ -2042,9 +1990,6 @@ repository thread : common_branches
     [:] "/branches/thread_dev/boost/" : "thread_dev";
     [:] "/tags/thread_rewrite_1/boost/" : "thread_rewrite_1";
     [:] "/branches/thread_development/boost/" : "thread_development";
-  }
-  tags
-  {
     [:] "/tags/thread_base/boost/" : "thread_base";
   }
 }
@@ -2170,9 +2115,6 @@ repository units : common_branches
   {
     [:] "/sandbox/units/" : "sandbox/units";
     [:] "/sandbox-branches/steven_watanabe/" : "sandbox/steven_watanabe";
-  }
-  tags
-  {
     [:] "/sandbox-tags/HEAD/" : "sandbox/HEAD";
   }
 }
@@ -2357,9 +2299,6 @@ repository build : common_branches
     [:] "/branches/jam/jam-src/boost/" : "jam-src";
     [:] "/branches/build/jam-src/boost/" : "jam-src";
     [:] "/branches/quickbook/include/boost/" : "quickbook/include";
-  }
-  tags
-  {
     [:] "/tags/bjam_3_1_5/boost/" : "Boost_Jam_3_1_5";
     [:] "/tags/Boost_Jam_3_1_7/boost/" : "Boost_Jam_3_1_7";
     [:] "/tags/Boost_Jam_3_1_9/boost/" : "Boost_Jam_3_1_9";
@@ -2444,9 +2383,6 @@ repository build
   content
   {
     "boost-build.jam" : "historic/boost-build.jam";
-  }
-  tags
-  {
     [:] "/tags/BOOST_BUILD_V1/boost/" : "BOOST_BUILD_V1";
     [:] "/tags/tools/build/BOOST_BUILD_V1/boost/" : "BOOST_BUILD_V1";
   }
@@ -2464,9 +2400,6 @@ repository build : tools_branches
   {
     [:] "/branches/build-development/boost/" : "build-development";
     [:] "/branches/build-development-2/boost/" : "build-development-2";
-  }
-  tags
-  {
     [:] "/tags/build-development-checkpoint-2/boost/" : "build-development-checkpoint-2";
   }
 }
@@ -2497,9 +2430,6 @@ repository build
   branches
   {
     [:] "/branches/jam/4_0/" : "jam/4_0";
-  }
-  tags
-  {
     [:] "/tags/tools/jam/Boost_Jam_3_1_15/" : "jam/Boost_Jam_3_1_15";
     [:] "/tags/jam/Boost_Jam_3_1_15/" : "jam/Boost_Jam_3_1_15";
     [:] "/tags/tools/jam/Boost_Jam_3_1_16/" : "jam/Boost_Jam_3_1_16";
@@ -2735,9 +2665,6 @@ repository boost : common_branches
     [:] "/sandbox-branches/andreo/guigl/" : "sandbox/andreo/guigl";
     [:] "/sandbox/guigl/" : "sandbox/guigl";
     [:] "/branches/coding_guidelines/boost/" : "coding_guidelines";
-  }
-  tags
-  {
     [:] "/tags/RC_1_30_0_last_merge/boost/" : "RC_1_30_0_last_merge";
     [:] "/tags/BOOST_BUILD_PYTHON_BASE/boost/" : "BOOST_BUILD_PYTHON_BASE";
   }
