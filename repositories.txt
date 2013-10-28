@@ -770,6 +770,9 @@ repository format : common_branches
     "boost/format.hpp" : "include/boost/format.hpp";
     "boost/format/" : "include/boost/format/";
     "libs/format/";
+  }
+  branches
+  {
     [:] "/tags/RC_1_29_0_last_sync/boost/" : "svn-tags/RC_1_29_0_last_sync";
   }
 }
