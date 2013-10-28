@@ -145,8 +145,6 @@ abstract repository common_branches
     [:] "/branches/maintenance/1_50_0/" : "svn-branches/maintenance/1_50_0";
     [:] "/branches/maintenance/1_54_0/" : "svn-branches/maintenance/1_54_0";
     [:] "/branches/modular-build/" : "svn-branches/modular-build";
-    [:] "/branches/spirit_3x/" : "svn-branches/spirit_3x";
-
     [:] "/tags/tools/jam/Perforce_Jam_2_4_merge_1/boost/" : "svn-tags/tools/jam/Perforce_Jam_2_4_merge_1";
 
     [:] "/tags/release/Version_1_17_0/boost/" : "svn-tags/release/Version_1_17_0";
@@ -1886,6 +1884,7 @@ repository spirit : common_branches
   branches
   {
     [:] "/branches/FUSION_MSVC/boost/" : "svn-branches/FUSION_MSVC";
+    [:] "/branches/spirit_3x/" : "svn-branches/spirit_3x";
     [:] "/branches/SPIRIT_1_9/boost/" : "svn-branches/SPIRIT_1_9";
     [:] "/branches/SPIRIT_RC_1_8_5/boost/" : "svn-branches/SPIRIT_RC_1_8_5";
     [:] "/branches/SPIRIT_1_8/boost/" : "svn-branches/SPIRIT_1_8";
