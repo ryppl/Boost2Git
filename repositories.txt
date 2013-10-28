@@ -90,8 +90,6 @@ abstract repository common_branches
     [:] "/branches/quickbook/QUICKBOOK_INCLUDE/boost/" : "svn-branches/quickbook/QUICKBOOK_INCLUDE";
     [:] "/branches/QUICKBOOK_INCLUDE/boost/" : "svn-branches/QUICKBOOK_INCLUDE";
     [:] "/branches/SPIRIT_MINIBOOST/boost/" : "svn-branches/SPIRIT_MINIBOOST";
-    [:] "/branches/SPIRIT_RC_1_6_2/boost/" : "svn-branches/SPIRIT_RC_1_6_2";
-    [:] "/branches/SPIRIT_RC_1_8_2/boost/" : "svn-branches/SPIRIT_RC_1_8_2";
     [:] "/branches/fast_array_serialization/boost/" : "svn-branches/fast_array_serialization";
     [:] "/branches/array_wrapper/boost/" : "svn-branches/array_wrapper";
     [:] "/branches/RC_1_33_0/boost/" : "svn-branches/RC_1_33_0";
@@ -328,7 +326,7 @@ abstract repository common_branches
     [:] "/tags/release/Boost_1_44_0/"           : "boost-1.44.0";
     [:] "/tags/release/Boost_1_45_0_beta1/"     : "boost-1.45.0-beta1";
     [:] "/tags/release/Boost_1_45_0/"           : "boost-1.45.0";
-    [:] "/tags/release/Boost_1_46_0_beta_1/"    : "boost-1.46.0-beta1";
+    [:] "/tags/release/Boost_1_46_0_beta_1/"    : "boost-1.46.0-beta_1";
     [:] "/tags/release/Boost_1_46_0/"           : "boost-1.46.0";
     [:] "/tags/release/Boost_1_46_1/"           : "boost-1.46.1";
     [:] "/tags/release/Boost_1_47_0_beta1/"     : "boost-1.47.0-beta1";
@@ -344,7 +342,6 @@ abstract repository common_branches
     [:] "/tags/release/Boost_1_53_0/"           : "boost-1.53.0";
     [:] "/tags/release/Boost_1_54_0_beta1/"     : "boost-1.54.0-beta1";
     [:] "/tags/release/Boost_1_54_0/"           : "boost-1.54.0";
-    [:] "/tags/release/Boost_1_55_0/"           : "boost-1.55.0";
   }
 }
 
@@ -1891,6 +1888,17 @@ repository spirit : common_branches
     [:] "/tags/SPIRIT_1_8_5/boost/" : "svn-tags/SPIRIT_1_8_5";
     [:] "/tags/SPIRIT_1_6_4/boost/" : "svn-tags/SPIRIT_1_6_4";
     [:] "/tags/USING_BOOST_TEST/boost/" : "svn-tags/USING_BOOST_TEST";
+  }
+}
+
+repository spirit
+{
+  branches
+  {
+    [:] "/branches/SPIRIT_RC_1_6_2/boost/" : "svn-branches/SPIRIT_RC_1_6_2";
+    [:] "/branches/SPIRIT_RC_1_6_2/boost/libs/" : "svn-branches/SPIRIT_RC_1_6_2/boost/libs";
+    [:] "/branches/SPIRIT_RC_1_8_2/boost/" : "svn-branches/SPIRIT_RC_1_8_2";
+    [:] "/branches/SPIRIT_RC_1_8_2/boost/libs/" : "svn-branches/SPIRIT_RC_1_8_2/boost/libs";
   }
 }
 
