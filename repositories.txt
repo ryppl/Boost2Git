@@ -12,8 +12,8 @@ abstract repository tools_branches
 {
   branches
   {
-    [:] "/branches/tools/" : "tools";
-    [:] "/branches/release-tools/" : "release-tools";
+    [:] "/branches/tools/" : "svn-branches/tools";
+    [:] "/branches/release-tools/" : "svn-branches/release-tools";
   }
 }
 
@@ -30,240 +30,240 @@ abstract repository common_branches
     [     :     ] "/devel/" : "develop";
     [38329:     ] "/trunk/" : "develop";
 
-    [:] "/sandbox-branches/optional_optimization/" : "sandbox/optional_optimization";
-    [:] "/sandbox-branches/birbacher/propertymap-functormap/" : "sandbox/birbacher/propertymap-functormap";
-    [ 2110:     ] "/sandbox-branches/expaler/" : "sandbox/expaler";
-    [:] "/branches/unlabeled-1.1.1/boost/" : "unlabeled-1.1.1";
-    [:] "/branches/iterator-adaptors/boost/" : "iterator-adaptors";
-    [:] "/branches/conversion/boost/" : "conversion";
-    [:] "/branches/boost-graph-library/boost/" : "boost-graph-library";
-    [:] "/branches/regex-sub/boost/" : "regex-sub";
-    [:] "/branches/better_indirect/boost/" : "better_indirect";
-    [:] "/branches/named-args/boost/" : "named-args";
-    [:] "/branches/moved_pointer/boost/" : "moved_pointer";
-    [:] "/branches/unlabeled-1.12.2/boost/" : "unlabeled-1.12.2";
-    [:] "/branches/unlabeled-1.16.2/boost/" : "unlabeled-1.16.2";
-    [:] "/branches/unlabeled-1.9.2/boost/" : "unlabeled-1.9.2";
-    [:] "/branches/unlabeled-1.1.8/boost/" : "unlabeled-1.1.8";
-    [:] "/branches/unlabeled-1.3.2/boost/" : "unlabeled-1.3.2";
-    [:] "/branches/unlabeled-1.1.1.1.8/boost/" : "unlabeled-1.1.1.1.8";
-    [:] "/branches/unlabeled-1.2.8/boost/" : "unlabeled-1.2.8";
-    [:] "/branches/unlabeled-1.15.2/boost/" : "unlabeled-1.15.2";
-    [:] "/branches/unlabeled-1.4.2/boost/" : "unlabeled-1.4.2";
-    [:] "/branches/unlabeled-1.1.1.1.10/boost/" : "unlabeled-1.1.1.1.10";
-    [:] "/branches/iter-adaptor-and-categories/boost/" : "iter-adaptor-and-categories";
-    [:] "/branches/split-config/boost/" : "split-config";
-    [:] "/branches/iterator_adaptor_update/boost/" : "iterator_adaptor_update";
-    [:] "/branches/RC_1_27_0/boost/" : "RC_1_27_0";
-    [:] "/branches/perforce_2_4_merge/boost/" : "perforce_2_4_merge";
-    [:] "/branches/compiler_supported_error_messages/boost/" : "compiler_supported_error_messages";
-    [:] "/branches/boost_build_v2/boost/" : "boost_build_v2";
-    [:] "/branches/unlabeled-1.8.2/boost/" : "unlabeled-1.8.2";
-    [:] "/branches/unlabeled-1.5.2/boost/" : "unlabeled-1.5.2";
-    [:] "/branches/unlabeled-1.10.2/boost/" : "unlabeled-1.10.2";
-    [:] "/branches/unlabeled-1.2.6/boost/" : "unlabeled-1.2.6";
-    [:] "/branches/unlabeled-1.6.2/boost/" : "unlabeled-1.6.2";
-    [:] "/branches/unlabeled-1.18.2/boost/" : "unlabeled-1.18.2";
-    [:] "/branches/unlabeled-1.7.2/boost/" : "unlabeled-1.7.2";
-    [:] "/branches/unlabeled-1.11.2/boost/" : "unlabeled-1.11.2";
-    [:] "/branches/unlabeled-1.14.2/boost/" : "unlabeled-1.14.2";
-    [:] "/branches/unlabeled-1.1.6/boost/" : "unlabeled-1.1.6";
-    [:] "/branches/aix_so/boost/" : "aix_so";
-    [:] "/branches/feature_branch-update_rule/boost/" : "feature_branch-update_rule";
-    [:] "/branches/RC_1_28_0/boost/" : "RC_1_28_0";
-    [:] "/branches/python-v2-dev/boost/" : "python-v2-dev";
-    [:] "/branches/mpl_v2/boost/" : "mpl_v2";
-    [:] "/branches/RC_1_29_0/boost/" : "RC_1_29_0";
-    [:] "/branches/fs_review/boost/" : "fs_review";
-    [:] "/branches/sane-testing/boost/" : "sane-testing";
-    [:] "/branches/unlabeled-1.1.2/boost/" : "unlabeled-1.1.2";
-    [:] "/branches/mpl_v2_2/boost/" : "mpl_v2_2";
-    [:] "/branches/bbv1_cross_project/boost/" : "bbv1_cross_project";
-    [:] "/branches/build_for_distribution/boost/" : "build_for_distribution";
-    [:] "/branches/RC_1_30_0/boost/" : "RC_1_30_0";
-    [:] "/branches/unlabeled-1.2.2/boost/" : "unlabeled-1.2.2";
-    [:] "/branches/function_signature_patches_1_31/boost/" : "function_signature_patches_1_31";
-    [:] "/branches/RC_1_31_0/boost/" : "RC_1_31_0";
-    [:] "/branches/mplbook/boost/" : "mplbook";
-    [:] "/branches/RC_1_32_0/boost/" : "RC_1_32_0";
-    [:] "/branches/quickbook/backend/boost/" : "quickbook/backend";
-    [:] "/branches/quickbook/QUICKBOOK_INCLUDE/boost/" : "QUICKBOOK_INCLUDE";
-    [:] "/branches/QUICKBOOK_INCLUDE/boost/" : "QUICKBOOK_INCLUDE";
-    [:] "/branches/SPIRIT_MINIBOOST/boost/" : "SPIRIT_MINIBOOST";
-    [:] "/branches/fast_array_serialization/boost/" : "fast_array_serialization";
-    [:] "/branches/array_wrapper/boost/" : "array_wrapper";
-    [:] "/branches/RC_1_33_0/boost/" : "RC_1_33_0";
-    [:] "/branches/SPIRIT_1_6/boost/" : "SPIRIT_1_6";
-    [:] "/branches/bbv2python/boost/" : "bbv2python";
-    [:] "/branches/Boost_Jam_994/boost/" : "Boost_Jam_994";
-    [:] "/branches/RC_1_34_0/boost/" : "RC_1_34_0";
-    [:] "/branches/QUICKBOOK_BACKEND/boost/" : "QUICKBOOK_BACKEND";
-    [:] "/branches/serialization_next_release/boost/" : "serialization_next_release";
-    [40545:] "/sandbox-branches/birbacher/fix_iostreams/" : "sandbox/birbacher/fix_iostreams";
-    [:] "/branches/fix-links/" : "fix-links";
-    [:] "/branches/iostreams_dev/" : "iostreams_dev";
-    [:] "/branches/proto/v3/" : "proto/v3";
-    [:] "/branches/proto/v4.bak/" : "proto/v4.bak";
-    [:] "/branches/doc/" : "doc";
-    [:] "/branches/pdimov_pre_136/" : "pdimov_pre_136";
-    [:] "/branches/initializer-list/" : "initializer-list";
-    [:] "/branches/bcbboost/" : "bcbboost";
-    [:] "/branches/serialization_helper_support/" : "serialization_helper_support";
-    [:] "/branches/proto/v4/" : "proto/v4";
-    [:] "/branches/cpp0x/" : "cpp0x";
-    [:] "/sandbox-branches/straszheim/merge_me_into_trunk/" : "sandbox/straszheim/merge_me_into_trunk";
-    [:] "/branches/phoenix_v3/" : "phoenix_v3";
-    [52115:     ] "/sandbox-branches/bhy/py3k/" : "sandbox/bhy/py3k";
-    [:] "/sandbox-branches/intrusive_fix_SunCC/" : "sandbox/intrusive_fix_SunCC";
-    [:] "/branches/sredl_2009_05_proptree_update/" : "sredl_2009_05_proptree_update";
-    [:] "/branches/b2/" : "b2";
-    [60575:     ] "/sandbox-branches/birbacher/fix_documentation/" : "sandbox/birbacher/fix_documentation";
-    [:] "/branches/inspect/" : "inspect";
-    [:] "/branches/units/autoprefix/" : "units/autoprefix";
-    [:] "/branches/quickbook-filenames/" : "quickbook-filenames";
+    [:] "/sandbox-branches/optional_optimization/" : "sandbox-branches/optional_optimization";
+    [:] "/sandbox-branches/birbacher/propertymap-functormap/" : "sandbox-branches/birbacher/propertymap-functormap";
+    [ 2110:     ] "/sandbox-branches/expaler/" : "sandbox-branches/expaler";
+    [:] "/branches/unlabeled-1.1.1/boost/" : "svn-branches/unlabeled-1.1.1";
+    [:] "/branches/iterator-adaptors/boost/" : "svn-branches/iterator-adaptors";
+    [:] "/branches/conversion/boost/" : "svn-branches/conversion";
+    [:] "/branches/boost-graph-library/boost/" : "svn-branches/boost-graph-library";
+    [:] "/branches/regex-sub/boost/" : "svn-branches/regex-sub";
+    [:] "/branches/better_indirect/boost/" : "svn-branches/better_indirect";
+    [:] "/branches/named-args/boost/" : "svn-branches/named-args";
+    [:] "/branches/moved_pointer/boost/" : "svn-branches/moved_pointer";
+    [:] "/branches/unlabeled-1.12.2/boost/" : "svn-branches/unlabeled-1.12.2";
+    [:] "/branches/unlabeled-1.16.2/boost/" : "svn-branches/unlabeled-1.16.2";
+    [:] "/branches/unlabeled-1.9.2/boost/" : "svn-branches/unlabeled-1.9.2";
+    [:] "/branches/unlabeled-1.1.8/boost/" : "svn-branches/unlabeled-1.1.8";
+    [:] "/branches/unlabeled-1.3.2/boost/" : "svn-branches/unlabeled-1.3.2";
+    [:] "/branches/unlabeled-1.1.1.1.8/boost/" : "svn-branches/unlabeled-1.1.1.1.8";
+    [:] "/branches/unlabeled-1.2.8/boost/" : "svn-branches/unlabeled-1.2.8";
+    [:] "/branches/unlabeled-1.15.2/boost/" : "svn-branches/unlabeled-1.15.2";
+    [:] "/branches/unlabeled-1.4.2/boost/" : "svn-branches/unlabeled-1.4.2";
+    [:] "/branches/unlabeled-1.1.1.1.10/boost/" : "svn-branches/unlabeled-1.1.1.1.10";
+    [:] "/branches/iter-adaptor-and-categories/boost/" : "svn-branches/iter-adaptor-and-categories";
+    [:] "/branches/split-config/boost/" : "svn-branches/split-config";
+    [:] "/branches/iterator_adaptor_update/boost/" : "svn-branches/iterator_adaptor_update";
+    [:] "/branches/RC_1_27_0/boost/" : "svn-branches/RC_1_27_0";
+    [:] "/branches/perforce_2_4_merge/boost/" : "svn-branches/perforce_2_4_merge";
+    [:] "/branches/compiler_supported_error_messages/boost/" : "svn-branches/compiler_supported_error_messages";
+    [:] "/branches/boost_build_v2/boost/" : "svn-branches/boost_build_v2";
+    [:] "/branches/unlabeled-1.8.2/boost/" : "svn-branches/unlabeled-1.8.2";
+    [:] "/branches/unlabeled-1.5.2/boost/" : "svn-branches/unlabeled-1.5.2";
+    [:] "/branches/unlabeled-1.10.2/boost/" : "svn-branches/unlabeled-1.10.2";
+    [:] "/branches/unlabeled-1.2.6/boost/" : "svn-branches/unlabeled-1.2.6";
+    [:] "/branches/unlabeled-1.6.2/boost/" : "svn-branches/unlabeled-1.6.2";
+    [:] "/branches/unlabeled-1.18.2/boost/" : "svn-branches/unlabeled-1.18.2";
+    [:] "/branches/unlabeled-1.7.2/boost/" : "svn-branches/unlabeled-1.7.2";
+    [:] "/branches/unlabeled-1.11.2/boost/" : "svn-branches/unlabeled-1.11.2";
+    [:] "/branches/unlabeled-1.14.2/boost/" : "svn-branches/unlabeled-1.14.2";
+    [:] "/branches/unlabeled-1.1.6/boost/" : "svn-branches/unlabeled-1.1.6";
+    [:] "/branches/aix_so/boost/" : "svn-branches/aix_so";
+    [:] "/branches/feature_branch-update_rule/boost/" : "svn-branches/feature_branch-update_rule";
+    [:] "/branches/RC_1_28_0/boost/" : "svn-branches/RC_1_28_0";
+    [:] "/branches/python-v2-dev/boost/" : "svn-branches/python-v2-dev";
+    [:] "/branches/mpl_v2/boost/" : "svn-branches/mpl_v2";
+    [:] "/branches/RC_1_29_0/boost/" : "svn-branches/RC_1_29_0";
+    [:] "/branches/fs_review/boost/" : "svn-branches/fs_review";
+    [:] "/branches/sane-testing/boost/" : "svn-branches/sane-testing";
+    [:] "/branches/unlabeled-1.1.2/boost/" : "svn-branches/unlabeled-1.1.2";
+    [:] "/branches/mpl_v2_2/boost/" : "svn-branches/mpl_v2_2";
+    [:] "/branches/bbv1_cross_project/boost/" : "svn-branches/bbv1_cross_project";
+    [:] "/branches/build_for_distribution/boost/" : "svn-branches/build_for_distribution";
+    [:] "/branches/RC_1_30_0/boost/" : "svn-branches/RC_1_30_0";
+    [:] "/branches/unlabeled-1.2.2/boost/" : "svn-branches/unlabeled-1.2.2";
+    [:] "/branches/function_signature_patches_1_31/boost/" : "svn-branches/function_signature_patches_1_31";
+    [:] "/branches/RC_1_31_0/boost/" : "svn-branches/RC_1_31_0";
+    [:] "/branches/mplbook/boost/" : "svn-branches/mplbook";
+    [:] "/branches/RC_1_32_0/boost/" : "svn-branches/RC_1_32_0";
+    [:] "/branches/quickbook/backend/boost/" : "svn-branches/quickbook/backend";
+    [:] "/branches/quickbook/QUICKBOOK_INCLUDE/boost/" : "svn-branches/quickbook/QUICKBOOK_INCLUDE";
+    [:] "/branches/QUICKBOOK_INCLUDE/boost/" : "svn-branches/QUICKBOOK_INCLUDE";
+    [:] "/branches/SPIRIT_MINIBOOST/boost/" : "svn-branches/SPIRIT_MINIBOOST";
+    [:] "/branches/fast_array_serialization/boost/" : "svn-branches/fast_array_serialization";
+    [:] "/branches/array_wrapper/boost/" : "svn-branches/array_wrapper";
+    [:] "/branches/RC_1_33_0/boost/" : "svn-branches/RC_1_33_0";
+    [:] "/branches/SPIRIT_1_6/boost/" : "svn-branches/SPIRIT_1_6";
+    [:] "/branches/bbv2python/boost/" : "svn-branches/bbv2python";
+    [:] "/branches/Boost_Jam_994/boost/" : "svn-branches/Boost_Jam_994";
+    [:] "/branches/RC_1_34_0/boost/" : "svn-branches/RC_1_34_0";
+    [:] "/branches/QUICKBOOK_BACKEND/boost/" : "svn-branches/QUICKBOOK_BACKEND";
+    [:] "/branches/serialization_next_release/boost/" : "svn-branches/serialization_next_release";
+    [40545:] "/sandbox-branches/birbacher/fix_iostreams/" : "sandbox-branches/birbacher/fix_iostreams";
+    [:] "/branches/fix-links/" : "svn-branches/fix-links";
+    [:] "/branches/iostreams_dev/" : "svn-branches/iostreams_dev";
+    [:] "/branches/proto/v3/" : "svn-branches/proto/v3";
+    [:] "/branches/proto/v4.bak/" : "svn-branches/proto/v4.bak";
+    [:] "/branches/doc/" : "svn-branches/doc";
+    [:] "/branches/pdimov_pre_136/" : "svn-branches/pdimov_pre_136";
+    [:] "/branches/initializer-list/" : "svn-branches/initializer-list";
+    [:] "/branches/bcbboost/" : "svn-branches/bcbboost";
+    [:] "/branches/serialization_helper_support/" : "svn-branches/serialization_helper_support";
+    [:] "/branches/proto/v4/" : "svn-branches/proto/v4";
+    [:] "/branches/cpp0x/" : "svn-branches/cpp0x";
+    [:] "/sandbox-branches/straszheim/merge_me_into_trunk/" : "sandbox-branches/straszheim/merge_me_into_trunk";
+    [:] "/branches/phoenix_v3/" : "svn-branches/phoenix_v3";
+    [52115:     ] "/sandbox-branches/bhy/py3k/" : "sandbox-branches/bhy/py3k";
+    [:] "/sandbox-branches/intrusive_fix_SunCC/" : "sandbox-branches/intrusive_fix_SunCC";
+    [:] "/branches/sredl_2009_05_proptree_update/" : "svn-branches/sredl_2009_05_proptree_update";
+    [:] "/branches/b2/" : "svn-branches/b2";
+    [60575:     ] "/sandbox-branches/birbacher/fix_documentation/" : "sandbox-branches/birbacher/fix_documentation";
+    [:] "/branches/inspect/" : "svn-branches/inspect";
+    [:] "/branches/units/autoprefix/" : "svn-branches/units/autoprefix";
+    [:] "/branches/quickbook-filenames/" : "svn-branches/quickbook-filenames";
     [  146:     ] "/sandbox/" : "sandbox/trunk";
-    [:] "/branches/doc-tools-docs/" : "doc-tools-docs";
-    [:] "/branches/quickbook-dev/" : "quickbook-dev";
-    [:] "/branches/build/docs_2001_10_24/boost/" : "docs_2001_10_24";
-    [:] "/branches/BOOST_BUILD_PYTHON/boost/" : "BOOST_BUILD_PYTHON";
+    [:] "/branches/doc-tools-docs/" : "svn-branches/doc-tools-docs";
+    [:] "/branches/quickbook-dev/" : "svn-branches/quickbook-dev";
+    [:] "/branches/build/docs_2001_10_24/boost/" : "svn-branches/build/docs_2001_10_24";
+    [:] "/branches/BOOST_BUILD_PYTHON/boost/" : "svn-branches/BOOST_BUILD_PYTHON";
 
-    [:] "/branches/filesystem3/" : "filesystem3";
-    [:] "/branches/filesystem-v3/" : "filesystem-v3";
-    [:] "/branches/filesystem-v3a/" : "filesystem-v3a";
+    [:] "/branches/filesystem3/" : "svn-branches/filesystem3";
+    [:] "/branches/filesystem-v3/" : "svn-branches/filesystem-v3";
+    [:] "/branches/filesystem-v3a/" : "svn-branches/filesystem-v3a";
 
-    [:] "/branches/multi_array/" : "multi_array";
-    [:] "/branches/xpressive/nested_dynamic_regex/" : "xpressive/nested_dynamic_regex";
-    [:] "/branches/thread_rewrite/boost/" : "thread_rewrite";
-    [:] "/branches/hash/" : "hash";
-    [:] "/branches/fusion/2_1/" : "fusion/2_1";
-    [:] "/branches/system/" : "system";
-    [:] "/branches/bitten/" : "bitten";
+    [:] "/branches/multi_array/" : "svn-branches/multi_array";
+    [:] "/branches/xpressive/nested_dynamic_regex/" : "svn-branches/xpressive/nested_dynamic_regex";
+    [:] "/branches/thread_rewrite/boost/" : "svn-branches/thread_rewrite";
+    [:] "/branches/hash/" : "svn-branches/hash";
+    [:] "/branches/fusion/2_1/" : "svn-branches/fusion/2_1";
+    [:] "/branches/system/" : "svn-branches/system";
+    [:] "/branches/bitten/" : "svn-branches/bitten";
 
-    [:] "/branches/maintenance/1_41/" : "maintenance/1_41";
-    [:] "/branches/maintenance/1_50_0/" : "maintenance/1_50_0";
-    [:] "/branches/maintenance/1_54_0/" : "maintenance/1_54_0";
-    [:] "/branches/modular-build/" : "modular-build";
-    [:] "/tags/tools/jam/Perforce_Jam_2_4_merge_1/boost/" : "Perforce_Jam_2_4_merge_1";
+    [:] "/branches/maintenance/1_41/" : "svn-branches/maintenance/1_41";
+    [:] "/branches/maintenance/1_50_0/" : "svn-branches/maintenance/1_50_0";
+    [:] "/branches/maintenance/1_54_0/" : "svn-branches/maintenance/1_54_0";
+    [:] "/branches/modular-build/" : "svn-branches/modular-build";
+    [:] "/tags/tools/jam/Perforce_Jam_2_4_merge_1/boost/" : "svn-tags/tools/jam/Perforce_Jam_2_4_merge_1";
 
-    [:] "/tags/release/Version_1_17_0/boost/" : "release/Version_1_17_0";
-    [:] "/tags/release/Version_1_18_0/boost/" : "release/Version_1_18_0";
-    [:] "/tags/release/Version_1_18_2/boost/" : "release/Version_1_18_2";
-    [:] "/tags/release/Version_1_18_3/boost/" : "release/Version_1_18_3";
-    [:] "/tags/release/Version_1_19_0/boost/" : "release/Version_1_19_0";
-    [:] "/tags/release/Version_1_20_0/boost/" : "release/Version_1_20_0";
-    [:] "/tags/release/Version_1_20_1/boost/" : "release/Version_1_20_1";
-    [:] "/tags/release/Version_1_20_2/boost/" : "release/Version_1_20_2";
-    [:] "/tags/release/Version_1_21_0/boost/" : "release/Version_1_21_0";
-    [:] "/tags/release/Version_1_21_1/boost/" : "release/Version_1_21_1";
-    [:] "/tags/release/Version_1_21_2/boost/" : "release/Version_1_21_2";
-    [:] "/tags/release/Version_1_22_0/boost/" : "release/Version_1_22_0";
-    [:] "/tags/release/Version_1_23_0/boost/" : "release/Version_1_23_0";
-    [:] "/tags/release/Version_1_24_0/boost/" : "release/Version_1_24_0";
-    [:] "/tags/release/Version_1_25_0/boost/" : "release/Version_1_25_0";
-    [:] "/tags/release/Version_1_25_1/boost/" : "release/Version_1_25_1";
-    [:] "/tags/release/Version_1_26_0/boost/" : "release/Version_1_26_0";
-    [:] "/tags/release/Version_1_27_0/boost/" : "release/Version_1_27_0";
-    [:] "/tags/release/Version_1_28_0/boost/" : "release/Version_1_28_0";
-    [:] "/tags/release/Version_1_29_0/boost/" : "release/Version_1_29_0";
-    [:] "/tags/release/Version_1_30_0/boost/" : "release/Version_1_30_0";
-    [:] "/tags/release/Version_1_30_1/boost/" : "release/Version_1_30_1";
-    [:] "/tags/release/Version_1_30_2/boost/" : "release/Version_1_30_2";
-    [:] "/tags/release/Version_1_31_0/boost/" : "release/Version_1_31_0";
-    [:] "/tags/release/Version_1_32_0/boost/" : "release/Version_1_32_0";
-    [:] "/tags/release/Version_1_33_0/boost/" : "release/Version_1_33_0";
-    [:] "/tags/release/Version_1_33_1/boost/" : "release/Version_1_33_1";
-    [:] "/tags/release/Version_1_33_1_beta/boost/" : "release/Version_1_33_1_beta";
-    [:] "/tags/release/Version_1_34_0/boost/" : "release/Version_1_34_0";
-    [:] "/tags/release/Version_1_34_0_beta/boost/" : "release/Version_1_34_0_beta";
-    [:] "/tags/release/Version_1_34_0_RC1/boost/" : "release/Version_1_34_0_RC1";
-    [:] "/tags/release/Version_1_34_0_RC2/boost/" : "release/Version_1_34_0_RC2";
-    [:] "/tags/release/Version_1_34_0_RC3/boost/" : "release/Version_1_34_0_RC3";
-    [:] "/tags/release/Version_1_34_1/boost/" : "release/Version_1_34_1";
-    [:] "/tags/release/Version_1_34_1_RC1/boost/" : "release/Version_1_34_1_RC1";
-    [:] "/tags/release/Version_1_34_1_RC2/boost/" : "release/Version_1_34_1_RC2";
-    [:] "/tags/release/Version_1_34_1_RC3/boost/" : "release/Version_1_34_1_RC3";
-    [:] "/tags/release/Version_1_35_0/" : "release/Version_1_35_0";
-    [:] "/tags/release/VERSION_1_35_0_RC1/" : "release/VERSION_1_35_0_RC1";
-    [:] "/tags/release/Version_1_35_0_RC3/" : "release/Version_1_35_0_RC3";
+    [:] "/tags/release/Version_1_17_0/boost/" : "svn-tags/release/Version_1_17_0";
+    [:] "/tags/release/Version_1_18_0/boost/" : "svn-tags/release/Version_1_18_0";
+    [:] "/tags/release/Version_1_18_2/boost/" : "svn-tags/release/Version_1_18_2";
+    [:] "/tags/release/Version_1_18_3/boost/" : "svn-tags/release/Version_1_18_3";
+    [:] "/tags/release/Version_1_19_0/boost/" : "svn-tags/release/Version_1_19_0";
+    [:] "/tags/release/Version_1_20_0/boost/" : "svn-tags/release/Version_1_20_0";
+    [:] "/tags/release/Version_1_20_1/boost/" : "svn-tags/release/Version_1_20_1";
+    [:] "/tags/release/Version_1_20_2/boost/" : "svn-tags/release/Version_1_20_2";
+    [:] "/tags/release/Version_1_21_0/boost/" : "svn-tags/release/Version_1_21_0";
+    [:] "/tags/release/Version_1_21_1/boost/" : "svn-tags/release/Version_1_21_1";
+    [:] "/tags/release/Version_1_21_2/boost/" : "svn-tags/release/Version_1_21_2";
+    [:] "/tags/release/Version_1_22_0/boost/" : "svn-tags/release/Version_1_22_0";
+    [:] "/tags/release/Version_1_23_0/boost/" : "svn-tags/release/Version_1_23_0";
+    [:] "/tags/release/Version_1_24_0/boost/" : "svn-tags/release/Version_1_24_0";
+    [:] "/tags/release/Version_1_25_0/boost/" : "svn-tags/release/Version_1_25_0";
+    [:] "/tags/release/Version_1_25_1/boost/" : "svn-tags/release/Version_1_25_1";
+    [:] "/tags/release/Version_1_26_0/boost/" : "svn-tags/release/Version_1_26_0";
+    [:] "/tags/release/Version_1_27_0/boost/" : "svn-tags/release/Version_1_27_0";
+    [:] "/tags/release/Version_1_28_0/boost/" : "svn-tags/release/Version_1_28_0";
+    [:] "/tags/release/Version_1_29_0/boost/" : "svn-tags/release/Version_1_29_0";
+    [:] "/tags/release/Version_1_30_0/boost/" : "svn-tags/release/Version_1_30_0";
+    [:] "/tags/release/Version_1_30_1/boost/" : "svn-tags/release/Version_1_30_1";
+    [:] "/tags/release/Version_1_30_2/boost/" : "svn-tags/release/Version_1_30_2";
+    [:] "/tags/release/Version_1_31_0/boost/" : "svn-tags/release/Version_1_31_0";
+    [:] "/tags/release/Version_1_32_0/boost/" : "svn-tags/release/Version_1_32_0";
+    [:] "/tags/release/Version_1_33_0/boost/" : "svn-tags/release/Version_1_33_0";
+    [:] "/tags/release/Version_1_33_1/boost/" : "svn-tags/release/Version_1_33_1";
+    [:] "/tags/release/Version_1_33_1_beta/boost/" : "svn-tags/release/Version_1_33_1_beta";
+    [:] "/tags/release/Version_1_34_0/boost/" : "svn-tags/release/Version_1_34_0";
+    [:] "/tags/release/Version_1_34_0_beta/boost/" : "svn-tags/release/Version_1_34_0_beta";
+    [:] "/tags/release/Version_1_34_0_RC1/boost/" : "svn-tags/release/Version_1_34_0_RC1";
+    [:] "/tags/release/Version_1_34_0_RC2/boost/" : "svn-tags/release/Version_1_34_0_RC2";
+    [:] "/tags/release/Version_1_34_0_RC3/boost/" : "svn-tags/release/Version_1_34_0_RC3";
+    [:] "/tags/release/Version_1_34_1/boost/" : "svn-tags/release/Version_1_34_1";
+    [:] "/tags/release/Version_1_34_1_RC1/boost/" : "svn-tags/release/Version_1_34_1_RC1";
+    [:] "/tags/release/Version_1_34_1_RC2/boost/" : "svn-tags/release/Version_1_34_1_RC2";
+    [:] "/tags/release/Version_1_34_1_RC3/boost/" : "svn-tags/release/Version_1_34_1_RC3";
+    [:] "/tags/release/Version_1_35_0/" : "svn-tags/release/Version_1_35_0";
+    [:] "/tags/release/VERSION_1_35_0_RC1/" : "svn-tags/release/VERSION_1_35_0_RC1";
+    [:] "/tags/release/Version_1_35_0_RC3/" : "svn-tags/release/Version_1_35_0_RC3";
 
-    [:] "/tags/Version_1_17_0/boost/" : "Version_1_17_0";
-    [:] "/tags/Version_1_18_0/boost/" : "Version_1_18_0";
-    [:] "/tags/Version_1_18_2/boost/" : "Version_1_18_2";
-    [:] "/tags/Version_1_18_3/boost/" : "Version_1_18_3";
-    [:] "/tags/Version_1_19_0/boost/" : "Version_1_19_0";
-    [:] "/tags/Version_1_20_0/boost/" : "Version_1_20_0";
-    [:] "/tags/Version_1_20_1/boost/" : "Version_1_20_1";
-    [:] "/tags/Version_1_20_2/boost/" : "Version_1_20_2";
-    [:] "/tags/Version_1_21_0/boost/" : "Version_1_21_0";
-    [:] "/tags/Version_1_21_1/boost/" : "Version_1_21_1";
-    [:] "/tags/Version_1_21_2/boost/" : "Version_1_21_2";
-    [:] "/tags/Version_1_22_0/boost/" : "Version_1_22_0";
-    [:] "/tags/Version_1_23_0/boost/" : "Version_1_23_0";
-    [:] "/tags/Version_1_24_0/boost/" : "Version_1_24_0";
-    [:] "/tags/Version_1_25_0/boost/" : "Version_1_25_0";
-    [:] "/tags/Version_1_25_1/boost/" : "Version_1_25_1";
-    [:] "/tags/Version_1_25_1_BGL/boost/" : "Version_1_25_1_BGL";
-    [:] "/tags/Version_1_26_0/boost/" : "Version_1_26_0";
-    [:] "/tags/Version_1_27_0/boost/" : "Version_1_27_0";
-    [:] "/tags/Version_1_28_0/boost/" : "Version_1_28_0";
-    [:] "/tags/Version_1_29_0/boost/" : "Version_1_29_0";
-    [:] "/tags/Version_1_30_0/boost/" : "Version_1_30_0";
-    [:] "/tags/Version_1_30_1/boost/" : "Version_1_30_1";
-    [:] "/tags/Version_1_30_2/boost/" : "Version_1_30_2";
-    [:] "/tags/Version_1_31_0/boost/" : "Version_1_31_0";
-    [:] "/tags/Version_1_32_0/boost/" : "Version_1_32_0";
-    [:] "/tags/Version_1_33_0/boost/" : "Version_1_33_0";
-    [:] "/tags/Version_1_33_1_beta/boost/" : "Version_1_33_1_beta";
-    [:] "/tags/Version_1_33_1/boost/" : "Version_1_33_1";
-    [:] "/tags/Version_1_34_0_beta/boost/" : "Version_1_34_0_beta";
-    [:] "/tags/Version_1_34_0_RC1/boost/" : "Version_1_34_0_RC1";
-    [:] "/tags/Version_1_34_0_RC2/boost/" : "Version_1_34_0_RC2";
-    [:] "/tags/Version_1_34_0_RC3/boost/" : "Version_1_34_0_RC3";
-    [:] "/tags/Version_1_34_0/boost/" : "Version_1_34_0";
-    [:] "/tags/Version_1_34_1_RC1/boost/" : "Version_1_34_1_RC1";
-    [:] "/tags/Version_1_34_1_RC2/boost/" : "Version_1_34_1_RC2";
-    [:] "/tags/Version_1_34_1_RC3/boost/" : "Version_1_34_1_RC3";
-    [:] "/tags/Version_1_34_1/boost/" : "Version_1_34_1";
-    [:] "/tags/VERSION_1_35_0_RC1/" : "VERSION_1_35_0_RC1";
-    [:] "/tags/Version_1_35_0_RC3/" : "Version_1_35_0_RC3";
-    [:] "/tags/Version_1_35_0/" : "Version_1_35_0";
+    [:] "/tags/Version_1_17_0/boost/" : "svn-tags/Version_1_17_0";
+    [:] "/tags/Version_1_18_0/boost/" : "svn-tags/Version_1_18_0";
+    [:] "/tags/Version_1_18_2/boost/" : "svn-tags/Version_1_18_2";
+    [:] "/tags/Version_1_18_3/boost/" : "svn-tags/Version_1_18_3";
+    [:] "/tags/Version_1_19_0/boost/" : "svn-tags/Version_1_19_0";
+    [:] "/tags/Version_1_20_0/boost/" : "svn-tags/Version_1_20_0";
+    [:] "/tags/Version_1_20_1/boost/" : "svn-tags/Version_1_20_1";
+    [:] "/tags/Version_1_20_2/boost/" : "svn-tags/Version_1_20_2";
+    [:] "/tags/Version_1_21_0/boost/" : "svn-tags/Version_1_21_0";
+    [:] "/tags/Version_1_21_1/boost/" : "svn-tags/Version_1_21_1";
+    [:] "/tags/Version_1_21_2/boost/" : "svn-tags/Version_1_21_2";
+    [:] "/tags/Version_1_22_0/boost/" : "svn-tags/Version_1_22_0";
+    [:] "/tags/Version_1_23_0/boost/" : "svn-tags/Version_1_23_0";
+    [:] "/tags/Version_1_24_0/boost/" : "svn-tags/Version_1_24_0";
+    [:] "/tags/Version_1_25_0/boost/" : "svn-tags/Version_1_25_0";
+    [:] "/tags/Version_1_25_1/boost/" : "svn-tags/Version_1_25_1";
+    [:] "/tags/Version_1_25_1_BGL/boost/" : "svn-tags/Version_1_25_1_BGL";
+    [:] "/tags/Version_1_26_0/boost/" : "svn-tags/Version_1_26_0";
+    [:] "/tags/Version_1_27_0/boost/" : "svn-tags/Version_1_27_0";
+    [:] "/tags/Version_1_28_0/boost/" : "svn-tags/Version_1_28_0";
+    [:] "/tags/Version_1_29_0/boost/" : "svn-tags/Version_1_29_0";
+    [:] "/tags/Version_1_30_0/boost/" : "svn-tags/Version_1_30_0";
+    [:] "/tags/Version_1_30_1/boost/" : "svn-tags/Version_1_30_1";
+    [:] "/tags/Version_1_30_2/boost/" : "svn-tags/Version_1_30_2";
+    [:] "/tags/Version_1_31_0/boost/" : "svn-tags/Version_1_31_0";
+    [:] "/tags/Version_1_32_0/boost/" : "svn-tags/Version_1_32_0";
+    [:] "/tags/Version_1_33_0/boost/" : "svn-tags/Version_1_33_0";
+    [:] "/tags/Version_1_33_1_beta/boost/" : "svn-tags/Version_1_33_1_beta";
+    [:] "/tags/Version_1_33_1/boost/" : "svn-tags/Version_1_33_1";
+    [:] "/tags/Version_1_34_0_beta/boost/" : "svn-tags/Version_1_34_0_beta";
+    [:] "/tags/Version_1_34_0_RC1/boost/" : "svn-tags/Version_1_34_0_RC1";
+    [:] "/tags/Version_1_34_0_RC2/boost/" : "svn-tags/Version_1_34_0_RC2";
+    [:] "/tags/Version_1_34_0_RC3/boost/" : "svn-tags/Version_1_34_0_RC3";
+    [:] "/tags/Version_1_34_0/boost/" : "svn-tags/Version_1_34_0";
+    [:] "/tags/Version_1_34_1_RC1/boost/" : "svn-tags/Version_1_34_1_RC1";
+    [:] "/tags/Version_1_34_1_RC2/boost/" : "svn-tags/Version_1_34_1_RC2";
+    [:] "/tags/Version_1_34_1_RC3/boost/" : "svn-tags/Version_1_34_1_RC3";
+    [:] "/tags/Version_1_34_1/boost/" : "svn-tags/Version_1_34_1";
+    [:] "/tags/VERSION_1_35_0_RC1/" : "svn-tags/VERSION_1_35_0_RC1";
+    [:] "/tags/Version_1_35_0_RC3/" : "svn-tags/Version_1_35_0_RC3";
+    [:] "/tags/Version_1_35_0/" : "svn-tags/Version_1_35_0";
 
-    [:] "/tags/RC_1_28_0_last_merge/boost/" : "RC_1_28_0_last_merge";
-    [:] "/tags/RC_1_29_0_last_merge/boost/" : "RC_1_29_0_last_merge";
-    [:] "/tags/RC_1_30_2/boost/" : "RC_1_30_2";
-    [:] "/tags/RC_1_34_0_freeze/boost/" : "RC_1_34_0_freeze";
+    [:] "/tags/RC_1_28_0_last_merge/boost/" : "svn-tags/RC_1_28_0_last_merge";
+    [:] "/tags/RC_1_29_0_last_merge/boost/" : "svn-tags/RC_1_29_0_last_merge";
+    [:] "/tags/RC_1_30_2/boost/" : "svn-tags/RC_1_30_2";
+    [:] "/tags/RC_1_34_0_freeze/boost/" : "svn-tags/RC_1_34_0_freeze";
 
-    [2565:] "/sandbox-tags/TYPEOF_WITH_VINTAGE/" : "sandbox/TYPEOF_WITH_VINTAGE";
-    [2692:] "/sandbox-tags/start/" : "sandbox/start";
+    [2565:] "/sandbox-tags/TYPEOF_WITH_VINTAGE/" : "sandbox-tags/TYPEOF_WITH_VINTAGE";
+    [2692:] "/sandbox-tags/start/" : "sandbox-tags/start";
 
-    [:] "/tags/release_1_16_1/boost/" : "release_1_16_1";
-    [:] "/tags/conversion-merge-1/boost/" : "conversion-merge-1";
-    [:] "/tags/boost_python_llnl_/boost/" : "boost_python_llnl_";
-    [:] "/tags/merge_to_RC_1_29_0/boost/" : "merge_to_RC_1_29_0";
-    [:] "/tags/merged_to_1_30_0/boost/" : "merged_to_1_30_0";
-    [:] "/tags/merged_to_RC_1_30_0/boost/" : "merged_to_RC_1_30_0";
-    [:] "/tags/merged_to_RC_1_31_1/boost/" : "merged_to_RC_1_31_1";
-    [:] "/tags/merged_to_RC_1_31_0/boost/" : "merged_to_RC_1_31_0";
-    [:] "/tags/minmax/boost/" : "minmax";
-    [:] "/tags/merged_to_RC_/boost/" : "merged_to_RC_";
-    [:] "/tags/merged_to_RC_1_32_0/boost/" : "merged_to_RC_1_32_0";
-    [:] "/tags/merged_to_RC_1_33_0/boost/" : "merged_to_RC_1_33_0";
-    [:] "/tags/dwa-prelicense/boost/" : "dwa-prelicense";
-    [:] "/tags/merged_to_1_34_0/boost/" : "merged_to_1_34_0";
-    [:] "/tags/merged_to_RC_1_34_0/boost/" : "merged_to_RC_1_34_0";
-    [:] "/tags/SPIRIT_1_6_4_MINIBOOST/boost/" : "SPIRIT_1_6_4_MINIBOOST";
-    [:] "/tags/SPIRIT_MINIBOOST_1_34_0/boost/" : "SPIRIT_MINIBOOST_1_34_0";
-    [:] "/tags/SPIRIT_1_8_5_MINIBOOST/boost/" : "SPIRIT_1_8_5_MINIBOOST";
-    [:] "/tags/release/release_1_16_1/boost/" : "release/release_1_16_1";
-    [:] "/tags/release/RC_1_30_2/boost/" : "release/RC_1_30_2";
-    [:] "/tags/header-cache/boost/" : "header-cache";
-    [:] "/tags/bjam_3_1_2/boost/" : "bjam_3_1_2";
-    [:] "/tags/Milestone_9_1/boost/" : "Milestone_9_1";
-    [:] "/tags/dwa-postlicense/boost/" : "dwa-postlicense";
-    [:] "/tags/perforce_2_4_merge_1/boost/" : "perforce_2_4_merge_1";
-    [:] "/tags/start/Version_1_18_3/boost/" : "start-tags/Version_1_18_3";
-    [:] "/tags/jam/perforce_2_4_merge_1/boost/" : "jam/perforce_2_4_merge_1";
-    [:] "/tags/jam/Perforce_Jam_2_4_merge_1/boost/" : "jam/Perforce_Jam_2_4_merge_1";
+    [:] "/tags/release_1_16_1/boost/" : "svn-tags/release_1_16_1";
+    [:] "/tags/conversion-merge-1/boost/" : "svn-tags/conversion-merge-1";
+    [:] "/tags/boost_python_llnl_/boost/" : "svn-tags/boost_python_llnl_";
+    [:] "/tags/merge_to_RC_1_29_0/boost/" : "svn-tags/merge_to_RC_1_29_0";
+    [:] "/tags/merged_to_1_30_0/boost/" : "svn-tags/merged_to_1_30_0";
+    [:] "/tags/merged_to_RC_1_30_0/boost/" : "svn-tags/merged_to_RC_1_30_0";
+    [:] "/tags/merged_to_RC_1_31_1/boost/" : "svn-tags/merged_to_RC_1_31_1";
+    [:] "/tags/merged_to_RC_1_31_0/boost/" : "svn-tags/merged_to_RC_1_31_0";
+    [:] "/tags/minmax/boost/" : "svn-tags/minmax";
+    [:] "/tags/merged_to_RC_/boost/" : "svn-tags/merged_to_RC_";
+    [:] "/tags/merged_to_RC_1_32_0/boost/" : "svn-tags/merged_to_RC_1_32_0";
+    [:] "/tags/merged_to_RC_1_33_0/boost/" : "svn-tags/merged_to_RC_1_33_0";
+    [:] "/tags/dwa-prelicense/boost/" : "svn-tags/dwa-prelicense";
+    [:] "/tags/merged_to_1_34_0/boost/" : "svn-tags/merged_to_1_34_0";
+    [:] "/tags/merged_to_RC_1_34_0/boost/" : "svn-tags/merged_to_RC_1_34_0";
+    [:] "/tags/SPIRIT_1_6_4_MINIBOOST/boost/" : "svn-tags/SPIRIT_1_6_4_MINIBOOST";
+    [:] "/tags/SPIRIT_MINIBOOST_1_34_0/boost/" : "svn-tags/SPIRIT_MINIBOOST_1_34_0";
+    [:] "/tags/SPIRIT_1_8_5_MINIBOOST/boost/" : "svn-tags/SPIRIT_1_8_5_MINIBOOST";
+    [:] "/tags/release/release_1_16_1/boost/" : "svn-tags/release/release_1_16_1";
+    [:] "/tags/release/RC_1_30_2/boost/" : "svn-tags/release/RC_1_30_2";
+    [:] "/tags/header-cache/boost/" : "svn-tags/header-cache";
+    [:] "/tags/bjam_3_1_2/boost/" : "svn-tags/bjam_3_1_2";
+    [:] "/tags/Milestone_9_1/boost/" : "svn-tags/Milestone_9_1";
+    [:] "/tags/dwa-postlicense/boost/" : "svn-tags/dwa-postlicense";
+    [:] "/tags/perforce_2_4_merge_1/boost/" : "svn-tags/perforce_2_4_merge_1";
+    [:] "/tags/start/Version_1_18_3/boost/" : "svn-tags/start/Version_1_18_3";
+    [:] "/tags/jam/perforce_2_4_merge_1/boost/" : "svn-tags/jam/perforce_2_4_merge_1";
+    [:] "/tags/jam/Perforce_Jam_2_4_merge_1/boost/" : "svn-tags/jam/Perforce_Jam_2_4_merge_1";
   }
   tags
   {
@@ -445,8 +445,8 @@ repository bind : common_branches
   }
   branches
   {
-    [:] "/branches/pro7_void_returns/boost/" : "pro7_void_returns";
-    [:] "/branches/void_returns/boost/" : "void_returns";
+    [:] "/branches/pro7_void_returns/boost/" : "svn-branches/pro7_void_returns";
+    [:] "/branches/void_returns/boost/" : "svn-branches/void_returns";
   }
 }
 
@@ -526,8 +526,8 @@ repository config : common_branches
   }
   branches
   {
-    [:] "/branches/BOOST_VERSION_NUMBER/boost/" : "BOOST_VERSION_NUMBER";
-    [:] "/branches/unlabeled-1.37.2/boost/" : "unlabeled-1.37.2";
+    [:] "/branches/BOOST_VERSION_NUMBER/boost/" : "svn-branches/BOOST_VERSION_NUMBER";
+    [:] "/branches/unlabeled-1.37.2/boost/" : "svn-branches/unlabeled-1.37.2";
   }
 }
 
@@ -570,11 +570,11 @@ abstract repository unordered_foreign_branches
 {
   branches
   {
-    [:] "/branches/unordered/refactor/" : "unordered/refactor";
-    [:] "/branches/unordered/trunk/" : "unordered/trunk";
-    [:] "/branches/unordered/dev/" : "unordered/dev";
-    [:] "/branches/unordered/add-on/" : "unordered/add-on";
-    [:] "/sandbox/unordered/" : "unordered/sandbox";
+    [:] "/branches/unordered/refactor/" : "svn-branches/unordered/refactor";
+    [:] "/branches/unordered/trunk/" : "svn-branches/unordered/trunk";
+    [:] "/branches/unordered/dev/" : "svn-branches/unordered/dev";
+    [:] "/branches/unordered/add-on/" : "svn-branches/unordered/add-on";
+    [:] "/sandbox/unordered/" : "sandbox/unordered";
   }
 }
 
@@ -666,7 +666,7 @@ repository date_time : common_branches
   }
   branches
   {
-    [:] "/branches/date_time_io_rewrite/" : "date_time_io_rewrite";
+    [:] "/branches/date_time_io_rewrite/" : "svn-branches/date_time_io_rewrite";
   }
 }
 
@@ -719,9 +719,9 @@ repository filesystem : common_branches
   }
   branches
   {
-    [:] "/branches/i18n/boost/" : "i18n";
-    [:] "/tags/n1889/boost/" : "n1889";
-    [:] "/sandbox-tags/Formal_Review/" : "sandbox/Formal_Review";
+    [:] "/branches/i18n/boost/" : "svn-branches/i18n";
+    [:] "/tags/n1889/boost/" : "svn-tags/n1889";
+    [:] "/sandbox-tags/Formal_Review/" : "sandbox-tags/Formal_Review";
   }
 }
 
@@ -736,7 +736,7 @@ repository filesystem
   }
   branches
   {
-    [:] "/branches/libs/filesystem/" : "filesystem";
+    [:] "/branches/libs/filesystem/" : "svn-branches/libs/filesystem";
   }
 }
 
@@ -770,7 +770,7 @@ repository format : common_branches
     "boost/format.hpp" : "include/boost/format.hpp";
     "boost/format/" : "include/boost/format/";
     "libs/format/";
-    [:] "/tags/RC_1_29_0_last_sync/boost/" : "RC_1_29_0_last_sync";
+    [:] "/tags/RC_1_29_0_last_sync/boost/" : "svn-tags/RC_1_29_0_last_sync";
   }
 }
 
@@ -786,7 +786,7 @@ repository function : common_branches
   }
   branches
   {
-    [:] "/branches/function_v2/boost/" : "function_v2";
+    [:] "/branches/function_v2/boost/" : "svn-branches/function_v2";
   }
 }
 
@@ -834,7 +834,7 @@ repository geometry : common_branches
   branches
   {
     [:] "/sandbox/geometry/" : "sandbox/geometry";
-    [:] "/tags/geometry/boost_1_49_0/" : "geometry/boost_1_49_0";
+    [:] "/tags/geometry/boost_1_49_0/" : "svn-tags/geometry/boost_1_49_0";
   }
 }
 
@@ -851,13 +851,13 @@ repository geometry
   }
   branches
   {
-    [:] "/sandbox-branches/geometry/index/" : "sandbox/geometry/index";
-    [:] "/sandbox-branches/geometry/index_dev/" : "sandbox/geometry/index_dev";
-    [:] "/sandbox-branches/geometry/index_dyn/" : "sandbox/geometry/index_dyn";
-    [:] "/sandbox-branches/geometry/index_080/" : "sandbox/geometry/index_080";
-    [:] "/sandbox-branches/geometry/index_080_vis/" : "sandbox/geometry/index_080_vis";
-    [:] "/sandbox-branches/geometry/index_080_new/" : "sandbox/geometry/index_080_new";
-    [:] "/sandbox-branches/geometry/index_080_nhch/" : "sandbox/geometry/index_080_nhch";
+    [:] "/sandbox-branches/geometry/index/" : "sandbox-branches/geometry/index";
+    [:] "/sandbox-branches/geometry/index_dev/" : "sandbox-branches/geometry/index_dev";
+    [:] "/sandbox-branches/geometry/index_dyn/" : "sandbox-branches/geometry/index_dyn";
+    [:] "/sandbox-branches/geometry/index_080/" : "sandbox-branches/geometry/index_080";
+    [:] "/sandbox-branches/geometry/index_080_vis/" : "sandbox-branches/geometry/index_080_vis";
+    [:] "/sandbox-branches/geometry/index_080_new/" : "sandbox-branches/geometry/index_080_new";
+    [:] "/sandbox-branches/geometry/index_080_nhch/" : "sandbox-branches/geometry/index_080_nhch";
   }
 }
 
@@ -914,16 +914,16 @@ repository graph : common_branches
   }
   branches
   {
-    [:] "/branches/unlabeled-1.65.2/boost/" : "unlabeled-1.65.2";
-    [:] "/branches/graph_devel/boost/" : "graph_devel";
-    [:] "/branches/unlabeled-1.1.4/boost/" : "unlabeled-1.1.4";
-    [:] "/branches/graph_devel_1_33_0/boost/" : "graph_devel_1_33_0";
-    [:] "/branches/unlabeled-1.19.2/boost/" : "unlabeled-1.19.2";
-    [:] "/branches/unlabeled-1.21.2/boost/" : "unlabeled-1.21.2";
-    [:] "/branches/unlabeled-1.13.2/boost/" : "unlabeled-1.13.2";
-    [:] "/tags/graph_devel_merged_to_trunk/boost/" : "graph_devel_merged_to_trunk";
-    [:] "/tags/boost++graph/boost/" : "boost++graph";
-    [:] "/tags/merged_to_graph_devel/boost/" : "merged_to_graph_devel";
+    [:] "/branches/unlabeled-1.65.2/boost/" : "svn-branches/unlabeled-1.65.2";
+    [:] "/branches/graph_devel/boost/" : "svn-branches/graph_devel";
+    [:] "/branches/unlabeled-1.1.4/boost/" : "svn-branches/unlabeled-1.1.4";
+    [:] "/branches/graph_devel_1_33_0/boost/" : "svn-branches/graph_devel_1_33_0";
+    [:] "/branches/unlabeled-1.19.2/boost/" : "svn-branches/unlabeled-1.19.2";
+    [:] "/branches/unlabeled-1.21.2/boost/" : "svn-branches/unlabeled-1.21.2";
+    [:] "/branches/unlabeled-1.13.2/boost/" : "svn-branches/unlabeled-1.13.2";
+    [:] "/tags/graph_devel_merged_to_trunk/boost/" : "svn-tags/graph_devel_merged_to_trunk";
+    [:] "/tags/boost++graph/boost/" : "svn-tags/boost++graph";
+    [:] "/tags/merged_to_graph_devel/boost/" : "svn-tags/merged_to_graph_devel";
   }
 }
 
@@ -994,8 +994,8 @@ repository io : common_branches
   }
   branches
   {
-    [:] "/sandbox-branches/cppljevans/" : "sandbox/cppljevans";
-    [:] "/sandbox-tags/init_import/" : "sandbox/init_import";
+    [:] "/sandbox-branches/cppljevans/" : "sandbox-branches/cppljevans";
+    [:] "/sandbox-tags/init_import/" : "sandbox-tags/init_import";
   }
 }
 
@@ -1009,8 +1009,8 @@ repository iostreams : common_branches
   }
   branches
   {
-    [:] "/sandbox-branches/birbacher/tmp_iostreams/" : "sandbox/birbacher/tmp_iostreams";
-    [:] "/tags/iostreams_pre_non_blocking/boost/" : "iostreams_pre_non_blocking";
+    [:] "/sandbox-branches/birbacher/tmp_iostreams/" : "sandbox-branches/birbacher/tmp_iostreams";
+    [:] "/tags/iostreams_pre_non_blocking/boost/" : "svn-tags/iostreams_pre_non_blocking";
   }
 }
 
@@ -1041,14 +1041,14 @@ repository iterator : common_branches
   }
   branches
   {
-    [:] "/branches/boostify/boost/" : "boostify";
-    [:] "/branches/iterator_build/boost/" : "iterator_build";
-    [:] "/branches/unlabeled-1.25.2/boost/" : "unlabeled-1.25.2";
-    [:] "/branches/zip_iterator_fusion/boost/" : "zip_iterator_fusion";
-    [:] "/branches/unlabeled-1.37.6/boost/" : "unlabeled-1.37.6";
-    [:] "/branches/simplify/boost/" : "simplify";
-    [:] "/branches/build/boost/" : "build";
-    [:] "/tags/jan18/boost/" : "jan18";
+    [:] "/branches/boostify/boost/" : "svn-branches/boostify";
+    [:] "/branches/iterator_build/boost/" : "svn-branches/iterator_build";
+    [:] "/branches/unlabeled-1.25.2/boost/" : "svn-branches/unlabeled-1.25.2";
+    [:] "/branches/zip_iterator_fusion/boost/" : "svn-branches/zip_iterator_fusion";
+    [:] "/branches/unlabeled-1.37.6/boost/" : "svn-branches/unlabeled-1.37.6";
+    [:] "/branches/simplify/boost/" : "svn-branches/simplify";
+    [:] "/branches/build/boost/" : "svn-branches/build";
+    [:] "/tags/jan18/boost/" : "svn-tags/jan18";
   }
 }
 
@@ -1062,9 +1062,9 @@ repository lambda : common_branches
   }
   branches
   {
-    [:] "/branches/lambda_development/boost/" : "lambda_development";
-    [:] "/branches/lambda_development_during_review/boost/" : "lambda_development_during_review";
-    [:] "/tags/reference_types_in_return_type_deduction/boost/" : "reference_types_in_return_type_deduction";
+    [:] "/branches/lambda_development/boost/" : "svn-branches/lambda_development";
+    [:] "/branches/lambda_development_during_review/boost/" : "svn-branches/lambda_development_during_review";
+    [:] "/tags/reference_types_in_return_type_deduction/boost/" : "svn-tags/reference_types_in_return_type_deduction";
   }
 }
 
@@ -1135,7 +1135,7 @@ repository math : common_branches
   {
     [:] "/sandbox/math/" : "sandbox/math";
     [:] "/sandbox/math_toolkit/" : "sandbox/math_toolkit";
-    [:] "/sandbox-branches/math_toolkit/" : "sandbox-branch/math_toolkit";
+    [:] "/sandbox-branches/math_toolkit/" : "sandbox-branches/math_toolkit";
   }
 }
 
@@ -1173,9 +1173,9 @@ repository mpl : common_branches
   }
   branches
   {
-    [:] "/branches/mpl-development/boost/" : "mpl-development";
-    [:] "/tags/mpl_root_license_rename_1/boost/" : "mpl_root_license_rename_1";
-    [:] "/tags/merged_to_mplbook/boost/" : "merged_to_mplbook";
+    [:] "/branches/mpl-development/boost/" : "svn-branches/mpl-development";
+    [:] "/tags/mpl_root_license_rename_1/boost/" : "svn-tags/mpl_root_license_rename_1";
+    [:] "/tags/merged_to_mplbook/boost/" : "svn-tags/merged_to_mplbook";
   }
 }
 
@@ -1191,8 +1191,8 @@ repository msm : common_branches
   }
   branches
   {
-    [:] "/branches/msm/v2_30/" : "msm/v2_30";
-    [:] "/branches/msm/msm_phoenix/" : "msm/msm_phoenix";
+    [:] "/branches/msm/v2_30/" : "svn-branches/msm/v2_30";
+    [:] "/branches/msm/msm_phoenix/" : "svn-branches/msm/msm_phoenix";
   }
 }
 
@@ -1208,7 +1208,7 @@ repository multi_array : common_branches
   }
   branches
   {
-    [:] "/branches/multi_array_python/boost/" : "multi_array_python";
+    [:] "/branches/multi_array_python/boost/" : "svn-branches/multi_array_python";
   }
 }
 
@@ -1293,11 +1293,11 @@ repository ublas : common_branches
   }
   branches
   {
-    [:] "/branches/uBLAS_pure/boost/" : "uBLAS_pure";
-    [:] "/branches/uBLAS_assignment_sematics/boost/" : "uBLAS_assignment_sematics";
-    [:] "/tags/Root_uBLAS_pure/boost/" : "Root_uBLAS_pure";
-    [:] "/tags/Root_uBLAS_assignment_sematics/boost/" : "Root_uBLAS_assignment_sematics";
-    [:] "/tags/uBLAS_good/boost/" : "uBLAS_good";
+    [:] "/branches/uBLAS_pure/boost/" : "svn-branches/uBLAS_pure";
+    [:] "/branches/uBLAS_assignment_sematics/boost/" : "svn-branches/uBLAS_assignment_sematics";
+    [:] "/tags/Root_uBLAS_pure/boost/" : "svn-tags/Root_uBLAS_pure";
+    [:] "/tags/Root_uBLAS_assignment_sematics/boost/" : "svn-tags/Root_uBLAS_assignment_sematics";
+    [:] "/tags/uBLAS_good/boost/" : "svn-tags/uBLAS_good";
   }
 }
 
@@ -1305,7 +1305,7 @@ repository ublas
 {
   branches
   {
-    [:] "/branches/ublas-doxygen/" : "doxygen";
+    [:] "/branches/ublas-doxygen/" : "svn-branches/ublas-doxygen";
   }
 }
 
@@ -1339,11 +1339,11 @@ repository parameter : common_branches
   }
   branches
   {
-    [:] "/branches/parameter-post-1_33/boost/" : "parameter-post-1_33";
-    [:] "/branches/robstewart/boost/" : "robstewart";
-    [:] "/branches/parameter-python/boost/" : "parameter-python";
-    [:] "/tags/parameter_merged_to_RC_1_34_0/boost/" : "parameter_merged_to_RC_1_34_0";
-    [:] "/tags/jam/parameter_merged_to_RC_1_34_0/boost/" : "jam/parameter_merged_to_RC_1_34_0";
+    [:] "/branches/parameter-post-1_33/boost/" : "svn-branches/parameter-post-1_33";
+    [:] "/branches/robstewart/boost/" : "svn-branches/robstewart";
+    [:] "/branches/parameter-python/boost/" : "svn-branches/parameter-python";
+    [:] "/tags/parameter_merged_to_RC_1_34_0/boost/" : "svn-tags/parameter_merged_to_RC_1_34_0";
+    [:] "/tags/jam/parameter_merged_to_RC_1_34_0/boost/" : "svn-tags/jam/parameter_merged_to_RC_1_34_0";
   }
 }
 
@@ -1358,7 +1358,7 @@ repository phoenix : common_branches
   }
   branches
   {
-    [:] "/sandbox/SOC/2010/phoenix3/" : "SOC/2010";
+    [:] "/sandbox/SOC/2010/phoenix3/" : "sandbox/SOC/2010/phoenix3";
   }
 }
 
@@ -1382,7 +1382,7 @@ repository pool : common_branches
   }
   branches
   {
-    [:] "/sandbox/guild/pool/" : "sandbox/guild";
+    [:] "/sandbox/guild/pool/" : "sandbox/guild/pool";
   }
 }
 
@@ -1398,8 +1398,8 @@ repository preprocessor : common_branches
   }
   branches
   {
-    [:] "/branches/pplib/variadics/" : "variadics";
-    [:] "/branches/pplib/v2/" : "v2";
+    [:] "/branches/pplib/variadics/" : "svn-branches/pplib/variadics";
+    [:] "/branches/pplib/v2/" : "svn-branches/pplib/v2";
   }
 }
 
@@ -1423,7 +1423,7 @@ repository preprocessor
   }
   branches
   {
-    [:] "/branches/pplib/variadics/" : "variadics";
+    [:] "/branches/pplib/variadics/" : "svn-branches/pplib/variadics";
   }
 }
 
@@ -1435,7 +1435,7 @@ repository preprocessor
   }
   branches
   {
-    [:] "/branches/pplib/variadics/trunk/" : "variadics";
+    [:] "/branches/pplib/variadics/trunk/" : "svn-branches/pplib/variadics/trunk";
   }
 }
 
@@ -1511,112 +1511,112 @@ repository python : common_branches
   }
   branches
   {
-    [:] "/branches/boost_python_richcmp/boost/" : "boost_python_richcmp";
-    [:] "/branches/unlabeled-1.23.2/boost/" : "unlabeled-1.23.2";
-    [:] "/branches/unlabeled-1.7.4/boost/" : "unlabeled-1.7.4";
-    [:] "/branches/unlabeled-1.3.6/boost/" : "unlabeled-1.3.6";
-    [:] "/branches/unlabeled-1.10.4/boost/" : "unlabeled-1.10.4";
-    [:] "/branches/unlabeled-1.5.4/boost/" : "unlabeled-1.5.4";
-    [:] "/branches/rollback/boost/" : "rollback";
-    [:] "/branches/newbpl/boost/" : "newbpl";
-    [:] "/branches/unlabeled-1.1.1.1.6/boost/" : "unlabeled-1.1.1.1.6";
-    [:] "/branches/unlabeled-1.3.8/boost/" : "unlabeled-1.3.8";
-    [:] "/branches/shared_modules/boost/" : "shared_modules";
-    [:] "/branches/cursor/boost/" : "cursor";
-    [:] "/branches/python/boost/" : "python";
-    [:] "/branches/null_ptr_is_none/boost/" : "null_ptr_is_none";
-    [:] "/branches/indexing_v2/boost/" : "indexing_v2";
-    [:] "/branches/build_development-gcc-unix/boost/" : "build_development-gcc-unix";
-    [:] "/branches/build-development-gcc-unix/boost/" : "build-development-gcc-unix";
-    [:] "/branches/ralf_grosse_kunstleve/boost/" : "ralf_grosse_kunstleve";
-    [:] "/branches/boost_python_friend_fixes/boost/" : "boost_python_friend_fixes";
-    [:] "/branches/python-voidptr/boost/" : "python-voidptr";
-    [:] "/branches/boost/boost/" : "oops";
-    [:] "/branches/python_v2_API_restructure/boost/" : "python_v2_API_restructure";
+    [:] "/branches/boost_python_richcmp/boost/" : "svn-branches/boost_python_richcmp";
+    [:] "/branches/unlabeled-1.23.2/boost/" : "svn-branches/unlabeled-1.23.2";
+    [:] "/branches/unlabeled-1.7.4/boost/" : "svn-branches/unlabeled-1.7.4";
+    [:] "/branches/unlabeled-1.3.6/boost/" : "svn-branches/unlabeled-1.3.6";
+    [:] "/branches/unlabeled-1.10.4/boost/" : "svn-branches/unlabeled-1.10.4";
+    [:] "/branches/unlabeled-1.5.4/boost/" : "svn-branches/unlabeled-1.5.4";
+    [:] "/branches/rollback/boost/" : "svn-branches/rollback";
+    [:] "/branches/newbpl/boost/" : "svn-branches/newbpl";
+    [:] "/branches/unlabeled-1.1.1.1.6/boost/" : "svn-branches/unlabeled-1.1.1.1.6";
+    [:] "/branches/unlabeled-1.3.8/boost/" : "svn-branches/unlabeled-1.3.8";
+    [:] "/branches/shared_modules/boost/" : "svn-branches/shared_modules";
+    [:] "/branches/cursor/boost/" : "svn-branches/cursor";
+    [:] "/branches/python/boost/" : "svn-branches/python";
+    [:] "/branches/null_ptr_is_none/boost/" : "svn-branches/null_ptr_is_none";
+    [:] "/branches/indexing_v2/boost/" : "svn-branches/indexing_v2";
+    [:] "/branches/build_development-gcc-unix/boost/" : "svn-branches/build_development-gcc-unix";
+    [:] "/branches/build-development-gcc-unix/boost/" : "svn-branches/build-development-gcc-unix";
+    [:] "/branches/ralf_grosse_kunstleve/boost/" : "svn-branches/ralf_grosse_kunstleve";
+    [:] "/branches/boost_python_friend_fixes/boost/" : "svn-branches/boost_python_friend_fixes";
+    [:] "/branches/python-voidptr/boost/" : "svn-branches/python-voidptr";
+    [:] "/branches/boost/boost/" : "svn-branches/boost";
+    [:] "/branches/python_v2_API_restructure/boost/" : "svn-branches/python_v2_API_restructure";
     [:] "/sandbox-branches/boost/" : "sandbox-branches/boost";
-    [:] "/tags/monthly/boost/" : "monthly";
-    [:] "/tags/version_0-9-26/boost/" : "version_0-9-26";
-    [:] "/tags/start/boost/" : "start";
-    [:] "/tags/before_adding_complex/boost/" : "before_adding_complex";
-    [:] "/tags/version_0-7-0/boost/" : "version_0-7-0";
-    [:] "/tags/version_0-7-2/boost/" : "version_0-7-2";
-    [:] "/tags/version_0-7-8/boost/" : "version_0-7-8";
-    [:] "/tags/version_0-9-10/boost/" : "version_0-9-10";
-    [:] "/tags/version_0-9-9/boost/" : "version_0-9-9";
-    [:] "/tags/version_0-9-8/boost/" : "version_0-9-8";
-    [:] "/tags/version_0-9-13/boost/" : "version_0-9-13";
-    [:] "/tags/version_0-9-22/boost/" : "version_0-9-22";
-    [:] "/tags/version_0-9-27/boost/" : "version_0-9-27";
-    [:] "/tags/version_0-9-28/boost/" : "version_0-9-28";
-    [:] "/tags/version_0-9-14/boost/" : "version_0-9-14";
-    [:] "/tags/version_0-9-5/boost/" : "version_0-9-5";
-    [:] "/tags/version_0-9-4/boost/" : "version_0-9-4";
-    [:] "/tags/version_0-9-3/boost/" : "version_0-9-3";
-    [:] "/tags/version_0-9-15/boost/" : "version_0-9-15";
-    [:] "/tags/version_0-9-2/boost/" : "version_0-9-2";
-    [:] "/tags/version_0-9-16/boost/" : "version_0-9-16";
-    [:] "/tags/version_0-9-1/boost/" : "version_0-9-1";
-    [:] "/tags/version_0-9-19/boost/" : "version_0-9-19";
-    [:] "/tags/version_0-9-0/boost/" : "version_0-9-0";
-    [:] "/tags/version_0-8-2/boost/" : "version_0-8-2";
-    [:] "/tags/version_0-8-1/boost/" : "version_0-8-1";
-    [:] "/tags/version_0-9-20/boost/" : "version_0-9-20";
-    [:] "/tags/version_0-7-9/boost/" : "version_0-7-9";
-    [:] "/tags/version_0-9-21/boost/" : "version_0-9-21";
-    [:] "/tags/factor_out_redundant_macro_code_into_base_class/boost/" : "factor_out_redundant_macro_code_into_base_class";
-    [:] "/tags/merged_to_RC_1_28_2/boost/" : "merged_to_RC_1_28_2";
-    [:] "/tags/release/Boost_0_7_0/boost/" : "release/Boost_0_7_0";
-    [:] "/tags/release/Boost_0_7_2/boost/" : "release/Boost_0_7_2";
-    [:] "/tags/release/Boost_0_7_8/boost/" : "release/Boost_0_7_8";
-    [:] "/tags/release/Boost_0_7_9/boost/" : "release/Boost_0_7_9";
-    [:] "/tags/release/Boost_0_8_1/boost/" : "release/Boost_0_8_1";
-    [:] "/tags/release/Boost_0_8_2/boost/" : "release/Boost_0_8_2";
-    [:] "/tags/release/Boost_0_9_0/boost/" : "release/Boost_0_9_0";
-    [:] "/tags/release/Boost_0_9_1/boost/" : "release/Boost_0_9_1";
-    [:] "/tags/release/Boost_0_9_2/boost/" : "release/Boost_0_9_2";
-    [:] "/tags/release/Boost_0_9_3/boost/" : "release/Boost_0_9_3";
-    [:] "/tags/release/Boost_0_9_4/boost/" : "release/Boost_0_9_4";
-    [:] "/tags/release/Boost_0_9_5/boost/" : "release/Boost_0_9_5";
-    [:] "/tags/release/Boost_0_9_8/boost/" : "release/Boost_0_9_8";
-    [:] "/tags/release/Boost_0_9_9/boost/" : "release/Boost_0_9_9";
-    [:] "/tags/release/Boost_0_9_10/boost/" : "release/Boost_0_9_10";
-    [:] "/tags/release/Boost_0_9_13/boost/" : "release/Boost_0_9_13";
-    [:] "/tags/release/Boost_0_9_14/boost/" : "release/Boost_0_9_14";
-    [:] "/tags/release/Boost_0_9_15/boost/" : "release/Boost_0_9_15";
-    [:] "/tags/release/Boost_0_9_16/boost/" : "release/Boost_0_9_16";
-    [:] "/tags/release/Boost_0_9_19/boost/" : "release/Boost_0_9_19";
-    [:] "/tags/release/Boost_0_9_20/boost/" : "release/Boost_0_9_20";
-    [:] "/tags/release/Boost_0_9_21/boost/" : "release/Boost_0_9_21";
-    [:] "/tags/release/Boost_0_9_22/boost/" : "release/Boost_0_9_22";
-    [:] "/tags/release/Boost_0_9_26/boost/" : "release/Boost_0_9_26";
-    [:] "/tags/release/Boost_0_9_27/boost/" : "release/Boost_0_9_27";
-    [:] "/tags/release/Boost_0_9_28/boost/" : "release/Boost_0_9_28";
-    [:] "/tags/release/version_0-7-0/boost/" : "release/version_0-7-0";
-    [:] "/tags/release/version_0-7-2/boost/" : "release/version_0-7-2";
-    [:] "/tags/release/version_0-7-8/boost/" : "release/version_0-7-8";
-    [:] "/tags/release/version_0-7-9/boost/" : "release/version_0-7-9";
-    [:] "/tags/release/version_0-8-1/boost/" : "release/version_0-8-1";
-    [:] "/tags/release/version_0-8-2/boost/" : "release/version_0-8-2";
-    [:] "/tags/release/version_0-9-0/boost/" : "release/version_0-9-0";
-    [:] "/tags/release/version_0-9-1/boost/" : "release/version_0-9-1";
-    [:] "/tags/release/version_0-9-2/boost/" : "release/version_0-9-2";
-    [:] "/tags/release/version_0-9-3/boost/" : "release/version_0-9-3";
-    [:] "/tags/release/version_0-9-4/boost/" : "release/version_0-9-4";
-    [:] "/tags/release/version_0-9-5/boost/" : "release/version_0-9-5";
-    [:] "/tags/release/version_0-9-8/boost/" : "release/version_0-9-8";
-    [:] "/tags/release/version_0-9-9/boost/" : "release/version_0-9-9";
-    [:] "/tags/release/version_0-9-10/boost/" : "release/version_0-9-10";
-    [:] "/tags/release/version_0-9-13/boost/" : "release/version_0-9-13";
-    [:] "/tags/release/version_0-9-14/boost/" : "release/version_0-9-14";
-    [:] "/tags/release/version_0-9-15/boost/" : "release/version_0-9-15";
-    [:] "/tags/release/version_0-9-16/boost/" : "release/version_0-9-16";
-    [:] "/tags/release/version_0-9-19/boost/" : "release/version_0-9-19";
-    [:] "/tags/release/version_0-9-20/boost/" : "release/version_0-9-20";
-    [:] "/tags/release/version_0-9-21/boost/" : "release/version_0-9-21";
-    [:] "/tags/release/version_0-9-22/boost/" : "release/version_0-9-22";
-    [:] "/tags/release/version_0-9-26/boost/" : "release/version_0-9-26";
-    [:] "/tags/release/version_0-9-27/boost/" : "release/version_0-9-27";
-    [:] "/tags/release/version_0-9-28/boost/" : "release/version_0-9-28";
+    [:] "/tags/monthly/boost/" : "svn-tags/monthly";
+    [:] "/tags/version_0-9-26/boost/" : "svn-tags/version_0-9-26";
+    [:] "/tags/start/boost/" : "svn-tags/start";
+    [:] "/tags/before_adding_complex/boost/" : "svn-tags/before_adding_complex";
+    [:] "/tags/version_0-7-0/boost/" : "svn-tags/version_0-7-0";
+    [:] "/tags/version_0-7-2/boost/" : "svn-tags/version_0-7-2";
+    [:] "/tags/version_0-7-8/boost/" : "svn-tags/version_0-7-8";
+    [:] "/tags/version_0-9-10/boost/" : "svn-tags/version_0-9-10";
+    [:] "/tags/version_0-9-9/boost/" : "svn-tags/version_0-9-9";
+    [:] "/tags/version_0-9-8/boost/" : "svn-tags/version_0-9-8";
+    [:] "/tags/version_0-9-13/boost/" : "svn-tags/version_0-9-13";
+    [:] "/tags/version_0-9-22/boost/" : "svn-tags/version_0-9-22";
+    [:] "/tags/version_0-9-27/boost/" : "svn-tags/version_0-9-27";
+    [:] "/tags/version_0-9-28/boost/" : "svn-tags/version_0-9-28";
+    [:] "/tags/version_0-9-14/boost/" : "svn-tags/version_0-9-14";
+    [:] "/tags/version_0-9-5/boost/" : "svn-tags/version_0-9-5";
+    [:] "/tags/version_0-9-4/boost/" : "svn-tags/version_0-9-4";
+    [:] "/tags/version_0-9-3/boost/" : "svn-tags/version_0-9-3";
+    [:] "/tags/version_0-9-15/boost/" : "svn-tags/version_0-9-15";
+    [:] "/tags/version_0-9-2/boost/" : "svn-tags/version_0-9-2";
+    [:] "/tags/version_0-9-16/boost/" : "svn-tags/version_0-9-16";
+    [:] "/tags/version_0-9-1/boost/" : "svn-tags/version_0-9-1";
+    [:] "/tags/version_0-9-19/boost/" : "svn-tags/version_0-9-19";
+    [:] "/tags/version_0-9-0/boost/" : "svn-tags/version_0-9-0";
+    [:] "/tags/version_0-8-2/boost/" : "svn-tags/version_0-8-2";
+    [:] "/tags/version_0-8-1/boost/" : "svn-tags/version_0-8-1";
+    [:] "/tags/version_0-9-20/boost/" : "svn-tags/version_0-9-20";
+    [:] "/tags/version_0-7-9/boost/" : "svn-tags/version_0-7-9";
+    [:] "/tags/version_0-9-21/boost/" : "svn-tags/version_0-9-21";
+    [:] "/tags/factor_out_redundant_macro_code_into_base_class/boost/" : "svn-tags/factor_out_redundant_macro_code_into_base_class";
+    [:] "/tags/merged_to_RC_1_28_2/boost/" : "svn-tags/merged_to_RC_1_28_2";
+    [:] "/tags/release/Boost_0_7_0/boost/" : "svn-tags/release/Boost_0_7_0";
+    [:] "/tags/release/Boost_0_7_2/boost/" : "svn-tags/release/Boost_0_7_2";
+    [:] "/tags/release/Boost_0_7_8/boost/" : "svn-tags/release/Boost_0_7_8";
+    [:] "/tags/release/Boost_0_7_9/boost/" : "svn-tags/release/Boost_0_7_9";
+    [:] "/tags/release/Boost_0_8_1/boost/" : "svn-tags/release/Boost_0_8_1";
+    [:] "/tags/release/Boost_0_8_2/boost/" : "svn-tags/release/Boost_0_8_2";
+    [:] "/tags/release/Boost_0_9_0/boost/" : "svn-tags/release/Boost_0_9_0";
+    [:] "/tags/release/Boost_0_9_1/boost/" : "svn-tags/release/Boost_0_9_1";
+    [:] "/tags/release/Boost_0_9_2/boost/" : "svn-tags/release/Boost_0_9_2";
+    [:] "/tags/release/Boost_0_9_3/boost/" : "svn-tags/release/Boost_0_9_3";
+    [:] "/tags/release/Boost_0_9_4/boost/" : "svn-tags/release/Boost_0_9_4";
+    [:] "/tags/release/Boost_0_9_5/boost/" : "svn-tags/release/Boost_0_9_5";
+    [:] "/tags/release/Boost_0_9_8/boost/" : "svn-tags/release/Boost_0_9_8";
+    [:] "/tags/release/Boost_0_9_9/boost/" : "svn-tags/release/Boost_0_9_9";
+    [:] "/tags/release/Boost_0_9_10/boost/" : "svn-tags/release/Boost_0_9_10";
+    [:] "/tags/release/Boost_0_9_13/boost/" : "svn-tags/release/Boost_0_9_13";
+    [:] "/tags/release/Boost_0_9_14/boost/" : "svn-tags/release/Boost_0_9_14";
+    [:] "/tags/release/Boost_0_9_15/boost/" : "svn-tags/release/Boost_0_9_15";
+    [:] "/tags/release/Boost_0_9_16/boost/" : "svn-tags/release/Boost_0_9_16";
+    [:] "/tags/release/Boost_0_9_19/boost/" : "svn-tags/release/Boost_0_9_19";
+    [:] "/tags/release/Boost_0_9_20/boost/" : "svn-tags/release/Boost_0_9_20";
+    [:] "/tags/release/Boost_0_9_21/boost/" : "svn-tags/release/Boost_0_9_21";
+    [:] "/tags/release/Boost_0_9_22/boost/" : "svn-tags/release/Boost_0_9_22";
+    [:] "/tags/release/Boost_0_9_26/boost/" : "svn-tags/release/Boost_0_9_26";
+    [:] "/tags/release/Boost_0_9_27/boost/" : "svn-tags/release/Boost_0_9_27";
+    [:] "/tags/release/Boost_0_9_28/boost/" : "svn-tags/release/Boost_0_9_28";
+    [:] "/tags/release/version_0-7-0/boost/" : "svn-tags/release/version_0-7-0";
+    [:] "/tags/release/version_0-7-2/boost/" : "svn-tags/release/version_0-7-2";
+    [:] "/tags/release/version_0-7-8/boost/" : "svn-tags/release/version_0-7-8";
+    [:] "/tags/release/version_0-7-9/boost/" : "svn-tags/release/version_0-7-9";
+    [:] "/tags/release/version_0-8-1/boost/" : "svn-tags/release/version_0-8-1";
+    [:] "/tags/release/version_0-8-2/boost/" : "svn-tags/release/version_0-8-2";
+    [:] "/tags/release/version_0-9-0/boost/" : "svn-tags/release/version_0-9-0";
+    [:] "/tags/release/version_0-9-1/boost/" : "svn-tags/release/version_0-9-1";
+    [:] "/tags/release/version_0-9-2/boost/" : "svn-tags/release/version_0-9-2";
+    [:] "/tags/release/version_0-9-3/boost/" : "svn-tags/release/version_0-9-3";
+    [:] "/tags/release/version_0-9-4/boost/" : "svn-tags/release/version_0-9-4";
+    [:] "/tags/release/version_0-9-5/boost/" : "svn-tags/release/version_0-9-5";
+    [:] "/tags/release/version_0-9-8/boost/" : "svn-tags/release/version_0-9-8";
+    [:] "/tags/release/version_0-9-9/boost/" : "svn-tags/release/version_0-9-9";
+    [:] "/tags/release/version_0-9-10/boost/" : "svn-tags/release/version_0-9-10";
+    [:] "/tags/release/version_0-9-13/boost/" : "svn-tags/release/version_0-9-13";
+    [:] "/tags/release/version_0-9-14/boost/" : "svn-tags/release/version_0-9-14";
+    [:] "/tags/release/version_0-9-15/boost/" : "svn-tags/release/version_0-9-15";
+    [:] "/tags/release/version_0-9-16/boost/" : "svn-tags/release/version_0-9-16";
+    [:] "/tags/release/version_0-9-19/boost/" : "svn-tags/release/version_0-9-19";
+    [:] "/tags/release/version_0-9-20/boost/" : "svn-tags/release/version_0-9-20";
+    [:] "/tags/release/version_0-9-21/boost/" : "svn-tags/release/version_0-9-21";
+    [:] "/tags/release/version_0-9-22/boost/" : "svn-tags/release/version_0-9-22";
+    [:] "/tags/release/version_0-9-26/boost/" : "svn-tags/release/version_0-9-26";
+    [:] "/tags/release/version_0-9-27/boost/" : "svn-tags/release/version_0-9-27";
+    [:] "/tags/release/version_0-9-28/boost/" : "svn-tags/release/version_0-9-28";
   }
 }
 
@@ -1624,19 +1624,19 @@ repository python
 {
   branches
   {
-    [:] "/branches/boost/boost/development/py_cpp/" : "py_cpp/development";
-    [:] "/branches/build_system/boost/" : "build_system";
-    [:] "/branches/coercion_experiments/boost/development/py_cpp/" : "py_cpp/coercion_experiments";
-    [:] "/branches/data_driven/boost/development/py_cpp/" : "py_cpp/data_driven";
-    [:] "/branches/error_handling/boost/development/py_cpp/" : "py_cpp/error_handling";
-    [:] "/branches/numerics/boost/development/py_cpp/" : "py_cpp/numerics";
-    [:] "/branches/to_python_experiments/boost/development/py_cpp/" : "py_cpp/to_python_experiments";
-    [:] "/tags/detailified/boost/development/py_cpp/" : "py_cpp/detailified";
-    [:] "/tags/release/Boost_1_19_0/boost/development/py_cpp/" : "py_cpp/release/Boost_1_19_0";
-    [:] "/tags/release/Version_1_19_0/boost/development/py_cpp/" : "py_cpp/release/Version_1_19_0";
-    [:] "/tags/start/boost/development/py_cpp/" : "py_cpp/start";
-    [:] "/tags/Version_1_19_0/boost/development/py_cpp/" : "py_cpp/Version_1_19_0";
-    [:] "/trunk/boost/development/py_cpp/" : "py_cpp/trunk";
+    [:] "/branches/boost/boost/development/py_cpp/" : "svn-branches/boost/boost/development/py_cpp";
+    [:] "/branches/build_system/boost/" : "svn-branches/build_system";
+    [:] "/branches/coercion_experiments/boost/development/py_cpp/" : "svn-branches/coercion_experiments/boost/development/py_cpp";
+    [:] "/branches/data_driven/boost/development/py_cpp/" : "svn-branches/data_driven/boost/development/py_cpp";
+    [:] "/branches/error_handling/boost/development/py_cpp/" : "svn-branches/error_handling/boost/development/py_cpp";
+    [:] "/branches/numerics/boost/development/py_cpp/" : "svn-branches/numerics/boost/development/py_cpp";
+    [:] "/branches/to_python_experiments/boost/development/py_cpp/" : "svn-branches/to_python_experiments/boost/development/py_cpp";
+    [:] "/tags/detailified/boost/development/py_cpp/" : "svn-tags/detailified/boost/development/py_cpp";
+    [:] "/tags/release/Boost_1_19_0/boost/development/py_cpp/" : "svn-tags/release/Boost_1_19_0/boost/development/py_cpp";
+    [:] "/tags/release/Version_1_19_0/boost/development/py_cpp/" : "svn-tags/release/Version_1_19_0/boost/development/py_cpp";
+    [:] "/tags/start/boost/development/py_cpp/" : "svn-tags/start/boost/development/py_cpp";
+    [:] "/tags/Version_1_19_0/boost/development/py_cpp/" : "svn-tags/Version_1_19_0/boost/development/py_cpp";
+    [:] "/trunk/boost/development/py_cpp/" : "svn-trunk/boost/development/py_cpp";
   }
 }
 
@@ -1652,8 +1652,8 @@ repository random : common_branches
   }
   branches
   {
-    [:] "/branches/wg21_random_proposal/boost/" : "wg21_random_proposal";
-    [:] "/tags/merge_wg21_random_proposal/boost/" : "merge_wg21_random_proposal";
+    [:] "/branches/wg21_random_proposal/boost/" : "svn-branches/wg21_random_proposal";
+    [:] "/tags/merge_wg21_random_proposal/boost/" : "svn-tags/merge_wg21_random_proposal";
   }
 }
 
@@ -1706,9 +1706,9 @@ repository regex : common_branches
   }
   branches
   {
-    [:] "/branches/regex-4-1/boost/" : "regex-4-1";
-    [:] "/branches/regex5/boost/" : "regex5";
-    [:] "/branches/regex-4/boost/" : "regex-4";
+    [:] "/branches/regex-4-1/boost/" : "svn-branches/regex-4-1";
+    [:] "/branches/regex5/boost/" : "svn-branches/regex5";
+    [:] "/branches/regex-4/boost/" : "svn-branches/regex-4";
   }
 }
 
@@ -1738,8 +1738,8 @@ repository serialization : common_branches
   }
   branches
   {
-    [:] "/branches/serialization_header_order/boost/" : "serialization_header_order";
-    [:] "/tags/pre_serialization_header_order/boost/" : "pre_serialization_header_order";
+    [:] "/branches/serialization_header_order/boost/" : "svn-branches/serialization_header_order";
+    [:] "/tags/pre_serialization_header_order/boost/" : "svn-tags/pre_serialization_header_order";
   }
 }
 
@@ -1771,9 +1771,9 @@ repository signals2 : common_branches
   {
     // everything was moved to subdir trunk in r48925
     [:] "/sandbox/thread_safe_signals/" : "sandbox/thread_safe_signals";
-    [:] "/sandbox/thread_safe_signals/trunk/" : "sandbox/thread_safe_signals";
-    [:] "/sandbox/thread_safe_signals/tags/pre_signals2/" : "sandbox/thread_safe_signals/pre_signals2";
-    [:] "/sandbox/thread_safe_signals/tags/v2009-02-11/" : "sandbox/thread_safe_signals/v2009-02-11";
+    [:] "/sandbox/thread_safe_signals/trunk/" : "sandbox/thread_safe_signals/trunk";
+    [:] "/sandbox/thread_safe_signals/tags/pre_signals2/" : "sandbox/thread_safe_signals/tags/pre_signals2";
+    [:] "/sandbox/thread_safe_signals/tags/v2009-02-11/" : "sandbox/thread_safe_signals/tags/v2009-02-11";
   }
 }
 
@@ -1877,14 +1877,14 @@ repository spirit : common_branches
   }
   branches
   {
-    [:] "/branches/FUSION_MSVC/boost/" : "FUSION_MSVC";
-    [:] "/branches/spirit_3x/" : "spirit_3x";
-    [:] "/branches/SPIRIT_1_9/boost/" : "SPIRIT_1_9";
-    [:] "/branches/SPIRIT_RC_1_8_5/boost/" : "SPIRIT_RC_1_8_5";
-    [:] "/branches/SPIRIT_1_8/boost/" : "SPIRIT_1_8";
-    [:] "/tags/SPIRIT_1_8_5/boost/" : "SPIRIT_1_8_5";
-    [:] "/tags/SPIRIT_1_6_4/boost/" : "SPIRIT_1_6_4";
-    [:] "/tags/USING_BOOST_TEST/boost/" : "USING_BOOST_TEST";
+    [:] "/branches/FUSION_MSVC/boost/" : "svn-branches/FUSION_MSVC";
+    [:] "/branches/spirit_3x/" : "svn-branches/spirit_3x";
+    [:] "/branches/SPIRIT_1_9/boost/" : "svn-branches/SPIRIT_1_9";
+    [:] "/branches/SPIRIT_RC_1_8_5/boost/" : "svn-branches/SPIRIT_RC_1_8_5";
+    [:] "/branches/SPIRIT_1_8/boost/" : "svn-branches/SPIRIT_1_8";
+    [:] "/tags/SPIRIT_1_8_5/boost/" : "svn-tags/SPIRIT_1_8_5";
+    [:] "/tags/SPIRIT_1_6_4/boost/" : "svn-tags/SPIRIT_1_6_4";
+    [:] "/tags/USING_BOOST_TEST/boost/" : "svn-tags/USING_BOOST_TEST";
   }
 }
 
@@ -1892,10 +1892,10 @@ repository spirit
 {
   branches
   {
-    [:] "/branches/SPIRIT_RC_1_6_2/boost/" : "SPIRIT_RC_1_6_2";
-    [:] "/branches/SPIRIT_RC_1_6_2/boost/libs/" : "SPIRIT_RC_1_6_2";
-    [:] "/branches/SPIRIT_RC_1_8_2/boost/" : "SPIRIT_RC_1_8_2";
-    [:] "/branches/SPIRIT_RC_1_8_2/boost/libs/" : "SPIRIT_RC_1_8_2";
+    [:] "/branches/SPIRIT_RC_1_6_2/boost/" : "svn-branches/SPIRIT_RC_1_6_2";
+    [:] "/branches/SPIRIT_RC_1_6_2/boost/libs/" : "svn-branches/SPIRIT_RC_1_6_2/boost/libs";
+    [:] "/branches/SPIRIT_RC_1_8_2/boost/" : "svn-branches/SPIRIT_RC_1_8_2";
+    [:] "/branches/SPIRIT_RC_1_8_2/boost/libs/" : "svn-branches/SPIRIT_RC_1_8_2/boost/libs";
   }
 }
 
@@ -1940,7 +1940,7 @@ repository system : common_branches
   }
   branches
   {
-    [:] "/branches/c++0x/boost/" : "c++0x";
+    [:] "/branches/c++0x/boost/" : "svn-branches/c++0x";
   }
 }
 
@@ -1954,7 +1954,7 @@ repository system
   }
   branches
   {
-    [:] "/branches/libs/system/" : "system";
+    [:] "/branches/libs/system/" : "svn-branches/libs/system";
   }
 }
 
@@ -1968,8 +1968,8 @@ repository test : common_branches
   }
   branches
   {
-    [:] "/branches/unit_test_development/boost/" : "unit_test_development";
-    [:] "/tags/before_partial_unit_test_merge/boost/" : "before_partial_unit_test_merge";
+    [:] "/branches/unit_test_development/boost/" : "svn-branches/unit_test_development";
+    [:] "/tags/before_partial_unit_test_merge/boost/" : "svn-tags/before_partial_unit_test_merge";
   }
 }
 
@@ -1986,11 +1986,11 @@ repository thread : common_branches
   }
   branches
   {
-    [:] "/branches/thread-initial/boost/" : "thread-initial";
-    [:] "/branches/thread_dev/boost/" : "thread_dev";
-    [:] "/tags/thread_rewrite_1/boost/" : "thread_rewrite_1";
-    [:] "/branches/thread_development/boost/" : "thread_development";
-    [:] "/tags/thread_base/boost/" : "thread_base";
+    [:] "/branches/thread-initial/boost/" : "svn-branches/thread-initial";
+    [:] "/branches/thread_dev/boost/" : "svn-branches/thread_dev";
+    [:] "/tags/thread_rewrite_1/boost/" : "svn-tags/thread_rewrite_1";
+    [:] "/branches/thread_development/boost/" : "svn-branches/thread_development";
+    [:] "/tags/thread_base/boost/" : "svn-tags/thread_base";
   }
 }
 
@@ -2038,7 +2038,7 @@ repository tti : common_branches
   }
   branches
   {
-    [:] "/sandbox/tti/" : "sandbox";
+    [:] "/sandbox/tti/" : "sandbox/tti";
   }
 }
 
@@ -2052,8 +2052,8 @@ repository tuple : common_branches
   }
   branches
   {
-    [:] "/branches/tuples_subnamespace/boost/" : "tuples_subnamespace";
-    [:] "/branches/rich_cons/boost/" : "rich_cons";
+    [:] "/branches/tuples_subnamespace/boost/" : "svn-branches/tuples_subnamespace";
+    [:] "/branches/rich_cons/boost/" : "svn-branches/rich_cons";
   }
 }
 
@@ -2097,9 +2097,9 @@ repository type_traits : common_branches
   }
   branches
   {
-    [:] "/branches/type_traits2/boost/" : "type_traits2";
-    [:] "/branches/unlabeled-1.1.1.1.2/boost/" : "unlabeled-1.1.1.1.2";
-    [:] "/tags/type_traits2_sub/boost/" : "type_traits2_sub";
+    [:] "/branches/type_traits2/boost/" : "svn-branches/type_traits2";
+    [:] "/branches/unlabeled-1.1.1.1.2/boost/" : "svn-branches/unlabeled-1.1.1.1.2";
+    [:] "/tags/type_traits2_sub/boost/" : "svn-tags/type_traits2_sub";
   }
 }
 
@@ -2114,8 +2114,8 @@ repository units : common_branches
   branches
   {
     [:] "/sandbox/units/" : "sandbox/units";
-    [:] "/sandbox-branches/steven_watanabe/" : "sandbox/steven_watanabe";
-    [:] "/sandbox-tags/HEAD/" : "sandbox/HEAD";
+    [:] "/sandbox-branches/steven_watanabe/" : "sandbox-branches/steven_watanabe";
+    [:] "/sandbox-tags/HEAD/" : "sandbox-tags/HEAD";
   }
 }
 
@@ -2124,11 +2124,11 @@ abstract repository unordered_branches
   branches
   {
     [:] "/sandbox/unordered/" : "sandbox/unordered";
-    [:] "/sandbox-branches/unordered-refactor/" : "sandbox/refactor";
-    [:] "/branches/unordered/refactor/" : "refactor";
-    [:] "/branches/unordered/trunk/" : "trunk";
-    [:] "/branches/unordered/dev/" : "dev";
-    [:] "/branches/unordered/add-on/" : "add-on";
+    [:] "/sandbox-branches/unordered-refactor/" : "sandbox-branches/unordered-refactor";
+    [:] "/branches/unordered/refactor/" : "svn-branches/unordered/refactor";
+    [:] "/branches/unordered/trunk/" : "svn-branches/unordered/trunk";
+    [:] "/branches/unordered/dev/" : "svn-branches/unordered/dev";
+    [:] "/branches/unordered/add-on/" : "svn-branches/unordered/add-on";
   }
 }
 
@@ -2186,8 +2186,8 @@ repository utility : common_branches
   }
   branches
   {
-    [:] "/branches/tmpw2001-paper/boost/" : "tmpw2001-paper";
-    [:] "/branches/unlabeled-1.4.6/boost/" : "unlabeled-1.4.6";
+    [:] "/branches/tmpw2001-paper/boost/" : "svn-branches/tmpw2001-paper";
+    [:] "/branches/unlabeled-1.4.6/boost/" : "svn-branches/unlabeled-1.4.6";
   }
 }
 
@@ -2238,8 +2238,8 @@ repository xpressive : common_branches
   }
   branches
   {
-    [:] "/branches/XPRESSIVE_1_1/boost/" : "XPRESSIVE_1_1";
-    [:] "/branches/PROTO2/boost/" : "PROTO2";
+    [:] "/branches/XPRESSIVE_1_1/boost/" : "svn-branches/XPRESSIVE_1_1";
+    [:] "/branches/PROTO2/boost/" : "svn-branches/PROTO2";
   }
 }
 
@@ -2270,7 +2270,7 @@ repository boostbook : common_branches
   }
   branches
   {
-    [:] "/sandbox/boost_docs/trunk/" : "sandbox/boost_docs";
+    [:] "/sandbox/boost_docs/trunk/" : "sandbox/boost_docs/trunk";
   }
 }
 
@@ -2293,88 +2293,88 @@ repository build : common_branches
   }
   branches
   {
-    [:] "/branches/jam_src/boost/" : "jam_src";
-    [:] "/branches/jam-src/boost/" : "jam-src";
-    [:] "/branches/jam/jam_src/boost/" : "jam_src";
-    [:] "/branches/jam/jam-src/boost/" : "jam-src";
-    [:] "/branches/build/jam-src/boost/" : "jam-src";
-    [:] "/branches/quickbook/include/boost/" : "quickbook/include";
-    [:] "/tags/bjam_3_1_5/boost/" : "Boost_Jam_3_1_5";
-    [:] "/tags/Boost_Jam_3_1_7/boost/" : "Boost_Jam_3_1_7";
-    [:] "/tags/Boost_Jam_3_1_9/boost/" : "Boost_Jam_3_1_9";
-    [:] "/tags/Boost_Jam_3_1_10/boost/" : "Boost_Jam_3_1_10";
-    [:] "/tags/Boost_Jam_3_1_11/boost/" : "Boost_Jam_3_1_11";
-    [:] "/tags/Boost_Jam_3_1_12/boost/" : "Boost_Jam_3_1_12";
-    [:] "/tags/Boost_Jam_3_1_13/boost/" : "Boost_Jam_3_1_13";
-    [:] "/tags/Boost_Jam_3_1_14/boost/" : "Boost_Jam_3_1_14";
+    [:] "/branches/jam_src/boost/" : "svn-branches/jam_src";
+    [:] "/branches/jam-src/boost/" : "svn-branches/jam-src";
+    [:] "/branches/jam/jam_src/boost/" : "svn-branches/jam/jam_src";
+    [:] "/branches/jam/jam-src/boost/" : "svn-branches/jam/jam-src";
+    [:] "/branches/build/jam-src/boost/" : "svn-branches/build/jam-src";
+    [:] "/branches/quickbook/include/boost/" : "svn-branches/quickbook/include";
+    [:] "/tags/bjam_3_1_5/boost/" : "svn-tags/bjam_3_1_5";
+    [:] "/tags/Boost_Jam_3_1_7/boost/" : "svn-tags/Boost_Jam_3_1_7";
+    [:] "/tags/Boost_Jam_3_1_9/boost/" : "svn-tags/Boost_Jam_3_1_9";
+    [:] "/tags/Boost_Jam_3_1_10/boost/" : "svn-tags/Boost_Jam_3_1_10";
+    [:] "/tags/Boost_Jam_3_1_11/boost/" : "svn-tags/Boost_Jam_3_1_11";
+    [:] "/tags/Boost_Jam_3_1_12/boost/" : "svn-tags/Boost_Jam_3_1_12";
+    [:] "/tags/Boost_Jam_3_1_13/boost/" : "svn-tags/Boost_Jam_3_1_13";
+    [:] "/tags/Boost_Jam_3_1_14/boost/" : "svn-tags/Boost_Jam_3_1_14";
 
-    [:] "/tags/jam/Boost_Jam_3_1_2/boost/" : "Boost_Jam_3_1_2";
-    [:] "/tags/jam/Boost_Jam_3_1_5/boost/" : "Boost_Jam_3_1_5";
-    [:] "/tags/jam/Boost_Jam_3_1_7/boost/" : "Boost_Jam_3_1_7";
-    [:] "/tags/jam/Boost_Jam_3_1_9/boost/" : "Boost_Jam_3_1_9";
-    [:] "/tags/jam/Boost_Jam_3_1_10/boost/" : "Boost_Jam_3_1_10";
-    [:] "/tags/jam/Boost_Jam_3_1_11/boost/" : "Boost_Jam_3_1_11";
-    [:] "/tags/jam/Boost_Jam_3_1_12/boost/" : "Boost_Jam_3_1_12";
-    [:] "/tags/jam/Boost_Jam_3_1_13/boost/" : "Boost_Jam_3_1_13";
-    [:] "/tags/jam/Boost_Jam_3_1_14/boost/" : "Boost_Jam_3_1_14";
+    [:] "/tags/jam/Boost_Jam_3_1_2/boost/" : "svn-tags/jam/Boost_Jam_3_1_2";
+    [:] "/tags/jam/Boost_Jam_3_1_5/boost/" : "svn-tags/jam/Boost_Jam_3_1_5";
+    [:] "/tags/jam/Boost_Jam_3_1_7/boost/" : "svn-tags/jam/Boost_Jam_3_1_7";
+    [:] "/tags/jam/Boost_Jam_3_1_9/boost/" : "svn-tags/jam/Boost_Jam_3_1_9";
+    [:] "/tags/jam/Boost_Jam_3_1_10/boost/" : "svn-tags/jam/Boost_Jam_3_1_10";
+    [:] "/tags/jam/Boost_Jam_3_1_11/boost/" : "svn-tags/jam/Boost_Jam_3_1_11";
+    [:] "/tags/jam/Boost_Jam_3_1_12/boost/" : "svn-tags/jam/Boost_Jam_3_1_12";
+    [:] "/tags/jam/Boost_Jam_3_1_13/boost/" : "svn-tags/jam/Boost_Jam_3_1_13";
+    [:] "/tags/jam/Boost_Jam_3_1_14/boost/" : "svn-tags/jam/Boost_Jam_3_1_14";
 
-    [:] "/tags/tools/jam/Boost_Jam_3_1_2/boost/" : "Boost_Jam_3_1_2";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_5/boost/" : "Boost_Jam_3_1_5";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_7/boost/" : "Boost_Jam_3_1_7";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_9/boost/" : "Boost_Jam_3_1_9";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_10/boost/" : "Boost_Jam_3_1_10";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_11/boost/" : "Boost_Jam_3_1_11";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_12/boost/" : "Boost_Jam_3_1_12";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_13/boost/" : "Boost_Jam_3_1_13";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_14/boost/" : "Boost_Jam_3_1_14";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_2/boost/" : "svn-tags/tools/jam/Boost_Jam_3_1_2";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_5/boost/" : "svn-tags/tools/jam/Boost_Jam_3_1_5";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_7/boost/" : "svn-tags/tools/jam/Boost_Jam_3_1_7";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_9/boost/" : "svn-tags/tools/jam/Boost_Jam_3_1_9";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_10/boost/" : "svn-tags/tools/jam/Boost_Jam_3_1_10";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_11/boost/" : "svn-tags/tools/jam/Boost_Jam_3_1_11";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_12/boost/" : "svn-tags/tools/jam/Boost_Jam_3_1_12";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_13/boost/" : "svn-tags/tools/jam/Boost_Jam_3_1_13";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_14/boost/" : "svn-tags/tools/jam/Boost_Jam_3_1_14";
 
-    [:] "/tags/milestone_1/boost/" : "Milestone_1";
-    [:] "/tags/Milestone_3/boost/" : "Milestone_3";
-    [:] "/tags/Milestone_4/boost/" : "Milestone_4";
-    [:] "/tags/Milestone_6/boost/" : "Milestone_6";
-    [:] "/tags/Milestone_7/boost/" : "Milestone_7";
-    [:] "/tags/Milestone_8/boost/" : "Milestone_8";
-    [:] "/tags/Milestone_9/boost/" : "Milestone_9";
-    [:] "/tags/Milestone_10/boost/" : "Milestone_10";
-    [:] "/tags/Milestone_10_dev/boost/" : "Milestone_10_dev";
-    [:] "/tags/Milestone_10_dev2/boost/" : "Milestone_10_dev2";
-    [:] "/tags/Milestone_11/boost/" : "Milestone_11";
-    [:] "/tags/M11_rc2/boost/" : "M11_rc2";
+    [:] "/tags/milestone_1/boost/" : "svn-tags/milestone_1";
+    [:] "/tags/Milestone_3/boost/" : "svn-tags/Milestone_3";
+    [:] "/tags/Milestone_4/boost/" : "svn-tags/Milestone_4";
+    [:] "/tags/Milestone_6/boost/" : "svn-tags/Milestone_6";
+    [:] "/tags/Milestone_7/boost/" : "svn-tags/Milestone_7";
+    [:] "/tags/Milestone_8/boost/" : "svn-tags/Milestone_8";
+    [:] "/tags/Milestone_9/boost/" : "svn-tags/Milestone_9";
+    [:] "/tags/Milestone_10/boost/" : "svn-tags/Milestone_10";
+    [:] "/tags/Milestone_10_dev/boost/" : "svn-tags/Milestone_10_dev";
+    [:] "/tags/Milestone_10_dev2/boost/" : "svn-tags/Milestone_10_dev2";
+    [:] "/tags/Milestone_11/boost/" : "svn-tags/Milestone_11";
+    [:] "/tags/M11_rc2/boost/" : "svn-tags/M11_rc2";
 
-    [:] "/tags/tools/build/milestone_1/boost/" : "Milestone_1";
-    [:] "/tags/tools/build/Milestone_3/boost/" : "Milestone_3";
-    [:] "/tags/tools/build/Milestone_4/boost/" : "Milestone_4";
-    [:] "/tags/tools/build/Milestone_6/boost/" : "Milestone_6";
-    [:] "/tags/tools/build/Milestone_7/boost/" : "Milestone_7";
-    [:] "/tags/tools/build/Milestone_8/boost/" : "Milestone_8";
-    [:] "/tags/tools/build/Milestone_9/boost/" : "Milestone_9";
-    [:] "/tags/tools/build/Milestone_9_1/boost/" : "Milestone_9_1";
-    [:] "/tags/tools/build/Milestone_10/boost/" : "Milestone_10";
-    [:] "/tags/tools/build/Milestone_10_dev/boost/" : "Milestone_10_dev";
-    [:] "/tags/tools/build/Milestone_10_dev2/boost/" : "Milestone_10_dev2";
-    [:] "/tags/tools/build/Milestone_11/boost/" : "Milestone_11";
-    [:] "/tags/tools/build/M11_rc2/boost/" : "M11_rc2";
+    [:] "/tags/tools/build/milestone_1/boost/" : "svn-tags/tools/build/milestone_1";
+    [:] "/tags/tools/build/Milestone_3/boost/" : "svn-tags/tools/build/Milestone_3";
+    [:] "/tags/tools/build/Milestone_4/boost/" : "svn-tags/tools/build/Milestone_4";
+    [:] "/tags/tools/build/Milestone_6/boost/" : "svn-tags/tools/build/Milestone_6";
+    [:] "/tags/tools/build/Milestone_7/boost/" : "svn-tags/tools/build/Milestone_7";
+    [:] "/tags/tools/build/Milestone_8/boost/" : "svn-tags/tools/build/Milestone_8";
+    [:] "/tags/tools/build/Milestone_9/boost/" : "svn-tags/tools/build/Milestone_9";
+    [:] "/tags/tools/build/Milestone_9_1/boost/" : "svn-tags/tools/build/Milestone_9_1";
+    [:] "/tags/tools/build/Milestone_10/boost/" : "svn-tags/tools/build/Milestone_10";
+    [:] "/tags/tools/build/Milestone_10_dev/boost/" : "svn-tags/tools/build/Milestone_10_dev";
+    [:] "/tags/tools/build/Milestone_10_dev2/boost/" : "svn-tags/tools/build/Milestone_10_dev2";
+    [:] "/tags/tools/build/Milestone_11/boost/" : "svn-tags/tools/build/Milestone_11";
+    [:] "/tags/tools/build/M11_rc2/boost/" : "svn-tags/tools/build/M11_rc2";
 
-    [:] "/tags/BOOST_BUILD_V1/boost/" : "BOOST_BUILD_V1";
-    [:] "/tags/tools/build/BOOST_BUILD_V1/boost/" : "BOOST_BUILD_V1";
+    [:] "/tags/BOOST_BUILD_V1/boost/" : "svn-tags/BOOST_BUILD_V1";
+    [:] "/tags/tools/build/BOOST_BUILD_V1/boost/" : "svn-tags/tools/build/BOOST_BUILD_V1";
 
-    [:] "/tags/boost-initial/boost/" : "boost-initial";
-    [:] "/tags/ftjam_2_3_5/boost/" : "ftjam_2_3_5";
-    [:] "/tags/jam_2_3_2/boost/" : "jam_2_3_2";
-    [:] "/tags/jam/bjam_3_1_2/boost/" : "jam/bjam_3_1_2";
-    [:] "/tags/jam/bjam_3_1_5/boost/" : "jam/bjam_3_1_5";
-    [:] "/tags/jam/FreeType_Jam_2_3_5/boost/" : "jam/FreeType_Jam_2_3_5";
-    [:] "/tags/jam/ftjam_2_3_5/boost/" : "jam/ftjam_2_3_5";
-    [:] "/tags/jam/jam_2_3_2/boost/" : "jam/jam_2_3_2";
-    [:] "/tags/jam/perforce_jam_2_4_beta_1/boost/" : "jam/perforce_jam_2_4_beta_1";
-    [:] "/tags/jam/Perforce_Jam_2_4_beta_1/boost/" : "jam/Perforce_Jam_2_4_beta_1";
-    [:] "/tags/jam/Perfroce_Jam_2_3_2/boost/" : "jam/Perfroce_Jam_2_3_2";
-    [:] "/tags/perforce_jam_2_4_beta_1/boost/" : "perforce_jam_2_4_beta_1";
-    [:] "/tags/state-perforce_2_4_merge-1/boost/" : "state-perforce_2_4_merge-1";
-    [:] "/tags/state-update_rule-1/boost/" : "state-update_rule-1";
-    [:] "/tags/tools/jam/FreeType_Jam_2_3_5/boost/" : "FreeType_Jam_2_3_5";
-    [:] "/tags/tools/jam/Perforce_Jam_2_4_beta_1/boost/" : "Perforce_Jam_2_4_beta_1";
-    [:] "/tags/tools/jam/Perfroce_Jam_2_3_2/boost/" : "Perfroce_Jam_2_3_2";
+    [:] "/tags/boost-initial/boost/" : "svn-tags/boost-initial";
+    [:] "/tags/ftjam_2_3_5/boost/" : "svn-tags/ftjam_2_3_5";
+    [:] "/tags/jam_2_3_2/boost/" : "svn-tags/jam_2_3_2";
+    [:] "/tags/jam/bjam_3_1_2/boost/" : "svn-tags/jam/bjam_3_1_2";
+    [:] "/tags/jam/bjam_3_1_5/boost/" : "svn-tags/jam/bjam_3_1_5";
+    [:] "/tags/jam/FreeType_Jam_2_3_5/boost/" : "svn-tags/jam/FreeType_Jam_2_3_5";
+    [:] "/tags/jam/ftjam_2_3_5/boost/" : "svn-tags/jam/ftjam_2_3_5";
+    [:] "/tags/jam/jam_2_3_2/boost/" : "svn-tags/jam/jam_2_3_2";
+    [:] "/tags/jam/perforce_jam_2_4_beta_1/boost/" : "svn-tags/jam/perforce_jam_2_4_beta_1";
+    [:] "/tags/jam/Perforce_Jam_2_4_beta_1/boost/" : "svn-tags/jam/Perforce_Jam_2_4_beta_1";
+    [:] "/tags/jam/Perfroce_Jam_2_3_2/boost/" : "svn-tags/jam/Perfroce_Jam_2_3_2";
+    [:] "/tags/perforce_jam_2_4_beta_1/boost/" : "svn-tags/perforce_jam_2_4_beta_1";
+    [:] "/tags/state-perforce_2_4_merge-1/boost/" : "svn-tags/state-perforce_2_4_merge-1";
+    [:] "/tags/state-update_rule-1/boost/" : "svn-tags/state-update_rule-1";
+    [:] "/tags/tools/jam/FreeType_Jam_2_3_5/boost/" : "svn-tags/tools/jam/FreeType_Jam_2_3_5";
+    [:] "/tags/tools/jam/Perforce_Jam_2_4_beta_1/boost/" : "svn-tags/tools/jam/Perforce_Jam_2_4_beta_1";
+    [:] "/tags/tools/jam/Perfroce_Jam_2_3_2/boost/" : "svn-tags/tools/jam/Perfroce_Jam_2_3_2";
   }
 }
 
@@ -2383,8 +2383,8 @@ repository build
   content
   {
     "boost-build.jam" : "historic/boost-build.jam";
-    [:] "/tags/BOOST_BUILD_V1/boost/" : "BOOST_BUILD_V1";
-    [:] "/tags/tools/build/BOOST_BUILD_V1/boost/" : "BOOST_BUILD_V1";
+    [:] "/tags/BOOST_BUILD_V1/boost/" : "svn-tags/BOOST_BUILD_V1";
+    [:] "/tags/tools/build/BOOST_BUILD_V1/boost/" : "svn-tags/tools/build/BOOST_BUILD_V1";
   }
 }
 
@@ -2398,9 +2398,9 @@ repository build : tools_branches
   }
   branches
   {
-    [:] "/branches/build-development/boost/" : "build-development";
-    [:] "/branches/build-development-2/boost/" : "build-development-2";
-    [:] "/tags/build-development-checkpoint-2/boost/" : "build-development-checkpoint-2";
+    [:] "/branches/build-development/boost/" : "svn-branches/build-development";
+    [:] "/branches/build-development-2/boost/" : "svn-branches/build-development-2";
+    [:] "/tags/build-development-checkpoint-2/boost/" : "svn-tags/build-development-checkpoint-2";
   }
 }
 
@@ -2416,7 +2416,7 @@ repository build
   }
   branches
   {
-    [:] "/branches/build/Milestone_12/" : "Milestone_12";
+    [:] "/branches/build/Milestone_12/" : "svn-branches/build/Milestone_12";
   }
 }
 
@@ -2429,12 +2429,12 @@ repository build
   }
   branches
   {
-    [:] "/branches/jam/4_0/" : "jam/4_0";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_15/" : "jam/Boost_Jam_3_1_15";
-    [:] "/tags/jam/Boost_Jam_3_1_15/" : "jam/Boost_Jam_3_1_15";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_16/" : "jam/Boost_Jam_3_1_16";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_17/" : "jam/Boost_Jam_3_1_17";
-    [:] "/tags/tools/jam/Boost_Jam_3_1_18/" : "jam/Boost_Jam_3_1_18";
+    [:] "/branches/jam/4_0/" : "svn-branches/jam/4_0";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_15/" : "svn-tags/tools/jam/Boost_Jam_3_1_15";
+    [:] "/tags/jam/Boost_Jam_3_1_15/" : "svn-tags/jam/Boost_Jam_3_1_15";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_16/" : "svn-tags/tools/jam/Boost_Jam_3_1_16";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_17/" : "svn-tags/tools/jam/Boost_Jam_3_1_17";
+    [:] "/tags/tools/jam/Boost_Jam_3_1_18/" : "svn-tags/tools/jam/Boost_Jam_3_1_18";
   }
 }
 
@@ -2467,8 +2467,8 @@ repository quickbook : common_branches
   }
   branches
   {
-    [:] "/branches/quickbook/include/boost/" : "quickbook/include";
-    [:] "/sandbox/boost_docs/trunk/" : "sandbox/boost_docs";
+    [:] "/branches/quickbook/include/boost/" : "svn-branches/quickbook/include";
+    [:] "/sandbox/boost_docs/trunk/" : "sandbox/boost_docs/trunk";
   }
 }
 
@@ -2482,9 +2482,9 @@ repository quickbook
   }
   branches
   {
-    [:] "/branches/quickbook-1.5/" : "quickbook-1.5";
-    [:] "/branches/quickbook-1.5-spirit2/" : "quickbook-1.5-spirit2";
-    [75162:     ] "/branches/quickbook/literate/" : "literate";
+    [:] "/branches/quickbook-1.5/" : "svn-branches/quickbook-1.5";
+    [:] "/branches/quickbook-1.5-spirit2/" : "svn-branches/quickbook-1.5-spirit2";
+    [75162:     ] "/branches/quickbook/literate/" : "svn-branches/quickbook/literate";
   }
 }
 
@@ -2520,7 +2520,7 @@ repository sandbox
   }
   branches
   {
-    [44914:44914] "/sandbox/libs/smart_ptr/" : "trunk";
+    [44914:44914] "/sandbox/libs/smart_ptr/" : "sandbox/libs/smart_ptr";
   }
 }
 
@@ -2560,7 +2560,7 @@ repository website
   }
   branches
   {
-    [:] "/sandbox/boost_docs/trunk/" : "sandbox/boost_docs";
+    [:] "/sandbox/boost_docs/trunk/" : "sandbox/boost_docs/trunk";
   }
 }
 
@@ -2647,26 +2647,26 @@ repository boost : common_branches
   }
   branches
   {
-    [:] "/branches/alternative_regression/boost/" : "alternative_regression";
-    [:] "/branches/test-development/boost/" : "test-development";
-    [:] "/branches/jam/version_2_3_2/boost/" : "jam/version_2_3_2";
-    [:] "/branches/logo_contest_images/boost/" : "logo_contest_images";
-    [:] "/branches/unlabeled-1.32.2/boost/" : "unlabeled-1.32.2";
-    [:] "/branches/jam/pipe_rule/boost/" : "pipe_rule";
-    [:] "/branches/jam/Boost_Jam_994/boost/" : "Boost_Jam_994";
-    [:] "/branches/quickbook/QUICKBOOK_PREPROCESSOR/boost/" : "QUICKBOOK_PREPROCESSOR";
-    [:] "/branches/quickbook/preprocessor/boost/" : "quickbook/preprocessor";
-    [:] "/branches/QUICKBOOK_PREPROCESSOR/boost/" : "QUICKBOOK_PREPROCESSOR";
-    [:] "/branches/more1/boost/" : "more1";
-    [:] "/branches/build-developement/boost/" : "build-developement";
-    [:] "/branches/boost/boost/" : "oops";
-    [:] "/branches/quickbook/QUICKBOOK_BACKEND/boost/" : "QUICKBOOK_BACKEND";
-    [:] "/sandbox-branches/guigl-wmbuild/" : "sandbox/guigl-wmbuild";
-    [:] "/sandbox-branches/andreo/guigl/" : "sandbox/andreo/guigl";
+    [:] "/branches/alternative_regression/boost/" : "svn-branches/alternative_regression";
+    [:] "/branches/test-development/boost/" : "svn-branches/test-development";
+    [:] "/branches/jam/version_2_3_2/boost/" : "svn-branches/jam/version_2_3_2";
+    [:] "/branches/logo_contest_images/boost/" : "svn-branches/logo_contest_images";
+    [:] "/branches/unlabeled-1.32.2/boost/" : "svn-branches/unlabeled-1.32.2";
+    [:] "/branches/jam/pipe_rule/boost/" : "svn-branches/jam/pipe_rule";
+    [:] "/branches/jam/Boost_Jam_994/boost/" : "svn-branches/jam/Boost_Jam_994";
+    [:] "/branches/quickbook/QUICKBOOK_PREPROCESSOR/boost/" : "svn-branches/quickbook/QUICKBOOK_PREPROCESSOR";
+    [:] "/branches/quickbook/preprocessor/boost/" : "svn-branches/quickbook/preprocessor";
+    [:] "/branches/QUICKBOOK_PREPROCESSOR/boost/" : "svn-branches/QUICKBOOK_PREPROCESSOR";
+    [:] "/branches/more1/boost/" : "svn-branches/more1";
+    [:] "/branches/build-developement/boost/" : "svn-branches/build-developement";
+    [:] "/branches/boost/boost/" : "svn-branches/boost";
+    [:] "/branches/quickbook/QUICKBOOK_BACKEND/boost/" : "svn-branches/quickbook/QUICKBOOK_BACKEND";
+    [:] "/sandbox-branches/guigl-wmbuild/" : "sandbox-branches/guigl-wmbuild";
+    [:] "/sandbox-branches/andreo/guigl/" : "sandbox-branches/andreo/guigl";
     [:] "/sandbox/guigl/" : "sandbox/guigl";
-    [:] "/branches/coding_guidelines/boost/" : "coding_guidelines";
-    [:] "/tags/RC_1_30_0_last_merge/boost/" : "RC_1_30_0_last_merge";
-    [:] "/tags/BOOST_BUILD_PYTHON_BASE/boost/" : "BOOST_BUILD_PYTHON_BASE";
+    [:] "/branches/coding_guidelines/boost/" : "svn-branches/coding_guidelines";
+    [:] "/tags/RC_1_30_0_last_merge/boost/" : "svn-tags/RC_1_30_0_last_merge";
+    [:] "/tags/BOOST_BUILD_PYTHON_BASE/boost/" : "svn-tags/BOOST_BUILD_PYTHON_BASE";
   }
 }
 
