@@ -1,6 +1,12 @@
 #!/bin/bash -e
 
-# don't bother with these two
+# delete all branches except 'develop' and 'master' from the superproject
+if [ ${PWD##*/} = 'boost' ]
+then
+  git branch | grep '^  s' | xargs git branch -D
+fi
+
+# don't bother with this one
 if [ ${PWD##*/} = 'sandbox' ]
 then
   exit 0
