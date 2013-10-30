@@ -29,6 +29,15 @@ do
   fi
 done
 
+# remove free standing branches (dots in the network graph)
+for branch in $(git branch | cut -c 3-)
+do
+  if [ $( git log -2 --pretty=oneline $branch | wc -l) -eq 1 ]
+  then
+    git branch -D $branch
+  fi
+done
+
 # cleanup garbage, if required
 git gc --auto --quiet
 
