@@ -103,8 +103,8 @@ void git_repository::prepare_to_close_commit()
         {
             content << "[submodule \"" << sr->repo->name() << "\"]\n"
                     << "	path = " << sr->repo->submodule_path << "\n"
-                    << "	url = http://github.com/boostorg/" << sr->repo->name() << ".git\n"
-                    << "        fetchRecurseSubmodules = on-demand\n"
+                    << "	url = ../" << sr->repo->name() << ".git\n"
+                    << "	fetchRecurseSubmodules = on-demand\n"
                 ;
         }
         fast_import().filemodify_hdr(".gitmodules");
