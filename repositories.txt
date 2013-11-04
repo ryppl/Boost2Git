@@ -516,7 +516,6 @@ repository config : common_branches
   submodule of "boost" : "libs/config";
   content
   {
-    "boost/cstdint.hpp" : "include/boost/cstdint.hpp";
     "boost/config.hpp" : "include/boost/config.hpp";
     "boost/config/" : "include/boost/config/";
     "boost/detail/workaround.hpp" : "include/boost/detail/workaround.hpp";
@@ -612,6 +611,7 @@ repository detail : common_branches, unordered_foreign_branches
     "boost/detail/named_template_params.hpp" : "include/boost/detail/named_template_params.hpp";
     "boost/detail/no_exceptions_support.hpp" : "include/boost/detail/no_exceptions_support.hpp";
     "boost/detail/numeric_traits.hpp" : "include/boost/detail/numeric_traits.hpp";
+    "boost/detail/quick_allocator.hpp" : "include/boost/detail/quick_allocator.hpp";
     "boost/detail/reference_content.hpp" : "include/boost/detail/reference_content.hpp";
     "boost/detail/scoped_enum_emulation.hpp" : "include/boost/detail/scoped_enum_emulation.hpp";
     "boost/detail/select_type.hpp" : "include/boost/detail/select_type.hpp";
@@ -631,16 +631,6 @@ repository detail : common_branches, unordered_foreign_branches
     "boost/utf8_codecvt_facet.hpp" : "include/boost/utf8_codecvt_facet.hpp";
     "boost/visit_each.hpp" : "include/boost/visit_each.hpp";
     "libs/detail/";
-  }
-}
-
-// this file belongs to "predef" starting with r85230
-repository predef : common_branches
-{
-  maxrev 85229;
-  content
-  {
-    "boost/detail/endian.hpp" : "include/boost/detail/endian.hpp";
   }
 }
 
@@ -966,6 +956,7 @@ repository integer : common_branches
   submodule of "boost" : "libs/integer";
   content
   {
+    "boost/cstdint.hpp" : "include/boost/cstdint.hpp";
     "boost/detail/extended_integer.hpp" : "include/boost/detail/extended_integer.hpp";
     "boost/integer_fwd.hpp" : "include/boost/integer_fwd.hpp";
     "boost/integer.hpp" : "include/boost/integer.hpp";
@@ -1427,16 +1418,6 @@ repository predef : common_branches
   }
 }
 
-// this file belongs to "detail" until r85229
-repository predef : common_branches
-{
-  minrev 85230;
-  content
-  {
-    "boost/detail/endian.hpp" : "include/boost/detail/endian.hpp";
-  }
-}
-
 repository preprocessor
 {
   content
@@ -1756,7 +1737,6 @@ repository serialization : common_branches
   content
   {
     "boost/archive/" : "include/boost/archive/";
-    "boost/detail/quick_allocator.hpp" : "include/boost/detail/quick_allocator.hpp";
     "boost/pfto.hpp" : "include/boost/pfto.hpp";
     "boost/serialization/" : "include/boost/serialization/";
     "boost/smart_cast.hpp" : "include/boost/smart_cast.hpp";
