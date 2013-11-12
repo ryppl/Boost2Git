@@ -142,6 +142,7 @@ abstract repository common_branches
     [:] "/branches/maintenance/1_41/" : "svn-branches/maintenance/1_41";
     [:] "/branches/maintenance/1_50_0/" : "svn-branches/maintenance/1_50_0";
     [:] "/branches/maintenance/1_54_0/" : "svn-branches/maintenance/1_54_0";
+    [:] "/branches/maintenance/1_55_0/" : "svn-branches/maintenance/1_55_0";
     [:] "/branches/modular-build/" : "svn-branches/modular-build";
     [:] "/tags/tools/jam/Perforce_Jam_2_4_merge_1/boost/" : "svn-tags/tools/jam/Perforce_Jam_2_4_merge_1";
 
