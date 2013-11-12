@@ -265,6 +265,7 @@ mmurrett = Mac Murrett <mmurrett@mac.com>
 mrdans = Dan Searles <dansearles@yahoo.com>
 mrovner = Mike Rovner <mike@bindkey.com>
 msclrhd = Reece H. Dunn <msclrhd@hotmail.com>
+msimbirsky = Michael Simbirsky <michael.simbirsky@gmail.com>
 mstefanro = Stefan Mihaila <mstefanro@gmail.com>
 mumiee = Andreas Pokorny <andreas.pokorny@gmail.com>
 murilov = Murilo Adriano Vasconcelos <muriloufg@gmail.com>
